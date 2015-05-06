@@ -183,7 +183,7 @@ namespace iCanScript.Editor {
                             if(ParentNode.IsConstructor) {
                                 // Use the name of the variable for constructor output.
                                 var scheme= NameUtility.NamingScheme.LOWER_CAMEL_CASE;
-                                c_CodeName= NameUtility.ToCodeName(scheme, ParentNode.DisplayName);
+                                c_CodeName= NameUtility.ToCodeName(scheme, ParentNode.CodeName);
                             }
                             else {
                                 c_CodeName= "this";
@@ -247,24 +247,16 @@ namespace iCanScript.Editor {
                             c_CodeName= string.IsNullOrEmpty(name) ? "Package" : name;
                         }
                         else {
-                            var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
-    						if(desc != null) {
-    	                        var funcInfo= desc.ToFunctionPrototypeInfo;
-    	                        if(funcInfo != null) {
-    	                            if(funcInfo is iCS_MessageInfo) {
-    	                                c_CodeName= funcInfo.DisplayName;
-    	                            }
-    	                            else {
-    	                                c_CodeName= funcInfo.MethodName;                            
-    	                            }
-    	                        }
-    	                        else {
-    	                            c_CodeName= string.IsNullOrEmpty(name) ? "null" : name;
-    	                        }							
-    						}
-    						else {
-                                c_CodeName= string.IsNullOrEmpty(name) ? "null" : name;							
-    						}
+                            var methodName= EngineObject.MethodName;
+                            if(!string.IsNullOrEmpty(methodName)) {
+                                c_CodeName= methodName;
+                            }
+                            else {
+                                c_CodeName= name;
+                            }
+                            if(string.IsNullOrEmpty(c_CodeName)) {
+                                c_CodeName= "null";
+                            }
                         }
                     }
                     else {

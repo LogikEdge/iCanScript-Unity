@@ -25,98 +25,6 @@ namespace iCanScript.Editor {
             return PropertiesWizardCreatePortIfNonExisting(instanceNode, "Target", classType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.Target);
         }
 
-//        // ----------------------------------------------------------------------
-//        public void PropertiesWizardCreateInputInstanceFields(iCS_EditorObject module) {
-//            Type classType= module.RuntimeType;
-//            iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
-//            foreach(var component in components) {
-//                if(component.IsSetInstanceField) {
-//                    PropertiesWizardCreate(module, component.ToFieldInfo);
-//                }
-//            }        
-//        }
-//        // ----------------------------------------------------------------------
-//        public void PropertiesWizardCreateOutputStaticFields(iCS_EditorObject module) {
-//            Type classType= module.RuntimeType;
-//            iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
-//            foreach(var component in components) {
-//                if(component.IsGetClassField) {
-//                    PropertiesWizardCreate(module, component.ToFieldInfo);                
-//                }
-//            }        
-//        }
-
-//        // ----------------------------------------------------------------------
-//        public void PropertiesWizardDestroyFields(iCS_EditorObject module) {
-//            Type classType= module.RuntimeType;
-//            var libraryType= LibraryController.LibraryDatabase.GetLibraryType(classType);
-//            var libraryFields= libraryType.GetMembers<LibraryField>();
-//            foreach(var libraryField in libraryFields) {
-//                PropertiesWizardDestroy(module, libraryField);
-//            }        
-//        }
-
-//        // ----------------------------------------------------------------------
-//        public void PropertiesWizardCreateInputStaticFields(iCS_EditorObject module) {
-//            Type classType= module.RuntimeType;
-//            iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
-//            foreach(var component in components) {
-//                if(component.IsSetClassField) {
-//                    PropertiesWizardCreate(module, component.ToFieldInfo);                
-//                }
-//            }        
-//        }
-
-//        // ----------------------------------------------------------------------
-//        public void PropertiesWizardCreateOutputInstanceProperties(iCS_EditorObject module) {
-//            Type classType= module.RuntimeType;
-//            iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
-//            foreach(var component in components) {
-//                if(component.IsGetInstanceProperty) {
-//                    PropertiesWizardCreate(module, component.ToPropertyInfo);                
-//                }
-//            }        
-//        }
-//        // ----------------------------------------------------------------------
-//        public void PropertiesWizardDestroyProperties(iCS_EditorObject module) {
-//            Type classType= module.RuntimeType;
-//            var libraryType= LibraryController.LibraryDatabase.GetLibraryType(classType);
-//            var libraryProperties= libraryType.GetMembers<LibraryProperty>();
-//            foreach(var libraryProperty in libraryProperties) {
-//                PropertiesWizardDestroy(module, libraryProperty);
-//            }        
-//        }
-//        // ----------------------------------------------------------------------
-//        public void PropertiesWizardCreateInputInstanceProperties(iCS_EditorObject module) {
-//            Type classType= module.RuntimeType;
-//            iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
-//            foreach(var component in components) {
-//                if(component.IsSetInstanceProperty) {
-//                    PropertiesWizardCreate(module, component.ToPropertyInfo);                
-//                }
-//            }        
-//        }
-//        // ----------------------------------------------------------------------
-//        public void PropertiesWizardCreateOutputStaticProperties(iCS_EditorObject module) {
-//            Type classType= module.RuntimeType;
-//            iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
-//            foreach(var component in components) {
-//                if(component.IsGetClassProperty) {
-//                    PropertiesWizardCreate(module, component.ToPropertyInfo);                
-//                }
-//            }        
-//        }
-//        // ----------------------------------------------------------------------
-//        public void PropertiesWizardCreateInputStaticProperties(iCS_EditorObject module) {
-//            Type classType= module.RuntimeType;
-//            iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
-//            foreach(var component in components) {
-//                if(component.IsSetClassProperty) {
-//                    PropertiesWizardCreate(module, component.ToPropertyInfo);                
-//                }
-//            }        
-//        }
-
         // ======================================================================
         // Utilities.
         // ----------------------------------------------------------------------
@@ -156,14 +64,6 @@ namespace iCanScript.Editor {
         }
         // ----------------------------------------------------------------------
         public iCS_EditorObject PropertiesWizardGetInputThisPort(iCS_EditorObject module) {
-    //        iCS_EditorObject thisPort= PropertiesWizardGetPort(module, iCS_IStorage.GetInstancePortName(module.RuntimeType),
-    //                                                         iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.InInstance);
-    //        if(thisPort == null) {
-    //            iCS_EditorObject constructor= PropertiesWizardGetConstructor(module);
-    //            if(constructor == null) return null;
-    //            thisPort= FindInChildren(constructor, port=> port.IsOutputPort && port.RuntimeType == module.RuntimeType);
-    //        }
-    //        return thisPort;
             var instancePort= FindInputInstancePortOn(module);
             if(instancePort == null) {
                 var constructor= FindInstanceNodeInternalConstructor(module);

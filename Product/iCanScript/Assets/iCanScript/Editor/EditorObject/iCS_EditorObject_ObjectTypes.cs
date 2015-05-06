@@ -18,7 +18,10 @@ namespace iCanScript.Editor {
         public bool IsEventHandler              { get { return EngineObject.IsEventHandler; }}
         public bool IsMux                       { get { return EngineObject.IsMux; }}
         public bool IsConstructor               { get { return EngineObject.IsConstructor; }}
-    	public bool IsField						{ get { return EngineObject.IsField; }}
+        public bool IsInstanceFunction          { get { return EngineObject.IsInstanceFunction; }}
+        public bool IsStaticFunction            { get { return EngineObject.IsStaticFunction; }}
+    	public bool IsField			            { get { return EngineObject.IsField; }}
+    	public bool IsInstanceField			    { get { return EngineObject.IsInstanceField; }}
     	public bool IsStaticField               { get { return EngineObject.IsStaticField; }}
         public bool IsTypeCast                  { get { return EngineObject.IsTypeCast; }}
         public bool IsStateChart                { get { return EngineObject.IsStateChart; }}
@@ -101,6 +104,32 @@ namespace iCanScript.Editor {
                        return true;
                 }
                 return false;
+            }
+        }
+        public bool IsFieldGet {
+            get {
+                if(!IsField) return false;
+                return GetReturnPort() != null && GetPortWithIndex(0) == null;                
+            }
+        }
+        public bool IsFieldSet {
+            get {
+                if(!IsField) return false;
+                return GetReturnPort() == null && GetPortWithIndex(0) != null;                
+            }
+        }
+        public bool IsPropertyGet {
+            get {
+                if(!IsInstanceFunction && !IsStaticFunction) return false;
+                if(!CodeName.StartsWith("get_")) return false;
+                return GetReturnPort() != null && GetPortWithIndex(0) == null;                
+            }
+        }
+        public bool IsPropertySet {
+            get {
+                if(!IsInstanceFunction && !IsStaticFunction) return false;
+                if(!CodeName.StartsWith("set_")) return false;
+                return GetReturnPort() == null && GetPortWithIndex(0) != null && GetPortWithIndex(1) == null;                
             }
         }
     }

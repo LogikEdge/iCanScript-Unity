@@ -474,5 +474,29 @@ namespace iCanScript.Editor {
             }
             return rootInvisible;
         }
+        // ----------------------------------------------------------------------
+        /// Returns the return port (if it exists).
+        ///
+        /// @return The return port if found. _null_ otherwise.
+        ///
+        public iCS_EditorObject GetReturnPort() {
+            return GetPortWithIndex((int)iCS_PortIndex.Return);
+        }
+        // ----------------------------------------------------------------------
+        /// Returns the port with the given port index.
+        ///
+        /// @return The found port or _null_ otherwise.
+        ///
+        public iCS_EditorObject GetPortWithIndex(int portIndex) {
+            iCS_EditorObject result= null;
+            ForEachChildPort(
+                p=> {
+                    if(p.PortIndex == portIndex) {
+                        result= p;
+                    }
+                }
+            );
+            return result;
+        }
     }
 }
