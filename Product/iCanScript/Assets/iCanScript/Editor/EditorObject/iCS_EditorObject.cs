@@ -693,7 +693,94 @@ namespace iCanScript.Editor {
             Prelude.forEach(c=> Children[i++]= c, orderedChildren);
             Prelude.forEach(c=> Children[i++]= c, others);
         }
-
+        // ----------------------------------------------------------------------
+		/// Find the library object that matches this editor object.
+		///
+		/// @return The library object that match this visual script object. _null_ otherwise.
+		///
+		public LibraryObject GetLibraryObject() {
+			// -- Only fields, properties, functions, and types are in the library. --
+			if(IsPort) return null;
+			// -- Locate the declaring type --
+			var libraryType= LibraryController.LibraryDatabase.GetLibraryType(RuntimeType);
+			if(libraryType == null) return null;
+			// -- Try field first --
+			var methodName= EngineObject.MethodName;
+			if(IsFieldGet) {
+				foreach(var field in libraryType.GetMembers<LibraryGetField>()) {
+					if(field.fieldName == methodName) {
+						return field;
+					}
+				}				
+			}
+			if(IsFieldSet) {
+				foreach(var field in libraryType.GetMembers<LibrarySetField>()) {
+					if(field.fieldName == methodName) {
+						return field;
+					}
+				}
+			}
+			// -- Try properties --
+			if(IsPropertyGet) {
+				foreach(var property in libraryType.GetMembers<LibraryGetProperty>()) {
+					if(property.propertyName == methodName) {
+						return property;
+					}
+				}				
+			}
+			if(IsPropertySet) {
+				foreach(var property in libraryType.GetMembers<LibrarySetProperty>()) {
+					if(property.propertyName == methodName) {
+						return property;
+					}
+				}
+			}
+			// -- Try constructors --
+			var parameterPorts= GetParameterPorts();
+			var nbOfParameters= parameterPorts.Length;
+			if(IsConstructor) {
+				foreach(var constructor in libraryType.GetMembers<LibraryConstructor>()) {
+					var constructorParameters= constructor.parameters;
+					if(nbOfParameters == constructorParameters.Length) {
+						bool sameParamTypes= true;
+						for(int i= 0; i < nbOfParameters; ++i) {
+							var portType = iCS_Types.RemoveRefOrPointer(parameterPorts[i].RuntimeType);
+							var paramType= iCS_Types.RemoveRefOrPointer(constructorParameters[i].ParameterType);
+							if(portType != paramType) {
+								sameParamTypes= false;
+								break;
+							}
+						}
+						if(sameParamTypes) {
+							return constructor;							
+						}
+					}
+				}				
+			}
+			// -- Try functions --
+			if(IsInstanceFunction || IsStaticFunction) {
+				foreach(var function in libraryType.GetMembers<LibraryFunction>()) {
+					if(function.functionName == methodName) {
+						var functionParameters= function.parameters;
+						if(nbOfParameters == functionParameters.Length) {
+							bool sameParamTypes= true;
+							for(int i= 0; i < nbOfParameters; ++i) {
+								var portType = iCS_Types.RemoveRefOrPointer(parameterPorts[i].RuntimeType);
+								var paramType= iCS_Types.RemoveRefOrPointer(functionParameters[i].ParameterType);
+								if(portType != paramType) {
+									sameParamTypes= false;
+									break;
+								}
+							}
+							if(sameParamTypes) {
+								return function;						
+							}
+						}
+					}
+				}				
+			}
+			return null;
+		}
     }
 }
 

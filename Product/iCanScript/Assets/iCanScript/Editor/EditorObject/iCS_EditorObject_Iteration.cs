@@ -474,6 +474,22 @@ namespace iCanScript.Editor {
             }
             return rootInvisible;
         }
+
+        // ----------------------------------------------------------------------
+		/// Returns the ordered list of parameter ports.
+		///
+		/// @return The array of parameter ports ordered as per the port index.
+		///
+		public iCS_EditorObject[] GetParameterPorts() {
+			var paramPorts= BuildListOfChildPorts(
+				p=> {
+					var portIndex= p.PortIndex;
+					return portIndex >= (int)iCS_PortIndex.ParametersStart && portIndex < (int)iCS_PortIndex.ParametersEnd;
+				}
+			);
+			Array.Sort(paramPorts, (x,y)=> y.PortIndex-x.PortIndex);
+			return paramPorts;
+		}
         // ----------------------------------------------------------------------
         /// Returns the return port (if it exists).
         ///

@@ -410,7 +410,7 @@ namespace iCanScript.Editor {
 		}
         // ----------------------------------------------------------------------		
 		/// Retruns the library icon for a type node.
-		internal override Texture   GetLibraryIcon() {
+		internal override Texture GetLibraryIcon() {
             return TextureCache.GetIcon(Icons.kTypeIcon);
 		}		
 
@@ -457,6 +457,7 @@ namespace iCanScript.Editor {
         // ======================================================================
         // PROPERTIES
         // ----------------------------------------------------------------------
+		public string		memberName	  { get { return memberInfo.Name; }}
         public MemberTypes  memberType    { get { return memberInfo.MemberType; }}
 		public Type			declaringType { get { return memberInfo.DeclaringType; }}
         public bool         isField       { get { return memberType == MemberTypes.Field; }}
@@ -756,6 +757,11 @@ namespace iCanScript.Editor {
 	/// Defines the class that represents a function in the library.
     public class LibraryFunction : LibraryMethodInfo {
         // ======================================================================
+        // PROPERTIES
+        // ----------------------------------------------------------------------
+        public string	functionName	{ get { return methodInfo.Name; }}
+
+        // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
         public LibraryFunction(MethodInfo methodInfo) : base(methodInfo) {}
@@ -812,6 +818,11 @@ namespace iCanScript.Editor {
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	/// Defines the base class that represents a property in the library.
     public class LibraryProperty : LibraryMethodInfo {
+        // ======================================================================
+        // PROPERTIES
+        // ----------------------------------------------------------------------
+        public string	propertyName	{ get { return methodInfo.Name; }}
+
         // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
