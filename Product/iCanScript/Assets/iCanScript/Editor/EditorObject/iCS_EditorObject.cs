@@ -197,23 +197,19 @@ namespace iCanScript.Editor {
     					}
     					else {
                             c_CodeName= EngineObject.RawName;
+							// -- Try to use the original name if the user erased the port name. --
     						if(string.IsNullOrEmpty(c_CodeName)) {
     							var parent= ParentNode;
     							if(parent != null) {
-    		                        var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
-    								if(desc != null) {
-    		                            var funcInfo= desc.ToFunctionPrototypeInfo;
-    								    if(funcInfo != null) {
-    										var parameters= funcInfo.Parameters;
-    										if(parameters != null && PortIndex < parameters.Length) {
-    											c_CodeName= NameUtility.ToFunctionParameterName(parameters[PortIndex].name);
-    										}
-    										else if(IsReturnPort) {
-    											if(funcInfo.FunctionReturn != null) {
-    												c_CodeName= NameUtility.ToLocalVariableName(funcInfo.FunctionReturn.name);
-    											}
-    										}
-    									}
+    		                        var libraryMethodBase= GetLibraryObject() as LibraryMethodBase;
+    								if(libraryMethodBase != null) {
+										var parameters= libraryMethodBase.parameters;
+										if(parameters != null && PortIndex < parameters.Length) {
+											c_CodeName= NameUtility.ToFunctionParameterName(parameters[PortIndex].Name);
+										}
+										else if(IsReturnPort) {
+											c_CodeName= NameUtility.ToLocalVariableName(parent.CodeName);
+										}
     								}
     							}								
     						}                       
@@ -473,28 +469,6 @@ namespace iCanScript.Editor {
                 return this.InstanceId == Storage.DisplayRoot;
     	    }
     	}
-        public bool IsObsolete {
-        	get {
-        		if(c_ObsoleteMessage == null) {
-    				var desc= iCS_LibraryDatabase.GetAssociatedDescriptor(this);
-    				if(desc != null) {
-    					var methodInfo= desc.ToMethodInfo;
-    					if(methodInfo != null) {
-    						c_ObsoleteMessage= iCS_LibraryDatabase.GetObsoleteMessage(methodInfo.Method);						
-    					}
-    				}
-    				if(string.IsNullOrEmpty(c_ObsoleteMessage)) {
-    					c_ObsoleteMessage= "";
-    				}
-        		}
-    			return !string.IsNullOrEmpty(c_ObsoleteMessage);
-        	}
-        }
-    	public string ObsoleteMessage {
-    		get {
-    			return IsObsolete ? c_ObsoleteMessage : null;
-    		}
-    	}
 	
         // ======================================================================
         // Constructors/Builders
@@ -693,7 +667,94 @@ namespace iCanScript.Editor {
             Prelude.forEach(c=> Children[i++]= c, orderedChildren);
             Prelude.forEach(c=> Children[i++]= c, others);
         }
-
+        // ----------------------------------------------------------------------
+		/// Find the library object that matches this editor object.
+		///
+		/// @return The library object that match this visual script object. _null_ otherwise.
+		///
+		public LibraryObject GetLibraryObject() {
+			// -- Only fields, properties, functions, and types are in the library. --
+			if(IsPort) return null;
+			// -- Locate the declaring type --
+			var libraryType= LibraryController.LibraryDatabase.GetLibraryType(RuntimeType);
+			if(libraryType == null) return null;
+			// -- Try field first --
+			var methodName= EngineObject.MethodName;
+			if(IsFieldGet) {
+				foreach(var field in libraryType.GetMembers<LibraryGetField>()) {
+					if(field.fieldName == methodName) {
+						return field;
+					}
+				}				
+			}
+			if(IsFieldSet) {
+				foreach(var field in libraryType.GetMembers<LibrarySetField>()) {
+					if(field.fieldName == methodName) {
+						return field;
+					}
+				}
+			}
+			// -- Try properties --
+			if(IsPropertyGet) {
+				foreach(var property in libraryType.GetMembers<LibraryGetProperty>()) {
+					if(property.propertyName == methodName) {
+						return property;
+					}
+				}				
+			}
+			if(IsPropertySet) {
+				foreach(var property in libraryType.GetMembers<LibrarySetProperty>()) {
+					if(property.propertyName == methodName) {
+						return property;
+					}
+				}
+			}
+			// -- Try constructors --
+			var parameterPorts= GetParameterPorts();
+			var nbOfParameters= parameterPorts.Length;
+			if(IsConstructor) {
+				foreach(var constructor in libraryType.GetMembers<LibraryConstructor>()) {
+					var constructorParameters= constructor.parameters;
+					if(nbOfParameters == constructorParameters.Length) {
+						bool sameParamTypes= true;
+						for(int i= 0; i < nbOfParameters; ++i) {
+							var portType = iCS_Types.RemoveRefOrPointer(parameterPorts[i].RuntimeType);
+							var paramType= iCS_Types.RemoveRefOrPointer(constructorParameters[i].ParameterType);
+							if(portType != paramType) {
+								sameParamTypes= false;
+								break;
+							}
+						}
+						if(sameParamTypes) {
+							return constructor;							
+						}
+					}
+				}				
+			}
+			// -- Try functions --
+			if(IsInstanceFunction || IsStaticFunction) {
+				foreach(var function in libraryType.GetMembers<LibraryFunction>()) {
+					if(function.functionName == methodName) {
+						var functionParameters= function.parameters;
+						if(nbOfParameters == functionParameters.Length) {
+							bool sameParamTypes= true;
+							for(int i= 0; i < nbOfParameters; ++i) {
+								var portType = iCS_Types.RemoveRefOrPointer(parameterPorts[i].RuntimeType);
+								var paramType= iCS_Types.RemoveRefOrPointer(functionParameters[i].ParameterType);
+								if(portType != paramType) {
+									sameParamTypes= false;
+									break;
+								}
+							}
+							if(sameParamTypes) {
+								return function;						
+							}
+						}
+					}
+				}				
+			}
+			return null;
+		}
     }
 }
 

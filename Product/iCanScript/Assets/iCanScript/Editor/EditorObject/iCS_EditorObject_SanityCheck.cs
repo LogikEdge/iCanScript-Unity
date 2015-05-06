@@ -23,10 +23,6 @@ namespace iCanScript.Editor {
                    ErrorController.AddError(serviceKey, message, visualScript, InstanceId);
     			   return false;
                }
-    		   if(IsObsolete) {
-    			   var message= CodeName+" is obsolete. "+ObsoleteMessage;
-    			   ErrorController.AddWarning(serviceKey, message, visualScript, InstanceId);
-    		   }
            }
     	   if(IsTargetPort) {
     		   if(ProducerPort == null || ProducerPort == this) {

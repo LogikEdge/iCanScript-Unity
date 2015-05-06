@@ -176,42 +176,42 @@ namespace iCanScript.Editor {
     	}
     	
     	
-    	public static string getHelp(iCS_MemberInfo memberInfo )
+    	public static string getHelp(LibraryMemberInfo memberInfo )
     	{
     		if(memberInfo != null) {
-    			// Return help string if there is already one in the memberInfo
-    			if (memberInfo.HelpSummaryCache != null) {
-    				return memberInfo.HelpSummaryCache;
-    			}
-    			
-    			// Try and use MemberInfo Description
-    			if (!String.IsNullOrEmpty(memberInfo.StoredDescription)) {
-    				return memberInfo.StoredDescription;
-    			}
-    			
-    			// If there is no help string already in MemberInfo, try and look up Unity help
-    			if (memberInfo.HelpSummaryCache==null && memberInfo.Company == "Unity") {
-    				string search= getHelpUrl(memberInfo);
-    				string summary=null;
-    				unityHelpSummary.TryGetValue(search, out summary);
-    				if (!String.IsNullOrEmpty(summary)) {
-    					// cache and return the found help string
-    					memberInfo.HelpSummaryCache= summary;
-    					return summary;
-    				}
-    			}
-    			
-    			// If there is no help found yet, try and return help based on type
-    			String typeHelp= getHelp(memberInfo.GetType());
-    			if (!String.IsNullOrEmpty(typeHelp)) {
-    				memberInfo.HelpSummaryCache= typeHelp;
-    			}	
-    			else
-    			{
-    				// Mark cache as empty string (vs null), so we do not search again 
-    				memberInfo.HelpSummaryCache= "";	
-    			}				
-    			return typeHelp;
+//    			// Return help string if there is already one in the memberInfo
+//    			if (memberInfo.HelpSummaryCache != null) {
+//    				return memberInfo.HelpSummaryCache;
+//    			}
+//    			
+//    			// Try and use MemberInfo Description
+//    			if (!String.IsNullOrEmpty(memberInfo.StoredDescription)) {
+//    				return memberInfo.StoredDescription;
+//    			}
+//    			
+//    			// If there is no help string already in MemberInfo, try and look up Unity help
+//    			if (memberInfo.HelpSummaryCache==null && memberInfo.Company == "Unity") {
+//    				string search= getHelpUrl(memberInfo);
+//    				string summary=null;
+//    				unityHelpSummary.TryGetValue(search, out summary);
+//    				if (!String.IsNullOrEmpty(summary)) {
+//    					// cache and return the found help string
+//    					memberInfo.HelpSummaryCache= summary;
+//    					return summary;
+//    				}
+//    			}
+//    			
+//    			// If there is no help found yet, try and return help based on type
+//    			String typeHelp= getHelp(memberInfo.GetType());
+//    			if (!String.IsNullOrEmpty(typeHelp)) {
+//    				memberInfo.HelpSummaryCache= typeHelp;
+//    			}	
+//    			else
+//    			{
+//    				// Mark cache as empty string (vs null), so we do not search again 
+//    				memberInfo.HelpSummaryCache= "";	
+//    			}				
+//    			return typeHelp;
     		}
     		return null;
     	}
@@ -229,7 +229,7 @@ namespace iCanScript.Editor {
     		return help;
     	}
     		
-    	public static iCS_MemberInfo getAssociatedHelpMemberInfo(iCS_EditorObject edObj) 
+    	public static LibraryMemberInfo getAssociatedHelpMemberInfo(iCS_EditorObject edObj) 
     	{
     		if(edObj != null) {
     			if (edObj.IsPort) {	
@@ -258,18 +258,13 @@ namespace iCanScript.Editor {
     				}							
     			}
     			
-    			iCS_MemberInfo memberInfo=null;
+    			LibraryMemberInfo memberInfo=null;
     			
     			// Try and Get Member Info from GetAssociatedDescriptor 
     			if(edObj.IsKindOfFunction || edObj.IsEventHandler) {
-    				memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(edObj);
+    				memberInfo= edObj.GetLibraryObject() as LibraryMemberInfo;
     			}
     			
-    			// If no member Info was found, try and get based on type.
-    			if(memberInfo == null) {
-    				memberInfo= iCS_LibraryDatabase.GetTypeInfo(edObj.RuntimeType);
-    			}
-    
     			return memberInfo;
     			
     		}
@@ -384,15 +379,15 @@ namespace iCanScript.Editor {
     		openDetailedHelp(getAssociatedHelpMemberInfo(edObj));
     	}	
     
-    	public static void openDetailedHelp(iCS_MemberInfo memberInfo )	
+    	public static void openDetailedHelp(LibraryMemberInfo memberInfo )	
     	{	
-    		if(memberInfo != null) {
-    			if (memberInfo.Company == "Unity") {
-    				string search= getHelpUrl(memberInfo);
-    				if (search != null)
-    					Help.ShowHelpPage("file:///unity/ScriptReference/" + search + ".html");
-    			}
-    		}
+//    		if(memberInfo != null) {
+//    			if (memberInfo.Company == "Unity") {
+//    				string search= getHelpUrl(memberInfo);
+//    				if (search != null)
+//    					Help.ShowHelpPage("file:///unity/ScriptReference/" + search + ".html");
+//    			}
+//    		}
     	}	
     
     	// =================================================================================

@@ -494,17 +494,7 @@ namespace iCanScript.Editor {
             gMenu.ShowAsContext();
             Reset();
         }
-    	// ----------------------------------------------------------------------
-        iCS_MemberInfo GetReflectionDescFromMenuCommand(iCS_MenuContext menuContext) {
-            string menuCommand= iCS_TextUtil.StripBeforeIdent(menuContext.Command);
-            return iCS_LibraryDatabase.GetDescriptor(menuCommand);
-        }
-    	// ----------------------------------------------------------------------
-        Type GetClassTypeFromMenuCommand(iCS_MenuContext menuContext) {
-            string menuCommand= iCS_TextUtil.StripBeforeIdent(menuContext.Command);
-            return iCS_LibraryDatabase.GetClassType(menuCommand);
-        }
-    
+
         // ======================================================================
         // Menu processing
     	// ----------------------------------------------------------------------

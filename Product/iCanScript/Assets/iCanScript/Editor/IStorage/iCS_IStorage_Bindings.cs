@@ -15,7 +15,7 @@ namespace iCanScript.Editor {
             }
         }
         // ----------------------------------------------------------------------
-        public void SetSource(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_TypeCastInfo convDesc) {
+        public void SetSource(iCS_EditorObject inPort, iCS_EditorObject outPort, LibraryFunction convDesc) {
             if(convDesc == null) {
                 SetSource(inPort, outPort);
                 return;
@@ -24,7 +24,7 @@ namespace iCanScript.Editor {
             var outPos= outPort.GlobalPosition;
             Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));
             int grandParentId= inPort.ParentNode.ParentId;
-            iCS_EditorObject conv= CreateFunction(grandParentId, convDesc);
+            iCS_EditorObject conv= CreateNode(grandParentId, convDesc);
             conv.SetInitialPosition(convPos);
             ForEachChild(conv,
                 (child) => {
@@ -213,12 +213,12 @@ namespace iCanScript.Editor {
             RebuildConnectionsFor(node);
         }
     	// ----------------------------------------------------------------------
-        public void SetAndAutoLayoutNewDataConnection(iCS_EditorObject consumerPort, iCS_EditorObject providerPort, iCS_TypeCastInfo conversion= null) {
+        public void SetAndAutoLayoutNewDataConnection(iCS_EditorObject consumerPort, iCS_EditorObject providerPort, LibraryFunction conversion= null) {
             SetNewDataConnection(consumerPort, providerPort, conversion);
             AutoLayoutOfPointToPointBindingExclusive(providerPort, consumerPort);
         }
     	// ----------------------------------------------------------------------
-        public void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_TypeCastInfo conversion= null) {
+        public void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, LibraryFunction conversion= null) {
     		iCS_EditorObject inParentNode  = inPort.ParentNode;
             iCS_EditorObject outParentNode = outPort.ParentNode;
             iCS_EditorObject inGrandParent = inParentNode.ParentNode;        
