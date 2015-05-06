@@ -558,6 +558,24 @@ namespace iCanScript.Editor {
         }
         // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
         // ----------------------------------------------------------------------
+		/// Create base node.
+		///
+		/// @param libraryMethodInfo The library method information object.
+		/// @param nodeType The type of node to create.
+		/// @return The newly created node.
+		///
+		iCS_EditorObject CreateBaseNode(int parentId, LibraryMemberInfo libraryMemberInfo, iCS_ObjectTypeEnum nodeType) {
+            // -- Grab a unique ID for this node. --
+            int id= GetNextAvailableId();
+            // -- Create node --
+            var nodeName     = libraryMemberInfo.nodeName;
+    		var libraryParent= libraryMemberInfo.parent as LibraryType;
+    		var declaringType= libraryParent.type;
+            var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, nodeType, this);
+    		instance.MethodName= libraryMemberInfo.memberName;
+			return instance;
+		}
+        // ----------------------------------------------------------------------
     	/// Create parameter ports on the given node.
     	///
     	/// @param node The parent node.
@@ -581,6 +599,23 @@ namespace iCanScript.Editor {
                 }
             }		
     	}
+        // ----------------------------------------------------------------------
+    	/// Create return port on the given node.
+    	///
+    	/// @param node The parent node.
+		/// @param libraryMethodInfo The library method information object.
+    	///
+    	void CreateReturnPort(iCS_EditorObject node, LibraryMethodInfo libraryMethodInfo) {
+    		var returnType= libraryMethodInfo.returnType;
+    		if(returnType != null && returnType != typeof(void)) {
+				string returnName= libraryMethodInfo.memberName;
+				if(returnName.StartsWith("get_")) {
+					returnName= returnName.Substring(4);
+				}
+                CreatePort(returnName, node.InstanceId, returnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
+    		}
+		}
+		
         // ----------------------------------------------------------------------
     	/// Creates the appropriate node type needed by the given library object.
     	///
@@ -675,26 +710,13 @@ namespace iCanScript.Editor {
     	/// @return The newly created property wizard node.
     	///
         iCS_EditorObject CreateBaseFunctionCallNode(int parentId, LibraryMethodInfo libraryMethodInfo, iCS_ObjectTypeEnum nodeType) {
-            // -- Grab a unique ID for this node. --
-            int id= GetNextAvailableId();
-            // -- Create node --
-            var nodeName     = libraryMethodInfo.nodeName;
-    		var libraryParent= libraryMethodInfo.parent as LibraryType;
-    		var declaringType= libraryParent.type;
-            var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, nodeType, this);
-    		instance.MethodName= libraryMethodInfo.methodInfo.Name;
+			// -- Create base node --
+			var instance= CreateBaseNode(parentId, libraryMethodInfo, nodeType);
             // -- Create parameter ports. --
     		var parameters= libraryMethodInfo.parameters;
     		CreateParameterPorts(instance, parameters);
     		// -- Create return port. --
-    		var returnType= libraryMethodInfo.returnType;
-    		if(returnType != null && returnType != typeof(void)) {
-				string returnName= libraryMethodInfo.memberName;
-				if(returnName.StartsWith("get_")) {
-					returnName= returnName.Substring(4);
-				}
-                CreatePort(returnName, id, returnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
-    		}
+			CreateReturnPort(instance, libraryMethodInfo);
             return instance;
         }
         // ----------------------------------------------------------------------
@@ -705,17 +727,8 @@ namespace iCanScript.Editor {
     	/// @return The newly created property wizard node.
     	///
         iCS_EditorObject CreateStaticConstructorCallNode(int parentId, LibraryConstructor libraryConstructor) {
-            // -- Grab a unique ID for this node. --
-            int id= GetNextAvailableId();
-            // -- Create node --
-            var nodeName     = libraryConstructor.nodeName;
-    		var declaringType= libraryConstructor.declaringType;
-    		var objectType   = iCS_ObjectTypeEnum.StaticConstructor;
-            var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
-    		instance.MethodName= libraryConstructor.methodBase.Name;
-            // -- Create parameter ports. --
-    		var parameters= libraryConstructor.parameters;
-    		CreateParameterPorts(instance, parameters);
+			// -- Create base constructor node --
+			var instance= CreateBaseConstructorCallNode(parentId, libraryConstructor, iCS_ObjectTypeEnum.StaticConstructor);
             return instance;
         }
         // ----------------------------------------------------------------------
@@ -726,21 +739,27 @@ namespace iCanScript.Editor {
     	/// @return The newly created property wizard node.
     	///
         iCS_EditorObject CreateConstructorCallNode(int parentId, LibraryConstructor libraryConstructor) {
-            // -- Grab a unique ID for this node. --
-            int id= GetNextAvailableId();
-            // -- Create node --
-            var nodeName     = libraryConstructor.nodeName;
-    		var libraryParent= libraryConstructor.parent as LibraryType;
-    		var declaringType= libraryParent.type;
-    		var objectType   = iCS_ObjectTypeEnum.Constructor;
-            var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
-    		instance.MethodName= libraryConstructor.methodBase.Name;
-            // -- Create ports. --
+			// -- Create base constructor node --
+			var instance= CreateBaseConstructorCallNode(parentId, libraryConstructor, iCS_ObjectTypeEnum.Constructor);
+    		// -- Create return port (Self). --
+			var declaringType= libraryConstructor.declaringType;
+            CreatePort("Self", instance.InstanceId, declaringType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
+    		return instance;
+        }
+        // ----------------------------------------------------------------------
+    	/// Creates the common part of a constructor node.
+    	///
+    	/// @param parentId The id of the parent node.
+    	/// @param libraryConstructor The library object of the function to create.
+    	/// @return The newly created property wizard node.
+    	///
+        iCS_EditorObject CreateBaseConstructorCallNode(int parentId, LibraryConstructor libraryConstructor, iCS_ObjectTypeEnum nodeType) {
+			// -- Create base node --
+			var instance= CreateBaseNode(parentId, libraryConstructor, nodeType);
+            // -- Create parameter ports. --
     		var parameters= libraryConstructor.parameters;
     		CreateParameterPorts(instance, parameters);
-    		// -- Create return port (Self). --
-            CreatePort("Self", id, declaringType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
-    		return instance;
+            return instance;
         }
         // ----------------------------------------------------------------------
     	/// Creates a node that represents a static field getter.
@@ -750,20 +769,14 @@ namespace iCanScript.Editor {
     	/// @return The newly created property wizard node.
     	///
         iCS_EditorObject CreateStaticGetFieldCallNode(int parentId, LibraryGetField libraryField) {
-            // -- Grab a unique ID for this node. --
-            int id= GetNextAvailableId();
-            // -- Create node --
-            var nodeName     = libraryField.nodeName;
-    		var declaringType= libraryField.declaringType;
-    		var objectType   = iCS_ObjectTypeEnum.StaticField;
-            var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
-            var fieldName= libraryField.fieldName;
-    		instance.MethodName= fieldName;
+			// -- Create base node --
+			var instance= CreateBaseNode(parentId, libraryField, iCS_ObjectTypeEnum.StaticField);
             // -- Create parameter ports. --
+			var fieldName= libraryField.fieldName;
             var fieldType= libraryField.fieldType;
             var portType = iCS_ObjectTypeEnum.OutFixDataPort;
             var portIndex= (int)iCS_PortIndex.ParametersStart;
-            CreatePort(fieldName, id, fieldType, portType, portIndex);
+            CreatePort(fieldName, instance.InstanceId, fieldType, portType, portIndex);
             return instance;
         }
         // ----------------------------------------------------------------------
@@ -774,19 +787,14 @@ namespace iCanScript.Editor {
     	/// @return The newly created property wizard node.
     	///
         iCS_EditorObject CreateGetFieldCallNode(int parentId, LibraryGetField libraryField) {
-            // -- Grab a unique ID for this node. --
-            int id= GetNextAvailableId();
-            // -- Create node --
-            var nodeName     = libraryField.nodeName;
-    		var declaringType= libraryField.declaringType;
-    		var objectType   = iCS_ObjectTypeEnum.StaticField;
-            var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
-            var fieldName= libraryField.fieldName;
-    		instance.MethodName= fieldName;
+			// -- Create base node --
+			var instance= CreateBaseNode(parentId, libraryField, iCS_ObjectTypeEnum.InstanceField);
     		// -- Create target & self ports. --
+			var id= instance.InstanceId;
             CreateTargetPort(id);
             CreateSelfPort(id);        
             // -- Create parameter ports. --
+			var fieldName= libraryField.fieldName;
             var fieldType= libraryField.fieldType;
             var portType = iCS_ObjectTypeEnum.OutFixDataPort;
             var portIndex= (int)iCS_PortIndex.ParametersStart;
