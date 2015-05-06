@@ -52,7 +52,7 @@ public static class iCS_AllowedChildren {
 			return false;                        
         }
         // Messages are only allow on their object instance.
-        if(childType == iCS_ObjectTypeEnum.InstanceMessage || childType == iCS_ObjectTypeEnum.ClassMessage) {
+        if(childType == iCS_ObjectTypeEnum.InstanceMessage || childType == iCS_ObjectTypeEnum.StaticMessage) {
             return false;
         }
         // Only allow State node in StateChart.

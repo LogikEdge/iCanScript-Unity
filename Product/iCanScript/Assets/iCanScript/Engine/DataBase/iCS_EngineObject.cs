@@ -232,6 +232,7 @@ namespace iCanScript.Engine {
         public bool IsTransitionPackage        { get { return iCS_ObjectType.IsTransitionPackage(this); }}
         public bool IsKindOfFunction           { get { return iCS_ObjectType.IsKindOfFunction(this); }}
         public bool IsConstructor              { get { return iCS_ObjectType.IsConstructor(this); }}
+        public bool IsFunction                 { get { return iCS_ObjectType.IsFunction(this); }}
         public bool IsStaticFunction           { get { return iCS_ObjectType.IsStaticFunction(this); }}
         public bool IsInstanceFunction         { get { return iCS_ObjectType.IsInstanceFunction(this); }}
     	public bool IsField					   { get { return iCS_ObjectType.IsField(this); }}

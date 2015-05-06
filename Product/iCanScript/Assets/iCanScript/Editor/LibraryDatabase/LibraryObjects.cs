@@ -5,6 +5,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using P= iCanScript.Prelude;
 
 namespace iCanScript.Editor {
 
@@ -48,6 +49,7 @@ namespace iCanScript.Editor {
         // ======================================================================
         // PROPERTIES
         // ----------------------------------------------------------------------
+        public string rawName       { get { return GetRawName(); }}
 		public string nodeName 		{ get { return GetNodeName(); }}
         public string displayString {
             get {
@@ -327,7 +329,7 @@ namespace iCanScript.Editor {
     
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     /// Defines a Unity event handler library object.
-    public class LibraryUnityEventHandler : LibraryObject {
+    public class LibraryEventHandler : LibraryObject {
         // ======================================================================
         // FIELDS
         // ----------------------------------------------------------------------
@@ -351,8 +353,8 @@ namespace iCanScript.Editor {
         // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
-        public LibraryUnityEventHandler(string name, Type declaringType,
-								        Type[] parameterTypes, string[] parameterNames)
+        public LibraryEventHandler(string name, Type declaringType,
+								   Type[] parameterTypes, string[] parameterNames)
 		: base() {
 			myName= name;
 			this.declaringType= declaringType;
@@ -430,6 +432,17 @@ namespace iCanScript.Editor {
                 }
             );
         }
+
+        // ----------------------------------------------------------------------
+        /// Returns the members of type T installed on this type.
+        ///
+        /// @return The array of member <T> installed on this type.
+        ///
+        public T[] GetMembers<T>() where T : LibraryObject {
+            var events= P.filter(p=> p is T, children);
+            return P.map(p=> p as T, events).ToArray();
+        }
+
     }
     
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -450,8 +463,8 @@ namespace iCanScript.Editor {
         public bool         isProperty    { get { return isGetProperty || isSetProperty; }}
         public bool         isConstructor { get { return memberType == MemberTypes.Constructor; }}
         public bool         isMethod      { get { return memberType == MemberTypes.Method; }}
-        public bool         isGetProperty { get { return isMethod && memberInfo.Name.StartsWith("get_"); }}
-        public bool         isSetProperty { get { return isMethod && memberInfo.Name.StartsWith("set_"); }}
+        public bool         isGetProperty { get { return this is LibraryGetProperty; }}
+        public bool         isSetProperty { get { return this is LibrarySetProperty; }}
         public bool         isInherited   {
             get {
 				var libraryType= parent as LibraryType;
@@ -515,6 +528,23 @@ namespace iCanScript.Editor {
         // INTERFACES
         // ----------------------------------------------------------------------
         internal override string GetRawName()	{ return "get_"+memberInfo.Name; }
+        // ----------------------------------------------------------------------		
+		/// Retruns the library icon for a field get node.
+		internal override Texture   GetLibraryIcon() {
+            return iCS_BuiltinTextures.OutEndPortIcon;
+		}
+        // ----------------------------------------------------------------------		
+		internal override string GetDisplayString() {
+			var result= new StringBuilder(64);
+			result.Append(mainValueBegin);
+			result.Append(GetNodeName());
+			result.Append(mainValueEnd);
+			result.Append(" --> ");
+			result.Append(secondPartBegin);
+			result.Append(NameUtility.ToDisplayName(fieldType));
+			result.Append(secondPartEnd);
+			return result.ToString();
+		}
     }
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -529,6 +559,23 @@ namespace iCanScript.Editor {
         // INTERFACES
         // ----------------------------------------------------------------------
         internal override string GetRawName()	{ return "set_"+memberInfo.Name; }
+        // ----------------------------------------------------------------------		
+		/// Retruns the library icon for a field set node.
+		internal override Texture   GetLibraryIcon() {
+            return iCS_BuiltinTextures.InEndPortIcon;
+		}
+        // ----------------------------------------------------------------------		
+		internal override string GetDisplayString() {
+			var result= new StringBuilder(64);
+			result.Append(mainValueBegin);
+			result.Append(GetNodeName());
+			result.Append(mainValueEnd);
+			result.Append(" <-- ");
+			result.Append(firstPartBegin);
+			result.Append(NameUtility.ToDisplayName(fieldType));
+			result.Append(firstPartEnd);
+			return result.ToString();
+		}
     }
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -672,6 +719,10 @@ namespace iCanScript.Editor {
 			displayString.Append(ToDisplayInputParameters);
 			displayString.Append(")");
 			displayString.Append(firstPartEnd);
+			displayString.Append(" --> ");
+			displayString.Append(secondPartBegin);
+			displayString.Append(NameUtility.ToDisplayName(declaringType));
+			displayString.Append(secondPartEnd);
 			return displayString.ToString();
 		}
         // ----------------------------------------------------------------------
@@ -688,13 +739,22 @@ namespace iCanScript.Editor {
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	/// Defines the class that represents a function in the library.
-    public class LibraryFunction : LibraryMethodBase {
+    public class LibraryMethodInfo : LibraryMethodBase {
         // ======================================================================
         // PROPERTIES
         // ----------------------------------------------------------------------
         public MethodInfo	methodInfo	{ get { return memberInfo as MethodInfo; }}
 		public Type			returnType  { get { return methodInfo.ReturnType; }}
 
+        // ======================================================================
+        // INIT
+        // ----------------------------------------------------------------------
+        public LibraryMethodInfo(MethodInfo methodInfo) : base(methodInfo) {}
+    }
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	/// Defines the class that represents a function in the library.
+    public class LibraryFunction : LibraryMethodInfo {
         // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
@@ -707,9 +767,19 @@ namespace iCanScript.Editor {
             // -- Determine function name --
             var name= GetNodeName();
             // -- Get input parameters --
-            var inputs= "("+ToDisplayInputParameters+")";
+            var inputs= ToDisplayInputParameters;
+			if(string.IsNullOrEmpty(inputs)) {
+				inputs= "";
+			}
+			else {
+				inputs= "("+inputs+")";				
+			}
             // -- Get output parameters --
-            var outputs= "("+ToDisplayOutputParameters+")";
+            var outputs= ToDisplayOutputParameters;
+			var separatorIdx= outputs.IndexOf(',');
+			if(separatorIdx >= 0 && separatorIdx < outputs.Length) {
+	            outputs= "("+outputs+")";				
+			}
             // -- Build formatted display string --
             var inputTypesHeader= (EditorGUIUtility.isProSkin ? "<color=lime><i>" : "<color=green><i>");
             var inputTypesTrailer= "</i></color>";
@@ -720,7 +790,7 @@ namespace iCanScript.Editor {
             if(string.IsNullOrEmpty(outputs)) {
                 return part1;
             }
-            var result= part1 + "->" + outputTypesHeader+outputs+outputTypesTrailer;
+            var result= part1 + " --> " + outputTypesHeader+outputs+outputTypesTrailer;
 			return result;
         }
         // ----------------------------------------------------------------------
@@ -735,6 +805,83 @@ namespace iCanScript.Editor {
 		/// Retruns the library icon for a function node.
 		internal override Texture   GetLibraryIcon() {
             return TextureCache.GetIcon(Icons.kFunctionIcon);
+		}
+		
+    }
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	/// Defines the base class that represents a property in the library.
+    public class LibraryProperty : LibraryMethodInfo {
+        // ======================================================================
+        // INIT
+        // ----------------------------------------------------------------------
+        public LibraryProperty(MethodInfo methodInfo) : base(methodInfo) {}
+    }
+    
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	/// Defines the class that represents a property get in the library.
+    public class LibraryGetProperty : LibraryProperty {
+        // ======================================================================
+        // INIT
+        // ----------------------------------------------------------------------
+        public LibraryGetProperty(MethodInfo methodInfo) : base(methodInfo) {}
+
+        // ======================================================================
+        // INTERFACES
+        // ----------------------------------------------------------------------		
+		internal override string GetDisplayString() {
+			var result= new StringBuilder(64);
+			result.Append(mainValueBegin);
+			result.Append(GetNodeName());
+			result.Append(mainValueEnd);
+			result.Append(" --> ");
+			result.Append(secondPartBegin);
+			result.Append(NameUtility.ToDisplayName(returnType));
+			result.Append(secondPartEnd);
+			return result.ToString();
+		}
+        // ----------------------------------------------------------------------
+		internal override string GetNodeName() {
+            return NameUtility.ToDisplayName(memberInfo.Name);
+		}
+        // ----------------------------------------------------------------------		
+		/// Retruns the library icon for a property get node.
+		internal override Texture   GetLibraryIcon() {
+            return iCS_BuiltinTextures.OutEndPortIcon;
+		}
+		
+    }
+
+    // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	/// Defines the class that represents a property set in the library.
+    public class LibrarySetProperty : LibraryProperty {
+        // ======================================================================
+        // INIT
+        // ----------------------------------------------------------------------
+        public LibrarySetProperty(MethodInfo methodInfo) : base(methodInfo) {}
+
+        // ======================================================================
+        // INTERFACES
+        // ----------------------------------------------------------------------		
+		internal override string GetDisplayString() {
+			var result= new StringBuilder(64);
+			result.Append(mainValueBegin);
+			result.Append(GetNodeName());
+			result.Append(mainValueEnd);
+			result.Append(" <-- ");
+			result.Append(firstPartBegin);
+			result.Append(NameUtility.ToDisplayName(parameters[0].ParameterType));
+			result.Append(firstPartEnd);
+			return result.ToString();
+		}
+        // ----------------------------------------------------------------------
+		internal override string GetNodeName() {
+            return NameUtility.ToDisplayName(memberInfo.Name);
+		}
+        // ----------------------------------------------------------------------		
+		/// Retruns the library icon for a property set node.
+		internal override Texture   GetLibraryIcon() {
+            return iCS_BuiltinTextures.InEndPortIcon;
 		}
 		
     }

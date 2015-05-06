@@ -29,9 +29,8 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public override string GenerateBody(int indentSize) {
             var result= new StringBuilder(128);
-            var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(VSObject);
-            result.Append(FunctionCallPrefix(memberInfo, VSObject));
-            result.Append(ToFieldOrPropertyName(memberInfo));
+            result.Append(FunctionCallPrefix(VSObject));
+            result.Append(ToFieldOrPropertyName());
             result.Append(GenerateReturnTypeCastFragment(VSObject));
             return result.ToString();
         }

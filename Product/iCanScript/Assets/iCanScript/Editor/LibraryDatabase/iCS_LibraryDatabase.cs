@@ -67,10 +67,6 @@ namespace iCanScript.Editor {
             return Functions;
         }
         // ----------------------------------------------------------------------
-        public static List<iCS_FunctionPrototype> AllFunctionsUnsorted() {
-            return Functions;
-        }
-        // ----------------------------------------------------------------------
         public static List<iCS_FunctionPrototype> BuildNormalMenu() {
             var menu= new List<iCS_FunctionPrototype>();
             foreach(var desc in Functions) {
@@ -265,7 +261,6 @@ namespace iCanScript.Editor {
                         var param= func.Parameters[j];
                         if(param.direction != iCS_ParamDirection.Out) {
     						if(param.type == inputType) {
-    //                        if(iCS_Types.IsA(func.ParamTypes[j], inputType)) {
                                 shouldInclude= true;
                             }
                         }
@@ -287,7 +282,6 @@ namespace iCanScript.Editor {
                         var param= func.Parameters[j];
                         if(param.direction != iCS_ParamDirection.In) {
                             if(outputType == param.type) {
-    //                        if(iCS_Types.IsA(outputType, func.ParamTypes[j])) {
                                 shouldInclude= true;
                             }
                         }
@@ -424,146 +418,7 @@ namespace iCanScript.Editor {
             types.Clear();
             Functions.Clear();
         }
-        // ----------------------------------------------------------------------
-        public static iCS_TypeInfo AddTypeInfo(string company, string package, Type compilerType, Type baseType, Type declaringType,
-                                               iCS_TypeInfo declaringTypeInfo, string displayName, string iconPath, string description,
-    										   bool hideFromLibrary) {
-            var typeInfo= GetTypeInfo(compilerType);
-            if(typeInfo != null) {
-                return typeInfo;
-            }
-            typeInfo= new iCS_TypeInfo(company, package, compilerType, baseType, declaringType, declaringTypeInfo, displayName, iconPath, description, hideFromLibrary);
-            types.Add(typeInfo);
-            // Extract all messages configured on base class.
-            if(baseType != null && baseType != typeof(void)) {
-                var baseTypeInfo= GetTypeInfo(baseType);
-                if(baseTypeInfo != null) {
-                    foreach(var m in baseTypeInfo.Members) {
-                        if(m.IsMessage) {
-                            var msgInfo= m.ToMessageInfo;
-                            var record= new iCS_MessageInfo(typeInfo, msgInfo.DisplayName, msgInfo.Description, msgInfo.IconPath,
-                                                            msgInfo.Parameters, msgInfo.FunctionReturn, msgInfo.StorageClass);
-                            AddDataBaseRecord(record);
-                        }
-                    }                
-                }
-            }
-            return typeInfo;
-        }
-        // ----------------------------------------------------------------------
-        public static void AddConstructor(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
-                                          iCS_Parameter[] parameters, ConstructorInfo constructorInfo) {
-            var record= new iCS_ConstructorInfo(classInfo, displayName, description, iconPath,
-                                                parameters, constructorInfo);
-    		AddDataBaseRecord(record);
-        }
-        // ----------------------------------------------------------------------
-        public static void AddField(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
-                                    iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
-                                    iCS_StorageClass storageClass, iCS_AccessorType accessorType,
-                                    FieldInfo fieldInfo) {
-            var objectType= storageClass == iCS_StorageClass.Instance ?
-                                iCS_ObjectTypeEnum.InstanceField :
-                                iCS_ObjectTypeEnum.StaticField;
-            var record= new iCS_FieldInfo(objectType, classInfo, displayName, description, iconPath,
-                                          parameters, functionReturn,
-                                          storageClass, accessorType, fieldInfo);
-    		AddDataBaseRecord(record);
-        }
-        // ----------------------------------------------------------------------
-        public static void AddMethod(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
-                                     iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
-                                     iCS_StorageClass storageClass, MethodInfo methodInfo) {
-            var objectType= storageClass == iCS_StorageClass.Instance ?
-                                iCS_ObjectTypeEnum.InstanceFunction :
-                                iCS_ObjectTypeEnum.StaticFunction;
-            var record= new iCS_MethodInfo(objectType, classInfo,
-                                           ImproveDisplayName(displayName), description, iconPath,
-                						   parameters, functionReturn,
-                						   storageClass, methodInfo);
-    		AddDataBaseRecord(record);
-        }
-        // ----------------------------------------------------------------------
-        public static void AddProperty(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
-                                       iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
-                                       iCS_StorageClass storageClass, iCS_AccessorType accessorType,
-                                       MethodInfo methodInfo) {
-            var objectType= storageClass == iCS_StorageClass.Instance ?
-                                iCS_ObjectTypeEnum.InstanceFunction :
-                                iCS_ObjectTypeEnum.StaticFunction;
-            var record= new iCS_PropertyInfo(objectType, classInfo,
-                                             displayName, description, iconPath,
-                						     parameters, functionReturn, storageClass, accessorType,
-                						     methodInfo);
-    		AddDataBaseRecord(record);
-        }
-        // ----------------------------------------------------------------------
-        // Adds a conversion function
-        public static void AddTypeCast(iCS_TypeInfo classInfo, string iconPath, Type fromType, MethodInfo methodInfo) {
-            // Don't accept automatic conversion if it already exist.
-            Type toType= methodInfo.ReturnType;
-            foreach(var desc in Functions) {
-                if(desc.IsTypeCast) {
-                    var typeCast= desc.ToTypeCastInfo;
-                    if(typeCast.Parameters[0].type == fromType && typeCast.ReturnType == toType) {
-                        Debug.LogWarning("Duplicate type cast from "+fromType+" to "+toType+" exists in classes "+typeCast.Method.DeclaringType+" and "+methodInfo.DeclaringType);
-                        return;
-                    }                
-                }
-            }
-            string fromTypeName= iCS_Types.TypeName(fromType);
-            string toTypeName= iCS_Types.TypeName(toType);
-            string toTypeNameUpper= Char.ToUpper(toTypeName[0])+toTypeName.Substring(1);
 
-            var parameters= new iCS_Parameter[1];
-            parameters[0]= new iCS_Parameter();
-            parameters[0].name= fromTypeName;
-            parameters[0].type= fromType;
-            parameters[0].direction= iCS_ParamDirection.In;
-            parameters[0].initialValue= iCS_Types.DefaultValue(fromType);
-            var record= new iCS_TypeCastInfo(classInfo, "To"+toTypeNameUpper, "Converts from "+fromTypeName+" to "+toTypeName, iconPath,
-                                             parameters, new iCS_FunctionReturn(toTypeName, toType),
-                                             methodInfo);        
-    		AddDataBaseRecord(record);
-        }
-        // ----------------------------------------------------------------------
-        // Adds a message on a class
-        public static void AddMessage(Type classType, string messageName, iCS_StorageClass storageClass,
-                                      iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
-                                      string description, string iconPath) {
-            // Add event to given type.
-            var typeInfo= iCS_LibraryDatabase.GetTypeInfo(classType);
-            var record= new iCS_MessageInfo(typeInfo, messageName, description, iconPath,
-                                            parameters, functionReturn, storageClass);
-            AddDataBaseRecord(record);
-            // Also add message to all deriving classes.
-            foreach(var t in types) {
-                if(t.BaseType == classType) {
-                    AddMessage(t.CompilerType, messageName, storageClass, parameters, functionReturn, description, iconPath);
-                }
-            }
-        }
-        // ----------------------------------------------------------------------
-        // Adds a new database record.
-        public static void AddDataBaseRecord(iCS_MemberInfo record) {
-            if(record.IsFunctionPrototype) {
-    			var function= record.ToFunctionPrototypeInfo;
-    			var insertIdx= Functions.BinarySearch(function, myFunctionComparer);
-    			if(insertIdx >= 0 && Functions.Count > 0) {
-    //				Debug.Log("Function Found at=> "+insertIdx);
-    			}
-    			else {
-    				Functions.Insert(~insertIdx, function);
-    			}			
-    		}
-    	}
-
-        // ----------------------------------------------------------------------
-    	/// Add an obsoleted qualified name with its message.
-    	public static void AddObsolete(MemberInfo memberInfo, string obsoleteMessage) {
-    		obsoletes.Add(memberInfo, obsoleteMessage);
-    	}
-	
         // ======================================================================
         // Fix operator display names
         // ----------------------------------------------------------------------

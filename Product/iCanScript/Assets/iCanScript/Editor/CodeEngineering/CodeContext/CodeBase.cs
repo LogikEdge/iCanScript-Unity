@@ -945,10 +945,8 @@ namespace iCanScript.Editor.CodeEngineering {
         public bool CanReplaceInputParameter(CodeBase code, CodeBase allowedParent, out iCS_EditorObject producerParent) {
             var producerPort= code.VSObject;
             producerParent= producerPort.ParentNode;
-            var producerInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(producerParent);
-            if(producerInfo == null) return false;
             // Accept get field/property if we are the only consumer.
-			if(IsFieldOrPropertyGet(producerInfo)) {
+			if(IsFieldOrPropertyGet(producerParent)) {
                 if(producerPort.ConsumerPorts.Length == 1) {
                     return true;
                 }
@@ -973,31 +971,13 @@ namespace iCanScript.Editor.CodeEngineering {
         // Utilities
     	// -------------------------------------------------------------------------
         /// Returns _'true'_ if the node is a field or property get function.
-        public bool IsFieldOrPropertyGet(iCS_MemberInfo memberInfo) {
-            if(memberInfo == null) return false;
-            var propertyInfo= memberInfo.ToPropertyInfo;
-            if(propertyInfo != null) {
-                return propertyInfo.IsGet;
-            }
-            var fieldInfo= memberInfo.ToFieldInfo;
-            if(fieldInfo != null) {
-                return fieldInfo.IsGet;
-            }
-            return false;
+        public bool IsFieldOrPropertyGet(iCS_EditorObject vsObj) {
+            return vsObj.IsFieldGet || vsObj.IsPropertyGet;
         }
     	// -------------------------------------------------------------------------
         /// Returns _'true'_ if the node is a field or property set function.
-        public bool IsFieldOrPropertySet(iCS_MemberInfo memberInfo) {
-            if(memberInfo == null) return false;
-            var propertyInfo= memberInfo.ToPropertyInfo;
-            if(propertyInfo != null) {
-                return propertyInfo.IsSet;
-            }
-            var fieldInfo= memberInfo.ToFieldInfo;
-            if(fieldInfo != null) {
-                return fieldInfo.IsSet;
-            }
-            return false;
+        public bool IsFieldOrPropertySet(iCS_EditorObject vsObj) {
+            return vsObj.IsFieldSet || vsObj.IsPropertySet;
         }
 
     	// -------------------------------------------------------------------------

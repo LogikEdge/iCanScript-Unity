@@ -527,7 +527,7 @@ namespace iCanScript.Editor {
             // Create new EditorObject
             var instance= iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
             if(instance.IsInstanceNode) {
-                InstanceWizardCompleteCreation(instance);
+                PropertiesWizardCompleteCreation(instance);
                 instance.DisplayName= NameUtility.ToTypeName(iCS_Types.TypeName(runtimeType))+" Properties";
                 CreateSelfPort(id);
             }
@@ -600,13 +600,71 @@ namespace iCanScript.Editor {
             }		
     	}
         // ----------------------------------------------------------------------
+    	/// Creates the appropriate node type needed by the given library object.
+    	///
+    	/// @param parentId The id of the parent node.
+    	/// @param libraryObject The library object from which to create a node.
+    	/// @return The newly created node.
+    	///
+        public iCS_EditorObject CreateNode(int parentId, LibraryObject libraryObject) {
+			if(libraryObject is LibraryConstructor) {
+				var libraryConstructor= libraryObject as LibraryConstructor;
+				if(libraryConstructor.isStatic) {
+					return CreateStaticConstructorCallNode(parentId, libraryConstructor);
+				}
+				return CreateConstructorCallNode(parentId, libraryConstructor);
+			}
+			if(libraryObject is LibraryFunction) {
+				var libraryFunction= libraryObject as LibraryFunction;
+				if(libraryFunction.isStatic) {
+					return CreateStaticFunctionCallNode(parentId, libraryFunction);
+				}
+				return CreateFunctionCallNode(parentId, libraryFunction);
+			}
+			if(libraryObject is LibraryGetField) {
+				var libraryGetField= libraryObject as LibraryGetField;
+				if(libraryGetField.isStatic) {
+					return CreateStaticGetFieldCallNode(parentId, libraryGetField);
+				}
+				return CreateGetFieldCallNode(parentId, libraryGetField);
+			}
+			if(libraryObject is LibrarySetField) {
+				var librarySetField= libraryObject as LibrarySetField;
+				if(librarySetField.isStatic) {
+					return CreateStaticSetFieldCallNode(parentId, librarySetField);
+				}
+				return CreateSetFieldCallNode(parentId, librarySetField);
+			}
+			if(libraryObject is LibraryGetProperty) {
+				var libraryGetProperty= libraryObject as LibraryGetProperty;
+				if(libraryGetProperty.isStatic) {
+					return CreateStaticFunctionCallNode(parentId, libraryGetProperty);
+				}
+				return CreateFunctionCallNode(parentId, libraryGetProperty);
+			}
+			if(libraryObject is LibrarySetProperty) {
+				var librarySetProperty= libraryObject as LibrarySetProperty;
+				if(librarySetProperty.isStatic) {
+					return CreateStaticFunctionCallNode(parentId, librarySetProperty);
+				}
+				return CreateFunctionCallNode(parentId, librarySetProperty);
+			}
+			if(libraryObject is LibraryEventHandler) {
+				var libraryEventHandler= libraryObject as LibraryEventHandler;
+				return CreateEventHandlerDefinitionNode(parentId, libraryEventHandler);
+			}
+			Debug.LogWarning("iCanScript: Unknown library type. Contact support.");
+			return null;
+		}
+
+        // ----------------------------------------------------------------------
     	/// Creates a node that represents a static function.
     	///
     	/// @param parentId The id of the parent node.
     	/// @param libraryObject The library object of the function to create.
     	/// @return The newly created property wizard node.
     	///
-        public iCS_EditorObject CreateStaticFunction(int parentId, LibraryFunction libraryFunction) {
+        iCS_EditorObject CreateStaticFunctionCallNode(int parentId, LibraryMethodInfo libraryFunction) {
             // -- Grab a unique ID for this node. --
             int id= GetNextAvailableId();
             // -- Create node --
@@ -633,7 +691,7 @@ namespace iCanScript.Editor {
     	/// @param libraryObject The library object of the function to create.
     	/// @return The newly created property wizard node.
     	///
-        public iCS_EditorObject CreateFunction(int parentId, LibraryFunction libraryFunction) {
+        iCS_EditorObject CreateFunctionCallNode(int parentId, LibraryMethodInfo libraryFunction) {
             // -- Grab a unique ID for this node. --
             int id= GetNextAvailableId();
             // -- Create node --
@@ -664,7 +722,7 @@ namespace iCanScript.Editor {
     	/// @param libraryConstructor The library object of the function to create.
     	/// @return The newly created property wizard node.
     	///
-        public iCS_EditorObject CreateStaticConstructor(int parentId, LibraryConstructor libraryConstructor) {
+        iCS_EditorObject CreateStaticConstructorCallNode(int parentId, LibraryConstructor libraryConstructor) {
             // -- Grab a unique ID for this node. --
             int id= GetNextAvailableId();
             // -- Create node --
@@ -685,7 +743,7 @@ namespace iCanScript.Editor {
     	/// @param libraryConstructor The library object of the function to create.
     	/// @return The newly created property wizard node.
     	///
-        public iCS_EditorObject CreateConstructor(int parentId, LibraryConstructor libraryConstructor) {
+        iCS_EditorObject CreateConstructorCallNode(int parentId, LibraryConstructor libraryConstructor) {
             // -- Grab a unique ID for this node. --
             int id= GetNextAvailableId();
             // -- Create node --
@@ -709,7 +767,7 @@ namespace iCanScript.Editor {
     	/// @param libraryField The library object of the function to create.
     	/// @return The newly created property wizard node.
     	///
-        public iCS_EditorObject CreateStaticGetField(int parentId, LibraryGetField libraryField) {
+        iCS_EditorObject CreateStaticGetFieldCallNode(int parentId, LibraryGetField libraryField) {
             // -- Grab a unique ID for this node. --
             int id= GetNextAvailableId();
             // -- Create node --
@@ -733,7 +791,7 @@ namespace iCanScript.Editor {
     	/// @param libraryField The library object of the function to create.
     	/// @return The newly created property wizard node.
     	///
-        public iCS_EditorObject CreateGetField(int parentId, LibraryGetField libraryField) {
+        iCS_EditorObject CreateGetFieldCallNode(int parentId, LibraryGetField libraryField) {
             // -- Grab a unique ID for this node. --
             int id= GetNextAvailableId();
             // -- Create node --
@@ -760,7 +818,7 @@ namespace iCanScript.Editor {
     	/// @param libraryField The library object of the function to create.
     	/// @return The newly created property wizard node.
     	///
-        public iCS_EditorObject CreateStaticSetField(int parentId, LibrarySetField libraryField) {
+        iCS_EditorObject CreateStaticSetFieldCallNode(int parentId, LibrarySetField libraryField) {
             // -- Grab a unique ID for this node. --
             int id= GetNextAvailableId();
             // -- Create node --
@@ -784,7 +842,7 @@ namespace iCanScript.Editor {
     	/// @param libraryField The library object of the function to create.
     	/// @return The newly created property wizard node.
     	///
-        public iCS_EditorObject CreateSetField(int parentId, LibrarySetField libraryField) {
+        iCS_EditorObject CreateSetFieldCallNode(int parentId, LibrarySetField libraryField) {
             // -- Grab a unique ID for this node. --
             int id= GetNextAvailableId();
             // -- Create node --
@@ -811,7 +869,7 @@ namespace iCanScript.Editor {
     	/// @param libraryEventHandler The library object of the event handler to create.
     	/// @return The newly created event handler node.
     	///
-        public iCS_EditorObject CreateUnityEventHandler(int parentId, LibraryUnityEventHandler libraryEventHandler) {
+        iCS_EditorObject CreateEventHandlerDefinitionNode(int parentId, LibraryEventHandler libraryEventHandler) {
             // -- Grab next available ID --
             int id= GetNextAvailableId();
             // -- Create event handler node --

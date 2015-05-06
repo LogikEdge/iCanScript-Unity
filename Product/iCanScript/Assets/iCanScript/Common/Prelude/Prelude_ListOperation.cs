@@ -10,7 +10,7 @@ namespace iCanScript {
         // ----------------------------------------------------------------------
         // isEmpty    :: [a]->bool
         // isNotEmpty :: [a]->bool
-        public static bool isEmpty<A>(A[] lst)    { return P.length(lst) == 0; }
+        public static bool isEmpty<A>(A[] lst)    { return lst == null || P.length(lst) == 0; }
         public static bool isNotEmpty<A>(A[] lst) { return !isEmpty(lst); }
 
         // ----------------------------------------------------------------------

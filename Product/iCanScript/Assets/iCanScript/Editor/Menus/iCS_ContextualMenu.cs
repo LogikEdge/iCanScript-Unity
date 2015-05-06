@@ -87,7 +87,7 @@ namespace iCanScript.Editor {
                 case iCS_ObjectTypeEnum.StateChart:        StateChartMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.State:             StateMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.InstanceMessage:   MessageHandlerMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.ClassMessage:      PackageMenu(selectedObject, storage); break;
+                case iCS_ObjectTypeEnum.StaticMessage:     PackageMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.TransitionPackage: PackageMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.Constructor:       FunctionMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.InstanceFunction:  FunctionMenu(selectedObject, storage); break;
@@ -96,7 +96,7 @@ namespace iCanScript.Editor {
                 case iCS_ObjectTypeEnum.InstanceField:     FunctionMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.StaticField:       FunctionMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.InstanceProperty:  FunctionMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.ClassProperty:     FunctionMenu(selectedObject, storage); break;
+                case iCS_ObjectTypeEnum.StaticProperty:    FunctionMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.OnStateEntry:      OnStatePackageMenu(selectedObject); break;
                 case iCS_ObjectTypeEnum.OnStateUpdate:     OnStatePackageMenu(selectedObject); break;
                 case iCS_ObjectTypeEnum.OnStateExit:       OnStatePackageMenu(selectedObject); break;
@@ -123,11 +123,11 @@ namespace iCanScript.Editor {
             var baseType= CodeGenerationUtility.GetBaseType(iStorage);
             if(iCS_Types.IsA<MonoBehaviour>(baseType)) {
                 var libraryType= LibraryController.LibraryDatabase.GetLibraryType(typeof(MonoBehaviour));
-        		var eventHandlers= P.filter(l=> l is LibraryUnityEventHandler, libraryType.children);
+        		var eventHandlers= libraryType.GetMembers<LibraryEventHandler>();
                 int len= P.length(eventHandlers);
         		int idx= GrowMenuBy(ref menu, len);
                 for(int i= 0; i < len; ++i) {
-        			var eventHandler= eventHandlers[i] as LibraryUnityEventHandler;
+        			var eventHandler= eventHandlers[i];
                     string nodeName= eventHandler.nodeName;
                     string displayString= eventHandler.displayString;
                     if(iCS_AllowedChildren.CanAddChildNode(nodeName, iCS_ObjectTypeEnum.InstanceMessage, selectedObject, iStorage)) {
@@ -327,44 +327,45 @@ namespace iCanScript.Editor {
                 menu[0].Command= "+ Create Property Accessor";
     	        menu[1]= new iCS_MenuContext(SeparatorStr);
     		}
-            // Get compatible functions.
-            if(port.IsDataOrControlPort) {
-                List<iCS_FunctionPrototype> functionMenu= null;
-    			Type inputType= null;
-    			Type outputType= null;
-    			if(port.IsInputPort) {
-                    outputType= port.RuntimeType;
-                } else {
-                    inputType= port.RuntimeType;
-                }
-    			if(reverseInOut) {
-    				var tmp= inputType;
-    				inputType= outputType;
-    				outputType= tmp;
-    			}
-    			if(newNodeParent.IsInstanceNode) {
-    	            functionMenu= iCS_LibraryDatabase.BuildMenuForMembersOfType(newNodeParent.RuntimeType, inputType, outputType);								
-    			}
-    			else {
-    	            functionMenu= iCS_LibraryDatabase.BuildMenu(inputType, outputType);				
-    			}
-                if(functionMenu.Count != 0) {
-                    int len= menu.Length;
-                    iCS_MenuContext[] tmp= null;
-                    if(len == 0) {
-                        tmp= new iCS_MenuContext[functionMenu.Count];
-                    } else {
-                        tmp= new iCS_MenuContext[len+1+functionMenu.Count];
-                        menu.CopyTo(tmp, 0);
-                        tmp[len]= new iCS_MenuContext(SeparatorStr);
-                        ++len;                    
-                    }
-                    menu= tmp;                
-                    for(int i= 0; i < functionMenu.Count; ++i) {
-                        menu[len+i]= new iCS_MenuContext(functionMenu[i].ToMenu(), functionMenu[i]);
-                    }
-                }
-            }
+			// TODO: Rebuild release after drag menu
+//            // Get compatible functions.
+//            if(port.IsDataOrControlPort) {
+//                List<iCS_FunctionPrototype> functionMenu= null;
+//    			Type inputType= null;
+//    			Type outputType= null;
+//    			if(port.IsInputPort) {
+//                    outputType= port.RuntimeType;
+//                } else {
+//                    inputType= port.RuntimeType;
+//                }
+//    			if(reverseInOut) {
+//    				var tmp= inputType;
+//    				inputType= outputType;
+//    				outputType= tmp;
+//    			}
+//    			if(newNodeParent.IsInstanceNode) {
+//    	            functionMenu= iCS_LibraryDatabase.BuildMenuForMembersOfType(newNodeParent.RuntimeType, inputType, outputType);								
+//    			}
+//    			else {
+//    	            functionMenu= iCS_LibraryDatabase.BuildMenu(inputType, outputType);				
+//    			}
+//                if(functionMenu.Count != 0) {
+//                    int len= menu.Length;
+//                    iCS_MenuContext[] tmp= null;
+//                    if(len == 0) {
+//                        tmp= new iCS_MenuContext[functionMenu.Count];
+//                    } else {
+//                        tmp= new iCS_MenuContext[len+1+functionMenu.Count];
+//                        menu.CopyTo(tmp, 0);
+//                        tmp[len]= new iCS_MenuContext(SeparatorStr);
+//                        ++len;                    
+//                    }
+//                    menu= tmp;                
+//                    for(int i= 0; i < functionMenu.Count; ++i) {
+//                        menu[len+i]= new iCS_MenuContext(functionMenu[i].ToMenu(), functionMenu[i]);
+//                    }
+//                }
+//            }
             ShowMenu(menu, port, storage);            
         }
     	// ----------------------------------------------------------------------
@@ -413,14 +414,15 @@ namespace iCanScript.Editor {
         }
     	// ----------------------------------------------------------------------
         void AddNodeMenu(ref iCS_MenuContext[] menu) {
-            var fullMenu= iCS_LibraryDatabase.BuildExpertMenu();
-            if(fullMenu.Count == 0) return;
-            int idx= GrowMenuBy(ref menu, fullMenu.Count+1);
-            for(int i= 0; i < fullMenu.Count; ++i) {
-                menu[idx]= new iCS_MenuContext(AddNodeStr+"/"+fullMenu[i].ToMenu(), fullMenu[i]);
-                ++idx;
-            }
-            menu[idx]= new iCS_MenuContext(SeparatorStr);
+			// TODO: Rebuild expert menu
+//            var fullMenu= iCS_LibraryDatabase.BuildExpertMenu();
+//            if(fullMenu.Count == 0) return;
+//            int idx= GrowMenuBy(ref menu, fullMenu.Count+1);
+//            for(int i= 0; i < fullMenu.Count; ++i) {
+//                menu[idx]= new iCS_MenuContext(AddNodeStr+"/"+fullMenu[i].ToMenu(), fullMenu[i]);
+//                ++idx;
+//            }
+//            menu[idx]= new iCS_MenuContext(SeparatorStr);
         }
 	
         // ======================================================================
@@ -531,30 +533,25 @@ namespace iCanScript.Editor {
                 case MultiSelectionWrapInPackageStr: iCS_UserCommands.WrapMultiSelectionInPackage(iStorage); break;
                 case MultiSelectionDeleteStr:        iCS_UserCommands.DeleteMultiSelectedObjects(iStorage); break;
                 case UnwrapPackageStr:               iCS_UserCommands.DeleteKeepChildren(targetObject); break;
-                case FunctionCreationStr:            iCS_UserCommands.CreateFunction(targetObject, globalPos); break;
+                case FunctionCreationStr:            iCS_UserCommands.CreateFunctionDefinition(targetObject, globalPos); break;
                 default: {
+                    if(targetObject == null) break;
                     var libraryObject= context.myLibraryObject;
-                    if(libraryObject != null) {
-                        iCS_UserCommands.CreateUnityEventHandler(targetObject, globalPos, libraryObject as LibraryUnityEventHandler);
-                        break;
-                    }
-    				iCS_FunctionPrototype desc= context.Descriptor;
-    				if(desc == null) {
+    				if(libraryObject == null) {
     					Debug.LogWarning(iCS_Config.ProductName+": Can find reflection descriptor to create node !!!");
     					break;
     				}
-                    if(targetObject == null) break;
-                    if(desc.IsMessage) {
-                        iCS_UserCommands.CreateMessageHandler(targetObject, globalPos, desc as iCS_MessageInfo);
-                    } else {
-    					if(targetObject.IsPort) {
-    	                    CreateAttachedMethod(targetObject, iStorage, globalPos, desc);
-    					}
-    					else {
-    	                    iCS_UserCommands.CreateFunction(targetObject, globalPos, desc);
-    					}
+                    if(libraryObject is LibraryEventHandler) {
+                        iCS_UserCommands.CreateEventHandler(targetObject, globalPos, libraryObject as LibraryEventHandler);
+                        break;
                     }
-                    break;                
+					if(targetObject.IsPort) {
+	                    CreateAttachedMethod(targetObject, iStorage, globalPos, libraryObject);
+					}
+					else {
+	                    iCS_UserCommands.CreateFunctionCallNode(targetObject, globalPos, libraryObject);
+					}
+					break;                
                 }
             }
         }
@@ -572,14 +569,14 @@ namespace iCanScript.Editor {
             iCS_UserCommands.OpenTransaction(iStorage);
     		var instance= iCS_UserCommands.CreateObjectInstance(parent, pos, sourcePort.RuntimeType);   
     		if(sourcePort != null) {
-    	        var thisPort= iStorage.InstanceWizardGetInputThisPort(instance);
+    	        var thisPort= iStorage.PropertiesWizardGetInputThisPort(instance);
     	        iStorage.SetNewDataConnection(thisPort, sourcePort);					
     		}
             iCS_UserCommands.CloseTransaction(iStorage, "Create Object Instance");
         }
 
     	// ----------------------------------------------------------------------
-        static iCS_EditorObject CreateAttachedMethod(iCS_EditorObject port, iCS_IStorage iStorage, Vector2 globalPos, iCS_FunctionPrototype desc) {
+        static iCS_EditorObject CreateAttachedMethod(iCS_EditorObject port, iCS_IStorage iStorage, Vector2 globalPos, LibraryObject libraryObject) {
             iCS_EditorObject newNodeParent= iStorage.GetNodeAt(globalPos);
     		if(newNodeParent == null) return null;
             if(!newNodeParent.IsKindOfPackage || newNodeParent.IsBehaviour) return null;
@@ -590,35 +587,10 @@ namespace iCanScript.Editor {
             iStorage.AnimateGraph(null,
                 _=> {
             		if(newNodeParent.IsInstanceNode) {
-            			method= iCS_UserCommands.CreateInstanceWizardElement(newNodeParent, desc);
+            			method= iCS_UserCommands.CreatePropertiesWizardElement(newNodeParent, libraryObject);
             		}
             		else {
-            			bool createMethod= true;
-            			if(desc.IsInstanceFunction || desc.IsInstanceField) {
-            				if(desc.ClassType != port.RuntimeType) {
-            					int sel= EditorUtility.DisplayDialogComplex("Missing the Instance Node",
-            																"The function you selected requires an instance.\nPlease select one of the following:\n1) create the Instance Builder and Instance Node;\n2) create the Instance Node (binding of the instance will be needed);\n3) create the Function. (binding of the instance will be needed).",
-            																"Function",
-            																"Build Instance",
-            																"Instance Node");
-            					switch(sel) {
-            					case 0:
-            						break;
-            					case 1: {
-            						method= iCS_UserCommands.CreateInstanceBuilderAndObjectAndElement(newNodeParent, globalPos, desc.ClassType, desc);
-            						createMethod= false;
-            						break;
-            					}
-            					case 2: {
-            						method= iCS_UserCommands.CreateInstanceObjectAndElement(newNodeParent, globalPos, desc.ClassType, desc);
-            						createMethod= false;
-            						break;
-            					}}
-            				}
-            			}
-            			if(createMethod) {
-                            method= iCS_UserCommands.CreateFunction(newNodeParent, globalPos, desc);							
-            			}
+                        method= iCS_UserCommands.CreateFunctionCallNode(newNodeParent, globalPos, libraryObject);							
             		}
 
             		// Inverse effective data flow if new node is inside port parent.
@@ -670,7 +642,7 @@ namespace iCanScript.Editor {
                     iStorage.ForcedRelayoutOfTree();
                 }
             );
-            iCS_UserCommands.CloseTransaction(iStorage, "Create => "+desc.DisplayName);
+            iCS_UserCommands.CloseTransaction(iStorage, "Create => "+libraryObject.nodeName);
             return method;
         }
     

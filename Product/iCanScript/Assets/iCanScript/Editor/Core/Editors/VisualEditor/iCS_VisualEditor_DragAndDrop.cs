@@ -195,7 +195,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             var isSceneObject= iCS_UnityUtility.IsSceneGameObject(go);
             if(isSceneObject == true) {
                 ShowNotification(new GUIContent("Unity does not allow binding a Scene object to a Prefab."));
-                var thisPort= IStorage.InstanceWizardGetInputThisPort(instance);
+                var thisPort= IStorage.PropertiesWizardGetInputThisPort(instance);
                 if(thisPort != null) {
                     thisPort.PortValue= null;
                 }

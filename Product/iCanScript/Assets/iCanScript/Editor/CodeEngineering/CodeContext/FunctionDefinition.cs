@@ -228,11 +228,10 @@ namespace iCanScript.Editor.CodeEngineering {
 						Debug.LogWarning("iCanScript: Code not generated for node in Error: "+VSObject.FullName);						
 						return;
 					}
-                    var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(vsObj);
-                    if(IsFieldOrPropertyGet(memberInfo)) {
+                    if(IsFieldOrPropertyGet(vsObj)) {
                         code.Add(new GetPropertyCallDefinition(vsObj, this));
                     }
-                    else if(IsFieldOrPropertySet(memberInfo)) {
+                    else if(IsFieldOrPropertySet(vsObj)) {
                         code.Add(new SetPropertyCallDefinition(vsObj, this));
                     }
                     else if(vsObj.IsKindOfFunction && !vsObj.IsConstructor) {

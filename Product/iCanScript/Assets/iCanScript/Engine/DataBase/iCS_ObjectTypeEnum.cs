@@ -17,8 +17,8 @@ namespace iCanScript.Engine {
         InstanceFunction, StaticFunction, 
         InstanceField, StaticField,
         TypeCast,
-        InstanceMessage,  ClassMessage,
-        InstanceProperty, ClassProperty,
+        InstanceMessage,  StaticMessage,
+        InstanceProperty, StaticProperty,
     	StaticConstructor,
 
         // Transition nodes
@@ -85,7 +85,7 @@ namespace iCanScript.Engine {
     																			  IsField(obj) || IsTypeCast(obj); } 
         public static bool IsFunction             (iCS_EngineObject obj) { return IsStaticFunction(obj) || IsInstanceFunction(obj); }
         public static bool IsField                (iCS_EngineObject obj) { return IsStaticField(obj) || IsInstanceField(obj); }
-        public static bool IsEventHandler         (iCS_EngineObject obj) { return IsInstanceMessage(obj) || IsClassMessage(obj); }
+        public static bool IsEventHandler         (iCS_EngineObject obj) { return IsInstanceMessage(obj) || IsStaticMessage(obj); }
 
         public static bool IsConstructor          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Constructor; }
         public static bool IsStaticFunction       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StaticFunction; }
@@ -94,7 +94,7 @@ namespace iCanScript.Engine {
         public static bool IsInstanceField        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InstanceField; }
         public static bool IsTypeCast             (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.TypeCast; }
         public static bool IsInstanceMessage      (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InstanceMessage; }
-        public static bool IsClassMessage         (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.ClassMessage; }
+        public static bool IsStaticMessage        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StaticMessage; }
 
         // Transition modules.
         public static bool IsTransitionPackage    (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.TransitionPackage; }

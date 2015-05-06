@@ -255,68 +255,9 @@ namespace iCanScript.Editor {
 	            iStorage.CreatePropertyWizardNode(-1, libraryType.type);
 				return true;
 			}
-			if(libraryObject is LibraryGetField) {
-				var libraryField= libraryObject as LibraryGetField;
-				if(libraryField.isStatic) {
-					iStorage.CreateStaticGetField(-1, libraryField);
-				}
-				else {
-					iStorage.CreateGetField(-1, libraryField);								
-				}
-				return true;
-			}
-			if(libraryObject is LibrarySetField) {
-				var libraryField= libraryObject as LibrarySetField;
-				if(libraryField.isStatic) {
-					iStorage.CreateStaticSetField(-1, libraryField);
-				}
-				else {
-					iStorage.CreateSetField(-1, libraryField);								
-				}
-				return true;
-			}
-			if(libraryObject is LibraryConstructor) {
-				var libraryConstructor= libraryObject as LibraryConstructor;
-				if(libraryConstructor.isStatic) {
-					iStorage.CreateStaticConstructor(-1, libraryConstructor);
-				}
-				else {
-					iStorage.CreateConstructor(-1, libraryConstructor);					
-				}
-				return true;	
-			}
-			if(libraryObject is LibraryFunction) {
-				var libraryFunction= libraryObject as LibraryFunction;
-				if(libraryFunction.isStatic) {
-					iStorage.CreateStaticFunction(-1, libraryFunction);
-				}
-				else {
-					iStorage.CreateFunction(-1, libraryFunction);					
-				}
-				return true;
-			}
-			if(libraryObject is LibraryUnityEventHandler) {
-				var libraryEventHandler= libraryObject as LibraryUnityEventHandler;
-                iStorage.CreateUnityEventHandler(-1, libraryEventHandler);
-                return true;
-			}
-			else {
-				Debug.LogWarning("iCanScript: Unknown library type. Contact support.");
-			}
-			return false;
+			var node= iStorage.CreateNode(-1, libraryObject);
+			return node != null;
         }
-//	
-//        // ======================================================================
-//        // Creation Utilities
-//        // ---------------------------------------------------------------------------------
-//        iCS_EditorObject CreateMethod(iCS_MemberInfo desc, iCS_IStorage iStorage) {
-//            return iStorage.CreateFunction(-1, desc.ToFunctionPrototypeInfo);            
-//        }    
-//        // ---------------------------------------------------------------------------------
-//        iCS_EditorObject CreateMessage(iCS_MemberInfo desc, iCS_IStorage iStorage) {
-//            return iStorage.CreateMessageHandler(-1, desc as iCS_MessageInfo);            
-//        }    
-//
     }
     
 }

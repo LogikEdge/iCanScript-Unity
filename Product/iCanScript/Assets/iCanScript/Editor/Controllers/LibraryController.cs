@@ -1,4 +1,4 @@
-//#define USE_THREAD
+#define USE_THREAD
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -48,7 +48,7 @@ namespace iCanScript.Editor {
         static string[] namespacesToIgnore= new string[]{
             "iCanScript",
             "UnityEditorInternal", "UnityEngineInternal",
-            "Microsoft", "Mono"
+            "Microsoft", "Mono", "JetBrains"
         };
         static string[] namespacesToInclude= new string[]{
             "iCanScript.Nodes"
@@ -83,8 +83,6 @@ namespace iCanScript.Editor {
         // ----------------------------------------------------------------------
         /// Extracts all public members (except for iCanScript).
         static void ExtractFromAppDomain() {
-            Debug.Log("Start building library");
-            
 			// -- Extract each assembly from the application code. --
             var assemblies= AppDomain.CurrentDomain.GetAssemblies();
             foreach(var assembly in assemblies) {
@@ -106,20 +104,12 @@ namespace iCanScript.Editor {
 
 			// -- Install Unity Event handlers. --
 			InstallUnityEventHandlers();
-			
-            Debug.Log("# types: "+myNbOfTypes+" # constructors: "+myNbOfConstructors+" # fields: "+myNbOfFields+" # functions: "+myNbOfFunctions);
         }
 
         // ----------------------------------------------------------------------
 		/// Installs the Unity event handlers.
 		static void InstallUnityEventHandlers() {
-			var installMethod= iCS_Types.FindFunction("iCS_Installer", "Install", "iCanScript.Editor");			
-            if(installMethod != null) {
-                installMethod.Invoke(null, null);
-            }
-            else {
-                Debug.LogWarning("iCanScript: Unable to install event handlers");
-            }
+            MonoBehaviourEventHandlers.Install();
 		}
 		
         // ----------------------------------------------------------------------
@@ -222,7 +212,19 @@ namespace iCanScript.Editor {
         static void ExtractFunctions(LibraryType parentType, Type type) {
             foreach(var method in type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)) {
                 ++myNbOfFunctions;
-                parentType.AddChild(new LibraryFunction(method));
+				var methodName= method.Name;
+				var parameters= method.GetParameters();
+				LibraryObject libraryObject= null;
+				if(methodName.StartsWith("get_") && parameters.Length == 0) {
+					libraryObject= new LibraryGetProperty(method);					
+				}
+				else if(methodName.StartsWith("set_") && parameters.Length == 1) {
+					libraryObject= new LibrarySetProperty(method);
+				}
+				else {
+	                libraryObject= new LibraryFunction(method);	
+				}
+                parentType.AddChild(libraryObject);					
             }
         }
 
@@ -247,7 +249,7 @@ namespace iCanScript.Editor {
 				Debug.LogWarning("iCanScript: Unable to add event handler: "+eventName+". The parent type is unknown: "+declaringType.Name);
 				return;
 			}
-			libraryType.AddChild(new LibraryUnityEventHandler(eventName, declaringType, parameterTypes, parameterNames));
+			libraryType.AddChild(new LibraryEventHandler(eventName, declaringType, parameterTypes, parameterNames));
 		}
 
 		// ======================================================================
