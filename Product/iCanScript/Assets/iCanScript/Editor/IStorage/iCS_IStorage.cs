@@ -556,17 +556,6 @@ namespace iCanScript.Editor {
             );
             return instance;
         }
-        // ----------------------------------------------------------------------
-        public iCS_EditorObject CreateFunction(int parentId, iCS_FunctionPrototype desc) {
-            iCS_EditorObject instance= desc.IsInstanceMember ?
-                        				CreateInstanceFunction(parentId, desc) : 
-                        				CreateStaticFunction(parentId, desc);
-
-    		instance.MethodName= desc.MethodName;
-    		instance.NbOfParams= P.length(desc.Parameters);
-    		return instance;
-        }
-    
         // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
         // ----------------------------------------------------------------------
     	/// Create parameter ports on the given node.
@@ -890,102 +879,6 @@ namespace iCanScript.Editor {
             return instance;
         }    
 
-        // ----------------------------------------------------------------------
-        public iCS_EditorObject CreateStaticFunction(int parentId, iCS_FunctionPrototype desc) {
-            // Create the conversion node.
-            int id= GetNextAvailableId();
-            // Create new EditorObject
-            var defaultName= desc.DisplayName;
-            var instance= iCS_EditorObject.CreateInstance(id, defaultName, desc.ClassType, parentId, desc.ObjectType, this);
-            // Determine icon.
-            instance.IconGUID= TextureCache.IconPathToGUID(desc.IconPath);
-            // Create parameter ports.
-    		iCS_EditorObject port= null;
-    		int parameterIdx= 0;
-            for(; parameterIdx < P.length(desc.Parameters); ++parameterIdx) {
-                var p= desc.Parameters[parameterIdx];
-                if(p.type != typeof(void)) {
-                    iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
-                    port= CreatePort(p.name, id, p.type, portType, (int)iCS_PortIndex.ParametersStart+parameterIdx);
-    				object initialPortValue= p.initialValue;
-    				if(initialPortValue == null) {
-    					initialPortValue= iCS_Types.DefaultValue(p.type);
-    				}
-                    port.InitialPortValue= initialPortValue;
-                }
-            }
-    		// Create return port.
-    		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
-                port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
-    		}
-            return instance;
-        }
-        // ----------------------------------------------------------------------
-        public iCS_EditorObject CreateInstanceFunction(int parentId, iCS_FunctionPrototype desc) {
-            // -- Grab a free ID --
-            int id= GetNextAvailableId();
-            // -- Create the function node --
-            var defaultName= desc.DisplayName;
-            var instance= iCS_EditorObject.CreateInstance(id, defaultName, desc.ClassType, parentId, desc.ObjectType, this);
-            instance.IconGUID= TextureCache.IconPathToGUID(desc.IconPath);
-    		// -- Create target & self ports. --
-            CreateTargetPort(id);
-            CreateSelfPort(id);
-            // -- Create parameter ports. --
-    		iCS_EditorObject port= null;
-            for(int parameterIdx= 0; parameterIdx < P.length(desc.Parameters); ++parameterIdx) {
-                var p= desc.Parameters[parameterIdx];
-                if(p.type != typeof(void)) {
-                    iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
-                    port= CreatePort(p.name, id, p.type, portType, (int)iCS_PortIndex.ParametersStart+parameterIdx);
-    				object initialPortValue= p.initialValue;
-    				if(initialPortValue == null) {
-    					initialPortValue= iCS_Types.DefaultValue(p.type);
-    				}
-                    port.InitialPortValue= initialPortValue;
-                }
-            }
-    		// -- Create return port. --
-    		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
-                port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
-    		}
-            return instance;
-        }
-        // ----------------------------------------------------------------------
-        public iCS_EditorObject CreateMessageHandler(int parentId, iCS_MessageInfo desc) {
-            if(desc == null) return null;
-            // -- Grab next available ID --
-            int id= GetNextAvailableId();
-            // -- Create event handler node --
-            var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
-            instance.IconGUID= TextureCache.IconPathToGUID(desc.IconPath);
-            // -- Create target port. --
-    		iCS_EditorObject port= null;
-            if(desc.IsInstanceMember) {
-                port= CreateTargetPort(id);
-                if(instance.Parent.IsBehaviour) {
-                    port.InitialValue= instance.Parent.iCSMonoBehaviour;
-                }
-            }
-            // -- Create parameter ports --
-            for(int parameterIdx= 0; parameterIdx < P.length(desc.Parameters); ++parameterIdx) {
-                var p= desc.Parameters[parameterIdx];
-                if(p.type != typeof(void)) {
-                    iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
-                    port= CreatePort(p.name, id, p.type, portType, (int)iCS_PortIndex.ParametersStart+parameterIdx);
-    				object initialPortValue= p.initialValue;
-    				if(initialPortValue == null) {
-    					initialPortValue= iCS_Types.DefaultValue(p.type);
-    				}
-                    port.InitialPortValue= initialPortValue;
-                }
-            }
-    		// -- Create return port --
-    		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
-                port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
-    		}
-            return instance;
-        }    
     	// ----------------------------------------------------------------------
     	/// Creates a property wizard node for the given type.
     	///

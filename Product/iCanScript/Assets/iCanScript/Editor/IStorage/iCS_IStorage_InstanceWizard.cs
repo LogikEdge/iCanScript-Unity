@@ -64,13 +64,7 @@ namespace iCanScript.Editor {
         }
         // ----------------------------------------------------------------------
         public iCS_EditorObject PropertiesWizardGetInputThisPort(iCS_EditorObject module) {
-            var instancePort= FindInputInstancePortOn(module);
-            if(instancePort == null) {
-                var constructor= FindInstanceNodeInternalConstructor(module);
-                if(constructor == null) return null;
-                instancePort= FindInputInstancePortOn(constructor);
-            }
-            return instancePort;
+            return FindInputInstancePortOn(module);
         }
         // ----------------------------------------------------------------------
         void PropertiesWizardDestroyPortIfNotConnected(iCS_EditorObject module, string portName, iCS_ObjectTypeEnum objType) {
@@ -193,71 +187,6 @@ namespace iCanScript.Editor {
             }
         }
     
-        // ======================================================================
-        // Constructor/Builder
-        // ----------------------------------------------------------------------
-        public iCS_EditorObject PropertiesWizardCreateConstructor(iCS_EditorObject module, iCS_ConstructorInfo desc) {
-            PropertiesWizardDestroyConstructor(module);
-            iCS_EditorObject moduleThisPort= PropertiesWizardGetPort(module, "Target",
-                                                                   iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.Target);
-            if(moduleThisPort == null) return null;
-            Rect thisPos= moduleThisPort.GlobalRect; 
-            iCS_EditorObject constructor= CreateFunction(module.ParentId, desc);
-            constructor.SetInitialPosition(new Vector2(thisPos.x-75f, thisPos.y));
-            iCS_EditorObject constructorThisPort= FindInChildren(constructor, port=> port.IsOutputPort && port.RuntimeType == module.RuntimeType);
-            SetSource(moduleThisPort, constructorThisPort);
-            constructor.Iconize();
-            return constructor;
-        }
-        // ----------------------------------------------------------------------
-        public void PropertiesWizardDestroyConstructor(iCS_EditorObject module) {
-            iCS_EditorObject constructor= PropertiesWizardGetConstructor(module);
-            if(constructor == null) return;
-            // Rebuild public instance port if internal constructor was used.
-            if(IsConstructorInternal(constructor, module)) {
-                var classType= constructor.RuntimeType;
-                if(classType != null) {
-                    var instancePort= FindOutputInstancePortOn(constructor);
-                    if(instancePort != null) {
-                        var connectedPorts= instancePort.ConsumerPorts;
-                        instancePort= CreateInputInstancePort(classType, module);
-                        foreach(var p in connectedPorts) {
-                            SetSource(p, instancePort);
-                        }
-                    }                
-                }
-            }
-            // Destroy the constructor.
-            DestroyInstance(constructor);
-        }
-        // ----------------------------------------------------------------------
-        public iCS_EditorObject PropertiesWizardGetConstructor(iCS_EditorObject module) {
-            iCS_EditorObject instancePort= PropertiesWizardGetInputThisPort(module);
-            if(instancePort == null) return null;
-            iCS_EditorObject constructorThisPort= instancePort.ProducerPort;
-            if(constructorThisPort == null) return null;
-            iCS_EditorObject constructor= constructorThisPort.ParentNode;
-            return constructor.IsConstructor ? constructor : null;
-        }
-        // ----------------------------------------------------------------------
-        public iCS_EditorObject FindInstanceNodeInternalConstructor(iCS_EditorObject instanceNode) {
-            var runtimeType= instanceNode.RuntimeType;
-            iCS_EditorObject result= null;
-            UntilMatchingChildNode(instanceNode,
-                node=> {
-                    if(node.IsConstructor && node.RuntimeType == runtimeType) {
-                        result= node;
-                        return true;
-                    }
-                    return false;
-                }
-            );
-            return result;
-        }
-        // ----------------------------------------------------------------------
-        bool IsConstructorInternal(iCS_EditorObject constructor, iCS_EditorObject instanceNode) {
-            return constructor.ParentNode == instanceNode;
-        }
         // ----------------------------------------------------------------------
         public iCS_EditorObject FindInputInstancePortOn(iCS_EditorObject module) {
             var portId= (int)iCS_PortIndex.Target;

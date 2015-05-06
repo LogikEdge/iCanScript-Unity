@@ -155,44 +155,6 @@ namespace iCanScript.Editor {
             return msgHandler;
         }
 
-    	// ----------------------------------------------------------------------
-    	// OK
-        public static iCS_EditorObject CreateMessageHandler(iCS_EditorObject parent, Vector2 globalPos, iCS_MessageInfo desc) {
-    #if DEBUG
-            Debug.Log("iCanScript: Create Message Handler => "+desc.DisplayName);
-    #endif
-            if(parent == null) return null;
-            if(!IsCreationAllowed()) return null;
-            var iStorage= parent.IStorage;
-            var name= desc.DisplayName;
-            if(!iCS_AllowedChildren.CanAddChildNode(name, iCS_ObjectTypeEnum.InstanceMessage, parent, iStorage)) {
-                return null;
-            }
-            OpenTransaction(iStorage);
-            iCS_EditorObject msgHandler= null;
-            try {
-                iStorage.AnimateGraph(null,
-                    _=> {
-                        msgHandler= iStorage.CreateMessageHandler(parent.InstanceId, desc);
-                        msgHandler.SetInitialPosition(globalPos);
-                        msgHandler.ForEachChildPort(p=> {p.AnimationStartRect= BuildRect(globalPos, Vector2.zero);});
-                        iStorage.ForcedRelayoutOfTree();
-                        iStorage.ReduceCollisionOffset();
-                    }
-                );            
-            }
-            catch(System.Exception) {
-                CancelTransaction(iStorage);
-                return null;
-            }
-            if(msgHandler == null) {
-                CancelTransaction(iStorage);
-                return null;
-            }
-            CloseTransaction(iStorage, "Create "+name);
-    		SystemEvents.AnnounceVisualScriptElementAdded(msgHandler);
-            return msgHandler;
-        }
         // ----------------------------------------------------------------------
         public static iCS_EditorObject CreateFunctionDefinition(iCS_EditorObject parent, Vector2 globalPos) {
             return CreatePackage(parent, globalPos, "My Function");    
