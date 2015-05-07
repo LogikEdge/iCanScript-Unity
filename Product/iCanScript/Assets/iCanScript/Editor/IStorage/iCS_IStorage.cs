@@ -678,8 +678,8 @@ namespace iCanScript.Editor {
     	/// Creates a node that represents a static function.
     	///
     	/// @param parentId The id of the parent node.
-    	/// @param libraryObject The library object of the function to create.
-    	/// @return The newly created property wizard node.
+    	/// @param libraryMethodInfo The library object of the function to create.
+    	/// @return The newly created static function node.
     	///
         iCS_EditorObject CreateStaticFunctionCallNode(int parentId, LibraryMethodInfo libraryMethodInfo) {
 			// -- Create base function node. --

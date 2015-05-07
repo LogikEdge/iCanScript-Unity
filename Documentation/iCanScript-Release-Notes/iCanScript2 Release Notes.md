@@ -1,6 +1,6 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.9
+Version: v2.0.11
 CSS: Github.css
 
 
@@ -9,6 +9,25 @@ CSS: Github.css
 <!-- PDF: <<[front-matter/pdf.md] -->
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
+
+## iCanScript v2.0.11 ##
+
+_April 24, 2015_
+
+V2.0.9 is a development release of iCanScript2.
+### List of Changes
+
+- **<span style="color: blue">\[IMPROVED\]</span>** The performance of the new library components allows to always include the _Unity Editor Library_.  Therefore, the option to manually include the Unity Editor library has been removed from the _Global Preferences_.
+
+* * *
+
+## iCanScript v2.0.10 ##
+
+_May 1st, 2015_
+
+V2.0.10 was rejected and therefore not  released.
+
+* * *
 
 ## iCanScript v2.0.9 ##
 
