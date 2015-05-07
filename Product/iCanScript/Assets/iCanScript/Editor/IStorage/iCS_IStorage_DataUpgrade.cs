@@ -161,6 +161,54 @@ namespace iCanScript.Editor {
                         engineObject.QualifiedType= typeof(iCS_DesiredVelocityForceGenerator).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
+                    else if(qualifiedTypeName == "iCS_Variables") {
+                        engineObject.QualifiedType= typeof(iCS_Variables).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "Bool") {
+                        engineObject.QualifiedType= typeof(Bool).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "Int") {
+                        engineObject.QualifiedType= typeof(Int).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "Float") {
+                        engineObject.QualifiedType= typeof(Float).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "iCS_GameController") {
+                        engineObject.QualifiedType= typeof(iCS_GameController).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "iCS_Conditions") {
+                        engineObject.QualifiedType= typeof(iCS_Conditions).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "iCS_Boolean") {
+                        engineObject.QualifiedType= typeof(iCS_Boolean).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "iCS_Choice") {
+                        engineObject.QualifiedType= typeof(iCS_Choice).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "iCS_Oscillator") {
+                        engineObject.QualifiedType= typeof(iCS_Oscillator).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "iCS_PulseGenerator") {
+                        engineObject.QualifiedType= typeof(iCS_PulseGenerator).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "iCS_Timer") {
+                        engineObject.QualifiedType= typeof(iCS_Timer).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
+                    else if(qualifiedTypeName == "iCS_TypeCasts") {
+                        engineObject.QualifiedType= typeof(iCS_TypeCasts).AssemblyQualifiedName;
+                        isUpgraded= true;                        
+                    }
                     else if(qualifiedTypeName.StartsWith("iCS")) {
                         Debug.LogWarning("Need to convert=> "+qualifiedTypeName);
                     }
