@@ -37,7 +37,7 @@ namespace iCanScript.Engine {
         // Database Fields
         // ----------------------------------------------------------------------
         public string                RawName            = "";
-        public iCS_ObjectTypeEnum    ObjectType         = iCS_ObjectTypeEnum.Unknown;
+        public VSObjectType    ObjectType         = VSObjectType.Unknown;
         public int                   InstanceId         = -1;
         public int                   ParentId           = -1;
         public string                QualifiedType      = "";
@@ -121,7 +121,7 @@ namespace iCanScript.Engine {
         // ======================================================================
         // Initialization
         // ----------------------------------------------------------------------
-        public iCS_EngineObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType) {
+        public iCS_EngineObject(int id, string name, Type type, int parentId, VSObjectType objectType) {
             Reset();
             ObjectType= objectType;
             InstanceId= id;
@@ -195,7 +195,7 @@ namespace iCanScript.Engine {
         // ----------------------------------------------------------------------
         public void Reset() {
     		// Common
-            ObjectType= iCS_ObjectTypeEnum.Unknown;
+            ObjectType= VSObjectType.Unknown;
             NodeSpec= NodeSpecification.Default;
             PortSpec= PortSpecification.Default;
             InstanceId= -1;
@@ -332,7 +332,7 @@ namespace iCanScript.Engine {
     		Type classType= RuntimeType;
             if(classType == null) return null;
             MethodBase method= null;
-            if(ObjectType == iCS_ObjectTypeEnum.Constructor) {
+            if(ObjectType == VSObjectType.Constructor) {
                 method= classType.GetConstructor(GetParamTypes(parameters));
                 if(method == null) {
                     string signature="(";

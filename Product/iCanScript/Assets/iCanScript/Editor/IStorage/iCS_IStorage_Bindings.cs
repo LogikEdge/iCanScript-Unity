@@ -246,7 +246,7 @@ namespace iCanScript.Editor {
     				newPort= sourcePort;
     			}
     			else {
-    				newPort= CreatePort(inPort.DisplayName, inGrandParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
+    				newPort= CreatePort(inPort.DisplayName, inGrandParent.InstanceId, outPort.RuntimeType, VSObjectType.InDynamicDataPort);
     	            SetSource(inPort, newPort, conversion);
     				SetBestPositionForAutocreatedPort(newPort, inPort.GlobalPosition, outPort.GlobalPosition);
     			}
@@ -277,7 +277,7 @@ namespace iCanScript.Editor {
     			   )
     			) {}
     			else {
-    				newPort= CreatePort(outPort.DisplayName, outGrandParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+    				newPort= CreatePort(outPort.DisplayName, outGrandParent.InstanceId, outPort.RuntimeType, VSObjectType.OutDynamicDataPort);
     	            SetSource(newPort, outPort, conversion);
     				SetBestPositionForAutocreatedPort(newPort, inPort.GlobalPosition, outPort.GlobalPosition);
     			}
@@ -318,7 +318,7 @@ namespace iCanScript.Editor {
     				}
     				RebuildDataConnection(outputPort, existingPort);
     			} else {
-    	            iCS_EditorObject newPort= CreatePort(inputPort.DisplayName, newInputNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+    	            iCS_EditorObject newPort= CreatePort(inputPort.DisplayName, newInputNode.InstanceId, inputPort.RuntimeType, VSObjectType.OutDynamicDataPort);
     				SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
     				newPort.ProducerPort= inputPort.ProducerPort;
     				inputPort.ProducerPort= newPort;
@@ -344,7 +344,7 @@ namespace iCanScript.Editor {
     				}
     				RebuildDataConnection(outputPort, existingPort);
     			} else {
-    	            iCS_EditorObject newPort= CreatePort(inputPort.DisplayName, newDstNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+    	            iCS_EditorObject newPort= CreatePort(inputPort.DisplayName, newDstNode.InstanceId, inputPort.RuntimeType, VSObjectType.OutDynamicDataPort);
     				SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
     				newPort.ProducerPort= inputPort.ProducerPort;
     				inputPort.ProducerPort= newPort;
@@ -364,7 +364,7 @@ namespace iCanScript.Editor {
     				}
     				RebuildDataConnection(outputPort, existingPort);
     			} else {
-    	            iCS_EditorObject newPort= CreatePort(inputPort.DisplayName, inputNodeParent.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
+    	            iCS_EditorObject newPort= CreatePort(inputPort.DisplayName, inputNodeParent.InstanceId, inputPort.RuntimeType, VSObjectType.InDynamicDataPort);
     				SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
     				newPort.ProducerPort= inputPort.ProducerPort;
     				inputPort.ProducerPort= newPort;

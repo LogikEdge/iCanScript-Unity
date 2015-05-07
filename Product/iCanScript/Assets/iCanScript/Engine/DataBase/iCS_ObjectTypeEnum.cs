@@ -4,7 +4,7 @@ using System.Collections;
 namespace iCanScript.Engine {
     
     [System.Serializable]
-    public enum iCS_ObjectTypeEnum {
+    public enum VSObjectType {
         // --------------------------------------------------------------
         // Start of Node object types
         NodeStart= 0,
@@ -64,17 +64,17 @@ namespace iCanScript.Engine {
 
     public static class iCS_ObjectType {
         // Type Groups
-        public static bool IsNode                 (iCS_EngineObject obj) { return obj.ObjectType >= iCS_ObjectTypeEnum.NodeStart &&
-    																			  obj.ObjectType <= iCS_ObjectTypeEnum.NodeEnd; }
+        public static bool IsNode                 (iCS_EngineObject obj) { return obj.ObjectType >= VSObjectType.NodeStart &&
+    																			  obj.ObjectType <= VSObjectType.NodeEnd; }
 
         // Structural nodes.
-        public static bool IsBehaviour            (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Behaviour; }
-        public static bool IsStateChart           (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StateChart; }
-        public static bool IsState                (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.State; }
-        public static bool IsPackage              (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Package ||
+        public static bool IsBehaviour            (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.Behaviour; }
+        public static bool IsStateChart           (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.StateChart; }
+        public static bool IsState                (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.State; }
+        public static bool IsPackage              (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.Package ||
     																			  IsOnStatePackage(obj) ||
     																			  IsTransitionPackage(obj); }
-        public static bool IsMux                  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Mux; }
+        public static bool IsMux                  (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.Mux; }
 
         public static bool IsKindOfPackage	      (iCS_EngineObject obj) { return IsPackage(obj) ||
                                                                                   IsBehaviour(obj) || IsEventHandler(obj); }
@@ -87,27 +87,27 @@ namespace iCanScript.Engine {
         public static bool IsField                (iCS_EngineObject obj) { return IsStaticField(obj) || IsNonStaticField(obj); }
         public static bool IsEventHandler         (iCS_EngineObject obj) { return IsInstanceMessage(obj) || IsStaticMessage(obj); }
 
-        public static bool IsConstructor          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Constructor; }
-        public static bool IsStaticFunction       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StaticFunction; }
-        public static bool IsNonStaticFunction    (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.NonStaticFunction; }
-        public static bool IsStaticField          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StaticField; }
-        public static bool IsNonStaticField       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.NonStaticField; }
-        public static bool IsTypeCast             (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.TypeCast; }
-        public static bool IsInstanceMessage      (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InstanceMessage; }
-        public static bool IsStaticMessage        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StaticMessage; }
+        public static bool IsConstructor          (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.Constructor; }
+        public static bool IsStaticFunction       (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.StaticFunction; }
+        public static bool IsNonStaticFunction    (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.NonStaticFunction; }
+        public static bool IsStaticField          (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.StaticField; }
+        public static bool IsNonStaticField       (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.NonStaticField; }
+        public static bool IsTypeCast             (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.TypeCast; }
+        public static bool IsInstanceMessage      (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.InstanceMessage; }
+        public static bool IsStaticMessage        (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.StaticMessage; }
 
         // Transition modules.
-        public static bool IsTransitionPackage    (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.TransitionPackage; }
+        public static bool IsTransitionPackage    (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.TransitionPackage; }
 
     	// State packages
     	public static bool IsOnStatePackage       (iCS_EngineObject obj) { return IsOnStateEntryPackage(obj) || IsOnStateUpdatePackage(obj) || IsOnStateExitPackage(obj); }
-        public static bool IsOnStateEntryPackage  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OnStateEntry; }
-        public static bool IsOnStateUpdatePackage (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OnStateUpdate; }
-        public static bool IsOnStateExitPackage   (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OnStateExit; }
+        public static bool IsOnStateEntryPackage  (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.OnStateEntry; }
+        public static bool IsOnStateUpdatePackage (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.OnStateUpdate; }
+        public static bool IsOnStateExitPackage   (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.OnStateExit; }
 	
         // General Ports
-        public static bool IsPort                 (iCS_EngineObject obj) { return obj.ObjectType >= iCS_ObjectTypeEnum.PortStart &&
-                                                                                  obj.ObjectType <= iCS_ObjectTypeEnum.PortEnd; }
+        public static bool IsPort                 (iCS_EngineObject obj) { return obj.ObjectType >= VSObjectType.PortStart &&
+                                                                                  obj.ObjectType <= VSObjectType.PortEnd; }
         public static bool IsOutputPort			  (iCS_EngineObject obj) { return IsOutDataOrControlPort(obj) || IsOutStatePort(obj) ||
     	 																		  IsOutTransitionPort(obj); }
         public static bool IsInputPort			  (iCS_EngineObject obj) { return IsInDataOrControlPort(obj) || IsInStatePort(obj)||
@@ -115,28 +115,28 @@ namespace iCanScript.Engine {
     
         // State Ports.
     	public static bool IsStatePort            (iCS_EngineObject obj) { return IsInStatePort(obj) || IsOutStatePort(obj); }
-        public static bool IsInStatePort          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InStatePort; }
-        public static bool IsOutStatePort         (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutStatePort; }
+        public static bool IsInStatePort          (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.InStatePort; }
+        public static bool IsOutStatePort         (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.OutStatePort; }
 
         // Transition Ports
         public static bool IsTransitionPort       (iCS_EngineObject obj) { return IsInTransitionPort(obj) || IsOutTransitionPort(obj); }
-        public static bool IsInTransitionPort     (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InTransitionPort; }
-        public static bool IsOutTransitionPort    (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutTransitionPort; }
+        public static bool IsInTransitionPort     (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.InTransitionPort; }
+        public static bool IsOutTransitionPort    (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.OutTransitionPort; }
 
         // Fix Data Flow Ports
         public static bool IsFixDataPort		  (iCS_EngineObject obj) { return IsInFixDataPort(obj) || IsOutFixDataPort(obj); }
-        public static bool IsInFixDataPort        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InFixDataPort; }
-        public static bool IsOutFixDataPort       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutFixDataPort; }
+        public static bool IsInFixDataPort        (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.InFixDataPort; }
+        public static bool IsOutFixDataPort       (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.OutFixDataPort; }
     
         // Dynamic Data Flow Ports 
     	public static bool IsDynamicDataPort	  (iCS_EngineObject obj) { return IsInDynamicDataPort(obj) || IsOutDynamicDataPort(obj); }
-        public static bool IsInDynamicDataPort    (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InDynamicDataPort; }
-        public static bool IsOutDynamicDataPort   (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutDynamicDataPort; }
+        public static bool IsInDynamicDataPort    (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.InDynamicDataPort; }
+        public static bool IsOutDynamicDataPort   (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.OutDynamicDataPort; }
 
         // Proposed Data Flow Ports
     	public static bool IsProposedDataPort     (iCS_EngineObject obj) { return IsInProposedDataPort(obj) || IsOutProposedDataPort(obj); }
-        public static bool IsInProposedDataPort   (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InProposedDataPort; }
-        public static bool IsOutProposedDataPort  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutProposedDataPort; }
+        public static bool IsInProposedDataPort   (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.InProposedDataPort; }
+        public static bool IsOutProposedDataPort  (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.OutProposedDataPort; }
 
         // Data Flow Ports                                                                          
         public static bool IsDataPort             (iCS_EngineObject obj) { return IsInDataPort(obj) || IsOutDataPort(obj); }
@@ -157,8 +157,8 @@ namespace iCanScript.Engine {
 
         // Control Ports
         public static bool IsControlPort          (iCS_EngineObject obj) { return IsEnablePort(obj) || IsTriggerPort(obj); }
-        public static bool IsEnablePort           (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.EnablePort; }
-    	public static bool IsTriggerPort		  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.TriggerPort; }
+        public static bool IsEnablePort           (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.EnablePort; }
+    	public static bool IsTriggerPort		  (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.TriggerPort; }
 
         // Data Flow or Control Ports
         public static bool IsDataOrControlPort    (iCS_EngineObject obj) { return IsDataPort(obj) || IsControlPort(obj); }
@@ -170,11 +170,11 @@ namespace iCanScript.Engine {
     	public static bool IsParentMuxPort	      (iCS_EngineObject obj) { return IsInParentMuxPort(obj) || IsOutParentMuxPort(obj); }
     	public static bool IsChildMuxPort	      (iCS_EngineObject obj) { return IsInChildMuxPort(obj) || IsOutChildMuxPort(obj); }
     	public static bool IsInMuxPort			  (iCS_EngineObject obj) { return IsInChildMuxPort(obj) || IsInParentMuxPort(obj); }
-    	public static bool IsInParentMuxPort	  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InParentMuxPort; }
-    	public static bool IsInChildMuxPort	      (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InChildMuxPort; }
+    	public static bool IsInParentMuxPort	  (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.InParentMuxPort; }
+    	public static bool IsInChildMuxPort	      (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.InChildMuxPort; }
     	public static bool IsOutMuxPort			  (iCS_EngineObject obj) { return IsOutChildMuxPort(obj) || IsOutParentMuxPort(obj); }
-    	public static bool IsOutParentMuxPort	  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutParentMuxPort; }
-    	public static bool IsOutChildMuxPort	  (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutChildMuxPort; }
+    	public static bool IsOutParentMuxPort	  (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.OutParentMuxPort; }
+    	public static bool IsOutChildMuxPort	  (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.OutChildMuxPort; }
 
     	// Instance Ports
     	public static bool IsTargetPort		      (iCS_EngineObject obj) { return obj.PortIndex == (int)iCS_PortIndex.Target; }

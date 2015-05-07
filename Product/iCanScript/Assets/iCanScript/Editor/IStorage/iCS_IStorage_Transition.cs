@@ -13,7 +13,7 @@ namespace iCanScript.Editor {
             iCS_EditorObject transitionParent= GetTransitionParent(toStatePort.Parent, fromStatePort.Parent);
 
             // Create transition module
-            iCS_EditorObject transitionPackage= CreatePackage(transitionParent.InstanceId, "false", iCS_ObjectTypeEnum.TransitionPackage);
+            iCS_EditorObject transitionPackage= CreatePackage(transitionParent.InstanceId, "false", VSObjectType.TransitionPackage);
             var transitionIconGUID= TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionPackageIcon);
             if(transitionIconGUID != null) {
                 transitionPackage.IconGUID= transitionIconGUID;            
@@ -21,11 +21,11 @@ namespace iCanScript.Editor {
                 Debug.LogWarning("Missing transition module icon: "+iCS_EditorStrings.TransitionPackageIcon);
             }
             transitionPackage.Description= "The transition package must evaluate to 'true' for the transition to fire.";
-            iCS_EditorObject inModulePort=  CreatePort("", transitionPackage.InstanceId, typeof(void), iCS_ObjectTypeEnum.InTransitionPort);
-            iCS_EditorObject outModulePort= CreatePort("", transitionPackage.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutTransitionPort);        
+            iCS_EditorObject inModulePort=  CreatePort("", transitionPackage.InstanceId, typeof(void), VSObjectType.InTransitionPort);
+            iCS_EditorObject outModulePort= CreatePort("", transitionPackage.InstanceId, typeof(void), VSObjectType.OutTransitionPort);        
             SetSource(inModulePort, fromStatePort);
             SetSource(toStatePort, outModulePort);
-            CreatePort("trigger", transitionPackage.InstanceId, typeof(bool), iCS_ObjectTypeEnum.OutFixDataPort);
+            CreatePort("trigger", transitionPackage.InstanceId, typeof(bool), VSObjectType.OutFixDataPort);
 
             // Update port names
             UpdatePortNames(fromStatePort, toStatePort);

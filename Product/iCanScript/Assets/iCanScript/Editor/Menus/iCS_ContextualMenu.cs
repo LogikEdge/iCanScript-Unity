@@ -83,24 +83,24 @@ namespace iCanScript.Editor {
         
             // Process the menu state.
             switch(selectedObject.ObjectType) {
-                case iCS_ObjectTypeEnum.Behaviour:         CanvasMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.StateChart:        StateChartMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.State:             StateMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.InstanceMessage:   MessageHandlerMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.StaticMessage:     PackageMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.TransitionPackage: PackageMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.Constructor:       FunctionMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.NonStaticFunction: FunctionMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.StaticFunction:    FunctionMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.TypeCast:          FunctionMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.NonStaticField:    FunctionMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.StaticField:       FunctionMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.NonStaticProperty: FunctionMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.StaticProperty:    FunctionMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.OnStateEntry:      OnStatePackageMenu(selectedObject); break;
-                case iCS_ObjectTypeEnum.OnStateUpdate:     OnStatePackageMenu(selectedObject); break;
-                case iCS_ObjectTypeEnum.OnStateExit:       OnStatePackageMenu(selectedObject); break;
-                case iCS_ObjectTypeEnum.Package:           if(selectedObject.IsInstanceNode) {
+                case VSObjectType.Behaviour:         CanvasMenu(selectedObject, storage); break;
+                case VSObjectType.StateChart:        StateChartMenu(selectedObject, storage); break;
+                case VSObjectType.State:             StateMenu(selectedObject, storage); break;
+                case VSObjectType.InstanceMessage:   MessageHandlerMenu(selectedObject, storage); break;
+                case VSObjectType.StaticMessage:     PackageMenu(selectedObject, storage); break;
+                case VSObjectType.TransitionPackage: PackageMenu(selectedObject, storage); break;
+                case VSObjectType.Constructor:       FunctionMenu(selectedObject, storage); break;
+                case VSObjectType.NonStaticFunction: FunctionMenu(selectedObject, storage); break;
+                case VSObjectType.StaticFunction:    FunctionMenu(selectedObject, storage); break;
+                case VSObjectType.TypeCast:          FunctionMenu(selectedObject, storage); break;
+                case VSObjectType.NonStaticField:    FunctionMenu(selectedObject, storage); break;
+                case VSObjectType.StaticField:       FunctionMenu(selectedObject, storage); break;
+                case VSObjectType.NonStaticProperty: FunctionMenu(selectedObject, storage); break;
+                case VSObjectType.StaticProperty:    FunctionMenu(selectedObject, storage); break;
+                case VSObjectType.OnStateEntry:      OnStatePackageMenu(selectedObject); break;
+                case VSObjectType.OnStateUpdate:     OnStatePackageMenu(selectedObject); break;
+                case VSObjectType.OnStateExit:       OnStatePackageMenu(selectedObject); break;
+                case VSObjectType.Package:           if(selectedObject.IsInstanceNode) {
                                                                  InstanceMenu(selectedObject, storage);
                                                            } else {
                                                                  PackageMenu(selectedObject, storage);
@@ -130,7 +130,7 @@ namespace iCanScript.Editor {
         			var eventHandler= eventHandlers[i];
                     string nodeName= eventHandler.nodeName;
                     string displayString= eventHandler.displayString;
-                    if(iCS_AllowedChildren.CanAddChildNode(nodeName, iCS_ObjectTypeEnum.InstanceMessage, selectedObject, iStorage)) {
+                    if(iCS_AllowedChildren.CanAddChildNode(nodeName, VSObjectType.InstanceMessage, selectedObject, iStorage)) {
                         menu[idx+i]= new iCS_MenuContext(String.Concat("+ "+AddUnityEventStr, displayString), eventHandler);
                     } else {
                         menu[idx+i]= new iCS_MenuContext(String.Concat("#+ "+AddUnityEventStr, displayString), eventHandler);
@@ -171,7 +171,7 @@ namespace iCanScript.Editor {
                 }            
             }
     		AddWrapInPackageIfAppropriate(ref menu, selectedObject);
-            if(selectedObject.ObjectType == iCS_ObjectTypeEnum.Package) {
+            if(selectedObject.ObjectType == VSObjectType.Package) {
                 if(selectedObject.HasChildNode()) {
                     idx= GrowMenuBy(ref menu, 1);
                     menu[idx]= new iCS_MenuContext(UnwrapPackageStr);                
@@ -179,7 +179,7 @@ namespace iCanScript.Editor {
             }
             AddShowInHierarchyMenuItem(ref menu);
             AddDeleteMenuItem(ref menu);
-            if(selectedObject.ObjectType == iCS_ObjectTypeEnum.Package) {
+            if(selectedObject.ObjectType == VSObjectType.Package) {
                 if(selectedObject.HasChildNode()) {
                     idx= GrowMenuBy(ref menu, 1);
                     menu[idx]= new iCS_MenuContext(UnwrapPackageStr);                
@@ -244,7 +244,7 @@ namespace iCanScript.Editor {
                 menu[idx+1]= new iCS_MenuContext(SeparatorStr);
                 for(int i= 0; i < len; ++i) {
                     string name= iCS_AllowedChildren.StateChildNames[i];
-                    if(iCS_AllowedChildren.CanAddChildNode(name, iCS_ObjectTypeEnum.Package, selectedObject, storage)) {
+                    if(iCS_AllowedChildren.CanAddChildNode(name, VSObjectType.Package, selectedObject, storage)) {
                         menu[idx+i+2]= new iCS_MenuContext(String.Concat("+ ", name));
                     } else {
                         menu[idx+i+2]= new iCS_MenuContext(String.Concat("#+ ", name));

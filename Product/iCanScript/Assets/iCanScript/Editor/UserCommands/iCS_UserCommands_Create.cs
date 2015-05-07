@@ -16,7 +16,7 @@ namespace iCanScript.Editor {
         // ======================================================================
         // Object creation
     	// ----------------------------------------------------------------------
-        public static iCS_EditorObject CreatePackage(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Package, Type runtimeType= null) {
+        public static iCS_EditorObject CreatePackage(iCS_EditorObject parent, Vector2 globalPos, string name, VSObjectType objectType= VSObjectType.Package, Type runtimeType= null) {
     #if DEBUG
             Debug.Log("iCanScript: CreatePackage => "+name);
     #endif
@@ -126,7 +126,7 @@ namespace iCanScript.Editor {
             if(!IsCreationAllowed()) return null;
             var iStorage= parent.IStorage;
             var nodeName= libraryEventHandler.nodeName;
-            if(!iCS_AllowedChildren.CanAddChildNode(nodeName, iCS_ObjectTypeEnum.InstanceMessage, parent, iStorage)) {
+            if(!iCS_AllowedChildren.CanAddChildNode(nodeName, VSObjectType.InstanceMessage, parent, iStorage)) {
                 return null;
             }
             OpenTransaction(iStorage);
@@ -167,7 +167,7 @@ namespace iCanScript.Editor {
             OpenTransaction(iStorage);
             iCS_EditorObject package= null;
             try {
-                package= _CreatePackage(parent, globalPos, iCS_Strings.OnEntry, iCS_ObjectTypeEnum.OnStateEntry);            
+                package= _CreatePackage(parent, globalPos, iCS_Strings.OnEntry, VSObjectType.OnStateEntry);            
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -190,7 +190,7 @@ namespace iCanScript.Editor {
             OpenTransaction(iStorage);
             iCS_EditorObject package= null;
             try {
-                package= _CreatePackage(parent, globalPos, iCS_Strings.OnUpdate, iCS_ObjectTypeEnum.OnStateUpdate);
+                package= _CreatePackage(parent, globalPos, iCS_Strings.OnUpdate, VSObjectType.OnStateUpdate);
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -213,7 +213,7 @@ namespace iCanScript.Editor {
             OpenTransaction(iStorage);
             iCS_EditorObject package= null;
             try {
-                package= _CreatePackage(parent, globalPos, iCS_Strings.OnExit, iCS_ObjectTypeEnum.OnStateExit);            
+                package= _CreatePackage(parent, globalPos, iCS_Strings.OnExit, VSObjectType.OnStateExit);            
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -275,7 +275,7 @@ namespace iCanScript.Editor {
             iCS_EditorObject transitionPackage= null;
             try {
                 // Create toStatePort
-                iCS_EditorObject toStatePort= iStorage.CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
+                iCS_EditorObject toStatePort= iStorage.CreatePort("", toState.InstanceId, typeof(void), VSObjectType.InStatePort);
                 // Update port positions
                 toStatePort.SetInitialPosition(toStatePortPos);
                 toStatePort.UpdatePortEdge();        
@@ -529,7 +529,7 @@ namespace iCanScript.Editor {
                 iStorage.AnimateGraph(null,
                     _=> {
                         parent.Unfold();
-                        instance= iStorage.CreatePackage(parent.InstanceId, go.name, iCS_ObjectTypeEnum.Package, go.GetType());
+                        instance= iStorage.CreatePackage(parent.InstanceId, go.name, VSObjectType.Package, go.GetType());
                         var thisPort= iStorage.PropertiesWizardGetInputThisPort(instance);
                         if(thisPort != null) {
                             thisPort.PortValue= go;
@@ -556,7 +556,7 @@ namespace iCanScript.Editor {
         // ======================================================================
         // Utilities
     	// ----------------------------------------------------------------------
-        private static iCS_EditorObject _CreatePackage(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Package, Type runtimeType= null) {
+        private static iCS_EditorObject _CreatePackage(iCS_EditorObject parent, Vector2 globalPos, string name, VSObjectType objectType= VSObjectType.Package, Type runtimeType= null) {
     #if DEBUG
             Debug.Log("iCanScript: CreatePackage => "+name);
     #endif

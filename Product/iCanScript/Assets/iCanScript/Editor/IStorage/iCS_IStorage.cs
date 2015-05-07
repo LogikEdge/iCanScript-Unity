@@ -360,12 +360,12 @@ namespace iCanScript.Editor {
     						if(obj.IsInParentMuxPort) {
     	                        switch(obj.NumberOfChildPorts()) {
     	                            case 0:
-    	    					        obj.ObjectType= iCS_ObjectTypeEnum.InDynamicDataPort;
+    	    					        obj.ObjectType= VSObjectType.InDynamicDataPort;
     	                                break;
     	                            case 1:
     	                                var childPorts= obj.BuildListOfChildPorts(_=> true);
     	                                obj.ProducerPort= childPorts[0].ProducerPort;
-    	    					        obj.ObjectType= iCS_ObjectTypeEnum.InDynamicDataPort;
+    	    					        obj.ObjectType= VSObjectType.InDynamicDataPort;
     	                                DestroyInstanceInternal(childPorts[0]);
                                         modified= true;
     	                                break;
@@ -374,8 +374,8 @@ namespace iCanScript.Editor {
                             // -- Convert any dynamic ports on public functions to proposed ports --
                             if(obj.IsDynamicDataPort && obj.ParentNode.IsPublicFunction) {
                                 obj.ObjectType= obj.IsInDynamicDataPort ?
-                                    iCS_ObjectTypeEnum.InProposedDataPort :
-                                    iCS_ObjectTypeEnum.OutProposedDataPort;
+                                    VSObjectType.InProposedDataPort :
+                                    VSObjectType.OutProposedDataPort;
                             }
     					}
                         // Cleanup disconnected typecasts.
@@ -508,12 +508,12 @@ namespace iCanScript.Editor {
                 Debug.LogError("Behaviour MUST be the root object !!!");
             }
             // Create new EditorObject
-            iCS_EditorObject.CreateInstance(0, name, typeof(iCS_VisualScriptImp), -1, iCS_ObjectTypeEnum.Behaviour, this);
+            iCS_EditorObject.CreateInstance(0, name, typeof(iCS_VisualScriptImp), -1, VSObjectType.Behaviour, this);
             this[0].LocalAnchorFromGlobalPosition= VisualEditorCenter();
             return this[0];
         }
         // ----------------------------------------------------------------------
-        public iCS_EditorObject CreatePackage(int parentId, string name= "", iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Package, Type runtimeType= null) {
+        public iCS_EditorObject CreatePackage(int parentId, string name= "", VSObjectType objectType= VSObjectType.Package, Type runtimeType= null) {
     		if(runtimeType == null) runtimeType= typeof(iCS_Package);
             // Create the function node.
             int id= GetNextAvailableId();
@@ -531,7 +531,7 @@ namespace iCanScript.Editor {
             // Create the function node.
             int id= GetNextAvailableId();
             // Create new EditorObject
-            var instance= iCS_EditorObject.CreateInstance(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, this);
+            var instance= iCS_EditorObject.CreateInstance(id, name, typeof(iCS_StateChart), parentId, VSObjectType.StateChart, this);
             return instance;
         }
         // ----------------------------------------------------------------------
@@ -544,7 +544,7 @@ namespace iCanScript.Editor {
             // Create the function node.
             int id= GetNextAvailableId();
             // Create new EditorObject
-            var instance= iCS_EditorObject.CreateInstance(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, this);
+            var instance= iCS_EditorObject.CreateInstance(id, name, typeof(iCS_State), parentId, VSObjectType.State, this);
             // Set first state as the default entry state.
             instance.IsEntryState= !UntilMatchingChild(parent,
                 child=> {
@@ -565,7 +565,7 @@ namespace iCanScript.Editor {
 		/// @param nodeType The visual script object type for the node.
 		/// @return The newly created node.
 		///
-		iCS_EditorObject CreateBaseNode(int parentId, LibraryMemberInfo libraryMemberInfo, iCS_ObjectTypeEnum nodeType) {
+		iCS_EditorObject CreateBaseNode(int parentId, LibraryMemberInfo libraryMemberInfo, VSObjectType nodeType) {
             // -- Grab a unique ID for this node. --
             int id= GetNextAvailableId();
             // -- Create node --
@@ -590,7 +590,7 @@ namespace iCanScript.Editor {
                 var p= parameters[idx];
     			var parameterType= p.ParameterType;
                 if(parameterType != typeof(void)) {
-                    iCS_ObjectTypeEnum portType= p.IsOut ? iCS_ObjectTypeEnum.OutFixDataPort : iCS_ObjectTypeEnum.InFixDataPort;
+                    VSObjectType portType= p.IsOut ? VSObjectType.OutFixDataPort : VSObjectType.InFixDataPort;
                     var port= CreatePort(p.Name, nodeId, parameterType, portType, (int)iCS_PortIndex.ParametersStart+idx);
     				object initialValue= p.DefaultValue;
     				if(initialValue == null || initialValue.GetType() != parameterType) {
@@ -614,7 +614,7 @@ namespace iCanScript.Editor {
 				if(returnName.StartsWith("get_")) {
 					returnName= returnName.Substring(4);
 				}
-                CreatePort(returnName, node.InstanceId, returnType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
+                CreatePort(returnName, node.InstanceId, returnType, VSObjectType.OutFixDataPort, (int)iCS_PortIndex.Return);
     		}
 		}
 		
@@ -685,7 +685,7 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateStaticFunctionCallNode(int parentId, LibraryMethodInfo libraryMethodInfo) {
 			// -- Create base function node. --
-			var instance= CreateBaseFunctionCallNode(parentId, libraryMethodInfo, iCS_ObjectTypeEnum.StaticFunction); 
+			var instance= CreateBaseFunctionCallNode(parentId, libraryMethodInfo, VSObjectType.StaticFunction); 
             return instance;
         }
         // ----------------------------------------------------------------------
@@ -697,7 +697,7 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateFunctionCallNode(int parentId, LibraryMethodInfo libraryMethodInfo) {
 			// -- Create base function node. --
-			var instance= CreateBaseFunctionCallNode(parentId, libraryMethodInfo, iCS_ObjectTypeEnum.NonStaticFunction); 
+			var instance= CreateBaseFunctionCallNode(parentId, libraryMethodInfo, VSObjectType.NonStaticFunction); 
     		// -- Create target & self ports. --
 			var id= instance.InstanceId;
             CreateTargetPort(id);
@@ -712,7 +712,7 @@ namespace iCanScript.Editor {
 		/// @param nodeType The visual script object type for this node.
     	/// @return The newly created function node.
     	///
-        iCS_EditorObject CreateBaseFunctionCallNode(int parentId, LibraryMethodInfo libraryMethodInfo, iCS_ObjectTypeEnum nodeType) {
+        iCS_EditorObject CreateBaseFunctionCallNode(int parentId, LibraryMethodInfo libraryMethodInfo, VSObjectType nodeType) {
 			// -- Create base node --
 			var instance= CreateBaseNode(parentId, libraryMethodInfo, nodeType);
             // -- Create parameter ports. --
@@ -731,7 +731,7 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateStaticConstructorCallNode(int parentId, LibraryConstructor libraryConstructor) {
 			// -- Create base constructor node --
-			var instance= CreateBaseConstructorCallNode(parentId, libraryConstructor, iCS_ObjectTypeEnum.StaticConstructor);
+			var instance= CreateBaseConstructorCallNode(parentId, libraryConstructor, VSObjectType.StaticConstructor);
             return instance;
         }
         // ----------------------------------------------------------------------
@@ -743,10 +743,10 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateConstructorCallNode(int parentId, LibraryConstructor libraryConstructor) {
 			// -- Create base constructor node --
-			var instance= CreateBaseConstructorCallNode(parentId, libraryConstructor, iCS_ObjectTypeEnum.Constructor);
+			var instance= CreateBaseConstructorCallNode(parentId, libraryConstructor, VSObjectType.Constructor);
     		// -- Create return port (Self). --
 			var declaringType= libraryConstructor.declaringType;
-            CreatePort("Self", instance.InstanceId, declaringType, iCS_ObjectTypeEnum.OutFixDataPort, (int)iCS_PortIndex.Return);
+            CreatePort("Self", instance.InstanceId, declaringType, VSObjectType.OutFixDataPort, (int)iCS_PortIndex.Return);
     		return instance;
         }
         // ----------------------------------------------------------------------
@@ -756,7 +756,7 @@ namespace iCanScript.Editor {
     	/// @param libraryConstructor The library object of the constructor to create.
     	/// @return The newly created constructor node.
     	///
-        iCS_EditorObject CreateBaseConstructorCallNode(int parentId, LibraryConstructor libraryConstructor, iCS_ObjectTypeEnum nodeType) {
+        iCS_EditorObject CreateBaseConstructorCallNode(int parentId, LibraryConstructor libraryConstructor, VSObjectType nodeType) {
 			// -- Create base node --
 			var instance= CreateBaseNode(parentId, libraryConstructor, nodeType);
             // -- Create parameter ports. --
@@ -773,7 +773,7 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateStaticGetFieldCallNode(int parentId, LibraryGetField libraryField) {
 			// -- Create base field getter node --
-			var instance= CreateBaseGetFieldCallNode(parentId, libraryField, iCS_ObjectTypeEnum.StaticField);
+			var instance= CreateBaseGetFieldCallNode(parentId, libraryField, VSObjectType.StaticField);
             return instance;
         }
         // ----------------------------------------------------------------------
@@ -785,7 +785,7 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateGetFieldCallNode(int parentId, LibraryGetField libraryField) {
 			// -- Create base get field node --
-			var instance= CreateBaseGetFieldCallNode(parentId, libraryField, iCS_ObjectTypeEnum.NonStaticField);
+			var instance= CreateBaseGetFieldCallNode(parentId, libraryField, VSObjectType.NonStaticField);
     		// -- Create target & self ports. --
 			var id= instance.InstanceId;
             CreateTargetPort(id);
@@ -800,13 +800,13 @@ namespace iCanScript.Editor {
 		/// @param nodeType The visual script object type for the field getter.
     	/// @return The newly created field getter node.
     	///
-        iCS_EditorObject CreateBaseGetFieldCallNode(int parentId, LibraryGetField libraryField, iCS_ObjectTypeEnum nodeType) {
+        iCS_EditorObject CreateBaseGetFieldCallNode(int parentId, LibraryGetField libraryField, VSObjectType nodeType) {
 			// -- Create base node --
 			var instance= CreateBaseNode(parentId, libraryField, nodeType);
             // -- Create parameter ports. --
 			var fieldName= libraryField.fieldName;
             var fieldType= libraryField.fieldType;
-            var portType = iCS_ObjectTypeEnum.OutFixDataPort;
+            var portType = VSObjectType.OutFixDataPort;
             var portIndex= (int)iCS_PortIndex.ParametersStart;
             CreatePort(fieldName, instance.InstanceId, fieldType, portType, portIndex);
             return instance;
@@ -820,7 +820,7 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateStaticSetFieldCallNode(int parentId, LibrarySetField libraryField) {
             // -- Create base field setter node --
-            var instance= CreateBaseSetFieldCallNode(parentId, libraryField, iCS_ObjectTypeEnum.StaticField);
+            var instance= CreateBaseSetFieldCallNode(parentId, libraryField, VSObjectType.StaticField);
             return instance;
         }
         // ----------------------------------------------------------------------
@@ -832,7 +832,7 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateSetFieldCallNode(int parentId, LibrarySetField libraryField) {
             // -- Create base field setter node --
-            var instance= CreateBaseSetFieldCallNode(parentId, libraryField, iCS_ObjectTypeEnum.NonStaticField);
+            var instance= CreateBaseSetFieldCallNode(parentId, libraryField, VSObjectType.NonStaticField);
     		// -- Create target & self ports. --
             var id= instance.InstanceId;
             CreateTargetPort(id);
@@ -847,13 +847,13 @@ namespace iCanScript.Editor {
         /// @param nodeType The visual script object type for the field setter.
     	/// @return The newly created field setter node.
     	///
-        iCS_EditorObject CreateBaseSetFieldCallNode(int parentId, LibrarySetField libraryField, iCS_ObjectTypeEnum nodeType) {
+        iCS_EditorObject CreateBaseSetFieldCallNode(int parentId, LibrarySetField libraryField, VSObjectType nodeType) {
             // -- Create base node --
             var instance= CreateBaseNode(parentId, libraryField, nodeType);
             // -- Create parameter ports. --
             var fieldName= libraryField.fieldName;
             var fieldType= libraryField.fieldType;
-            var portType = iCS_ObjectTypeEnum.InFixDataPort;
+            var portType = VSObjectType.InFixDataPort;
             var portIndex= (int)iCS_PortIndex.ParametersStart;
             CreatePort(fieldName, instance.InstanceId, fieldType, portType, portIndex);
             return instance;
@@ -867,7 +867,7 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateStaticSetPropertyCallNode(int parentId, LibrarySetProperty libraryProperty) {
             // -- Create base field setter node --
-            var instance= CreateBaseSetPropertyCallNode(parentId, libraryProperty, iCS_ObjectTypeEnum.StaticFunction);
+            var instance= CreateBaseSetPropertyCallNode(parentId, libraryProperty, VSObjectType.StaticFunction);
             return instance;
         }
         // ----------------------------------------------------------------------
@@ -879,7 +879,7 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateSetPropertyCallNode(int parentId, LibrarySetProperty libraryProperty) {
             // -- Create base field setter node --
-            var instance= CreateBaseSetPropertyCallNode(parentId, libraryProperty, iCS_ObjectTypeEnum.NonStaticFunction);
+            var instance= CreateBaseSetPropertyCallNode(parentId, libraryProperty, VSObjectType.NonStaticFunction);
     		// -- Create target & self ports. --
             var id= instance.InstanceId;
             CreateTargetPort(id);
@@ -894,13 +894,13 @@ namespace iCanScript.Editor {
         /// @param nodeType The visual script object type for the property setter.
     	/// @return The newly created property setter node.
     	///
-        iCS_EditorObject CreateBaseSetPropertyCallNode(int parentId, LibrarySetProperty libraryProperty, iCS_ObjectTypeEnum nodeType) {
+        iCS_EditorObject CreateBaseSetPropertyCallNode(int parentId, LibrarySetProperty libraryProperty, VSObjectType nodeType) {
             // -- Create base node --
             var instance= CreateBaseNode(parentId, libraryProperty, nodeType);
             // -- Create parameter ports. --
             var propertyName= libraryProperty.propertyName.Substring(4);
             var propertyType= libraryProperty.parameters[0].ParameterType;
-            var portType = iCS_ObjectTypeEnum.InFixDataPort;
+            var portType = VSObjectType.InFixDataPort;
             var portIndex= (int)iCS_PortIndex.ParametersStart;
             CreatePort(propertyName, instance.InstanceId, propertyType, portType, portIndex);
             return instance;
@@ -914,7 +914,7 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateStaticGetPropertyCallNode(int parentId, LibraryGetProperty libraryProperty) {
             // -- Create base field getter node --
-            var instance= CreateBaseGetPropertyCallNode(parentId, libraryProperty, iCS_ObjectTypeEnum.StaticFunction);
+            var instance= CreateBaseGetPropertyCallNode(parentId, libraryProperty, VSObjectType.StaticFunction);
             return instance;
         }
         // ----------------------------------------------------------------------
@@ -926,7 +926,7 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateGetPropertyCallNode(int parentId, LibraryGetProperty libraryProperty) {
             // -- Create base field getter node --
-            var instance= CreateBaseGetPropertyCallNode(parentId, libraryProperty, iCS_ObjectTypeEnum.NonStaticFunction);
+            var instance= CreateBaseGetPropertyCallNode(parentId, libraryProperty, VSObjectType.NonStaticFunction);
     		// -- Create target & self ports. --
             var id= instance.InstanceId;
             CreateTargetPort(id);
@@ -941,7 +941,7 @@ namespace iCanScript.Editor {
         /// @param nodeType The visual script object type for the property getter.
     	/// @return The newly created property getter node.
     	///
-        iCS_EditorObject CreateBaseGetPropertyCallNode(int parentId, LibraryGetProperty libraryProperty, iCS_ObjectTypeEnum nodeType) {
+        iCS_EditorObject CreateBaseGetPropertyCallNode(int parentId, LibraryGetProperty libraryProperty, VSObjectType nodeType) {
             // -- Create base node --
             var instance= CreateBaseNode(parentId, libraryProperty, nodeType);
     		// -- Create return port. --
@@ -961,7 +961,7 @@ namespace iCanScript.Editor {
             // -- Create event handler node --
             var nodeName     = libraryEventHandler.nodeName;
     		var declaringType= libraryEventHandler.declaringType;
-    		var objectType   = iCS_ObjectTypeEnum.InstanceMessage;
+    		var objectType   = VSObjectType.InstanceMessage;
             var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
             // -- Create target port. --
     		iCS_EditorObject port= null;
@@ -975,7 +975,7 @@ namespace iCanScript.Editor {
 				var paramType= parameterTypes[parameterIdx];
 				var paramName= parameterNames[parameterIdx];
                 if(paramType != typeof(void)) {
-                    iCS_ObjectTypeEnum portType= iCS_ObjectTypeEnum.InFixDataPort;
+                    VSObjectType portType= VSObjectType.InFixDataPort;
                     port= CreatePort(paramName, id, paramType, portType, (int)iCS_PortIndex.ParametersStart+parameterIdx);
                     port.InitialPortValue= iCS_Types.DefaultValue(paramType);
                 }
@@ -991,22 +991,22 @@ namespace iCanScript.Editor {
     	/// @return The newly created property wizard node.
     	///
     	public iCS_EditorObject CreatePropertyWizardNode(int parentId, Type type) {
-            return CreatePackage(parentId, null, iCS_ObjectTypeEnum.Package, type);
+            return CreatePackage(parentId, null, VSObjectType.Package, type);
     	}
     	// ----------------------------------------------------------------------
     	public iCS_EditorObject CreateObjectInstance(int parentId, string name, Type instanceType) {
-            return CreatePackage(parentId, name, iCS_ObjectTypeEnum.Package, instanceType);
+            return CreatePackage(parentId, name, VSObjectType.Package, instanceType);
     	}
         // ----------------------------------------------------------------------
     	public iCS_EditorObject CreateInParameterPort(string name, int parentId, Type valueType, int index) {
-    		return CreatePort(name, parentId, valueType, iCS_ObjectTypeEnum.InFixDataPort, index);
+    		return CreatePort(name, parentId, valueType, VSObjectType.InFixDataPort, index);
     	}
         // ----------------------------------------------------------------------
     	public iCS_EditorObject CreateOutParameterPort(string name, int parentId, Type valueType, int index) {
-    		return CreatePort(name, parentId, valueType, iCS_ObjectTypeEnum.OutFixDataPort, index);
+    		return CreatePort(name, parentId, valueType, VSObjectType.OutFixDataPort, index);
     	}
         // ----------------------------------------------------------------------
-    	private iCS_EditorObject CreateParameterPort(string name, int parentId, Type valueType, iCS_ObjectTypeEnum portType, int index) {
+    	private iCS_EditorObject CreateParameterPort(string name, int parentId, Type valueType, VSObjectType portType, int index) {
     		if(index < (int)iCS_PortIndex.ParametersStart || index > (int)iCS_PortIndex.ParametersEnd) {
     			Debug.LogError("iCanScript: Invalid parameter port index: "+index);
     		}

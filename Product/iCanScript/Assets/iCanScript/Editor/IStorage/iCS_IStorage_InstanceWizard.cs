@@ -16,19 +16,19 @@ namespace iCanScript.Editor {
             Type classType= module.RuntimeType;
             if(!iCS_Types.IsStaticClass(classType)) {
                 PropertiesWizardCreatePortIfNonExisting(module, "Target", classType,
-                                                      iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.Target);
+                                                      VSObjectType.InFixDataPort, (int)iCS_PortIndex.Target);
             }
             module.Fold();
         }
         // ----------------------------------------------------------------------
         public iCS_EditorObject CreateInputInstancePort(Type classType, iCS_EditorObject instanceNode) {
-            return PropertiesWizardCreatePortIfNonExisting(instanceNode, "Target", classType, iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.Target);
+            return PropertiesWizardCreatePortIfNonExisting(instanceNode, "Target", classType, VSObjectType.InFixDataPort, (int)iCS_PortIndex.Target);
         }
 
         // ======================================================================
         // Utilities.
         // ----------------------------------------------------------------------
-        iCS_EditorObject PropertiesWizardGetPort(iCS_EditorObject module, string portName, iCS_ObjectTypeEnum objType, int portId= -1) {
+        iCS_EditorObject PropertiesWizardGetPort(iCS_EditorObject module, string portName, VSObjectType objType, int portId= -1) {
             iCS_EditorObject result= null;
             UntilMatchingChildPort(module,
                 port=> {
@@ -67,7 +67,7 @@ namespace iCanScript.Editor {
             return FindInputInstancePortOn(module);
         }
         // ----------------------------------------------------------------------
-        void PropertiesWizardDestroyPortIfNotConnected(iCS_EditorObject module, string portName, iCS_ObjectTypeEnum objType) {
+        void PropertiesWizardDestroyPortIfNotConnected(iCS_EditorObject module, string portName, VSObjectType objType) {
             iCS_EditorObject port= PropertiesWizardGetPort(module, portName, objType);
             if(port != null && port.ProducerPort == null && FindAConnectedPort(port) == null) {
                 DestroyInstance(port.InstanceId);
@@ -75,7 +75,7 @@ namespace iCanScript.Editor {
         }
         // ----------------------------------------------------------------------
         iCS_EditorObject PropertiesWizardCreatePortIfNonExisting(iCS_EditorObject module, string portName, Type portType,
-                                                               iCS_ObjectTypeEnum objType, int portIdx= -1) {
+                                                               VSObjectType objType, int portIdx= -1) {
             iCS_EditorObject port= PropertiesWizardGetPort(module, portName, objType, portIdx);
             if(port == null) {
                 port= CreatePort(portName, module.InstanceId, portType, objType);                
@@ -120,9 +120,9 @@ namespace iCanScript.Editor {
                                 Debug.LogWarning("iCanScript: Unable to find 'this' input port in class module: "+module.DisplayName);
                             }
                         } else {
-                            iCS_EditorObject classPort= PropertiesWizardGetPort(module, modulePortName, iCS_ObjectTypeEnum.InDynamicDataPort);
+                            iCS_EditorObject classPort= PropertiesWizardGetPort(module, modulePortName, VSObjectType.InDynamicDataPort);
                             if(classPort == null) {
-                                classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
+                                classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, VSObjectType.InDynamicDataPort);
                                 SetSource(port, classPort);
                             } else {
                                 SetSource(port, classPort);
@@ -132,9 +132,9 @@ namespace iCanScript.Editor {
                         // Special case for "instance".
                         if(port.IsTargetOrSelfPort) {
                         } else {
-                            iCS_EditorObject classPort= PropertiesWizardGetPort(module, modulePortName, iCS_ObjectTypeEnum.OutDynamicDataPort);
+                            iCS_EditorObject classPort= PropertiesWizardGetPort(module, modulePortName, VSObjectType.OutDynamicDataPort);
                             if(classPort == null) {
-                                classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+                                classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, VSObjectType.OutDynamicDataPort);
                                 SetSource(classPort, port);
                             } else {
                                 SetSource(classPort, port);

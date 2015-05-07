@@ -237,14 +237,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	void CreateMuxPort(iCS_EditorObject fixPort, iCS_EditorObject parentMuxPort) {
         LibraryFunction conversion= null;
         if(!VerifyConnectionTypes(parentMuxPort, fixPort, out conversion)) return;
-        var childPortType= parentMuxPort.IsInputPort ? iCS_ObjectTypeEnum.InChildMuxPort : iCS_ObjectTypeEnum.OutChildMuxPort;
+        var childPortType= parentMuxPort.IsInputPort ? VSObjectType.InChildMuxPort : VSObjectType.OutChildMuxPort;
 		var source= parentMuxPort.ProducerPort;
 		// Convert source port to child port.
 		if(source != null) {
 			var firstChildMux= IStorage.CreatePort(fixPort.DisplayName, parentMuxPort.InstanceId, parentMuxPort.RuntimeType, childPortType);
 			IStorage.SetSource(firstChildMux, source);
 			IStorage.SetSource(parentMuxPort, null);
-			parentMuxPort.ObjectType= parentMuxPort.IsInputPort ? iCS_ObjectTypeEnum.InParentMuxPort : iCS_ObjectTypeEnum.OutParentMuxPort;
+			parentMuxPort.ObjectType= parentMuxPort.IsInputPort ? VSObjectType.InParentMuxPort : VSObjectType.OutParentMuxPort;
             parentMuxPort.PortIndex= (int)iCS_PortIndex.Return;
 		}
 		// Create new mux input port.
@@ -260,7 +260,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         return parentModule;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject GetValidParentNodeUnder(Vector2 point, iCS_ObjectTypeEnum objType, string objName) {
+    iCS_EditorObject GetValidParentNodeUnder(Vector2 point, VSObjectType objType, string objName) {
         iCS_EditorObject newParent= IStorage.GetNodeAt(point);
         if(newParent != null && !iCS_AllowedChildren.CanAddChildNode(objName, objType, newParent, IStorage)) {
             newParent= null;
@@ -323,7 +323,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				}
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
-	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.DisplayName, newInputNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.DisplayName, newInputNode.InstanceId, inputPort.RuntimeType, VSObjectType.OutDynamicDataPort);
 				IStorage.SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
 				newPort.ProducerPort= inputPort.ProducerPort;
 				inputPort.ProducerPort= newPort;
@@ -349,7 +349,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				}
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
-	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.DisplayName, newDstNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.DisplayName, newDstNode.InstanceId, inputPort.RuntimeType, VSObjectType.OutDynamicDataPort);
 				IStorage.SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
 				newPort.ProducerPort= inputPort.ProducerPort;
 				inputPort.ProducerPort= newPort;
@@ -369,7 +369,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				}
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
-	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.DisplayName, inputNodeParent.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
+	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.DisplayName, inputNodeParent.InstanceId, inputPort.RuntimeType, VSObjectType.InDynamicDataPort);
 				IStorage.SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
 				newPort.ProducerPort= inputPort.ProducerPort;
 				inputPort.ProducerPort= newPort;
@@ -381,13 +381,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
     void CleanupConnections(iCS_EditorObject node) {
         switch(node.ObjectType) {
-            case iCS_ObjectTypeEnum.StateChart: {
+            case VSObjectType.StateChart: {
                 List<iCS_EditorObject> childNodes= new List<iCS_EditorObject>();
                 IStorage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
                 foreach(var childNode in childNodes) { CleanupConnections(childNode); }
                 break;                
             }
-            case iCS_ObjectTypeEnum.State: {
+            case VSObjectType.State: {
                 // Attempt to relocate transition modules.
                 IStorage.ForEachChildPort(node,
                     p=> {
@@ -420,18 +420,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 foreach(var childNode in childNodes) { CleanupConnections(childNode); }
                 break;
             }
-            case iCS_ObjectTypeEnum.TransitionPackage:
-            case iCS_ObjectTypeEnum.Package: {
+            case VSObjectType.TransitionPackage:
+            case VSObjectType.Package: {
                 List<iCS_EditorObject> childNodes= new List<iCS_EditorObject>();
                 IStorage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
                 foreach(var childNode in childNodes) { CleanupConnections(childNode); }
-                goto case iCS_ObjectTypeEnum.NonStaticFunction;
+                goto case VSObjectType.NonStaticFunction;
             }
-            case iCS_ObjectTypeEnum.NonStaticFunction:
-            case iCS_ObjectTypeEnum.StaticFunction:
-            case iCS_ObjectTypeEnum.NonStaticField:
-            case iCS_ObjectTypeEnum.StaticField:
-            case iCS_ObjectTypeEnum.TypeCast: {
+            case VSObjectType.NonStaticFunction:
+            case VSObjectType.StaticFunction:
+            case VSObjectType.NonStaticField:
+            case VSObjectType.StaticField:
+            case VSObjectType.TypeCast: {
                 IStorage.ForEachChildPort(node,
                     port=> {
                         if(port.IsInDataOrControlPort) {

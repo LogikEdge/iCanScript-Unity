@@ -32,7 +32,7 @@ namespace iCanScript.Editor {
     			var source= aChild.ProducerPort;
     			DestroyInstance(aChild);
     			if(source != null) {
-    				port.ObjectType= port.IsOutMuxPort ? iCS_ObjectTypeEnum.OutDynamicDataPort : iCS_ObjectTypeEnum.InDynamicDataPort;
+    				port.ObjectType= port.IsOutMuxPort ? VSObjectType.OutDynamicDataPort : VSObjectType.InDynamicDataPort;
     				SetSource(port, source);
                     RecalculatePortIndexes(port.ParentNode);
     			} else {

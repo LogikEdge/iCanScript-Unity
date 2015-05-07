@@ -62,7 +62,7 @@ namespace iCanScript.Editor {
         // ======================================================================
         // Engine Object Accessors
         // ----------------------------------------------------------------------
-        public iCS_ObjectTypeEnum ObjectType {
+        public VSObjectType ObjectType {
     		get { return EngineObject.ObjectType; }
     		set {
                 var engineObject= EngineObject;
@@ -475,7 +475,7 @@ namespace iCanScript.Editor {
         // ----------------------------------------------------------------------
     	// Creates an instance of an editor/engine object pair.
     	public static iCS_EditorObject CreateInstance(int id, string name, Type type,
-    												  int parentId, iCS_ObjectTypeEnum objectType,
+    												  int parentId, VSObjectType objectType,
                                 					  iCS_IStorage iStorage) {
     		if(id < 0) return null;
     		// Create engine object.

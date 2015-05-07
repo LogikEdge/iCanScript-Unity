@@ -13,9 +13,9 @@ namespace iCanScript.Editor {
         public struct PortInfo {
             public string               Name;
             public Type                 ValueType;
-            public iCS_ObjectTypeEnum   PortType;
+            public VSObjectType   PortType;
             public object               InitialValue;
-            public PortInfo(string name, Type valueType, iCS_ObjectTypeEnum portType, object initialValue) {
+            public PortInfo(string name, Type valueType, VSObjectType portType, object initialValue) {
                 Name        = name;
                 ValueType   = valueType;
                 PortType    = portType;
@@ -70,7 +70,7 @@ namespace iCanScript.Editor {
         }
     
         // ----------------------------------------------------------------------
-        public bool DoesPortExist(iCS_EditorObject node, string portName, Type valueType, iCS_ObjectTypeEnum portType) {
+        public bool DoesPortExist(iCS_EditorObject node, string portName, Type valueType, VSObjectType portType) {
             return node.UntilMatchingChild(p=> p.DisplayName == portName && p.ObjectType == portType && p.RuntimeType == valueType);
         }
         // ----------------------------------------------------------------------
@@ -87,7 +87,7 @@ namespace iCanScript.Editor {
         public PortInfo[] BuildListOfPortInfoForBehaviourMessage(iCS_EditorObject behaviour) {
             var go= behaviour.iCSMonoBehaviour.gameObject;
             var portInfos= new List<PortInfo>();        
-            portInfos.Add(new PortInfo("gameObject", typeof(GameObject), iCS_ObjectTypeEnum.InProposedDataPort, go));
+            portInfos.Add(new PortInfo("gameObject", typeof(GameObject), VSObjectType.InProposedDataPort, go));
             return BuildListOfPortInfoForGameObject(go, portInfos);
         }
         // ----------------------------------------------------------------------
@@ -100,7 +100,7 @@ namespace iCanScript.Editor {
                     continue;
                 }
                 var componentType= component.GetType();
-                portInfos.Add(new PortInfo(componentType.Name, componentType, iCS_ObjectTypeEnum.InProposedDataPort, component));                
+                portInfos.Add(new PortInfo(componentType.Name, componentType, VSObjectType.InProposedDataPort, component));                
             }
             return portInfos.ToArray();
         }

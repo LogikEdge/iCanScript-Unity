@@ -13,7 +13,7 @@ namespace iCanScript.Editor {
         public iCS_EditorObject CreateTriggerPort(int parentId) {
             var existingTriggerPort= GetTriggerPort(EditorObjects[parentId]);
             if(existingTriggerPort != null) return existingTriggerPort;
-            iCS_EditorObject port= CreatePort(iCS_Strings.TriggerPort, parentId, typeof(bool), iCS_ObjectTypeEnum.TriggerPort, (int)iCS_PortIndex.Trigger);
+            iCS_EditorObject port= CreatePort(iCS_Strings.TriggerPort, parentId, typeof(bool), VSObjectType.TriggerPort, (int)iCS_PortIndex.Trigger);
             port.InitialPortValue= true;
             return port;
         }
@@ -30,7 +30,7 @@ namespace iCanScript.Editor {
         // Enable Ports
         // ----------------------------------------------------------------------
         public iCS_EditorObject CreateEnablePort(int parentId) {
-            iCS_EditorObject port= CreatePort(iCS_Strings.EnablePort, parentId, typeof(bool), iCS_ObjectTypeEnum.EnablePort, (int)GetNextAvailableEnablePortIndex(EditorObjects[parentId]));
+            iCS_EditorObject port= CreatePort(iCS_Strings.EnablePort, parentId, typeof(bool), VSObjectType.EnablePort, (int)GetNextAvailableEnablePortIndex(EditorObjects[parentId]));
             port.InitialPortValue= true;
             return port;
         }
@@ -93,7 +93,7 @@ namespace iCanScript.Editor {
             }
             var portName= "Target";
     		var port= CreatePort(portName, parentId, runtimeType,
-    							 iCS_ObjectTypeEnum.InFixDataPort, (int)iCS_PortIndex.Target);
+    							 VSObjectType.InFixDataPort, (int)iCS_PortIndex.Target);
     		return port;
     	}
 
@@ -151,7 +151,7 @@ namespace iCanScript.Editor {
                 return null;            
             }
             iCS_EditorObject port= CreatePort("Self", parentId, runtimeType,
-                                              iCS_ObjectTypeEnum.OutProposedDataPort, (int)iCS_PortIndex.Self);
+                                              VSObjectType.OutProposedDataPort, (int)iCS_PortIndex.Self);
             return port;
         }
         // -------------------------------------------------------------------------
@@ -180,13 +180,13 @@ namespace iCanScript.Editor {
     	public iCS_EditorObject CreateInDynamicDataPort(string name, int parentId, Type valueType) {
     		var parent= EditorObjects[parentId];
     		int index= GetNextDynamicOrProposedPortIndex(parent);
-    		return CreatePort(name, parentId, valueType, iCS_ObjectTypeEnum.InDynamicDataPort, index);
+    		return CreatePort(name, parentId, valueType, VSObjectType.InDynamicDataPort, index);
     	}
         // ----------------------------------------------------------------------
     	public iCS_EditorObject CreateOutDynamicDataPort(string name, int parentId, Type valueType) {
     		var parent= EditorObjects[parentId];
     		int index= GetNextDynamicOrProposedPortIndex(parent);
-    		return CreatePort(name, parentId, valueType, iCS_ObjectTypeEnum.OutDynamicDataPort, index);		
+    		return CreatePort(name, parentId, valueType, VSObjectType.OutDynamicDataPort, index);		
     	}
 
 
@@ -196,26 +196,26 @@ namespace iCanScript.Editor {
     	public iCS_EditorObject CreateInProposedDataPort(string name, int parentId, Type valueType) {
     		var parent= EditorObjects[parentId];
     		int index= GetNextDynamicOrProposedPortIndex(parent);
-    		return CreatePort(name, parentId, valueType, iCS_ObjectTypeEnum.InProposedDataPort, index);
+    		return CreatePort(name, parentId, valueType, VSObjectType.InProposedDataPort, index);
     	}
         // ----------------------------------------------------------------------
     	public iCS_EditorObject CreateOutProposedDataPort(string name, int parentId, Type valueType) {
     		var parent= EditorObjects[parentId];
     		int index= GetNextDynamicOrProposedPortIndex(parent);
-    		return CreatePort(name, parentId, valueType, iCS_ObjectTypeEnum.OutProposedDataPort, index);		
+    		return CreatePort(name, parentId, valueType, VSObjectType.OutProposedDataPort, index);		
     	}
 
 
         // ======================================================================
         // Common Creation
         // ----------------------------------------------------------------------
-        public iCS_EditorObject CreatePort(string name, int parentId, Type valueType, iCS_ObjectTypeEnum portType, int index= -1) {
+        public iCS_EditorObject CreatePort(string name, int parentId, Type valueType, VSObjectType portType, int index= -1) {
             int id= GetNextAvailableId();
             var parent= EditorObjects[parentId];
             if(index == -1) {
-                if(portType == iCS_ObjectTypeEnum.TriggerPort) {
+                if(portType == VSObjectType.TriggerPort) {
                     index= (int)iCS_PortIndex.Trigger;
-                } if(portType == iCS_ObjectTypeEnum.EnablePort) {
+                } if(portType == VSObjectType.EnablePort) {
                     index= GetNextAvailableEnablePortIndex(parent);
                 }
                 else {
