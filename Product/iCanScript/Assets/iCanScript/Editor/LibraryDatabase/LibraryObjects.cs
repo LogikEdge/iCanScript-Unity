@@ -45,6 +45,8 @@ namespace iCanScript.Editor {
 				Texture	myLibraryIcon  = null;
                 string	myDisplayString= null;
         public  Vector2 displaySize    = Vector2.zero;
+				float	myRawScore	   = 1f;
+				float   myScore        = 1f;
 
         // ======================================================================
         // PROPERTIES
@@ -65,6 +67,18 @@ namespace iCanScript.Editor {
 					myLibraryIcon= GetLibraryIcon();
 				}
 				return myLibraryIcon;
+			}
+		}
+		/// Returns the compounded score for this library object.
+		public float score { get { return myScore; }}
+		/// Get/Set the raw score for this library object.
+		public float rawScore {
+			get { return myRawScore; }
+			set {
+				if(Math3D.IsEqual(myRawScore, value)) return;
+				myRawScore= value;
+				ComputeScoreDownwards();
+				ComputeScoreUpwards();
 			}
 		}
 
@@ -151,7 +165,63 @@ namespace iCanScript.Editor {
             }	
 		}
 
-    }
+        // ----------------------------------------------------------------------
+		/// Resets the score values for this tree branch.
+		public void ResetScore() {
+			myScore= myRawScore= 1f;
+			if(children == null) return;
+			foreach(var child in children) {
+				var libraryChild= child as LibraryObject;
+				libraryChild.ResetScore();
+			}
+		}
+        // ----------------------------------------------------------------------
+		/// Computes the score starting from this node going down to the tree leaf.
+		void ComputeScoreDownwards() {
+			// -- Update our score if we are the leaf in the tree. --
+			if(children == null || children.Count == 0) {
+				myScore= myRawScore;
+				var libraryParent= parent as LibraryObject;
+				while(libraryParent != null) {
+					myScore*= libraryParent.rawScore;
+					libraryParent= libraryParent.parent as LibraryObject;
+				}
+				return;
+			}
+			// -- Ask each child to update their score. --
+			foreach(var child in children) {
+				var libraryChild= child as LibraryObject;
+				if(libraryChild != null) {
+					libraryChild.ComputeScoreDownwards();
+				}
+			}
+			// -- Our score is the best score of our children. --
+			ComputeScoreBasedOnChildren();
+		}
+        // ----------------------------------------------------------------------
+		/// Computes the score for the parent nodes.
+		void ComputeScoreUpwards() {
+			var libraryParent= parent as LibraryObject;
+			if(libraryParent == null) return;
+			// -- Parent score is the best score of its children. --
+			libraryParent.ComputeScoreBasedOnChildren();
+			libraryParent.ComputeScoreUpwards();
+		}
+        // ----------------------------------------------------------------------
+		/// Computes the score based on children.
+		void ComputeScoreBasedOnChildren() {
+			myScore= 0f;
+			foreach(var child in children) {
+				var libraryChild= child as LibraryObject;
+				if(libraryChild != null) {
+					var libraryChildScore= libraryChild.score;
+					if(libraryChildScore > myScore) {
+						myScore= libraryChildScore;
+					}
+				}
+			}			
+		}
+     }
     
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     /// Defines the root node that contains all library objects.

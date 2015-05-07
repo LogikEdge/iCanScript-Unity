@@ -41,6 +41,18 @@ namespace iCanScript.Editor {
 			get { return myController.showProtected; }
 			set { myController.showProtected= value; }
 		}
+		public string memberSearchString {
+			get { return myMemberSearchString; }
+			set { UpdateMemberSearchString(value); }
+		}
+		public string typeSearchString {
+			get { return myTypeSearchString; }
+			set { UpdateTypeSearchString(value); }
+		}
+		public string namespaceSearchString {
+			get { return myNamespaceSearchString; }
+			set { UpdateNamespaceSearchString(value); }
+		}
 		
         // =================================================================================
         // Activation/Deactivation.
@@ -120,9 +132,9 @@ namespace iCanScript.Editor {
 			// -- Add search fields --
             iCS_ToolbarUtility.MiniLabel(ref line2Rect, "Search: ", 0, 0);
             iCS_ToolbarUtility.Separator(ref line2Rect);
-    		var newNamespaceSearchString= iCS_ToolbarUtility.Search(ref line2Rect, 120.0f, myNamespaceSearchString, 0, 0, true);
-    		var newTypeSearchString= iCS_ToolbarUtility.Search(ref line3Rect, 120.0f, myTypeSearchString, 0, 0, true);
-    		var newMemberSearchString= iCS_ToolbarUtility.Search(ref line4Rect, 120.0f, myMemberSearchString, 0, 0, true);
+    		this.namespaceSearchString= iCS_ToolbarUtility.Search(ref line2Rect, 120.0f, this.namespaceSearchString, 0, 0, true);
+    		this.typeSearchString= iCS_ToolbarUtility.Search(ref line3Rect, 120.0f, this.typeSearchString, 0, 0, true);
+    		this.memberSearchString= iCS_ToolbarUtility.Search(ref line4Rect, 120.0f, this.memberSearchString, 0, 0, true);
             iCS_ToolbarUtility.MiniLabel(ref line2Rect, "Namespace", 0, 20, true);
             iCS_ToolbarUtility.MiniLabel(ref line3Rect, "Type", 0, 20, true);
             iCS_ToolbarUtility.MiniLabel(ref line4Rect, "Field/Property/Function", 0, 20, true);
@@ -208,6 +220,30 @@ namespace iCanScript.Editor {
         }
 
     	// =================================================================================
+        // Search functionality.
+        // ---------------------------------------------------------------------------------
+		/// Updates member search string and ask controller to adjust it filter.
+		void UpdateMemberSearchString(string newValue) {
+			if(newValue == myMemberSearchString) return;
+			myMemberSearchString= newValue;
+			myController.ComputeMemberScoreFor(myMemberSearchString);
+		}
+        // ---------------------------------------------------------------------------------
+		/// Updates type search string and ask controller to adjust it filter.
+		void UpdateTypeSearchString(string newValue) {
+			if(newValue == myTypeSearchString) return;
+			myTypeSearchString= newValue;
+			myController.ComputeTypeScoreFor(myTypeSearchString);
+		}
+        // ---------------------------------------------------------------------------------
+		/// Updates namespace search string and ask controller to adjust it filter.
+		void UpdateNamespaceSearchString(string newValue) {
+			if(newValue == myNamespaceSearchString) return;
+			myNamespaceSearchString= newValue;
+			myController.ComputeNamespaceScoreFor(myNamespaceSearchString);
+		}
+		
+    	// =================================================================================
         // Drag events.
         // ---------------------------------------------------------------------------------
 		/// Creates a drag and drop object with a node created from the selecct library
@@ -242,6 +278,7 @@ namespace iCanScript.Editor {
             // -- Release temporary game object in 60 seconds. --
             iCS_AutoReleasePool.AutoRelease(go, 60f);
         }
+
         // ---------------------------------------------------------------------------------
 		/// Creates a visual script node from the given library object.
 		///

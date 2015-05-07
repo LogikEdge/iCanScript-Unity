@@ -2,12 +2,13 @@
 using UnityEditor;
 using System.Reflection;
 using System.Collections;
+using iCanScript.FuzzyLogic;
 
 namespace iCanScript.Editor {
 
     public class LibraryDisplayController : DSTreeViewDataSource {
         // =================================================================================
-        // FIELDS
+        // Fields
         // ---------------------------------------------------------------------------------
     	DSTreeView      myTreeView       = null;
         LibraryObject   myCursor         = null;
@@ -72,6 +73,7 @@ namespace iCanScript.Editor {
         // =================================================================================
         // Constants
         // ---------------------------------------------------------------------------------
+		const float kMinScore= 0.5f;
         const int   kIconWidth  = 16;
         const int   kIconHeight = 16; 
         const float kLabelSpacer= 4f;
@@ -126,10 +128,12 @@ namespace iCanScript.Editor {
             if(parent == null) return false;
             var siblings= parent.children;
             if(siblings == null) return false;
+            int idx= siblings.IndexOf(myCursor);
+			if(idx < 0) return false;
 			do {
-	            int idx= siblings.IndexOf(myCursor);
-	            if(idx < 0 || idx >= siblings.Count-1) return false;
-	            myCursor= siblings[idx+1] as LibraryObject;				
+	            if(idx >= siblings.Count-1) return false;
+	            myCursor= siblings[idx+1] as LibraryObject;
+				++idx;				
 			} while(!ShouldShow(myCursor));
             return true;
     	}
@@ -141,7 +145,12 @@ namespace iCanScript.Editor {
     	public bool MoveToFirstChild() {
             var siblings= myCursor.children;
             if(siblings == null || siblings.Count == 0) return false;
-    	    myCursor= siblings[0] as LibraryObject;
+			int idx= 0;
+			do {
+	            if(idx >= siblings.Count-1) return false;
+	            myCursor= siblings[idx] as LibraryObject;
+				++idx;				
+			} while(!ShouldShow(myCursor));
             return true;
     	}
         // -------------------------------------------------------------------
@@ -244,6 +253,7 @@ namespace iCanScript.Editor {
 					}
 				}				
 			}
+			if(libraryObject.score < kMinScore) return false;
 			return true;
         }
         
@@ -262,6 +272,69 @@ namespace iCanScript.Editor {
 			this.numberOfItems= nbItems;
         }
 
+        // -------------------------------------------------------------------
+		/// Computes the member score for the given string.
+		public void ComputeMemberScoreFor(string searchString) {
+			bool isEmpty= string.IsNullOrEmpty(searchString);
+			database.ForEach(
+				l=> {
+					if(l is LibraryType) return;
+					if(l is LibraryChildNamespace) return;
+					if(l is LibraryRootNamespace) return;
+					if(l is LibraryRoot) return;
+					var libraryMember= l as LibraryObject;
+					if(isEmpty) {
+						libraryMember.rawScore= 1f;
+					}
+					else {
+						libraryMember.rawScore= FuzzyString.GetScore(searchString, libraryMember.nodeName);						
+					}
+				}
+			);
+			ComputeNumberOfItems();			
+		}
+        // -------------------------------------------------------------------
+		/// Computes the type score for the given string.
+		public void ComputeTypeScoreFor(string searchString) {
+			bool isEmpty= string.IsNullOrEmpty(searchString);
+			database.ForEach(
+				l=> {
+					if(l is LibraryType) {
+						var libraryType= l as LibraryType;
+						if(isEmpty) {
+							libraryType.rawScore= 1f;
+						}
+						else {
+							libraryType.rawScore= FuzzyString.GetScore(searchString, libraryType.nodeName);						
+						}						
+					}
+				}
+			);
+			ComputeNumberOfItems();			
+		}
+        // -------------------------------------------------------------------
+		/// Computes the type score for the given string.
+		public void ComputeNamespaceScoreFor(string searchString) {
+			bool isEmpty= string.IsNullOrEmpty(searchString);
+			database.ForEach(
+				l=> {
+					if(l is LibraryChildNamespace) {
+						var libraryObject= l as LibraryObject;
+						var rootNamespace= libraryObject.parent as LibraryObject;
+						if(isEmpty) {
+							libraryObject.rawScore= 1f;
+						}
+						else {
+						 	var childScore= FuzzyString.GetScore(searchString, libraryObject.nodeName);						
+							var rootScore = FuzzyString.GetScore(searchString, rootNamespace.nodeName);
+							libraryObject.rawScore= Mathf.Max(childScore, rootScore);
+						}						
+					}
+				}
+			);
+			ComputeNumberOfItems();			
+		}
+		
         // ===================================================================
         // -------------------------------------------------------------------
         bool ShouldUseFoldout {
