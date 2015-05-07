@@ -732,7 +732,7 @@ namespace iCanScript.Editor {
 				}				
 			}
 			// -- Try functions --
-			if(IsInstanceFunction || IsStaticFunction) {
+			if(IsNonStaticFunction || IsStaticFunction) {
 				foreach(var function in libraryType.GetMembers<LibraryFunction>()) {
 					if(function.functionName == methodName) {
 						var functionParameters= function.parameters;

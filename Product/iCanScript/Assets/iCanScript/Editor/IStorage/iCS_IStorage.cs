@@ -697,7 +697,7 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateFunctionCallNode(int parentId, LibraryMethodInfo libraryMethodInfo) {
 			// -- Create base function node. --
-			var instance= CreateBaseFunctionCallNode(parentId, libraryMethodInfo, iCS_ObjectTypeEnum.InstanceFunction); 
+			var instance= CreateBaseFunctionCallNode(parentId, libraryMethodInfo, iCS_ObjectTypeEnum.NonStaticFunction); 
     		// -- Create target & self ports. --
 			var id= instance.InstanceId;
             CreateTargetPort(id);
@@ -879,7 +879,7 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateSetPropertyCallNode(int parentId, LibrarySetProperty libraryProperty) {
             // -- Create base field setter node --
-            var instance= CreateBaseSetPropertyCallNode(parentId, libraryProperty, iCS_ObjectTypeEnum.InstanceFunction);
+            var instance= CreateBaseSetPropertyCallNode(parentId, libraryProperty, iCS_ObjectTypeEnum.NonStaticFunction);
     		// -- Create target & self ports. --
             var id= instance.InstanceId;
             CreateTargetPort(id);
@@ -926,7 +926,7 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateGetPropertyCallNode(int parentId, LibraryGetProperty libraryProperty) {
             // -- Create base field getter node --
-            var instance= CreateBaseGetPropertyCallNode(parentId, libraryProperty, iCS_ObjectTypeEnum.InstanceFunction);
+            var instance= CreateBaseGetPropertyCallNode(parentId, libraryProperty, iCS_ObjectTypeEnum.NonStaticFunction);
     		// -- Create target & self ports. --
             var id= instance.InstanceId;
             CreateTargetPort(id);

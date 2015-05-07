@@ -90,7 +90,7 @@ namespace iCanScript.Editor {
                 case iCS_ObjectTypeEnum.StaticMessage:     PackageMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.TransitionPackage: PackageMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.Constructor:       FunctionMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.InstanceFunction:  FunctionMenu(selectedObject, storage); break;
+                case iCS_ObjectTypeEnum.NonStaticFunction: FunctionMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.StaticFunction:    FunctionMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.TypeCast:          FunctionMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.InstanceField:     FunctionMenu(selectedObject, storage); break;

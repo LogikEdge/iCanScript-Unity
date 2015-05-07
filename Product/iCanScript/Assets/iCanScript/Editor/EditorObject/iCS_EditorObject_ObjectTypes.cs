@@ -18,7 +18,7 @@ namespace iCanScript.Editor {
         public bool IsEventHandler              { get { return EngineObject.IsEventHandler; }}
         public bool IsMux                       { get { return EngineObject.IsMux; }}
         public bool IsConstructor               { get { return EngineObject.IsConstructor; }}
-        public bool IsInstanceFunction          { get { return EngineObject.IsInstanceFunction; }}
+        public bool IsNonStaticFunction         { get { return EngineObject.IsNonStaticFunction; }}
         public bool IsStaticFunction            { get { return EngineObject.IsStaticFunction; }}
     	public bool IsField			            { get { return EngineObject.IsField; }}
     	public bool IsInstanceField			    { get { return EngineObject.IsInstanceField; }}
@@ -120,14 +120,14 @@ namespace iCanScript.Editor {
         }
         public bool IsPropertyGet {
             get {
-                if(!IsInstanceFunction && !IsStaticFunction) return false;
+                if(!IsNonStaticFunction && !IsStaticFunction) return false;
                 if(!CodeName.StartsWith("get_")) return false;
                 return GetReturnPort() != null && GetPortWithIndex(0) == null;                
             }
         }
         public bool IsPropertySet {
             get {
-                if(!IsInstanceFunction && !IsStaticFunction) return false;
+                if(!IsNonStaticFunction && !IsStaticFunction) return false;
                 if(!CodeName.StartsWith("set_")) return false;
                 return GetReturnPort() == null && GetPortWithIndex(0) != null && GetPortWithIndex(1) == null;                
             }

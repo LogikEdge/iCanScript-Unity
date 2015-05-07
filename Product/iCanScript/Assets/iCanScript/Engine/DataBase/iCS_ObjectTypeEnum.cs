@@ -14,7 +14,7 @@ namespace iCanScript.Engine {
 
         // Function nodes
         Constructor=100,
-        InstanceFunction, StaticFunction, 
+        NonStaticFunction, StaticFunction, 
         InstanceField, StaticField,
         TypeCast,
         InstanceMessage,  StaticMessage,
@@ -83,13 +83,13 @@ namespace iCanScript.Engine {
         // Function nodes.
         public static bool IsKindOfFunction       (iCS_EngineObject obj) { return IsConstructor(obj) || IsFunction(obj) ||
     																			  IsField(obj) || IsTypeCast(obj); } 
-        public static bool IsFunction             (iCS_EngineObject obj) { return IsStaticFunction(obj) || IsInstanceFunction(obj); }
+        public static bool IsFunction             (iCS_EngineObject obj) { return IsStaticFunction(obj) || IsNonStaticFunction(obj); }
         public static bool IsField                (iCS_EngineObject obj) { return IsStaticField(obj) || IsInstanceField(obj); }
         public static bool IsEventHandler         (iCS_EngineObject obj) { return IsInstanceMessage(obj) || IsStaticMessage(obj); }
 
         public static bool IsConstructor          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Constructor; }
         public static bool IsStaticFunction       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StaticFunction; }
-        public static bool IsInstanceFunction     (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InstanceFunction; }
+        public static bool IsNonStaticFunction    (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.NonStaticFunction; }
         public static bool IsStaticField          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StaticField; }
         public static bool IsInstanceField        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InstanceField; }
         public static bool IsTypeCast             (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.TypeCast; }
