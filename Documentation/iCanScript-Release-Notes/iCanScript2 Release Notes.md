@@ -14,7 +14,10 @@ CSS: Github.css
 
 _April 24, 2015_
 
-V2.0.9 is a development release of iCanScript2.
+V2.0.11 is a performance improvement release. It includes a completly new library component.  It performance has been improved to the point that all .NET, Unity Engine and Unity Editor libraries are now available to the iCanScript2 user.
+
+**<span style="color: red">WARNING:</span>** Some of the features made available by the new library component are not completed.  Those features will be progressively included in subsequant releases.
+ 
 ### List of Changes
 
 - **<span style="color: blue">\[IMPROVED\]</span>** The _Unity Editor Library_ is now included by default.  Therefore, the option to manually include the Unity Editor library has been removed from the _Global Preferences_.
