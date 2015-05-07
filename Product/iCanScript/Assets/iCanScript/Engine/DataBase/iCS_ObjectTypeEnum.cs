@@ -18,7 +18,7 @@ namespace iCanScript.Engine {
         NonStaticField, StaticField,
         TypeCast,
         InstanceMessage,  StaticMessage,
-        InstanceProperty, StaticProperty,
+        NonStaticProperty, StaticProperty,
     	StaticConstructor,
 
         // Transition nodes

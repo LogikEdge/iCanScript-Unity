@@ -95,7 +95,7 @@ namespace iCanScript.Editor {
                 case iCS_ObjectTypeEnum.TypeCast:          FunctionMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.NonStaticField:    FunctionMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.StaticField:       FunctionMenu(selectedObject, storage); break;
-                case iCS_ObjectTypeEnum.InstanceProperty:  FunctionMenu(selectedObject, storage); break;
+                case iCS_ObjectTypeEnum.NonStaticProperty: FunctionMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.StaticProperty:    FunctionMenu(selectedObject, storage); break;
                 case iCS_ObjectTypeEnum.OnStateEntry:      OnStatePackageMenu(selectedObject); break;
                 case iCS_ObjectTypeEnum.OnStateUpdate:     OnStatePackageMenu(selectedObject); break;
