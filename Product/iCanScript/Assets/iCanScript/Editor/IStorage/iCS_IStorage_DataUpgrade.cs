@@ -1,4 +1,4 @@
-#define TEST_UPGRADE
+//#define TEST_UPGRADE
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
