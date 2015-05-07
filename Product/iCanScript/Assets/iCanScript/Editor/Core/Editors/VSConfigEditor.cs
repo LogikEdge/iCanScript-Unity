@@ -129,11 +129,6 @@ namespace iCanScript.Editor {
                 if(iStorage.NamespaceOverride == false) {
                     iStorage.Namespace= Prefs.EditorNamespace;
                 }
-                if(Prefs.UseUnityEditorLibrary == false) {
-                    if(EditorUtility.DisplayDialog("The Unity Editor Library must be enabled to create editor scipts.", "Do you want to enable the Unity Editor Library?", "Enable", "Abort")) {
-                        Prefs.UseUnityEditorLibrary= true;                        
-                    }
-                }
             }
             else {
                 iStorage.BaseTypeOverride= false;

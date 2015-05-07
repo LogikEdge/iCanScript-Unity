@@ -243,27 +243,25 @@ namespace iCanScript.Editor {
         // ---------------------------------------------------------------------------------
     	void CodeGeneration() {
             // -- Label column --
-            Rect[] pos= GetLabelColumnPositions(10);
+            Rect[] pos= GetLabelColumnPositions(9);
             GUI.Label(pos[0], "Editor Code", EditorStyles.boldLabel);
-            GUI.Label(pos[1], "Unity Editor Library");
-            GUI.Label(pos[2], "Namespace");
-            GUI.Label(pos[3], "Code Generation Folder");
+            GUI.Label(pos[1], "Namespace");
+            GUI.Label(pos[2], "Code Generation Folder");
 
-            GUI.Label(pos[5], "Engine Code", EditorStyles.boldLabel);
-            GUI.Label(pos[6], "Base Type");
-            GUI.Label(pos[8], "Namespace");
-            GUI.Label(pos[9], "Code Generation Folder");
+            GUI.Label(pos[4], "Engine Code", EditorStyles.boldLabel);
+            GUI.Label(pos[5], "Base Type");
+            GUI.Label(pos[7], "Namespace");
+            GUI.Label(pos[8], "Code Generation Folder");
     
             // -- Value column --
-            pos= GetValueColumnPositions(10);
-            Prefs.UseUnityEditorLibrary     = EditorGUI.Toggle(pos[1], Prefs.UseUnityEditorLibrary);
-            Prefs.EditorNamespace           = EditorGUI.TextField(pos[2], Prefs.EditorNamespace);
-            Prefs.EditorCodeGenerationFolder= EditorGUI.TextField(pos[3], Prefs.EditorCodeGenerationFolder);
+            pos= GetValueColumnPositions(9);
+            Prefs.EditorNamespace           = EditorGUI.TextField(pos[1], Prefs.EditorNamespace);
+            Prefs.EditorCodeGenerationFolder= EditorGUI.TextField(pos[2], Prefs.EditorCodeGenerationFolder);
 
-            Prefs.EngineBaseType            = EditorGUI.TextField(pos[6], Prefs.EngineBaseType);
-            GUI.Label(pos[7], "<i>(format: namespace.type)</i>");
-            Prefs.EngineNamespace           = EditorGUI.TextField(pos[8], Prefs.EngineNamespace);
-            Prefs.EngineCodeGenerationFolder= EditorGUI.TextField(pos[9], Prefs.EngineCodeGenerationFolder);
+            Prefs.EngineBaseType            = EditorGUI.TextField(pos[5], Prefs.EngineBaseType);
+            GUI.Label(pos[6], "<i>(format: namespace.type)</i>");
+            Prefs.EngineNamespace           = EditorGUI.TextField(pos[7], Prefs.EngineNamespace);
+            Prefs.EngineCodeGenerationFolder= EditorGUI.TextField(pos[8], Prefs.EngineCodeGenerationFolder);
             
             // -- Reset button --
             if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
@@ -273,7 +271,6 @@ namespace iCanScript.Editor {
                 Prefs.ResetEngineBaseType();
                 Prefs.ResetEngineNamespace();
                 Prefs.ResetEditorNamespace();
-                Prefs.ResetUseUnityEditorLibrary();
             }
 
             // -- Display error if base type not found --

@@ -529,7 +529,6 @@ namespace iCanScript.Editor {
     	const string kEngineBaseType            = "UnityEngine.MonoBehaviour";
         const string kEngineNamespace           = "MyVisualScripts.Engine";
         const string kEditorNamespace           = "MyVisualScripts.Editor";
-        const bool   kUseUnityEditorLibrary     = false;
     
     	//
     	// Database access keys
@@ -539,7 +538,6 @@ namespace iCanScript.Editor {
     	const string kEngineBaseTypeKey            = "iCS_EngineBaseType";
         const string kEngineNamespaceKey           = "iCS_EngineNamespace";
         const string kEditorNamespaceKey           = "iCS_EditorNamespace";
-        const string kUseUnityEditorLibraryKey     = "iCS_UseUnityEditorLibrary";
 
     	//
     	// Reset to default value functions
@@ -559,9 +557,6 @@ namespace iCanScript.Editor {
     	public static void ResetEditorNamespace() {
     	    EditorNamespace= kEditorNamespace;
     	}
-        public static void ResetUseUnityEditorLibrary() {
-            UseUnityEditorLibrary= kUseUnityEditorLibrary;
-        }
     
     	//
     	// Accessors
@@ -586,10 +581,6 @@ namespace iCanScript.Editor {
             get { return EditorPrefs.GetString(kEditorNamespaceKey, kEditorNamespace); }
             set { EditorPrefs.SetString(kEditorNamespaceKey, value); }
         }
-        public static bool UseUnityEditorLibrary {
-            get { return EditorPrefs.GetBool(kUseUnityEditorLibraryKey, kUseUnityEditorLibrary); }
-            set { EditorPrefs.SetBool(kUseUnityEditorLibraryKey, value); }
-        }    
     
     	// =================================================================================
     	// Activation
