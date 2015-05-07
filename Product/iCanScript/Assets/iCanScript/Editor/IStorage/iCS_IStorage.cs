@@ -769,14 +769,8 @@ namespace iCanScript.Editor {
     	/// @return The newly created property wizard node.
     	///
         iCS_EditorObject CreateStaticGetFieldCallNode(int parentId, LibraryGetField libraryField) {
-			// -- Create base node --
-			var instance= CreateBaseNode(parentId, libraryField, iCS_ObjectTypeEnum.StaticField);
-            // -- Create parameter ports. --
-			var fieldName= libraryField.fieldName;
-            var fieldType= libraryField.fieldType;
-            var portType = iCS_ObjectTypeEnum.OutFixDataPort;
-            var portIndex= (int)iCS_PortIndex.ParametersStart;
-            CreatePort(fieldName, instance.InstanceId, fieldType, portType, portIndex);
+			// -- Create base get field node --
+			var instance= CreateBaseGetFieldCallNode(parentId, libraryField, iCS_ObjectTypeEnum.StaticField);
             return instance;
         }
         // ----------------------------------------------------------------------
@@ -787,18 +781,30 @@ namespace iCanScript.Editor {
     	/// @return The newly created property wizard node.
     	///
         iCS_EditorObject CreateGetFieldCallNode(int parentId, LibraryGetField libraryField) {
-			// -- Create base node --
-			var instance= CreateBaseNode(parentId, libraryField, iCS_ObjectTypeEnum.InstanceField);
+			// -- Create base get field node --
+			var instance= CreateBaseGetFieldCallNode(parentId, libraryField, iCS_ObjectTypeEnum.StaticField);
     		// -- Create target & self ports. --
 			var id= instance.InstanceId;
             CreateTargetPort(id);
-            CreateSelfPort(id);        
+            CreateSelfPort(id);
+            return instance;
+        }
+        // ----------------------------------------------------------------------
+    	/// Creates a node that represents a static field getter.
+    	///
+    	/// @param parentId The id of the parent node.
+    	/// @param libraryField The library object of the function to create.
+    	/// @return The newly created property wizard node.
+    	///
+        iCS_EditorObject CreateBaseGetFieldCallNode(int parentId, LibraryGetField libraryField, iCS_ObjectTypeEnum nodeType) {
+			// -- Create base node --
+			var instance= CreateBaseNode(parentId, libraryField, nodeType);
             // -- Create parameter ports. --
 			var fieldName= libraryField.fieldName;
             var fieldType= libraryField.fieldType;
             var portType = iCS_ObjectTypeEnum.OutFixDataPort;
             var portIndex= (int)iCS_PortIndex.ParametersStart;
-            CreatePort(fieldName, id, fieldType, portType, portIndex);
+            CreatePort(fieldName, instance.InstanceId, fieldType, portType, portIndex);
             return instance;
         }
         // ----------------------------------------------------------------------
@@ -809,20 +815,8 @@ namespace iCanScript.Editor {
     	/// @return The newly created property wizard node.
     	///
         iCS_EditorObject CreateStaticSetFieldCallNode(int parentId, LibrarySetField libraryField) {
-            // -- Grab a unique ID for this node. --
-            int id= GetNextAvailableId();
-            // -- Create node --
-            var nodeName     = libraryField.nodeName;
-    		var declaringType= libraryField.declaringType;
-    		var objectType   = iCS_ObjectTypeEnum.StaticField;
-            var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
-            var fieldName= libraryField.fieldName;
-    		instance.MethodName= fieldName;
-            // -- Create parameter ports. --
-            var fieldType= libraryField.fieldType;
-            var portType = iCS_ObjectTypeEnum.InFixDataPort;
-            var portIndex= (int)iCS_PortIndex.ParametersStart;
-            CreatePort(fieldName, id, fieldType, portType, portIndex);
+            // -- Create base field setter node --
+            var instance= CreateBaseSetFieldCallNode(parentId, libraryField, iCS_ObjectTypeEnum.StaticField);
             return instance;
         }
         // ----------------------------------------------------------------------
@@ -833,23 +827,31 @@ namespace iCanScript.Editor {
     	/// @return The newly created property wizard node.
     	///
         iCS_EditorObject CreateSetFieldCallNode(int parentId, LibrarySetField libraryField) {
-            // -- Grab a unique ID for this node. --
-            int id= GetNextAvailableId();
-            // -- Create node --
-            var nodeName     = libraryField.nodeName;
-    		var declaringType= libraryField.declaringType;
-    		var objectType   = iCS_ObjectTypeEnum.StaticField;
-            var instance= iCS_EditorObject.CreateInstance(id, nodeName, declaringType, parentId, objectType, this);
-            var fieldName= libraryField.fieldName;
-    		instance.MethodName= fieldName;
+            // -- Create base field setter node --
+            var instance= CreateBaseSetFieldCallNode(parentId, libraryField, iCS_ObjectTypeEnum.StaticField);
     		// -- Create target & self ports. --
+            var id= instance.InstanceId;
             CreateTargetPort(id);
             CreateSelfPort(id);        
+            return instance;
+        }
+        // ----------------------------------------------------------------------
+    	/// Creates a base node that represents a field setter.
+    	///
+    	/// @param parentId The id of the parent node.
+    	/// @param libraryField The library object of the function to create.
+        /// @param nodeType The visual script node type.
+    	/// @return The newly created property wizard node.
+    	///
+        iCS_EditorObject CreateBaseSetFieldCallNode(int parentId, LibrarySetField libraryField, iCS_ObjectTypeEnum nodeType) {
+            // -- Create base node --
+            var instance= CreateBaseNode(parentId, libraryField, nodeType);
             // -- Create parameter ports. --
+            var fieldName= libraryField.fieldName;
             var fieldType= libraryField.fieldType;
             var portType = iCS_ObjectTypeEnum.InFixDataPort;
             var portIndex= (int)iCS_PortIndex.ParametersStart;
-            CreatePort(fieldName, id, fieldType, portType, portIndex);
+            CreatePort(fieldName, instance.InstanceId, fieldType, portType, portIndex);
             return instance;
         }
         // ----------------------------------------------------------------------
