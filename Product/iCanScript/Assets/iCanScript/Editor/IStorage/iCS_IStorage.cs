@@ -655,16 +655,16 @@ namespace iCanScript.Editor {
 			if(libraryObject is LibraryGetProperty) {
 				var libraryGetProperty= libraryObject as LibraryGetProperty;
 				if(libraryGetProperty.isStatic) {
-					return CreateStaticFunctionCallNode(parentId, libraryGetProperty);
+					return CreateStaticGetPropertyCallNode(parentId, libraryGetProperty);
 				}
-				return CreateFunctionCallNode(parentId, libraryGetProperty);
+				return CreateGetPropertyCallNode(parentId, libraryGetProperty);
 			}
 			if(libraryObject is LibrarySetProperty) {
 				var librarySetProperty= libraryObject as LibrarySetProperty;
 				if(librarySetProperty.isStatic) {
-					return CreateStaticFunctionCallNode(parentId, librarySetProperty);
+					return CreateStaticSetPropertyCallNode(parentId, librarySetProperty);
 				}
-				return CreateFunctionCallNode(parentId, librarySetProperty);
+				return CreateSetPropertyCallNode(parentId, librarySetProperty);
 			}
 			if(libraryObject is LibraryEventHandler) {
 				var libraryEventHandler= libraryObject as LibraryEventHandler;
@@ -782,7 +782,7 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateGetFieldCallNode(int parentId, LibraryGetField libraryField) {
 			// -- Create base get field node --
-			var instance= CreateBaseGetFieldCallNode(parentId, libraryField, iCS_ObjectTypeEnum.StaticField);
+			var instance= CreateBaseGetFieldCallNode(parentId, libraryField, iCS_ObjectTypeEnum.InstanceField);
     		// -- Create target & self ports. --
 			var id= instance.InstanceId;
             CreateTargetPort(id);
@@ -828,7 +828,7 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateSetFieldCallNode(int parentId, LibrarySetField libraryField) {
             // -- Create base field setter node --
-            var instance= CreateBaseSetFieldCallNode(parentId, libraryField, iCS_ObjectTypeEnum.StaticField);
+            var instance= CreateBaseSetFieldCallNode(parentId, libraryField, iCS_ObjectTypeEnum.InstanceField);
     		// -- Create target & self ports. --
             var id= instance.InstanceId;
             CreateTargetPort(id);
@@ -852,6 +852,96 @@ namespace iCanScript.Editor {
             var portType = iCS_ObjectTypeEnum.InFixDataPort;
             var portIndex= (int)iCS_PortIndex.ParametersStart;
             CreatePort(fieldName, instance.InstanceId, fieldType, portType, portIndex);
+            return instance;
+        }
+        // ----------------------------------------------------------------------
+    	/// Creates a node that represents a static property setter.
+    	///
+    	/// @param parentId The id of the parent node.
+    	/// @param libraryProperty The library object of the function to create.
+    	/// @return The newly property setter node.
+    	///
+        iCS_EditorObject CreateStaticSetPropertyCallNode(int parentId, LibrarySetProperty libraryProperty) {
+            // -- Create base field setter node --
+            var instance= CreateBaseSetPropertyCallNode(parentId, libraryProperty, iCS_ObjectTypeEnum.StaticFunction);
+            return instance;
+        }
+        // ----------------------------------------------------------------------
+    	/// Creates a node that represents a non-static property setter.
+    	///
+    	/// @param parentId The id of the parent node.
+    	/// @param libraryProperty The library object of the function to create.
+    	/// @return The newly created property setter node.
+    	///
+        iCS_EditorObject CreateSetPropertyCallNode(int parentId, LibrarySetProperty libraryProperty) {
+            // -- Create base field setter node --
+            var instance= CreateBaseSetPropertyCallNode(parentId, libraryProperty, iCS_ObjectTypeEnum.InstanceFunction);
+    		// -- Create target & self ports. --
+            var id= instance.InstanceId;
+            CreateTargetPort(id);
+            CreateSelfPort(id);        
+            return instance;
+        }
+        // ----------------------------------------------------------------------
+    	/// Creates a base node that represents a property setter.
+    	///
+    	/// @param parentId The id of the parent node.
+    	/// @param libraryProperty The library object of the function to create.
+        /// @param nodeType The visual script node type.
+    	/// @return The newly created property setter node.
+    	///
+        iCS_EditorObject CreateBaseSetPropertyCallNode(int parentId, LibrarySetProperty libraryProperty, iCS_ObjectTypeEnum nodeType) {
+            // -- Create base node --
+            var instance= CreateBaseNode(parentId, libraryProperty, nodeType);
+            // -- Create parameter ports. --
+            var propertyName= libraryProperty.propertyName.Substring(4);
+            var propertyType= libraryProperty.parameters[0].ParameterType;
+            var portType = iCS_ObjectTypeEnum.InFixDataPort;
+            var portIndex= (int)iCS_PortIndex.ParametersStart;
+            CreatePort(propertyName, instance.InstanceId, propertyType, portType, portIndex);
+            return instance;
+        }
+        // ----------------------------------------------------------------------
+    	/// Creates a node that represents a static property getter.
+    	///
+    	/// @param parentId The id of the parent node.
+    	/// @param libraryProperty The library object of the function to create.
+    	/// @return The newly property getter node.
+    	///
+        iCS_EditorObject CreateStaticGetPropertyCallNode(int parentId, LibraryGetProperty libraryProperty) {
+            // -- Create base field getter node --
+            var instance= CreateBaseGetPropertyCallNode(parentId, libraryProperty, iCS_ObjectTypeEnum.StaticFunction);
+            return instance;
+        }
+        // ----------------------------------------------------------------------
+    	/// Creates a node that represents a non-static property getter.
+    	///
+    	/// @param parentId The id of the parent node.
+    	/// @param libraryProperty The library object of the function to create.
+    	/// @return The newly created property getter node.
+    	///
+        iCS_EditorObject CreateGetPropertyCallNode(int parentId, LibraryGetProperty libraryProperty) {
+            // -- Create base field getter node --
+            var instance= CreateBaseGetPropertyCallNode(parentId, libraryProperty, iCS_ObjectTypeEnum.InstanceFunction);
+    		// -- Create target & self ports. --
+            var id= instance.InstanceId;
+            CreateTargetPort(id);
+            CreateSelfPort(id);        
+            return instance;
+        }
+        // ----------------------------------------------------------------------
+    	/// Creates a base node that represents a property getter.
+    	///
+    	/// @param parentId The id of the parent node.
+    	/// @param libraryProperty The library object of the function to create.
+        /// @param nodeType The visual script node type.
+    	/// @return The newly created property getter node.
+    	///
+        iCS_EditorObject CreateBaseGetPropertyCallNode(int parentId, LibraryGetProperty libraryProperty, iCS_ObjectTypeEnum nodeType) {
+            // -- Create base node --
+            var instance= CreateBaseNode(parentId, libraryProperty, nodeType);
+    		// -- Create return port. --
+			CreateReturnPort(instance, libraryProperty);
             return instance;
         }
         // ----------------------------------------------------------------------
