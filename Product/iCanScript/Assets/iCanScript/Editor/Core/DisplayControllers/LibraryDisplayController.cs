@@ -195,11 +195,17 @@ namespace iCanScript.Editor {
                 labelStyle.richText= true;
     		}
             
+			// -- Show search score --
+			int score= (int)(myCursor.score * 100f);
+			float kScoreWidth= 32f;
+			var scoreRect= new Rect(displayArea.x, displayArea.y, kScoreWidth, displayArea.height);
+			GUI.Label(scoreRect, score.ToString()+"%");
+			
             // -- Show foldout (if needed) --
-    		bool foldoutState= ShouldUseFoldout ? EditorGUI.Foldout(new Rect(displayArea.x, displayArea.y, myFoldOffset, displayArea.height), foldout, "") : false;
+    		bool foldoutState= ShouldUseFoldout ? EditorGUI.Foldout(new Rect(displayArea.x+kScoreWidth, displayArea.y, myFoldOffset, displayArea.height), foldout, "") : false;
 
 			// -- Show icon --
-	        var pos= new Rect(myFoldOffset+displayArea.x, displayArea.y, displayArea.width-myFoldOffset, displayArea.height);
+	        var pos= new Rect(myFoldOffset+kScoreWidth+displayArea.x, displayArea.y, displayArea.width-myFoldOffset, displayArea.height);
 		    GUI.Label(pos, libraryIcon);
 	        pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);  // Move label up a bit.
 
@@ -291,6 +297,7 @@ namespace iCanScript.Editor {
 					}
 				}
 			);
+			database.ComputeScore();
 			ComputeNumberOfItems();			
 		}
         // -------------------------------------------------------------------
@@ -310,6 +317,7 @@ namespace iCanScript.Editor {
 					}
 				}
 			);
+			database.ComputeScore();
 			ComputeNumberOfItems();			
 		}
         // -------------------------------------------------------------------
@@ -332,6 +340,7 @@ namespace iCanScript.Editor {
 					}
 				}
 			);
+			database.ComputeScore();
 			ComputeNumberOfItems();			
 		}
 		

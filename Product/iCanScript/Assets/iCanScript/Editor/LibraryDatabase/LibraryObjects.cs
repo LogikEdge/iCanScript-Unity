@@ -74,12 +74,7 @@ namespace iCanScript.Editor {
 		/// Get/Set the raw score for this library object.
 		public float rawScore {
 			get { return myRawScore; }
-			set {
-				if(Math3D.IsEqual(myRawScore, value)) return;
-				myRawScore= value;
-				ComputeScoreDownwards();
-				ComputeScoreUpwards();
-			}
+			set { myRawScore= value; }
 		}
 
         // ======================================================================
@@ -177,7 +172,7 @@ namespace iCanScript.Editor {
 		}
         // ----------------------------------------------------------------------
 		/// Computes the score starting from this node going down to the tree leaf.
-		void ComputeScoreDownwards() {
+		public void ComputeScore() {
 			// -- Update our score if we are the leaf in the tree. --
 			if(children == null || children.Count == 0) {
 				myScore= myRawScore;
@@ -192,24 +187,10 @@ namespace iCanScript.Editor {
 			foreach(var child in children) {
 				var libraryChild= child as LibraryObject;
 				if(libraryChild != null) {
-					libraryChild.ComputeScoreDownwards();
+					libraryChild.ComputeScore();
 				}
 			}
 			// -- Our score is the best score of our children. --
-			ComputeScoreBasedOnChildren();
-		}
-        // ----------------------------------------------------------------------
-		/// Computes the score for the parent nodes.
-		void ComputeScoreUpwards() {
-			var libraryParent= parent as LibraryObject;
-			if(libraryParent == null) return;
-			// -- Parent score is the best score of its children. --
-			libraryParent.ComputeScoreBasedOnChildren();
-			libraryParent.ComputeScoreUpwards();
-		}
-        // ----------------------------------------------------------------------
-		/// Computes the score based on children.
-		void ComputeScoreBasedOnChildren() {
 			myScore= 0f;
 			foreach(var child in children) {
 				var libraryChild= child as LibraryObject;
@@ -285,6 +266,7 @@ namespace iCanScript.Editor {
             }
         }
     }
+	
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     /// Defines the first level namespace in the library.
     public class LibraryRootNamespace : LibraryObject {

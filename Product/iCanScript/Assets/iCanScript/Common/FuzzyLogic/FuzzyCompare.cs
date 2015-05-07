@@ -26,7 +26,7 @@ namespace iCanScript.FuzzyLogic {
             int destCursor= -1;
             for(int i= 0; i < searchLen; ++i) {
                 var c= search[i];
-                // Start by serach forward.
+                // Start by search forward.
                 var found= false;
                 for(int j= destCursor+1; j < destLen; ++j) {
                     if(dest[j] == c) {
