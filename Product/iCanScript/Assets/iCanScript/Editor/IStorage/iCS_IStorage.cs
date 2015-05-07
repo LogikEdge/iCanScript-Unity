@@ -560,8 +560,9 @@ namespace iCanScript.Editor {
         // ----------------------------------------------------------------------
 		/// Create base node.
 		///
+		/// @param parentId The ID of the parent node.
 		/// @param libraryMethodInfo The library method information object.
-		/// @param nodeType The type of node to create.
+		/// @param nodeType The visual script object type for the node.
 		/// @return The newly created node.
 		///
 		iCS_EditorObject CreateBaseNode(int parentId, LibraryMemberInfo libraryMemberInfo, iCS_ObjectTypeEnum nodeType) {
@@ -604,6 +605,7 @@ namespace iCanScript.Editor {
     	///
     	/// @param node The parent node.
 		/// @param libraryMethodInfo The library method information object.
+		/// @note The return port name is derived from the name of the node.
     	///
     	void CreateReturnPort(iCS_EditorObject node, LibraryMethodInfo libraryMethodInfo) {
     		var returnType= libraryMethodInfo.returnType;
@@ -690,8 +692,8 @@ namespace iCanScript.Editor {
     	/// Creates a node that represents a non-static function.
     	///
     	/// @param parentId The id of the parent node.
-    	/// @param libraryObject The library object of the function to create.
-    	/// @return The newly created property wizard node.
+    	/// @param libraryMethodInfo The library object of the function to create.
+    	/// @return The newly created function node.
     	///
         iCS_EditorObject CreateFunctionCallNode(int parentId, LibraryMethodInfo libraryMethodInfo) {
 			// -- Create base function node. --
@@ -706,8 +708,9 @@ namespace iCanScript.Editor {
     	/// Creates a common part of function node.
     	///
     	/// @param parentId The id of the parent node.
-    	/// @param libraryObject The library object of the function to create.
-    	/// @return The newly created property wizard node.
+    	/// @param libraryMethodInfo The library object of the function to create.
+		/// @param nodeType The visual script object type for this node.
+    	/// @return The newly created function node.
     	///
         iCS_EditorObject CreateBaseFunctionCallNode(int parentId, LibraryMethodInfo libraryMethodInfo, iCS_ObjectTypeEnum nodeType) {
 			// -- Create base node --
@@ -720,11 +723,11 @@ namespace iCanScript.Editor {
             return instance;
         }
         // ----------------------------------------------------------------------
-    	/// Creates a node that represents a static function.
+    	/// Creates a node that represents a static constructor.
     	///
     	/// @param parentId The id of the parent node.
-    	/// @param libraryConstructor The library object of the function to create.
-    	/// @return The newly created property wizard node.
+    	/// @param libraryConstructor The library object of the constructor to create.
+    	/// @return The newly created constructor node.
     	///
         iCS_EditorObject CreateStaticConstructorCallNode(int parentId, LibraryConstructor libraryConstructor) {
 			// -- Create base constructor node --
@@ -732,11 +735,11 @@ namespace iCanScript.Editor {
             return instance;
         }
         // ----------------------------------------------------------------------
-    	/// Creates a node that represents a non-static function.
+    	/// Creates a node that represents a non-static constructor.
     	///
     	/// @param parentId The id of the parent node.
-    	/// @param libraryConstructor The library object of the function to create.
-    	/// @return The newly created property wizard node.
+    	/// @param libraryConstructor The library object of the constructor to create.
+    	/// @return The newly created constructor node.
     	///
         iCS_EditorObject CreateConstructorCallNode(int parentId, LibraryConstructor libraryConstructor) {
 			// -- Create base constructor node --
@@ -750,8 +753,8 @@ namespace iCanScript.Editor {
     	/// Creates the common part of a constructor node.
     	///
     	/// @param parentId The id of the parent node.
-    	/// @param libraryConstructor The library object of the function to create.
-    	/// @return The newly created property wizard node.
+    	/// @param libraryConstructor The library object of the constructor to create.
+    	/// @return The newly created constructor node.
     	///
         iCS_EditorObject CreateBaseConstructorCallNode(int parentId, LibraryConstructor libraryConstructor, iCS_ObjectTypeEnum nodeType) {
 			// -- Create base node --
@@ -765,11 +768,11 @@ namespace iCanScript.Editor {
     	/// Creates a node that represents a static field getter.
     	///
     	/// @param parentId The id of the parent node.
-    	/// @param libraryField The library object of the function to create.
-    	/// @return The newly created property wizard node.
+    	/// @param libraryField The library object of the field getter to create.
+    	/// @return The newly created field getter node.
     	///
         iCS_EditorObject CreateStaticGetFieldCallNode(int parentId, LibraryGetField libraryField) {
-			// -- Create base get field node --
+			// -- Create base field getter node --
 			var instance= CreateBaseGetFieldCallNode(parentId, libraryField, iCS_ObjectTypeEnum.StaticField);
             return instance;
         }
@@ -777,8 +780,8 @@ namespace iCanScript.Editor {
     	/// Creates a node that represents a non-static field getter.
     	///
     	/// @param parentId The id of the parent node.
-    	/// @param libraryField The library object of the function to create.
-    	/// @return The newly created property wizard node.
+    	/// @param libraryField The library object of the field getter to create.
+    	/// @return The newly created field getter node.
     	///
         iCS_EditorObject CreateGetFieldCallNode(int parentId, LibraryGetField libraryField) {
 			// -- Create base get field node --
@@ -790,11 +793,12 @@ namespace iCanScript.Editor {
             return instance;
         }
         // ----------------------------------------------------------------------
-    	/// Creates a node that represents a static field getter.
+    	/// Creates a base node that represents a static field getter.
     	///
     	/// @param parentId The id of the parent node.
-    	/// @param libraryField The library object of the function to create.
-    	/// @return The newly created property wizard node.
+    	/// @param libraryField The library object of the field getter to create.
+		/// @param nodeType The visual script object type for the field getter.
+    	/// @return The newly created field getter node.
     	///
         iCS_EditorObject CreateBaseGetFieldCallNode(int parentId, LibraryGetField libraryField, iCS_ObjectTypeEnum nodeType) {
 			// -- Create base node --
@@ -811,8 +815,8 @@ namespace iCanScript.Editor {
     	/// Creates a node that represents a static field setter.
     	///
     	/// @param parentId The id of the parent node.
-    	/// @param libraryField The library object of the function to create.
-    	/// @return The newly created property wizard node.
+    	/// @param libraryField The library object of the field setter to create.
+    	/// @return The newly created field setter node.
     	///
         iCS_EditorObject CreateStaticSetFieldCallNode(int parentId, LibrarySetField libraryField) {
             // -- Create base field setter node --
@@ -823,8 +827,8 @@ namespace iCanScript.Editor {
     	/// Creates a node that represents a non-static field setter.
     	///
     	/// @param parentId The id of the parent node.
-    	/// @param libraryField The library object of the function to create.
-    	/// @return The newly created property wizard node.
+    	/// @param libraryField The library object of the field setter to create.
+    	/// @return The newly created field setter node.
     	///
         iCS_EditorObject CreateSetFieldCallNode(int parentId, LibrarySetField libraryField) {
             // -- Create base field setter node --
@@ -839,9 +843,9 @@ namespace iCanScript.Editor {
     	/// Creates a base node that represents a field setter.
     	///
     	/// @param parentId The id of the parent node.
-    	/// @param libraryField The library object of the function to create.
-        /// @param nodeType The visual script node type.
-    	/// @return The newly created property wizard node.
+    	/// @param libraryField The library object of the field setter to create.
+        /// @param nodeType The visual script object type for the field setter.
+    	/// @return The newly created field setter node.
     	///
         iCS_EditorObject CreateBaseSetFieldCallNode(int parentId, LibrarySetField libraryField, iCS_ObjectTypeEnum nodeType) {
             // -- Create base node --
@@ -858,7 +862,7 @@ namespace iCanScript.Editor {
     	/// Creates a node that represents a static property setter.
     	///
     	/// @param parentId The id of the parent node.
-    	/// @param libraryProperty The library object of the function to create.
+    	/// @param libraryProperty The library object of the property setter to create.
     	/// @return The newly property setter node.
     	///
         iCS_EditorObject CreateStaticSetPropertyCallNode(int parentId, LibrarySetProperty libraryProperty) {
@@ -870,7 +874,7 @@ namespace iCanScript.Editor {
     	/// Creates a node that represents a non-static property setter.
     	///
     	/// @param parentId The id of the parent node.
-    	/// @param libraryProperty The library object of the function to create.
+    	/// @param libraryProperty The library object of the property setter to create.
     	/// @return The newly created property setter node.
     	///
         iCS_EditorObject CreateSetPropertyCallNode(int parentId, LibrarySetProperty libraryProperty) {
@@ -886,8 +890,8 @@ namespace iCanScript.Editor {
     	/// Creates a base node that represents a property setter.
     	///
     	/// @param parentId The id of the parent node.
-    	/// @param libraryProperty The library object of the function to create.
-        /// @param nodeType The visual script node type.
+    	/// @param libraryProperty The library object of the property setter to create.
+        /// @param nodeType The visual script object type for the property setter.
     	/// @return The newly created property setter node.
     	///
         iCS_EditorObject CreateBaseSetPropertyCallNode(int parentId, LibrarySetProperty libraryProperty, iCS_ObjectTypeEnum nodeType) {
@@ -905,7 +909,7 @@ namespace iCanScript.Editor {
     	/// Creates a node that represents a static property getter.
     	///
     	/// @param parentId The id of the parent node.
-    	/// @param libraryProperty The library object of the function to create.
+    	/// @param libraryProperty The library object of the property getter to create.
     	/// @return The newly property getter node.
     	///
         iCS_EditorObject CreateStaticGetPropertyCallNode(int parentId, LibraryGetProperty libraryProperty) {
@@ -917,7 +921,7 @@ namespace iCanScript.Editor {
     	/// Creates a node that represents a non-static property getter.
     	///
     	/// @param parentId The id of the parent node.
-    	/// @param libraryProperty The library object of the function to create.
+    	/// @param libraryProperty The library object of the property getter to create.
     	/// @return The newly created property getter node.
     	///
         iCS_EditorObject CreateGetPropertyCallNode(int parentId, LibraryGetProperty libraryProperty) {
@@ -933,8 +937,8 @@ namespace iCanScript.Editor {
     	/// Creates a base node that represents a property getter.
     	///
     	/// @param parentId The id of the parent node.
-    	/// @param libraryProperty The library object of the function to create.
-        /// @param nodeType The visual script node type.
+    	/// @param libraryProperty The library object of the property getter to create.
+        /// @param nodeType The visual script object type for the property getter.
     	/// @return The newly created property getter node.
     	///
         iCS_EditorObject CreateBaseGetPropertyCallNode(int parentId, LibraryGetProperty libraryProperty, iCS_ObjectTypeEnum nodeType) {
@@ -982,8 +986,7 @@ namespace iCanScript.Editor {
     	// ----------------------------------------------------------------------
     	/// Creates a property wizard node for the given type.
     	///
-    	/// @param parentId The id of the parent node that will contain the newly
-    	///					created property wizard node.
+    	/// @param parentId The id of the parent node.
     	/// @param type The programmatic type for the property wizard.
     	/// @return The newly created property wizard node.
     	///
