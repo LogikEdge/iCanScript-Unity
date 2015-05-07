@@ -29,7 +29,6 @@ namespace iCanScript.Editor {
         Vector2 c_NodeSubTitleSize= Vector2.zero;
         string  c_CodeName        = null;
         string  c_DisplayName     = null;
-    	string  c_ObsoleteMessage = null;
 
         // ======================================================================
         // Conversion Utilities
