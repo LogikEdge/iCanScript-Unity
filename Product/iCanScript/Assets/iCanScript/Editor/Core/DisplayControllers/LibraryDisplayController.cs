@@ -126,9 +126,11 @@ namespace iCanScript.Editor {
             if(parent == null) return false;
             var siblings= parent.children;
             if(siblings == null) return false;
-            int idx= siblings.IndexOf(myCursor);
-            if(idx < 0 || idx >= siblings.Count-1) return false;
-            myCursor= siblings[idx+1] as LibraryObject;
+			do {
+	            int idx= siblings.IndexOf(myCursor);
+	            if(idx < 0 || idx >= siblings.Count-1) return false;
+	            myCursor= siblings[idx+1] as LibraryObject;				
+			} while(!ShouldShow(myCursor));
             return true;
     	}
         // -------------------------------------------------------------------
@@ -222,21 +224,25 @@ namespace iCanScript.Editor {
         // -------------------------------------------------------------------
         /// Determines if type member should be shown.
         ///
-        /// @param LibraryMemberInfo Library object to test.
+        /// @param libraryObject Library object to test.
         /// @return _true_ if it should be shown. _false_ otherwise.
         ///
-        bool ShouldShow(LibraryMemberInfo libraryObject) {
-			var memberInfo= libraryObject.memberInfo;
-            if(myShowInherited == false) {
-                if(libraryObject.isInherited) {
-            		return false;
-            	}
-			}
-			if(myShowProtected == false) {
-				var methodBase= memberInfo as MethodBase;
-				if(methodBase != null && methodBase.IsFamily) {
-					return false;
+        bool ShouldShow(LibraryObject libraryObject) {
+			var libraryMemberInfo= libraryObject as LibraryMemberInfo;
+			if(libraryMemberInfo != null) {
+				// -- Should we show inherited members? --
+	            if(myShowInherited == false) {
+	                if(libraryMemberInfo.isInherited) {
+	            		return false;
+	            	}
 				}
+				// -- Should we show protected members? --
+				if(myShowProtected == false) {
+					var methodBase= libraryMemberInfo.memberInfo as MethodBase;
+					if(methodBase != null && methodBase.IsFamily) {
+						return false;
+					}
+				}				
 			}
 			return true;
         }
