@@ -17,7 +17,7 @@ _April 24, 2015_
 V2.0.9 is a development release of iCanScript2.
 ### List of Changes
 
-- **<span style="color: blue">\[IMPROVED\]</span>** The performance of the new library components allows to always include the _Unity Editor Library_.  Therefore, the option to manually include the Unity Editor library has been removed from the _Global Preferences_.
+- **<span style="color: blue">\[IMPROVED\]</span>** The _Unity Editor Library_ is now included by default.  Therefore, the option to manually include the Unity Editor library has been removed from the _Global Preferences_.
 
 * * *
 
