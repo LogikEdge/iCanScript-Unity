@@ -457,15 +457,15 @@ namespace iCanScript.Editor {
         // ======================================================================
         // PROPERTIES
         // ----------------------------------------------------------------------
-		public string		memberName	  { get { return memberInfo.Name; }}
-        public MemberTypes  memberType    { get { return memberInfo.MemberType; }}
-		public Type			declaringType { get { return memberInfo.DeclaringType; }}
-        public bool         isField       { get { return memberType == MemberTypes.Field; }}
-        public bool         isProperty    { get { return isGetProperty || isSetProperty; }}
-        public bool         isConstructor { get { return memberType == MemberTypes.Constructor; }}
-        public bool         isMethod      { get { return memberType == MemberTypes.Method; }}
-        public bool         isGetProperty { get { return this is LibraryGetProperty; }}
-        public bool         isSetProperty { get { return this is LibrarySetProperty; }}
+		public string		memberName	     { get { return memberInfo.Name; }}
+        public MemberTypes  memberType       { get { return memberInfo.MemberType; }}
+		public Type			declaringType    { get { return memberInfo.DeclaringType; }}
+        public bool         isField          { get { return memberType == MemberTypes.Field; }}
+        public bool         isProperty       { get { return isPropertyGetter || isPropertySetter; }}
+        public bool         isConstructor    { get { return memberType == MemberTypes.Constructor; }}
+        public bool         isMethod         { get { return memberType == MemberTypes.Method; }}
+        public bool         isPropertyGetter { get { return this is LibraryPropertyGetter; }}
+        public bool         isPropertySetter { get { return this is LibraryPropertySetter; }}
         public bool         isInherited   {
             get {
 				var libraryType= parent as LibraryType;
@@ -519,11 +519,11 @@ namespace iCanScript.Editor {
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	/// Defines the class that represents a programatic type field.
-    public class LibraryGetField : LibraryField {
+    public class LibraryFieldGetter : LibraryField {
         // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
-        public LibraryGetField(MemberInfo memberInfo) : base(memberInfo) {}
+        public LibraryFieldGetter(MemberInfo memberInfo) : base(memberInfo) {}
 
         // ======================================================================
         // INTERFACES
@@ -550,11 +550,11 @@ namespace iCanScript.Editor {
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	/// Defines the class that represents a programatic type field.
-    public class LibrarySetField : LibraryField {
+    public class LibraryFieldSetter : LibraryField {
         // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
-        public LibrarySetField(MemberInfo memberInfo) : base(memberInfo) {}
+        public LibraryFieldSetter(MemberInfo memberInfo) : base(memberInfo) {}
 
         // ======================================================================
         // INTERFACES
@@ -831,11 +831,11 @@ namespace iCanScript.Editor {
     
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	/// Defines the class that represents a property get in the library.
-    public class LibraryGetProperty : LibraryProperty {
+    public class LibraryPropertyGetter : LibraryProperty {
         // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
-        public LibraryGetProperty(MethodInfo methodInfo) : base(methodInfo) {}
+        public LibraryPropertyGetter(MethodInfo methodInfo) : base(methodInfo) {}
 
         // ======================================================================
         // INTERFACES
@@ -865,11 +865,11 @@ namespace iCanScript.Editor {
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	/// Defines the class that represents a property set in the library.
-    public class LibrarySetProperty : LibraryProperty {
+    public class LibraryPropertySetter : LibraryProperty {
         // ======================================================================
         // INIT
         // ----------------------------------------------------------------------
-        public LibrarySetProperty(MethodInfo methodInfo) : base(methodInfo) {}
+        public LibraryPropertySetter(MethodInfo methodInfo) : base(methodInfo) {}
 
         // ======================================================================
         // INTERFACES

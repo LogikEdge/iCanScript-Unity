@@ -640,33 +640,33 @@ namespace iCanScript.Editor {
 				}
 				return CreateFunctionCallNode(parentId, libraryFunction);
 			}
-			if(libraryObject is LibraryGetField) {
-				var libraryGetField= libraryObject as LibraryGetField;
+			if(libraryObject is LibraryFieldGetter) {
+				var libraryGetField= libraryObject as LibraryFieldGetter;
 				if(libraryGetField.isStatic) {
-					return CreateStaticGetFieldCallNode(parentId, libraryGetField);
+					return CreateStaticFieldGetterCallNode(parentId, libraryGetField);
 				}
-				return CreateGetFieldCallNode(parentId, libraryGetField);
+				return CreateFieldGetterCallNode(parentId, libraryGetField);
 			}
-			if(libraryObject is LibrarySetField) {
-				var librarySetField= libraryObject as LibrarySetField;
+			if(libraryObject is LibraryFieldSetter) {
+				var librarySetField= libraryObject as LibraryFieldSetter;
 				if(librarySetField.isStatic) {
-					return CreateStaticSetFieldCallNode(parentId, librarySetField);
+					return CreateStaticFieldSetterCallNode(parentId, librarySetField);
 				}
-				return CreateSetFieldCallNode(parentId, librarySetField);
+				return CreateFieldSetterCallNode(parentId, librarySetField);
 			}
-			if(libraryObject is LibraryGetProperty) {
-				var libraryGetProperty= libraryObject as LibraryGetProperty;
+			if(libraryObject is LibraryPropertyGetter) {
+				var libraryGetProperty= libraryObject as LibraryPropertyGetter;
 				if(libraryGetProperty.isStatic) {
-					return CreateStaticGetPropertyCallNode(parentId, libraryGetProperty);
+					return CreateStaticPropertyGetterCallNode(parentId, libraryGetProperty);
 				}
-				return CreateGetPropertyCallNode(parentId, libraryGetProperty);
+				return CreatePropertyGetterCallNode(parentId, libraryGetProperty);
 			}
-			if(libraryObject is LibrarySetProperty) {
-				var librarySetProperty= libraryObject as LibrarySetProperty;
+			if(libraryObject is LibraryPropertySetter) {
+				var librarySetProperty= libraryObject as LibraryPropertySetter;
 				if(librarySetProperty.isStatic) {
-					return CreateStaticSetPropertyCallNode(parentId, librarySetProperty);
+					return CreateStaticPropertySetterCallNode(parentId, librarySetProperty);
 				}
-				return CreateSetPropertyCallNode(parentId, librarySetProperty);
+				return CreatePropertySetterCallNode(parentId, librarySetProperty);
 			}
 			if(libraryObject is LibraryEventHandler) {
 				var libraryEventHandler= libraryObject as LibraryEventHandler;
@@ -771,9 +771,9 @@ namespace iCanScript.Editor {
     	/// @param libraryField The library object of the field getter to create.
     	/// @return The newly created field getter node.
     	///
-        iCS_EditorObject CreateStaticGetFieldCallNode(int parentId, LibraryGetField libraryField) {
+        iCS_EditorObject CreateStaticFieldGetterCallNode(int parentId, LibraryFieldGetter libraryField) {
 			// -- Create base field getter node --
-			var instance= CreateBaseGetFieldCallNode(parentId, libraryField, VSObjectType.StaticField);
+			var instance= CreateBaseFieldGetterCallNode(parentId, libraryField, VSObjectType.StaticField);
             return instance;
         }
         // ----------------------------------------------------------------------
@@ -783,9 +783,9 @@ namespace iCanScript.Editor {
     	/// @param libraryField The library object of the field getter to create.
     	/// @return The newly created field getter node.
     	///
-        iCS_EditorObject CreateGetFieldCallNode(int parentId, LibraryGetField libraryField) {
+        iCS_EditorObject CreateFieldGetterCallNode(int parentId, LibraryFieldGetter libraryField) {
 			// -- Create base get field node --
-			var instance= CreateBaseGetFieldCallNode(parentId, libraryField, VSObjectType.NonStaticField);
+			var instance= CreateBaseFieldGetterCallNode(parentId, libraryField, VSObjectType.NonStaticField);
     		// -- Create target & self ports. --
 			var id= instance.InstanceId;
             CreateTargetPort(id);
@@ -800,7 +800,7 @@ namespace iCanScript.Editor {
 		/// @param nodeType The visual script object type for the field getter.
     	/// @return The newly created field getter node.
     	///
-        iCS_EditorObject CreateBaseGetFieldCallNode(int parentId, LibraryGetField libraryField, VSObjectType nodeType) {
+        iCS_EditorObject CreateBaseFieldGetterCallNode(int parentId, LibraryFieldGetter libraryField, VSObjectType nodeType) {
 			// -- Create base node --
 			var instance= CreateBaseNode(parentId, libraryField, nodeType);
             // -- Create parameter ports. --
@@ -818,9 +818,9 @@ namespace iCanScript.Editor {
     	/// @param libraryField The library object of the field setter to create.
     	/// @return The newly created field setter node.
     	///
-        iCS_EditorObject CreateStaticSetFieldCallNode(int parentId, LibrarySetField libraryField) {
+        iCS_EditorObject CreateStaticFieldSetterCallNode(int parentId, LibraryFieldSetter libraryField) {
             // -- Create base field setter node --
-            var instance= CreateBaseSetFieldCallNode(parentId, libraryField, VSObjectType.StaticField);
+            var instance= CreateBaseFieldSetterCallNode(parentId, libraryField, VSObjectType.StaticField);
             return instance;
         }
         // ----------------------------------------------------------------------
@@ -830,9 +830,9 @@ namespace iCanScript.Editor {
     	/// @param libraryField The library object of the field setter to create.
     	/// @return The newly created field setter node.
     	///
-        iCS_EditorObject CreateSetFieldCallNode(int parentId, LibrarySetField libraryField) {
+        iCS_EditorObject CreateFieldSetterCallNode(int parentId, LibraryFieldSetter libraryField) {
             // -- Create base field setter node --
-            var instance= CreateBaseSetFieldCallNode(parentId, libraryField, VSObjectType.NonStaticField);
+            var instance= CreateBaseFieldSetterCallNode(parentId, libraryField, VSObjectType.NonStaticField);
     		// -- Create target & self ports. --
             var id= instance.InstanceId;
             CreateTargetPort(id);
@@ -847,7 +847,7 @@ namespace iCanScript.Editor {
         /// @param nodeType The visual script object type for the field setter.
     	/// @return The newly created field setter node.
     	///
-        iCS_EditorObject CreateBaseSetFieldCallNode(int parentId, LibrarySetField libraryField, VSObjectType nodeType) {
+        iCS_EditorObject CreateBaseFieldSetterCallNode(int parentId, LibraryFieldSetter libraryField, VSObjectType nodeType) {
             // -- Create base node --
             var instance= CreateBaseNode(parentId, libraryField, nodeType);
             // -- Create parameter ports. --
@@ -865,9 +865,9 @@ namespace iCanScript.Editor {
     	/// @param libraryProperty The library object of the property setter to create.
     	/// @return The newly property setter node.
     	///
-        iCS_EditorObject CreateStaticSetPropertyCallNode(int parentId, LibrarySetProperty libraryProperty) {
+        iCS_EditorObject CreateStaticPropertySetterCallNode(int parentId, LibraryPropertySetter libraryProperty) {
             // -- Create base field setter node --
-            var instance= CreateBaseSetPropertyCallNode(parentId, libraryProperty, VSObjectType.StaticFunction);
+            var instance= CreateBasePropertySetterCallNode(parentId, libraryProperty, VSObjectType.StaticFunction);
             return instance;
         }
         // ----------------------------------------------------------------------
@@ -877,9 +877,9 @@ namespace iCanScript.Editor {
     	/// @param libraryProperty The library object of the property setter to create.
     	/// @return The newly created property setter node.
     	///
-        iCS_EditorObject CreateSetPropertyCallNode(int parentId, LibrarySetProperty libraryProperty) {
+        iCS_EditorObject CreatePropertySetterCallNode(int parentId, LibraryPropertySetter libraryProperty) {
             // -- Create base field setter node --
-            var instance= CreateBaseSetPropertyCallNode(parentId, libraryProperty, VSObjectType.NonStaticFunction);
+            var instance= CreateBasePropertySetterCallNode(parentId, libraryProperty, VSObjectType.NonStaticFunction);
     		// -- Create target & self ports. --
             var id= instance.InstanceId;
             CreateTargetPort(id);
@@ -894,7 +894,7 @@ namespace iCanScript.Editor {
         /// @param nodeType The visual script object type for the property setter.
     	/// @return The newly created property setter node.
     	///
-        iCS_EditorObject CreateBaseSetPropertyCallNode(int parentId, LibrarySetProperty libraryProperty, VSObjectType nodeType) {
+        iCS_EditorObject CreateBasePropertySetterCallNode(int parentId, LibraryPropertySetter libraryProperty, VSObjectType nodeType) {
             // -- Create base node --
             var instance= CreateBaseNode(parentId, libraryProperty, nodeType);
             // -- Create parameter ports. --
@@ -912,9 +912,9 @@ namespace iCanScript.Editor {
     	/// @param libraryProperty The library object of the property getter to create.
     	/// @return The newly property getter node.
     	///
-        iCS_EditorObject CreateStaticGetPropertyCallNode(int parentId, LibraryGetProperty libraryProperty) {
+        iCS_EditorObject CreateStaticPropertyGetterCallNode(int parentId, LibraryPropertyGetter libraryProperty) {
             // -- Create base field getter node --
-            var instance= CreateBaseGetPropertyCallNode(parentId, libraryProperty, VSObjectType.StaticFunction);
+            var instance= CreateBasePropertyGetterCallNode(parentId, libraryProperty, VSObjectType.StaticFunction);
             return instance;
         }
         // ----------------------------------------------------------------------
@@ -924,9 +924,9 @@ namespace iCanScript.Editor {
     	/// @param libraryProperty The library object of the property getter to create.
     	/// @return The newly created property getter node.
     	///
-        iCS_EditorObject CreateGetPropertyCallNode(int parentId, LibraryGetProperty libraryProperty) {
+        iCS_EditorObject CreatePropertyGetterCallNode(int parentId, LibraryPropertyGetter libraryProperty) {
             // -- Create base field getter node --
-            var instance= CreateBaseGetPropertyCallNode(parentId, libraryProperty, VSObjectType.NonStaticFunction);
+            var instance= CreateBasePropertyGetterCallNode(parentId, libraryProperty, VSObjectType.NonStaticFunction);
     		// -- Create target & self ports. --
             var id= instance.InstanceId;
             CreateTargetPort(id);
@@ -941,7 +941,7 @@ namespace iCanScript.Editor {
         /// @param nodeType The visual script object type for the property getter.
     	/// @return The newly created property getter node.
     	///
-        iCS_EditorObject CreateBaseGetPropertyCallNode(int parentId, LibraryGetProperty libraryProperty, VSObjectType nodeType) {
+        iCS_EditorObject CreateBasePropertyGetterCallNode(int parentId, LibraryPropertyGetter libraryProperty, VSObjectType nodeType) {
             // -- Create base node --
             var instance= CreateBaseNode(parentId, libraryProperty, nodeType);
     		// -- Create return port. --

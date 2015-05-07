@@ -681,14 +681,14 @@ namespace iCanScript.Editor {
 			// -- Try field first --
 			var methodName= EngineObject.MethodName;
 			if(IsFieldGet) {
-				foreach(var field in libraryType.GetMembers<LibraryGetField>()) {
+				foreach(var field in libraryType.GetMembers<LibraryFieldGetter>()) {
 					if(field.fieldName == methodName) {
 						return field;
 					}
 				}				
 			}
 			if(IsFieldSet) {
-				foreach(var field in libraryType.GetMembers<LibrarySetField>()) {
+				foreach(var field in libraryType.GetMembers<LibraryFieldSetter>()) {
 					if(field.fieldName == methodName) {
 						return field;
 					}
@@ -696,14 +696,14 @@ namespace iCanScript.Editor {
 			}
 			// -- Try properties --
 			if(IsPropertyGet) {
-				foreach(var property in libraryType.GetMembers<LibraryGetProperty>()) {
+				foreach(var property in libraryType.GetMembers<LibraryPropertyGetter>()) {
 					if(property.propertyName == methodName) {
 						return property;
 					}
 				}				
 			}
 			if(IsPropertySet) {
-				foreach(var property in libraryType.GetMembers<LibrarySetProperty>()) {
+				foreach(var property in libraryType.GetMembers<LibraryPropertySetter>()) {
 					if(property.propertyName == methodName) {
 						return property;
 					}

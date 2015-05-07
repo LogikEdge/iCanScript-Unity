@@ -111,7 +111,7 @@ namespace iCanScript.Editor {
                 bool isActive= (myTarget != null && myStorage != null) ? myStorage.PropertiesWizardFindFunction(myTarget, libraryObject) != null : false;
                 string name= GetVariableName(libraryObject);
                 var variablePair= GetVariablePair(name, variables);
-                if(libraryObject is LibrarySetField || libraryObject is LibrarySetProperty) {
+                if(libraryObject is LibraryFieldSetter || libraryObject is LibraryPropertySetter) {
                     if(variablePair != null) {
                         variablePair.InputControlPair.Component= libraryObject;
                         variablePair.InputControlPair.IsActive= isActive;
@@ -169,11 +169,11 @@ namespace iCanScript.Editor {
             if(libraryField != null) {
                 return libraryField.fieldType;
             }
-            var libraryGetProperty= libraryObject as LibraryGetProperty;
+            var libraryGetProperty= libraryObject as LibraryPropertyGetter;
             if(libraryGetProperty != null) {
                 return libraryGetProperty.returnType;
             }
-            var librarySetProperty= libraryObject as LibrarySetProperty;
+            var librarySetProperty= libraryObject as LibraryPropertySetter;
             if(librarySetProperty != null) {
                 return librarySetProperty.parameters[0].ParameterType;
             }

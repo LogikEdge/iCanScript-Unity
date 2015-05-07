@@ -197,9 +197,9 @@ namespace iCanScript.Editor {
         static void ExtractFields(LibraryType parentType, Type type) {
             foreach(var field in type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)) {                
                 ++myNbOfFields;
-                parentType.AddChild(new LibraryGetField(field));
+                parentType.AddChild(new LibraryFieldGetter(field));
 				if(!field.IsLiteral) {
-	                parentType.AddChild(new LibrarySetField(field));
+	                parentType.AddChild(new LibraryFieldSetter(field));
 				}
             }
         }
@@ -216,10 +216,10 @@ namespace iCanScript.Editor {
 				var parameters= method.GetParameters();
 				LibraryObject libraryObject= null;
 				if(methodName.StartsWith("get_") && parameters.Length == 0) {
-					libraryObject= new LibraryGetProperty(method);					
+					libraryObject= new LibraryPropertyGetter(method);					
 				}
 				else if(methodName.StartsWith("set_") && parameters.Length == 1) {
-					libraryObject= new LibrarySetProperty(method);
+					libraryObject= new LibraryPropertySetter(method);
 				}
 				else {
 	                libraryObject= new LibraryFunction(method);	
