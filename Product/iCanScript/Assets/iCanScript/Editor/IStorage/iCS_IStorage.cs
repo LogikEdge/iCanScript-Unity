@@ -785,7 +785,7 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateGetFieldCallNode(int parentId, LibraryGetField libraryField) {
 			// -- Create base get field node --
-			var instance= CreateBaseGetFieldCallNode(parentId, libraryField, iCS_ObjectTypeEnum.InstanceField);
+			var instance= CreateBaseGetFieldCallNode(parentId, libraryField, iCS_ObjectTypeEnum.NonStaticField);
     		// -- Create target & self ports. --
 			var id= instance.InstanceId;
             CreateTargetPort(id);
@@ -832,7 +832,7 @@ namespace iCanScript.Editor {
     	///
         iCS_EditorObject CreateSetFieldCallNode(int parentId, LibrarySetField libraryField) {
             // -- Create base field setter node --
-            var instance= CreateBaseSetFieldCallNode(parentId, libraryField, iCS_ObjectTypeEnum.InstanceField);
+            var instance= CreateBaseSetFieldCallNode(parentId, libraryField, iCS_ObjectTypeEnum.NonStaticField);
     		// -- Create target & self ports. --
             var id= instance.InstanceId;
             CreateTargetPort(id);

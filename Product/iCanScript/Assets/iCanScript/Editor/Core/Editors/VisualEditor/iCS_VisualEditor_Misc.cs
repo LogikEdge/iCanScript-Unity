@@ -429,7 +429,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case iCS_ObjectTypeEnum.NonStaticFunction:
             case iCS_ObjectTypeEnum.StaticFunction:
-            case iCS_ObjectTypeEnum.InstanceField:
+            case iCS_ObjectTypeEnum.NonStaticField:
             case iCS_ObjectTypeEnum.StaticField:
             case iCS_ObjectTypeEnum.TypeCast: {
                 IStorage.ForEachChildPort(node,

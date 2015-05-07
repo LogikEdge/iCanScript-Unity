@@ -21,7 +21,7 @@ namespace iCanScript.Editor {
         public bool IsNonStaticFunction         { get { return EngineObject.IsNonStaticFunction; }}
         public bool IsStaticFunction            { get { return EngineObject.IsStaticFunction; }}
     	public bool IsField			            { get { return EngineObject.IsField; }}
-    	public bool IsInstanceField			    { get { return EngineObject.IsInstanceField; }}
+    	public bool IsNonStaticField			{ get { return EngineObject.IsNonStaticField; }}
     	public bool IsStaticField               { get { return EngineObject.IsStaticField; }}
         public bool IsTypeCast                  { get { return EngineObject.IsTypeCast; }}
         public bool IsStateChart                { get { return EngineObject.IsStateChart; }}

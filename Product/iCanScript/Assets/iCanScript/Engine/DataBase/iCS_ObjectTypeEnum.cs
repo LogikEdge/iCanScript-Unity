@@ -15,7 +15,7 @@ namespace iCanScript.Engine {
         // Function nodes
         Constructor=100,
         NonStaticFunction, StaticFunction, 
-        InstanceField, StaticField,
+        NonStaticField, StaticField,
         TypeCast,
         InstanceMessage,  StaticMessage,
         InstanceProperty, StaticProperty,
@@ -84,14 +84,14 @@ namespace iCanScript.Engine {
         public static bool IsKindOfFunction       (iCS_EngineObject obj) { return IsConstructor(obj) || IsFunction(obj) ||
     																			  IsField(obj) || IsTypeCast(obj); } 
         public static bool IsFunction             (iCS_EngineObject obj) { return IsStaticFunction(obj) || IsNonStaticFunction(obj); }
-        public static bool IsField                (iCS_EngineObject obj) { return IsStaticField(obj) || IsInstanceField(obj); }
+        public static bool IsField                (iCS_EngineObject obj) { return IsStaticField(obj) || IsNonStaticField(obj); }
         public static bool IsEventHandler         (iCS_EngineObject obj) { return IsInstanceMessage(obj) || IsStaticMessage(obj); }
 
         public static bool IsConstructor          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Constructor; }
         public static bool IsStaticFunction       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StaticFunction; }
         public static bool IsNonStaticFunction    (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.NonStaticFunction; }
         public static bool IsStaticField          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StaticField; }
-        public static bool IsInstanceField        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InstanceField; }
+        public static bool IsNonStaticField       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.NonStaticField; }
         public static bool IsTypeCast             (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.TypeCast; }
         public static bool IsInstanceMessage      (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InstanceMessage; }
         public static bool IsStaticMessage        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StaticMessage; }

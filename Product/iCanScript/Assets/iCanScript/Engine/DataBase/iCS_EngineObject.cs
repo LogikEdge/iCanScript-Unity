@@ -237,7 +237,7 @@ namespace iCanScript.Engine {
         public bool IsNonStaticFunction        { get { return iCS_ObjectType.IsNonStaticFunction(this); }}
     	public bool IsField					   { get { return iCS_ObjectType.IsField(this); }}
         public bool IsStaticField              { get { return iCS_ObjectType.IsStaticField(this); }}
-        public bool IsInstanceField            { get { return iCS_ObjectType.IsInstanceField(this); }}
+        public bool IsNonStaticField           { get { return iCS_ObjectType.IsNonStaticField(this); }}
         public bool IsTypeCast                 { get { return iCS_ObjectType.IsTypeCast(this); }}
         public bool IsEventHandler             { get { return iCS_ObjectType.IsEventHandler(this); }}
         public bool IsInstanceNode             { get { return IsPackage && RuntimeType != typeof(iCS_Package); }}
