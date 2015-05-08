@@ -21,8 +21,6 @@ namespace iCanScript.Editor {
         DSScrollView                myMainView;
         Rect                        myScrollViewArea;
     	Rect                        mySelectedAreaCache    = new Rect(0,0,0,0);
-        bool                        myShowInherited        = true;
-        bool                        myShowProtected        = false;
         string                      myNamespaceSearchString= "";
         string                      myTypeSearchString     = "";
         string                      myMemberSearchString   = "";
@@ -158,72 +156,61 @@ namespace iCanScript.Editor {
                 case EventType.MouseDrag: {
                     switch(Event.current.button) {
                         case 0: { // Left mouse button
-                            StartDragAndDrop(selected);                            
+                            StartDragAndDrop(selected);
                             Event.current.Use();
                             break;
                         }
                     }
                     break;
                 }
-//                case EventType.ScrollWheel: {
-//                    break;
-//                }
-//                case EventType.MouseDown: {
-//                    var mouseInScreenPoint= GUIUtility.GUIToScreenPoint(mousePosition);
-//                    var areaInScreenPoint= GUIUtility.GUIToScreenPoint(new Vector2(frameArea.x, frameArea.y));
-//                    var areaInScreenPosition= new Rect(areaInScreenPoint.x, areaInScreenPoint.y, frameArea.width, frameArea.height);
-//                    myController.MouseDownOn(null, mouseInScreenPoint, areaInScreenPosition);
-//                    Event.current.Use();
-//                    // Move keyboard focus to this window.			
-//                    GUI.FocusControl("");   // Removes focus from the search field.
-//    				break;
-//    			}
-//
-//                case EventType.MouseUp: {
-//    				break;
-//    			}
-//    			case EventType.KeyDown: {
-//    				var ev= Event.current;
-//    				if(!ev.isKey) break;
-//                    switch(ev.keyCode) {
-//                        // Tree navigation
-//                        case KeyCode.UpArrow: {
+                case EventType.ScrollWheel: {
+                    break;
+                }
+                case EventType.MouseDown: {
+                    var mouseInScreenPoint= GUIUtility.GUIToScreenPoint(mousePosition);
+                    var areaInScreenPoint= GUIUtility.GUIToScreenPoint(new Vector2(frameArea.x, frameArea.y));
+                    var areaInScreenPosition= new Rect(areaInScreenPoint.x, areaInScreenPoint.y, frameArea.width, frameArea.height);
+                    myController.MouseDownOn(null, mouseInScreenPoint, areaInScreenPosition);
+                    Event.current.Use();
+                    // Move keyboard focus to this window.			
+                    GUI.FocusControl("");   // Removes focus from the search field.
+    				break;
+    			}
+
+                case EventType.MouseUp: {
+    				break;
+    			}
+    			case EventType.KeyDown: {
+    				var ev= Event.current;
+    				if(!ev.isKey) break;
+                    switch(ev.keyCode) {
+                        // Tree navigation
+                        case KeyCode.UpArrow: {
 //                            myController.SelectPrevious();
-//                            ev.Use();
-//                            break;
-//                        }
-//                        case KeyCode.DownArrow: {
+                            ev.Use();
+                            break;
+                        }
+                        case KeyCode.DownArrow: {
 //                            myController.SelectNext();
-//                            ev.Use();
-//                            break;
-//                        }
-//                        // Fold/Unfold toggle
-//                        case KeyCode.Return: {
-//                            myController.ToggleFoldUnfoldSelected();
-//                            ev.Use();
-//                            break;
-//                        }
-//                    }
-//                    switch(ev.character) {
-//                        // Fold/Unfold.
-//                        case '+': {
-//                            myController.UnfoldSelected();
-//                            ev.Use();
-//                            break;
-//                        }
-//                        case '-': {
-//                            myController.FoldSelected();
-//                            ev.Use();
-//                            break;
-//                        }
-//    					case 'h': {
+                            ev.Use();
+                            break;
+                        }
+                        // Fold/Unfold toggle
+                        case KeyCode.Return: {
+                            myController.ToggleFoldUnfoldOnSelected();
+                            ev.Use();
+                            break;
+                        }
+                    }
+                    switch(ev.character) {
+    					case 'h': {
 //                            myController.Help();
-//                            ev.Use();
-//                            break;
-//    					}
-//                    }
-//                    break;
-//    			}
+                            ev.Use();
+                            break;
+    					}
+                    }
+                    break;
+    			}
             }   
         }
 

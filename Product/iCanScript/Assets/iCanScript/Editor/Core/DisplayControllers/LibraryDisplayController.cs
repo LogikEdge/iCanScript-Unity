@@ -202,7 +202,7 @@ namespace iCanScript.Editor {
 			GUI.Label(scoreRect, score.ToString()+"%");
 			
             // -- Show foldout (if needed) --
-    		bool foldoutState= ShouldUseFoldout ? EditorGUI.Foldout(new Rect(displayArea.x+kScoreWidth, displayArea.y, myFoldOffset, displayArea.height), foldout, "") : false;
+    		bool foldoutState= ShouldUseFoldout(myCursor) ? EditorGUI.Foldout(new Rect(displayArea.x+kScoreWidth, displayArea.y, myFoldOffset, displayArea.height), foldout, "") : false;
 
 			// -- Show icon --
 	        var pos= new Rect(myFoldOffset+kScoreWidth+displayArea.x, displayArea.y, displayArea.width-myFoldOffset, displayArea.height);
@@ -236,6 +236,14 @@ namespace iCanScript.Editor {
             mySelected= key as LibraryObject;
     	}
 
+        // -------------------------------------------------------------------
+        /// Toggles the foldout on the selected library object.
+        public void ToggleFoldUnfoldOnSelected() {
+            if(mySelected == null) return;
+            if(!ShouldUseFoldout(mySelected)) return;
+            myTreeView.ToggleFoldUnfold(mySelected);
+        }
+        
         // -------------------------------------------------------------------
         /// Determines if type member should be shown.
         ///
@@ -347,16 +355,18 @@ namespace iCanScript.Editor {
 			ComputeNumberOfItems();			
 		}
 		
-        // ===================================================================
         // -------------------------------------------------------------------
-        bool ShouldUseFoldout {
-            get {
-                if(myCursor == null) return false;
-                if(myCursor is LibraryRootNamespace) return true;
-                if(myCursor is LibraryChildNamespace) return true;
-                if(myCursor is LibraryType) return true;
-                return false;
-            }
+        /// Determine if the curent library object requires a foldout.
+        ///
+        /// @return _true_ if current library object requires a foldout.
+        ///         _false_ otherwise.
+        ///
+        bool ShouldUseFoldout(LibraryObject libraryObject) {
+            if(libraryObject == null) return false;
+            if(libraryObject is LibraryRootNamespace) return true;
+            if(libraryObject is LibraryChildNamespace) return true;
+            if(libraryObject is LibraryType) return true;
+            return false;
         }
 
     }
