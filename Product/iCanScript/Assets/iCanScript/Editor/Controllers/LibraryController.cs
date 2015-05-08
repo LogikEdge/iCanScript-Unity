@@ -99,6 +99,9 @@ namespace iCanScript.Editor {
                 ExtractAssembly(assembly);
             }
 
+            // -- Update search score. --
+            myDatabase.ComputeScore();
+            
 			// -- Sort the database. --
             myDatabase.Sort();
 

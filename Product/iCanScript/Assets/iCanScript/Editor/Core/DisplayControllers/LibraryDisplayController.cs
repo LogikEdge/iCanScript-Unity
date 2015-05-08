@@ -147,7 +147,7 @@ namespace iCanScript.Editor {
             if(siblings == null || siblings.Count == 0) return false;
 			int idx= 0;
 			do {
-	            if(idx >= siblings.Count-1) return false;
+	            if(idx >= siblings.Count) return false;
 	            myCursor= siblings[idx] as LibraryObject;
 				++idx;				
 			} while(!ShouldShow(myCursor));

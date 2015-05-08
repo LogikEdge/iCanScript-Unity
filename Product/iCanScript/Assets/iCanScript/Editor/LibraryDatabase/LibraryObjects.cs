@@ -264,11 +264,11 @@ namespace iCanScript.Editor {
                     else if (x == null) return -1;
                     else if (y == null) return 1;
 
-//                    // -- Sort according to score first --
-//                    float scoreDiff= y.score-x.score;
-//                    if(Math3D.IsNotZero(score)) {
-//                        return scoreDiff < 0 ? -1 : 1;
-//                    }
+                    // -- Sort according to score first --
+                    float scoreDiff= y.score-x.score;
+                    if(Math3D.IsNotZero(scoreDiff)) {
+                        return scoreDiff < 0 ? -1 : 1;
+                    }
 
                     // -- If score equal, then sort alphabetically. --
                     return string.Compare(x.GetRawName(), y.GetRawName());
@@ -341,11 +341,11 @@ namespace iCanScript.Editor {
                     else if (x == null) return -1;
                     else if (y == null) return 1;
 
-//                    // -- Sort according to score first --
-//                    float scoreDiff= y.score-x.score;
-//                    if(Math3D.IsNotZero(score)) {
-//                        return scoreDiff < 0 ? -1 : 1;
-//                    }
+                    // -- Sort according to score first --
+                    float scoreDiff= y.score-x.score;
+                    if(Math3D.IsNotZero(scoreDiff)) {
+                        return scoreDiff < 0 ? -1 : 1;
+                    }
 
                     // -- If score equal, then sort alphabetically. --
                     return string.Compare(x.GetRawName(), y.GetRawName());
@@ -404,11 +404,11 @@ namespace iCanScript.Editor {
                     else if (x == null) return -1;
                     else if (y == null) return 1;
 
-//                    // -- Sort according to score first --
-//                    float scoreDiff= y.score-x.score;
-//                    if(Math3D.IsNotZero(score)) {
-//                        return scoreDiff < 0 ? -1 : 1;
-//                    }
+                    // -- Sort according to score first --
+                    float scoreDiff= y.score-x.score;
+                    if(Math3D.IsNotZero(scoreDiff)) {
+                        return scoreDiff < 0 ? -1 : 1;
+                    }
 
                     // -- If score equal, then sort alphabetically. --
 					return string.Compare(x.GetRawName(), y.GetRawName());
@@ -521,11 +521,11 @@ namespace iCanScript.Editor {
                     else if (x == null) return -1;
                     else if (y == null) return 1;
 
-//                    // -- Sort according to score first --
-//                    float scoreDiff= y.score-x.score;
-//                    if(Math3D.IsNotZero(score)) {
-//                        return scoreDiff < 0 ? -1 : 1;
-//                    }
+                    // -- Sort according to score first --
+                    float scoreDiff= y.score-x.score;
+                    if(Math3D.IsNotZero(scoreDiff)) {
+                        return scoreDiff < 0 ? -1 : 1;
+                    }
 
                     // -- If score equal, then sort alphabetically. --
                     if(x.isField && !(y.isField)) return -1;
