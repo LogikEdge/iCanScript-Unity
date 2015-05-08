@@ -89,8 +89,14 @@ namespace iCanScript.Editor {
         // ---------------------------------------------------------------------------------
         /// Displays the editor window and processes the user events.
         public new void OnGUI() {
-//            // Wait until mouse is over our window.
-//            if(mouseOverWindow != this) return;
+            // -- Wait until library fully loaded. --
+            if(!LibraryController.IsLibraryLoaded) {
+                ShowNotification(new GUIContent("Waiting for library to load..."));
+                return;
+            }
+            RemoveNotification();
+            
+            // -- Initialize the display controller. --
     		if(!IsInitialized()) return;
 
             // -- Draw the base stuff for all windows --
@@ -99,6 +105,8 @@ namespace iCanScript.Editor {
             // -- Show toolbar --
     		var toolbarRect= ShowToolbar();
             myScrollViewArea= new Rect(0, toolbarRect.height, position.width, position.height-toolbarRect.height);
+
+            // -- Show library content --
     		myMainView.Display(myScrollViewArea);
     		ProcessEvents(myScrollViewArea);
 //    		// -- Make new selection visible --
