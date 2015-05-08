@@ -294,6 +294,9 @@ namespace iCanScript.Editor {
 		public void ComputeMemberScoreFor(string searchString) {
 			bool isEmpty= string.IsNullOrEmpty(searchString);
             var searchLength= isEmpty ? 0 : searchString.Length;
+			if(!isEmpty) {
+				searchString= searchString.ToUpper();
+			}
 			database.ForEach(
 				l=> {
 					if(l is LibraryType) return;
@@ -306,7 +309,7 @@ namespace iCanScript.Editor {
                         libraryMember.searchLength= 0;
 					}
 					else {
-						libraryMember.rawScore= FuzzyString.GetScore(searchString, libraryMember.nodeName);						
+						libraryMember.rawScore= FuzzyString.GetScore(searchString, libraryMember.nodeName.ToUpper());	
                         libraryMember.searchLength= searchLength;
 					}
 				}
@@ -320,6 +323,9 @@ namespace iCanScript.Editor {
 		public void ComputeTypeScoreFor(string searchString) {
 			bool isEmpty= string.IsNullOrEmpty(searchString);
             var searchLength= isEmpty ? 0 : searchString.Length;
+			if(!isEmpty) {
+				searchString= searchString.ToUpper();
+			}
 			database.ForEach(
 				l=> {
 					if(l is LibraryType) {
@@ -329,7 +335,7 @@ namespace iCanScript.Editor {
                             libraryType.searchLength= 0;
 						}
 						else {
-							libraryType.rawScore= FuzzyString.GetScore(searchString, libraryType.nodeName);						
+							libraryType.rawScore= FuzzyString.GetScore(searchString, libraryType.nodeName.ToUpper());						
                             libraryType.searchLength= searchLength;
 						}						
 					}
@@ -344,6 +350,9 @@ namespace iCanScript.Editor {
 		public void ComputeNamespaceScoreFor(string searchString) {
 			bool isEmpty= string.IsNullOrEmpty(searchString);
             var searchLength= isEmpty ? 0 : searchString.Length;
+			if(!isEmpty) {
+				searchString= searchString.ToUpper();
+			}
 			database.ForEach(
 				l=> {
 					if(l is LibraryChildNamespace) {
@@ -354,8 +363,8 @@ namespace iCanScript.Editor {
                             libraryObject.searchLength= 0;
 						}
 						else {
-						 	var childScore= FuzzyString.GetScore(searchString, libraryObject.nodeName);						
-							var rootScore = FuzzyString.GetScore(searchString, rootNamespace.nodeName);
+						 	var childScore= FuzzyString.GetScore(searchString, libraryObject.nodeName.ToUpper());						
+							var rootScore = FuzzyString.GetScore(searchString, rootNamespace.nodeName.ToUpper());
 							libraryObject.rawScore= Mathf.Max(childScore, rootScore);
                             libraryObject.searchLength= searchLength;
 						}						
