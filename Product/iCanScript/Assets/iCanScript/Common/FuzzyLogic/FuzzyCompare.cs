@@ -13,8 +13,8 @@ namespace iCanScript.FuzzyLogic {
             if(searchLen == 0) return 1f;
             
             // -- Convert to uppercase. --
-            search= search.ToUpper();
-            dest  = dest.ToUpper();
+//            search= search.ToUpper();
+//            dest  = dest.ToUpper();
 
             // -- Assume 100% for exact match and 50% for bad index. --
             float score= 0f;
@@ -23,13 +23,22 @@ namespace iCanScript.FuzzyLogic {
             int destIdx= 0;
             while(searchIdx < searchLen && destIdx < destLen) {
                 var c= search[searchIdx];
-                if(c == dest[destIdx]) {
+                var d= dest[destIdx];
+                if(c == d) {
                     score+= 1f;
+                }
+                else if(Char.ToUpper(c) == Char.ToUpper(d)) {
+                    score+= 0.75f;
                 }
                 else {
                     for(++destIdx; destIdx < destLen; ++destIdx) {
-                        if(c == dest[destIdx]) {
+                        var nd= dest[destIdx];
+                        if(c == nd) {
                             score+= 0.5f;
+                            break;
+                        }
+                        else if(Char.ToUpper(c) == Char.ToUpper(nd)) {
+                            score+= 0.375f;
                             break;
                         }
                     }
