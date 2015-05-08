@@ -298,6 +298,7 @@ namespace iCanScript.Editor {
 				}
 			);
 			database.ComputeScore();
+            database.Sort();
 			ComputeNumberOfItems();			
 		}
         // -------------------------------------------------------------------
@@ -318,6 +319,7 @@ namespace iCanScript.Editor {
 				}
 			);
 			database.ComputeScore();
+            database.Sort();
 			ComputeNumberOfItems();			
 		}
         // -------------------------------------------------------------------
@@ -341,6 +343,7 @@ namespace iCanScript.Editor {
 				}
 			);
 			database.ComputeScore();
+            database.Sort();
 			ComputeNumberOfItems();			
 		}
 		

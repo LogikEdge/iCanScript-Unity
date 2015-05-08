@@ -258,7 +258,15 @@ namespace iCanScript.Editor {
         public void Sort() {
             // -- Sort our children --
             Sort<LibraryRootNamespace>(
-                (x,y)=> string.Compare(x.GetRawName(), y.GetRawName())
+                (x,y)=> {
+                    // -- Sort according to score first --
+                    float scoreDiff= y.score-x.score;
+                    if(Math3D.IsNotZero(score)) {
+                        return scoreDiff < 0 ? -1 : 1;
+                    }
+                    // -- If score equal, then sort alphabetically. --
+                    return string.Compare(x.GetRawName(), y.GetRawName());
+                }
             );
             // -- Ask our children to sort their children on so on... -- 
             foreach(var c in children) {
@@ -321,7 +329,9 @@ namespace iCanScript.Editor {
         public void Sort() {
             // -- Sort our children --
             Sort<LibraryChildNamespace>(
-                (x,y)=> string.Compare(x.GetRawName(), y.GetRawName())
+                (x,y)=> { 
+                    return string.Compare(x.GetRawName(), y.GetRawName());
+                }
             );
             // -- Ask our children to sort their children on so on... -- 
             foreach(var c in children) {
