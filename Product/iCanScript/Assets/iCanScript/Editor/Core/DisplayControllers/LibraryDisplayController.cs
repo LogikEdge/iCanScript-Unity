@@ -287,6 +287,13 @@ namespace iCanScript.Editor {
 				}
 			);
 			this.numberOfItems= nbItems;
+			// -- Display all visible items if only few remain visible. --
+			if(nbItems < 50) {
+				OpenAllVisible();
+			}
+			else if(nbItems < 250) {
+				OpenAllVisibleWithScore(database.score);
+			}
         }
 
         // -------------------------------------------------------------------
@@ -390,6 +397,35 @@ namespace iCanScript.Editor {
             return false;
         }
 
+        // -------------------------------------------------------------------
+		/// Opens all visible items.
+		void OpenAllVisible() {
+			database.ForEach(
+				l=> {
+					if(ShouldShow(l)) {
+						var libraryParent= l.parent;
+						if(libraryParent != null) {
+							myTreeView.Unfold(libraryParent);							
+						}
+					}
+				}
+			);
+		}
+
+        // -------------------------------------------------------------------
+		/// Opens all visible items with the best search score.
+		void OpenAllVisibleWithScore(float score) {
+			database.ForEach(
+				l=> {
+					if(ShouldShow(l) && Math3D.IsEqual(score, l.score)) {
+						var libraryParent= l.parent;
+						if(libraryParent != null) {
+							myTreeView.Unfold(libraryParent);							
+						}
+					}
+				}
+			);
+		}
     }
     
 }
