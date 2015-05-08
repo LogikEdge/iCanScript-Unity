@@ -253,6 +253,18 @@ namespace iCanScript.Editor {
         /// @return _true_ if it should be shown. _false_ otherwise.
         ///
         bool ShouldShow(LibraryObject libraryObject) {
+			// -- Don't show containers without visible members. --
+			if(libraryObject is LibraryRootNamespace || libraryObject is LibraryChildNamespace || libraryObject is LibraryType) {
+				if(libraryObject.children == null) return false;
+				var showContainer= false;
+				foreach(var c in libraryObject.children) {
+					if(ShouldShow(c as LibraryObject)) {
+						showContainer= true;
+						break;
+					}
+				}
+				if(showContainer == false) return false;
+			}
 			var libraryMemberInfo= libraryObject as LibraryMemberInfo;
 			if(libraryMemberInfo != null) {
 				// -- Should we show inherited members? --
