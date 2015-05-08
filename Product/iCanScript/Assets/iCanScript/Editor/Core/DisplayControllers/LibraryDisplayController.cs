@@ -69,11 +69,13 @@ namespace iCanScript.Editor {
 		public LibraryRoot database {
 			get { return LibraryController.LibraryDatabase; }
 		}
-		
+		public float bestSearchScore {
+		    get { return database.score; }
+		}
+        
         // =================================================================================
         // Constants
         // ---------------------------------------------------------------------------------
-		const float kMinScore= 0.5f;
         const int   kIconWidth  = 16;
         const int   kIconHeight = 16; 
         const float kLabelSpacer= 4f;
@@ -267,7 +269,8 @@ namespace iCanScript.Editor {
 					}
 				}				
 			}
-			if(libraryObject.score < kMinScore) return false;
+            // -- Accept 70% of the best search score. --
+			if(libraryObject.score < 0.7f*bestSearchScore) return false;
 			return true;
         }
         
@@ -290,6 +293,7 @@ namespace iCanScript.Editor {
 		/// Computes the member score for the given string.
 		public void ComputeMemberScoreFor(string searchString) {
 			bool isEmpty= string.IsNullOrEmpty(searchString);
+            var searchLength= isEmpty ? 0 : searchString.Length;
 			database.ForEach(
 				l=> {
 					if(l is LibraryType) return;
@@ -299,9 +303,11 @@ namespace iCanScript.Editor {
 					var libraryMember= l as LibraryObject;
 					if(isEmpty) {
 						libraryMember.rawScore= 1f;
+                        libraryMember.searchLength= 0;
 					}
 					else {
 						libraryMember.rawScore= FuzzyString.GetScore(searchString, libraryMember.nodeName);						
+                        libraryMember.searchLength= searchLength;
 					}
 				}
 			);
@@ -313,15 +319,18 @@ namespace iCanScript.Editor {
 		/// Computes the type score for the given string.
 		public void ComputeTypeScoreFor(string searchString) {
 			bool isEmpty= string.IsNullOrEmpty(searchString);
+            var searchLength= isEmpty ? 0 : searchString.Length;
 			database.ForEach(
 				l=> {
 					if(l is LibraryType) {
 						var libraryType= l as LibraryType;
 						if(isEmpty) {
 							libraryType.rawScore= 1f;
+                            libraryType.searchLength= 0;
 						}
 						else {
 							libraryType.rawScore= FuzzyString.GetScore(searchString, libraryType.nodeName);						
+                            libraryType.searchLength= searchLength;
 						}						
 					}
 				}
@@ -334,6 +343,7 @@ namespace iCanScript.Editor {
 		/// Computes the type score for the given string.
 		public void ComputeNamespaceScoreFor(string searchString) {
 			bool isEmpty= string.IsNullOrEmpty(searchString);
+            var searchLength= isEmpty ? 0 : searchString.Length;
 			database.ForEach(
 				l=> {
 					if(l is LibraryChildNamespace) {
@@ -341,11 +351,13 @@ namespace iCanScript.Editor {
 						var rootNamespace= libraryObject.parent as LibraryObject;
 						if(isEmpty) {
 							libraryObject.rawScore= 1f;
+                            libraryObject.searchLength= 0;
 						}
 						else {
 						 	var childScore= FuzzyString.GetScore(searchString, libraryObject.nodeName);						
 							var rootScore = FuzzyString.GetScore(searchString, rootNamespace.nodeName);
 							libraryObject.rawScore= Mathf.Max(childScore, rootScore);
+                            libraryObject.searchLength= searchLength;
 						}						
 					}
 				}

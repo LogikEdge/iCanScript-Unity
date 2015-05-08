@@ -47,6 +47,7 @@ namespace iCanScript.Editor {
         public  Vector2 displaySize    = Vector2.zero;
 				float	myRawScore	   = 1f;
 				float   myScore        = 1f;
+        public  int     searchLength   = 0;
 
         // ======================================================================
         // PROPERTIES
@@ -164,6 +165,7 @@ namespace iCanScript.Editor {
 		/// Resets the score values for this tree branch.
 		public void ResetScore() {
 			myScore= myRawScore= 1f;
+            searchLength= 0;
 			if(children == null) return;
 			foreach(var child in children) {
 				var libraryChild= child as LibraryObject;
@@ -175,12 +177,25 @@ namespace iCanScript.Editor {
 		public void ComputeScore() {
 			// -- Update our score if we are the leaf in the tree. --
 			if(children == null || children.Count == 0) {
-				myScore= myRawScore;
+                var productScore= myRawScore;
+                var totalSearchLength= searchLength;
+                var totalScore= totalSearchLength == 0 ? 0f : myRawScore*totalSearchLength;
 				var libraryParent= parent as LibraryObject;
 				while(libraryParent != null) {
-					myScore*= libraryParent.rawScore;
+                    productScore*= libraryParent.rawScore;
+                    var parentSearchLength= libraryParent.searchLength;
+                    if(parentSearchLength != 0) {
+                        totalScore+= libraryParent.rawScore*parentSearchLength;
+                        totalSearchLength+= parentSearchLength;
+                    }
 					libraryParent= libraryParent.parent as LibraryObject;
 				}
+                if(totalSearchLength == 0) {
+                    myScore= 1f;
+                }
+                else {
+                    myScore= ((totalScore/totalSearchLength)*productScore);
+                }
 				return;
 			}
 			// -- Ask each child to update their score. --
