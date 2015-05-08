@@ -330,6 +330,12 @@ namespace iCanScript.Editor {
             // -- Sort our children --
             Sort<LibraryChildNamespace>(
                 (x,y)=> { 
+                    // -- Sort according to score first --
+                    float scoreDiff= y.score-x.score;
+                    if(Math3D.IsNotZero(score)) {
+                        return scoreDiff < 0 ? -1 : 1;
+                    }
+                    // -- If score equal, then sort alphabetically. --
                     return string.Compare(x.GetRawName(), y.GetRawName());
                 }
             );
@@ -380,7 +386,15 @@ namespace iCanScript.Editor {
         public void Sort() {
             // -- Sort our children --
             Sort<LibraryType>(
-                (x,y)=> string.Compare(x.GetRawName(), y.GetRawName())
+				(x,y)=> {
+                    // -- Sort according to score first --
+                    float scoreDiff= y.score-x.score;
+                    if(Math3D.IsNotZero(score)) {
+                        return scoreDiff < 0 ? -1 : 1;
+                    }
+                    // -- If score equal, then sort alphabetically. --
+					return string.Compare(x.GetRawName(), y.GetRawName());
+				}
             );
             // -- Ask our children to sort their children on so on... -- 
             foreach(var c in children) {
@@ -484,6 +498,12 @@ namespace iCanScript.Editor {
             // -- Sort our children --
             Sort<LibraryMemberInfo>(
                 (x,y)=> {
+                    // -- Sort according to score first --
+                    float scoreDiff= y.score-x.score;
+                    if(Math3D.IsNotZero(score)) {
+                        return scoreDiff < 0 ? -1 : 1;
+                    }
+                    // -- If score equal, then sort alphabetically. --
                     if(x.isField && !(y.isField)) return -1;
                     if(y.isField && !(x.isField)) return 1;
                     if(x.isProperty && !(y.isProperty)) return -1;
