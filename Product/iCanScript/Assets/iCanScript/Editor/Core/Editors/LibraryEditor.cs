@@ -20,7 +20,7 @@ namespace iCanScript.Editor {
     	LibraryDisplayController    myController;
         DSScrollView                myMainView;
         Rect                        myScrollViewArea;
-    	Rect                        mySelectedAreaCache    = new Rect(0,0,0,0);
+//    	Rect                        mySelectedAreaCache    = new Rect(0,0,0,0);
         string                      myNamespaceSearchString= "";
         string                      myTypeSearchString     = "";
         string                      myMemberSearchString   = "";
