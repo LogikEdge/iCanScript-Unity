@@ -99,14 +99,17 @@ namespace iCanScript.Editor {
                 ExtractAssembly(assembly);
             }
 
+			// -- Install Unity Event handlers. --
+			InstallUnityEventHandlers();
+
             // -- Update search score. --
             myDatabase.ComputeScore();
             
 			// -- Sort the database. --
             myDatabase.Sort();
 
-			// -- Install Unity Event handlers. --
-			InstallUnityEventHandlers();
+            // -- Take a snapshot of string sort to speed up sorting. --
+            myDatabase.TakeSnapshotOfStringSortIndex();
         }
 
         // ----------------------------------------------------------------------

@@ -40,6 +40,11 @@ namespace iCanScript.Editor {
     /// Defines the base class for all objects in the library.
     public abstract class LibraryObject : TreeNode {
         // ======================================================================
+        // Constants
+        // ----------------------------------------------------------------------
+        public const float kMinScoreFactor= 0.7f;
+        
+        // ======================================================================
         // FIELDS
         // ----------------------------------------------------------------------
 				Texture	myLibraryIcon  = null;
@@ -48,6 +53,7 @@ namespace iCanScript.Editor {
 				float	myRawScore	   = 1f;
 				float   myScore        = 1f;
         public  int     searchLength   = 0;
+        public  int     stringSortIndex= -1;
 
         // ======================================================================
         // PROPERTIES
@@ -162,6 +168,18 @@ namespace iCanScript.Editor {
 		}
 
         // ----------------------------------------------------------------------
+        /// Takes a snapshot of the string sort index.
+        public void TakeSnapshotOfStringSortIndex() {
+            if(children == null) return;
+            var nbOfChild= children.Count;
+            for(int i= 0; i < nbOfChild; ++i) {
+                var child= children[i] as LibraryObject;
+                child.stringSortIndex= i;
+                child.TakeSnapshotOfStringSortIndex();
+            }
+        }
+        
+        // ----------------------------------------------------------------------
 		/// Resets the score values for this tree branch.
 		public void ResetScore() {
 			myScore= myRawScore= 1f;
@@ -272,6 +290,7 @@ namespace iCanScript.Editor {
         /// Sorts the root namespace and ask all children to perform sorting.
         public void Sort() {
             // -- Sort our children --
+            float minScore= LibraryObject.kMinScoreFactor*this.score;
             Sort<LibraryRootNamespace>(
                 (x,y)=> {
                     // -- Handler null parameters. --
@@ -286,12 +305,18 @@ namespace iCanScript.Editor {
                     }
 
                     // -- If score equal, then sort alphabetically. --
+                    if(x.stringSortIndex != -1 && y.stringSortIndex != -1) {
+                        return x.stringSortIndex-y.stringSortIndex;
+                    }
                     return string.Compare(x.GetRawName(), y.GetRawName());
                 }
             );
             // -- Ask our children to sort their children on so on... -- 
             foreach(var c in children) {
-                (c as LibraryRootNamespace).Sort();
+                var child= c as LibraryRootNamespace;
+                if(child.score >= minScore) {
+                    child.Sort(minScore);
+                }
             }
         }
     }
@@ -347,7 +372,7 @@ namespace iCanScript.Editor {
 
         // ----------------------------------------------------------------------
         /// Sorts the child namespaces and ask all children to perform sorting.
-        public void Sort() {
+        public void Sort(float minScore) {
             // -- Sort our children --
             Sort<LibraryChildNamespace>(
                 (x,y)=> { 
@@ -363,12 +388,18 @@ namespace iCanScript.Editor {
                     }
 
                     // -- If score equal, then sort alphabetically. --
+                    if(x.stringSortIndex != -1 && y.stringSortIndex != -1) {
+                        return x.stringSortIndex-y.stringSortIndex;
+                    }
                     return string.Compare(x.GetRawName(), y.GetRawName());
                 }
             );
             // -- Ask our children to sort their children on so on... -- 
             foreach(var c in children) {
-                (c as LibraryChildNamespace).Sort();
+                var child= c as LibraryChildNamespace;
+                if(child.score >= minScore) {
+                    child.Sort(minScore);
+                }
             }
         }
     }
@@ -410,7 +441,7 @@ namespace iCanScript.Editor {
 
         // ----------------------------------------------------------------------
         /// Sorts the child types and ask all children to perform sorting.
-        public void Sort() {
+        public void Sort(float minScore) {
             // -- Sort our children --
             Sort<LibraryType>(
 				(x,y)=> {
@@ -426,12 +457,18 @@ namespace iCanScript.Editor {
                     }
 
                     // -- If score equal, then sort alphabetically. --
+                    if(x.stringSortIndex != -1 && y.stringSortIndex != -1) {
+                        return x.stringSortIndex-y.stringSortIndex;
+                    }
 					return string.Compare(x.GetRawName(), y.GetRawName());
 				}
             );
             // -- Ask our children to sort their children on so on... -- 
             foreach(var c in children) {
-                (c as LibraryType).Sort();
+                var child= c as LibraryType;
+                if(child.score >= minScore) {
+                    child.Sort(minScore);
+                }
             }
         }
     }
@@ -527,7 +564,7 @@ namespace iCanScript.Editor {
         // UTILITIES
         // ----------------------------------------------------------------------
         /// Sorts the child members according to their type.
-        public void Sort() {
+        public void Sort(float minScore) {
             // -- Sort our children --
             Sort<LibraryMemberInfo>(
                 (x,y)=> {
@@ -543,6 +580,9 @@ namespace iCanScript.Editor {
                     }
 
                     // -- If score equal, then sort alphabetically. --
+                    if(x.stringSortIndex != -1 && y.stringSortIndex != -1) {
+                        return x.stringSortIndex-y.stringSortIndex;
+                    }
                     if(x.isField && !(y.isField)) return -1;
                     if(y.isField && !(x.isField)) return 1;
                     if(x.isProperty && !(y.isProperty)) return -1;

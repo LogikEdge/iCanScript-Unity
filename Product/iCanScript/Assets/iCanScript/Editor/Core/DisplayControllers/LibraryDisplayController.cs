@@ -281,8 +281,10 @@ namespace iCanScript.Editor {
 					}
 				}				
 			}
-            // -- Accept 70% of the best search score. --
-			if(libraryObject.score < 0.7f*bestSearchScore) return false;
+            // -- Accept kMinScoreFactor of the best search score. --
+			if(libraryObject.score < LibraryObject.kMinScoreFactor*bestSearchScore) {
+                return false;
+            }
 			return true;
         }
         
