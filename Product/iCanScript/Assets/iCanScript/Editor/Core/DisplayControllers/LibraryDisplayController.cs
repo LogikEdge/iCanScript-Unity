@@ -294,10 +294,12 @@ namespace iCanScript.Editor {
 			int nbItems= 0;
 			database.ForEach(
 				l=> {
+                    if(!ShouldShow(l)) return false;
 					var libraryMemberInfo= l as LibraryMemberInfo;
-					if(libraryMemberInfo != null && ShouldShow(libraryMemberInfo)) {
+					if(libraryMemberInfo != null) {
 						++nbItems;
 					}
+                    return true;
 				}
 			);
 			this.numberOfItems= nbItems;

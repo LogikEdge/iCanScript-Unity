@@ -133,8 +133,29 @@ namespace iCanScript.Editor {
         /// @param fnc The action to invoke for each element in the tree.
         ///
         public void ForEach(Action<LibraryObject> fnc) {
+            // -- First execute the action on ourself. --
             fnc(this);
+            // -- ...then ask each child to do the same. --
             if(children != null) {
+                foreach(var c in children) {
+                    var libraryObject= c as LibraryObject;
+                    if(libraryObject != null) {
+                        libraryObject.ForEach(fnc);
+                    }
+                }
+            }
+        }
+
+        // ----------------------------------------------------------------------
+        /// Iterates the entire tree invoking the given conditional function.
+        ///
+        /// @param fnc The conditional fucntion to invoke for each element in the
+        ///            tree. If the function return _false_, the iteration will not
+        ///            include the children of the current library object.
+        ///
+        public void ForEach(Func<LibraryObject, bool> fnc) {
+            // -- Execute the action on ourself. --
+            if(fnc(this) && children != null) {
                 foreach(var c in children) {
                     var libraryObject= c as LibraryObject;
                     if(libraryObject != null) {
