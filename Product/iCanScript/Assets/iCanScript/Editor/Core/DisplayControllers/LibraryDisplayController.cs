@@ -360,8 +360,10 @@ namespace iCanScript.Editor {
 						else {
 							libraryType.rawScore= FuzzyString.GetScore(searchString, libraryType.nodeName.ToUpper());						
                             libraryType.searchLength= searchLength;
-						}						
+						}
+                        return false;						
 					}
+                    return true;
 				}
 			);
 			database.ComputeScore();
@@ -391,7 +393,9 @@ namespace iCanScript.Editor {
 							libraryObject.rawScore= Mathf.Max(childScore, rootScore);
                             libraryObject.searchLength= searchLength;
 						}						
+                        return false;
 					}
+                    return true;
 				}
 			);
 			database.ComputeScore();
