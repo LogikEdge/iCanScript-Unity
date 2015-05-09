@@ -238,23 +238,18 @@ namespace iCanScript.Editor {
 				return;
 			}
 			// -- Ask each child to update their score. --
-			foreach(var child in children) {
-				var libraryChild= child as LibraryObject;
-				if(libraryChild != null) {
-					libraryChild.ComputeScore();
-				}
-			}
-			// -- Our score is the best score of our children. --
 			myScore= 0f;
 			foreach(var child in children) {
 				var libraryChild= child as LibraryObject;
 				if(libraryChild != null) {
+					libraryChild.ComputeScore();
+                    // -- Update our score. --
 					var libraryChildScore= libraryChild.score;
 					if(libraryChildScore > myScore) {
 						myScore= libraryChildScore;
 					}
 				}
-			}			
+			}
 		}
      }
     
