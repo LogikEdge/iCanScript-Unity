@@ -21,9 +21,6 @@ namespace iCanScript.Editor {
         DSScrollView                myMainView;
         Rect                        myScrollViewArea;
 //    	Rect                        mySelectedAreaCache    = new Rect(0,0,0,0);
-        string                      myNamespaceSearchString= "";
-        string                      myTypeSearchString     = "";
-        string                      myMemberSearchString   = "";
 
         // =================================================================================
         // PROPERTIES
@@ -39,17 +36,17 @@ namespace iCanScript.Editor {
 			get { return myController.showProtected; }
 			set { myController.showProtected= value; }
 		}
-		public string memberSearchString {
-			get { return myMemberSearchString; }
-			set { UpdateMemberSearchString(value); }
+		public string namespaceSearchString {
+			get { return myController.database.namespaceFilter; }
+			set { UpdateNamespaceSearchString(value); }
 		}
 		public string typeSearchString {
-			get { return myTypeSearchString; }
+			get { return myController.database.typeFilter; }
 			set { UpdateTypeSearchString(value); }
 		}
-		public string namespaceSearchString {
-			get { return myNamespaceSearchString; }
-			set { UpdateNamespaceSearchString(value); }
+		public string memberSearchString {
+			get { return myController.database.memberFilter; }
+			set { UpdateMemberSearchString(value); }
 		}
 		
         // =================================================================================
@@ -219,23 +216,23 @@ namespace iCanScript.Editor {
         // ---------------------------------------------------------------------------------
 		/// Updates member search string and ask controller to adjust it filter.
 		void UpdateMemberSearchString(string newValue) {
-			if(newValue == myMemberSearchString) return;
-			myMemberSearchString= newValue;
-			myController.ComputeMemberScoreFor(myMemberSearchString);
+			if(newValue == myController.database.memberFilter) return;
+            myController.database.memberFilter= newValue;
+			myController.ComputeMemberScoreFor();
 		}
         // ---------------------------------------------------------------------------------
 		/// Updates type search string and ask controller to adjust it filter.
 		void UpdateTypeSearchString(string newValue) {
-			if(newValue == myTypeSearchString) return;
-			myTypeSearchString= newValue;
-			myController.ComputeTypeScoreFor(myTypeSearchString);
+			if(newValue == myController.database.typeFilter) return;
+			myController.database.typeFilter= newValue;
+			myController.ComputeTypeScoreFor();
 		}
         // ---------------------------------------------------------------------------------
 		/// Updates namespace search string and ask controller to adjust it filter.
 		void UpdateNamespaceSearchString(string newValue) {
-			if(newValue == myNamespaceSearchString) return;
-			myNamespaceSearchString= newValue;
-			myController.ComputeNamespaceScoreFor(myNamespaceSearchString);
+			if(newValue == myController.database.namespaceFilter) return;
+			myController.database.namespaceFilter= newValue;
+			myController.ComputeNamespaceScoreFor();
 		}
 		
     	// =================================================================================

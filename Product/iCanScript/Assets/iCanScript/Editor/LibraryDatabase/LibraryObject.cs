@@ -40,11 +40,6 @@ namespace iCanScript.Editor {
     /// Defines the base class for all objects in the library.
     public abstract class LibraryObject : TreeNode {
         // ======================================================================
-        // Constants
-        // ----------------------------------------------------------------------
-        public const float kMinScoreFactor= 0.7f;
-        
-        // ======================================================================
         // FIELDS
         // ----------------------------------------------------------------------
 				Texture	myLibraryIcon  = null;
@@ -52,6 +47,8 @@ namespace iCanScript.Editor {
         public  Vector2 displaySize    = Vector2.zero;
 				float	myRawScore	   = 1f;
 				float   myScore        = 1f;
+                bool    myIsVisible    = true;
+
         public  int     searchLength   = 0;
         public  int     stringSortIndex= -1;
 
@@ -213,36 +210,30 @@ namespace iCanScript.Editor {
 		}
         // ----------------------------------------------------------------------
 		/// Computes the score starting from this node going down to the tree leaf.
-		public void ComputeScore() {
-			// -- Update our score if we are the leaf in the tree. --
-			if(children == null || children.Count == 0) {
-                var productScore= myRawScore;
-                var totalSearchLength= searchLength;
-                var totalScore= totalSearchLength == 0 ? 0f : myRawScore*totalSearchLength;
-				var libraryParent= parent as LibraryObject;
-				while(libraryParent != null) {
-                    productScore*= libraryParent.rawScore;
-                    var parentSearchLength= libraryParent.searchLength;
-                    if(parentSearchLength != 0) {
-                        totalScore+= libraryParent.rawScore*parentSearchLength;
-                        totalSearchLength+= parentSearchLength;
-                    }
-					libraryParent= libraryParent.parent as LibraryObject;
-				}
-                if(totalSearchLength == 0) {
+		public void ComputeScore(float scoreProduct= 1f, float scoreSum= 0f, int scoreSumLen= 0) {
+            // -- Update score components. --
+            if(searchLength != 0) {
+                scoreProduct*= myRawScore;
+                scoreSumLen+= searchLength;
+                scoreSum+= myRawScore*searchLength;
+            }
+			// -- Update our score if we are a member of a type. --
+			if(parent is LibraryType) {
+                if(scoreSumLen == 0) {
                     myScore= 1f;
                 }
                 else {
-                    myScore= ((totalScore/totalSearchLength)*productScore);
+                    myScore= scoreProduct * (scoreSum/scoreSumLen);
                 }
 				return;
 			}
 			// -- Ask each child to update their score. --
 			myScore= 0f;
+            if(children == null) return;
 			foreach(var child in children) {
 				var libraryChild= child as LibraryObject;
 				if(libraryChild != null) {
-					libraryChild.ComputeScore();
+					libraryChild.ComputeScore(scoreProduct, scoreSum, scoreSumLen);
                     // -- Update our score. --
 					var libraryChildScore= libraryChild.score;
 					if(libraryChildScore > myScore) {

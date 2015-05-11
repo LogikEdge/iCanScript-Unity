@@ -282,7 +282,7 @@ namespace iCanScript.Editor {
 				}				
 			}
             // -- Accept kMinScoreFactor of the best search score. --
-			if(libraryObject.score < LibraryObject.kMinScoreFactor*bestSearchScore) {
+			if(libraryObject.score < LibraryRoot.kMinScoreFactor*bestSearchScore) {
                 return false;
             }
 			return true;
@@ -314,90 +314,24 @@ namespace iCanScript.Editor {
 
         // -------------------------------------------------------------------
 		/// Computes the member score for the given string.
-		public void ComputeMemberScoreFor(string searchString) {
-			bool isEmpty= string.IsNullOrEmpty(searchString);
-            var searchLength= isEmpty ? 0 : searchString.Length;
-			if(!isEmpty) {
-				searchString= searchString.ToUpper();
-			}
-			database.ForEach(
-				l=> {
-					if(l is LibraryType) return;
-					if(l is LibraryChildNamespace) return;
-					if(l is LibraryRootNamespace) return;
-					if(l is LibraryRoot) return;
-					var libraryMember= l as LibraryObject;
-					if(isEmpty) {
-						libraryMember.rawScore= 1f;
-                        libraryMember.searchLength= 0;
-					}
-					else {
-						libraryMember.rawScore= FuzzyString.GetScore(searchString, libraryMember.nodeName.ToUpper());	
-                        libraryMember.searchLength= searchLength;
-					}
-				}
-			);
+		public void ComputeMemberScoreFor() {
+            database.ComputeMemberRawScore();
+			database.ComputeScore();
+            database.Sort();
+			ComputeNumberOfItems();	
+		}
+        // -------------------------------------------------------------------
+		/// Computes the type score for the given string.
+		public void ComputeTypeScoreFor() {
+            database.ComputeTypeRawScore();
 			database.ComputeScore();
             database.Sort();
 			ComputeNumberOfItems();			
 		}
         // -------------------------------------------------------------------
 		/// Computes the type score for the given string.
-		public void ComputeTypeScoreFor(string searchString) {
-			bool isEmpty= string.IsNullOrEmpty(searchString);
-            var searchLength= isEmpty ? 0 : searchString.Length;
-			if(!isEmpty) {
-				searchString= searchString.ToUpper();
-			}
-			database.ForEach(
-				l=> {
-					if(l is LibraryType) {
-						var libraryType= l as LibraryType;
-						if(isEmpty) {
-							libraryType.rawScore= 1f;
-                            libraryType.searchLength= 0;
-						}
-						else {
-							libraryType.rawScore= FuzzyString.GetScore(searchString, libraryType.nodeName.ToUpper());						
-                            libraryType.searchLength= searchLength;
-						}
-                        return false;						
-					}
-                    return true;
-				}
-			);
-			database.ComputeScore();
-            database.Sort();
-			ComputeNumberOfItems();			
-		}
-        // -------------------------------------------------------------------
-		/// Computes the type score for the given string.
-		public void ComputeNamespaceScoreFor(string searchString) {
-			bool isEmpty= string.IsNullOrEmpty(searchString);
-            var searchLength= isEmpty ? 0 : searchString.Length;
-			if(!isEmpty) {
-				searchString= searchString.ToUpper();
-			}
-			database.ForEach(
-				l=> {
-					if(l is LibraryChildNamespace) {
-						var libraryObject= l as LibraryObject;
-						var rootNamespace= libraryObject.parent as LibraryObject;
-						if(isEmpty) {
-							libraryObject.rawScore= 1f;
-                            libraryObject.searchLength= 0;
-						}
-						else {
-						 	var childScore= FuzzyString.GetScore(searchString, libraryObject.nodeName.ToUpper());						
-							var rootScore = FuzzyString.GetScore(searchString, rootNamespace.nodeName.ToUpper());
-							libraryObject.rawScore= Mathf.Max(childScore, rootScore);
-                            libraryObject.searchLength= searchLength;
-						}						
-                        return false;
-					}
-                    return true;
-				}
-			);
+		public void ComputeNamespaceScoreFor() {
+			database.ComputeNamespaceRawScore();
 			database.ComputeScore();
             database.Sort();
 			ComputeNumberOfItems();			
