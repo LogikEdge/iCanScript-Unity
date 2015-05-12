@@ -16,7 +16,8 @@ namespace iCanScript.Editor {
         // ======================================================================
         // Types
         // ----------------------------------------------------------------------
-        class FilterString {
+        /// Class used to store library filtering strings.
+        internal class FilterString {
             public string  filter      = null;
             public string  filterUpper = null;
             public int     filterLength= 0;
@@ -30,7 +31,7 @@ namespace iCanScript.Editor {
                 this.filterLength= filter.Length;
             }
         }
-        
+                
         // ======================================================================
         // Constants
         // ----------------------------------------------------------------------
@@ -103,10 +104,12 @@ namespace iCanScript.Editor {
             set {
                 if(myMemberFilter.filter == value) return;
                 myMemberFilter.Init(value);
+//                iCS_Debug.Profile("RawScore", ()=> ComputeMemberRawScore());
                 ComputeMemberRawScore();
                 ComputeScore();
                 ComputeVisibility();
                 Sort();
+//                iCS_Debug.Profile("Sort", ()=> Sort());
             }
         }
 
@@ -175,17 +178,18 @@ namespace iCanScript.Editor {
 		/// Computes the member score for the given string.
 		public void ComputeMemberRawScore() {
             var searchString= myMemberFilter.filterUpper;
+            var filterLen= myMemberFilter.filterLength;
 			ForEach(
 				l=> {
                     if(l is LibraryTypeMember) {
     					var libraryMember= l as LibraryObject;
-    					if(myMemberFilter.filterLength == 0) {
+    					if(filterLen == 0) {
     						libraryMember.rawScore= 1f;
                             libraryMember.searchLength= 0;
     					}
     					else {
     						libraryMember.rawScore= FuzzyString.GetScore(searchString, libraryMember.nodeName.ToUpper());	
-                            libraryMember.searchLength= myMemberFilter.filterLength;
+                            libraryMember.searchLength= filterLen;
     					}
                         return false;                        
                     }
@@ -276,7 +280,7 @@ namespace iCanScript.Editor {
             // -- Ask our children to sort their children on so on... -- 
             foreach(var c in children) {
                 var child= c as LibraryRootNamespace;
-                if(child.score >= minScore) {
+                if(child.isVisible) {
                     child.Sort(minScore);
                 }
             }

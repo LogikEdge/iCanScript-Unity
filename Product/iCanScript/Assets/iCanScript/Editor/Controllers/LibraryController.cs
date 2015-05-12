@@ -168,6 +168,10 @@ namespace iCanScript.Editor {
                 var rootNamespace = myDatabase.GetRootNamespace(level1);
                 var childNamespace= rootNamespace.GetChildNamespace(level2);
                 
+                // -- Ignore any child namespace that starts with "internal" or "private". --
+                if(level2.StartsWith("internal", true, null)) continue;
+                if(level2.StartsWith("private", true, null)) continue;
+                
                 // -- Extract type members --
                 ExtractType(childNamespace, type);
             }        
