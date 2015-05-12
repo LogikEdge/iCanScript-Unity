@@ -121,7 +121,6 @@ namespace iCanScript.Internal.Editor {
         // ----------------------------------------------------------------------
         /// Performs the editor data upgrade for v2.0.11.
         bool V2_0_12_EditorUpgrade() {
-            Debug.Log("v2.0.12 Upgrade");
             bool isUpgraded= false;
             // -- Convert to new port specification --
             ForEach(
