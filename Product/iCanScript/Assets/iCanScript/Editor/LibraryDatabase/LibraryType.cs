@@ -104,6 +104,17 @@ namespace iCanScript.Editor {
             return P.map(p=> p as T, events).ToArray();
         }
 
+        // ----------------------------------------------------------------------
+		/// Computes the visibility for the namespace library object.
+        ///
+        /// Updates the number of visible namespaces.
+        ///
+		public override void ComputeVisibility() {
+            base.ComputeVisibility();
+            if(isVisible) this.libraryRoot.IncrementVisibleTypeCount();
+		}
+        
+
     }
     
 }

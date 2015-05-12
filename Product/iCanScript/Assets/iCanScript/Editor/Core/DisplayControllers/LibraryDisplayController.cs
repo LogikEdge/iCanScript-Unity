@@ -19,11 +19,11 @@ namespace iCanScript.Editor {
         // =================================================================================
         // Properties
         // ---------------------------------------------------------------------------------
-    	public DSView   	 	View		{ get { return myTreeView; }}
-		public LibraryObject	Selected	{ get { return mySelected; }}
-		public int numberOfItems {
-			get { return database.numberOfVisibleMembers; }
-		}
+    	public DSView   	 	View		 { get { return myTreeView; }}
+		public LibraryObject	Selected	 { get { return mySelected; }}
+		public int numberOfVisibleNamespaces { get { return database.numberOfVisibleNamespaces; }}
+		public int numberOfVisibleTypes      { get { return database.numberOfVisibleTypes; }}
+		public int numberOfVisibleMembers    { get { return database.numberOfVisibleMembers; }}
 		public LibraryRoot database {
 			get { return LibraryController.LibraryDatabase; }
 		}
@@ -278,12 +278,21 @@ namespace iCanScript.Editor {
         /// Determine what should be shown.
         void ShowVisible() {
 			// -- Display all visible items if only few remain visible. --
-			if(numberOfItems < 50) {
-				OpenAllVisible();
+			if(numberOfVisibleMembers < 50) {
+				UnfoldAllVisible();
 			}
-			else if(numberOfItems < 250) {
-				OpenAllVisibleWithScore(database.score);
+			else if(numberOfVisibleMembers < 250) {
+				UnfoldAllVisibleWithScore(database.score);
 			}
+            else if(numberOfVisibleNamespaces < 20) {
+                UnfoldVisibleNamespaces();
+                if(numberOfVisibleTypes < 20) {
+                    UnfoldVisibleTypes();
+                }
+            }
+            else {
+                FoldAllVisible();
+            }
         }
 
         // -------------------------------------------------------------------
@@ -301,34 +310,76 @@ namespace iCanScript.Editor {
         }
 
         // -------------------------------------------------------------------
-		/// Opens all visible items.
-		void OpenAllVisible() {
+		/// Folds all visible items.
+		void FoldAllVisible() {
 			database.ForEach(
 				l=> {
 					if(ShouldShow(l)) {
-						var libraryParent= l.parent;
-						if(libraryParent != null) {
-							myTreeView.Unfold(libraryParent);							
-						}
+                        if(!(l is LibraryTypeMember)) {
+							myTreeView.Fold(l);							
+                        }
 					}
 				}
 			);
 		}
 
         // -------------------------------------------------------------------
-		/// Opens all visible items with the best search score.
-		void OpenAllVisibleWithScore(float score) {
+		/// Unfolds all visible items.
+		void UnfoldAllVisible() {
 			database.ForEach(
 				l=> {
 					if(ShouldShow(l)) {
-						var libraryParent= l.parent;
-                        if(Math3D.IsEqual(score, l.score)) {
-    						if(libraryParent != null) {
-    							myTreeView.Unfold(libraryParent);
-    						}
-    					}
+                        if(!(l is LibraryTypeMember)) {
+							myTreeView.Unfold(l);							
+                        }
+					}
+				}
+			);
+		}
+
+        // -------------------------------------------------------------------
+		/// Unfolds all visible items.
+		void UnfoldVisibleNamespaces() {
+			database.ForEach(
+				l=> {
+					if(ShouldShow(l)) {
+                        if(l is LibraryRootNamespace) {
+							myTreeView.Unfold(l);							
+                        }
                         else {
-                            myTreeView.Fold(libraryParent);
+                            myTreeView.Fold(l);
+                        }
+					}
+				}
+			);
+		}
+
+        // -------------------------------------------------------------------
+		/// Unfolds all visible items.
+		void UnfoldVisibleTypes() {
+			database.ForEach(
+				l=> {
+					if(ShouldShow(l)) {
+                        if(l is LibraryChildNamespace) {
+							myTreeView.Unfold(l);							
+                        }
+					}
+				}
+			);
+		}
+        // -------------------------------------------------------------------
+		/// Unfolds all visible items with the best search score.
+		void UnfoldAllVisibleWithScore(float score) {
+			database.ForEach(
+				l=> {
+					if(ShouldShow(l)) {
+                        if(!(l is LibraryTypeMember)) {
+                            if(Math3D.IsEqual(score, l.score)) {
+        						myTreeView.Unfold(l);
+        					}
+                            else {
+                                myTreeView.Fold(l);
+                            }                            
                         }
 					}
 				}

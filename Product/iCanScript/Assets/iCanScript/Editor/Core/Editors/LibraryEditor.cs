@@ -28,8 +28,8 @@ namespace iCanScript.Editor {
         public LibraryRoot database {
             get { return myController.database; }
         }
-		public int numberOfItems {
-			get { return myController.numberOfItems; }
+		public int numberOfVisibleMembers {
+			get { return myController.numberOfVisibleMembers; }
 		}
 		public bool showInheritedMembers {
 			get { return myController.showInheritedMembers; }
@@ -134,7 +134,7 @@ namespace iCanScript.Editor {
             iCS_ToolbarUtility.Separator(ref line1Rect);
             showProtectedMembers= iCS_ToolbarUtility.Toggle(ref line1Rect, showProtectedMembers, 10, 0);
             iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Protected", 0, 0);
-	        iCS_ToolbarUtility.MiniLabel(ref line1Rect, "# items: "+numberOfItems.ToString(), 0, 0, true);
+	        iCS_ToolbarUtility.MiniLabel(ref line1Rect, "# items: "+numberOfVisibleMembers.ToString(), 0, 0, true);
 			// -- Add search fields --
             iCS_ToolbarUtility.MiniLabel(ref line2Rect, "Search: ", 0, 0);
             iCS_ToolbarUtility.Separator(ref line2Rect);

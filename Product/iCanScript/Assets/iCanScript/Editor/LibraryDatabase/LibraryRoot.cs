@@ -39,16 +39,24 @@ namespace iCanScript.Editor {
         // ======================================================================
         // Fields
         // ----------------------------------------------------------------------
-        int          myNumberOfVisibleMembers= 0;
-        bool         myShowInheritedMembers  = true;
-        bool         myShowProtectedMembers  = false;
-        FilterString myNamespaceFilter= new FilterString("");
-        FilterString myTypeFilter     = new FilterString("");
-        FilterString myMemberFilter   = new FilterString("");
+        int          myNumberOfVisibleNamespaces= 0;
+        int          myNumberOfVisibleTypes     = 0;
+        int          myNumberOfVisibleMembers   = 0;
+        bool         myShowInheritedMembers     = true;
+        bool         myShowProtectedMembers     = false;
+        FilterString myNamespaceFilter          = new FilterString("");
+        FilterString myTypeFilter               = new FilterString("");
+        FilterString myMemberFilter             = new FilterString("");
 
         // ======================================================================
         // Properties
         // ----------------------------------------------------------------------
+        public int numberOfVisibleNamespaces {
+            get { return myNumberOfVisibleNamespaces; }
+        }
+        public int numberOfVisibleTypes {
+            get { return myNumberOfVisibleTypes; }
+        }
         public int numberOfVisibleMembers {
             get { return myNumberOfVisibleMembers; }
         }
@@ -194,13 +202,17 @@ namespace iCanScript.Editor {
         /// increment the visibility count as they progress.
         ///
 		public override void ComputeVisibility() {
-            myNumberOfVisibleMembers= 0;
+            myNumberOfVisibleNamespaces= 0;
+            myNumberOfVisibleTypes     = 0;
+            myNumberOfVisibleMembers   = 0;
             base.ComputeVisibility();
 		}
         
         // ----------------------------------------------------------------------
         /// Used by the type members to increment the count of visible members.
-        public void IncrementVisibleMemberCount() { ++myNumberOfVisibleMembers; } 
+        public void IncrementVisibleNamespaceCount() { ++myNumberOfVisibleNamespaces; } 
+        public void IncrementVisibleTypeCount()      { ++myNumberOfVisibleTypes; } 
+        public void IncrementVisibleMemberCount()    { ++myNumberOfVisibleMembers; } 
         
         // ======================================================================
         // Utilities
