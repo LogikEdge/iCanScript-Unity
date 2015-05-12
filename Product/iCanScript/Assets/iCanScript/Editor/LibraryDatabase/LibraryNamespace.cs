@@ -154,7 +154,7 @@ namespace iCanScript.Editor {
             // -- Ask our children to sort their children on so on... -- 
             foreach(var c in children) {
                 var child= c as LibraryType;
-                if(child.score >= minScore) {
+                if(child.isVisible) {
                     child.Sort(minScore);
                 }
             }
