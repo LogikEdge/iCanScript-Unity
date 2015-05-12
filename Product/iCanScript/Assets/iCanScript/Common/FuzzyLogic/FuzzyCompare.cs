@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using P=iCanScript.Prelude;
+using P=iCanScript.Internal.Prelude;
 
-namespace iCanScript.FuzzyLogic {
+namespace iCanScript.Internal.FuzzyLogic {
     public static class FuzzyString {
         // ----------------------------------------------------------------------
         public static float GetScore(string search, string dest) {

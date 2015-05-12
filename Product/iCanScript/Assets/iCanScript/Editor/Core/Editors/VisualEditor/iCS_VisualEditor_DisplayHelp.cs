@@ -4,9 +4,9 @@ using UnityEditor;
 using System;
 using System.Text.RegularExpressions;
 using System.IO;
-using iCanScript.Editor;
+using iCanScript.Internal.Editor;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
 	
     // ======================================================================

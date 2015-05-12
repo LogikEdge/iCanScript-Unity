@@ -2,9 +2,9 @@ using UnityEngine;
 using System;
 using System.Text;
 using System.Collections;
-using iCanScript.JSON;
+using iCanScript.Internal.JSON;
 
-namespace iCanScript.Editor.CodeEngineering {
+namespace iCanScript.Internal.Editor.CodeEngineering {
     
     public static class CSharpFileTemplates {
         // ----------------------------------------------------------------------

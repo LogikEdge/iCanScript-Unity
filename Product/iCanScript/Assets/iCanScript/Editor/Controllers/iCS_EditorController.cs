@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     public static class iCS_EditorController {
         // =================================================================================
         // Fields

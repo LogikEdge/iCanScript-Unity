@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
-using P=iCanScript.Prelude;
+using P=iCanScript.Internal.Prelude;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public partial class iCS_IStorage {
         // =========================================================================

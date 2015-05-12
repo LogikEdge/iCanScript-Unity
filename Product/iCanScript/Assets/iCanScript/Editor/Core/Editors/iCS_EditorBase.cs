@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Collections;
 using iCanScript;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public class iCS_EditorBase : EditorWindow {
         // =================================================================================

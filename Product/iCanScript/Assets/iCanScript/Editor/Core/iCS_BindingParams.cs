@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public enum DirectionEnum { Left, Right, Up, Down };
 

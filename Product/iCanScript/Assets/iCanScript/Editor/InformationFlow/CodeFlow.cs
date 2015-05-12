@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     // ===================================================================
     /// This class implements code flow utilities.
     public static class CodeFlow {

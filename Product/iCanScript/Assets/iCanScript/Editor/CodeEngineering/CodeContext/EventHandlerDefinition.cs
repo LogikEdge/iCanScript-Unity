@@ -2,10 +2,10 @@ using UnityEngine;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
-using P=iCanScript.Prelude;
-using iCanScript.Engine;
+using P=iCanScript.Internal.Prelude;
+using iCanScript.Internal.Engine;
 
-namespace iCanScript.Editor.CodeEngineering {
+namespace iCanScript.Internal.Editor.CodeEngineering {
 
 public class EventHandlerDefinition : FunctionDefinition {
         // ===================================================================

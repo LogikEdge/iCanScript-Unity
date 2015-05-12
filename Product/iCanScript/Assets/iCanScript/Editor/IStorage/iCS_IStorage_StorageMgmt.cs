@@ -3,11 +3,11 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScript.Engine;
-using iCanScript.Editor.CodeEngineering;
-using P= iCanScript.Prelude;
+using iCanScript.Internal.Engine;
+using iCanScript.Internal.Editor.CodeEngineering;
+using P= iCanScript.Internal.Prelude;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     using Prefs= PreferencesController;
 
     public enum TransactionType { None, Graph, Navigation, Field };

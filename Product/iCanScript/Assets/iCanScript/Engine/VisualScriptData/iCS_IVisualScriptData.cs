@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace iCanScript.Engine {
+namespace iCanScript.Internal.Engine {
     
     public interface iCS_IVisualScriptData {
     	// Editor Interface

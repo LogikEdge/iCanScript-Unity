@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace iCanScript {
+namespace iCanScript.Internal {
     
     public static class iCS_TextUtil {
 

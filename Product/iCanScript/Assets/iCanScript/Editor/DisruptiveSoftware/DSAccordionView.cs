@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     public class DSAccordionView : DSView {
         // ======================================================================
         // Fields

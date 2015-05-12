@@ -4,9 +4,9 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
-using P=iCanScript.Prelude;
+using P=iCanScript.Internal.Prelude;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public static partial class iCS_UserCommands {
         // ----------------------------------------------------------------------

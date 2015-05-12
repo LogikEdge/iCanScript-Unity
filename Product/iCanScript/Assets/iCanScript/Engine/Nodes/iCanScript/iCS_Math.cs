@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace iCanScript.Nodes {
+namespace iCanScript.MathUtility {
 
 	[iCS_Class(Company="iCanScript", Library="Math", HideClassFromLibrary=true)]
-	public static class iCS_Math {
+	public static class Math {
 	    [iCS_Function(Return="a+b",Icon="iCS_CalculatorIcon.psd")]
 	        public static int     Add(int a, int b)         { return a+b; }
 	    [iCS_Function(Return="a+b",Icon="iCS_CalculatorIcon.psd")]

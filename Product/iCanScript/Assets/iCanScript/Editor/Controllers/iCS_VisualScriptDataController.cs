@@ -3,11 +3,11 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using P=iCanScript.Prelude;
-using TimedAction= iCanScript.Prelude.TimerService.TimedAction;
-using iCanScript.Engine;
+using P=iCanScript.Internal.Prelude;
+using TimedAction= iCanScript.Internal.Prelude.TimerService.TimedAction;
+using iCanScript.Internal.Engine;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public static class iCS_VisualScriptDataController {
         // =================================================================================

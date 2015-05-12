@@ -2,8 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 namespace iCanScript.Nodes {
-	[iCS_Class(Company="iCanScript", Library="Input", Icon="iCS_JoystickIcon.psd", HideClassFromLibrary=true)]
-	public static partial class iCS_GameController {
+	public static class GameControllerUtility {
 	    [iCS_Function(Return="scaledAnalog1", Icon="iCS_JoystickIcon.psd",
 	                 Description="Game Controller with configurable names.  Analog1 & 2 are time compensated and ajusted with the input associated speed.")]
 	    public static Vector2 GameController(out Vector2 scaledAnalog2,

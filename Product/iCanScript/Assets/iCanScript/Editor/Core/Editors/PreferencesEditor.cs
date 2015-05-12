@@ -4,10 +4,10 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScript.Engine;
-using TimedAction= iCanScript.Prelude.TimerService.TimedAction;
+using iCanScript.Internal.Engine;
+using TimedAction= iCanScript.Internal.Prelude.TimerService.TimedAction;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     using Prefs= PreferencesController;
 
     public class PreferencesEditor : ConfigEditorBase {

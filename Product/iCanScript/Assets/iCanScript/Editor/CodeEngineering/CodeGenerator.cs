@@ -1,7 +1,7 @@
 using UnityEngine;
-using iCanScript.Engine;
+using iCanScript.Internal.Engine;
 
-namespace iCanScript.Editor.CodeEngineering {
+namespace iCanScript.Internal.Editor.CodeEngineering {
 
     public class CodeGenerator {    ///< @reviewed 2015-03-31
         // ===================================================================

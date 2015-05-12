@@ -3,9 +3,9 @@ using UnityEditor;
 using System;
 using System.IO;
 using System.Collections;
-using iCanScript.Engine;
+using iCanScript.Internal.Engine;
 
-namespace iCanScript { namespace Editor {
+namespace iCanScript.Internal.Editor {
     
     public static class GizmoController {
         // =================================================================================
@@ -59,4 +59,4 @@ namespace iCanScript { namespace Editor {
         }
     }
     
-}}
+}

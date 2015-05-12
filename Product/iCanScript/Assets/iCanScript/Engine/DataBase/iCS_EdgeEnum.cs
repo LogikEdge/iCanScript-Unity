@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace iCanScript.Engine {
+namespace iCanScript.Internal.Engine {
     
     [System.Serializable]
     public enum iCS_EdgeEnum {

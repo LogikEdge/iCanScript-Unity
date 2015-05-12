@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
-using iCanScript.Engine;
+using iCanScript.Internal.Engine;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public static class LicenseController {
         // ======================================================================

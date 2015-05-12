@@ -1,9 +1,9 @@
 using UnityEngine;
 using System;
 using System.Collections;
-using P=iCanScript.Prelude;
+using P=iCanScript.Internal.Prelude;
 
-namespace iCanScript {
+namespace iCanScript.Internal {
     
     public static class iCS_StringUtil {
     	public static float FuzzyCompare(string s1, string s2) {

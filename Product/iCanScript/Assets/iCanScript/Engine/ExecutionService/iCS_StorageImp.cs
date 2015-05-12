@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace iCanScript.Engine {
+namespace iCanScript.Internal.Engine {
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     // This class is the main storage of iCanScript.  All object are derived
     // from this storage class.

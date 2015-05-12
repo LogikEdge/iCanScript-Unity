@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using P=iCanScript.Prelude;
-using TimedAction= iCanScript.Prelude.TimerService.TimedAction;
+using P=iCanScript.Internal.Prelude;
+using TimedAction= iCanScript.Internal.Prelude.TimerService.TimedAction;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public static class BlinkController {
         // ======================================================================

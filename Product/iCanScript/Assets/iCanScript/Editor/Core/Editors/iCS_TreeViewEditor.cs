@@ -6,7 +6,7 @@ using System.Collections.Generic;
 /*
     FIXME: Fix bug which does not properly initialize hiearchy view on code reload
 */
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 public class iCS_TreeViewEditor : iCS_EditorBase {
     // =================================================================================
     // Fields

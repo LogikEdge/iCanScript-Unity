@@ -2,7 +2,7 @@ using UnityEngine;
 //using System.Management;
 using System.Collections;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 // ===========================================================================
 // User license verification
 // ===========================================================================

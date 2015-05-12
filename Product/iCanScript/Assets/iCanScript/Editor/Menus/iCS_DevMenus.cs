@@ -3,14 +3,14 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.IO;
-using iCanScript.Editor.CodeEngineering;
-using P=iCanScript.Prelude;
+using iCanScript.Internal.Editor.CodeEngineering;
+using P=iCanScript.Internal.Prelude;
 
 #if COMMUNITY_EDITION
 #else
 #if PRO_EDITION
 #else
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     public static class iCS_DevMenus {
         // ======================================================================
         // Snapshot definitions
@@ -22,7 +22,7 @@ namespace iCanScript.Editor {
     //    public static void GenerateCode() {
     //        var className= CSharpFileUtils.MakeUniqueClassName("VisualScript");
     //        Debug.Log("Class Name=> "+className);
-    //        var code= "namespace iCanScript { public class "+className+" {}; }";
+    //        var code= "namespace iCanScript.Internal { public class "+className+" {}; }";
     //        CSharpFileUtils.WriteCSharpFile("VisualScripts", className, code);
     //    }
     

@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using P= iCanScript.Prelude;
+using P= iCanScript.Internal.Prelude;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 
     public class iCS_AutoReleasePool {
         static List<P.Tuple<float,object>> myAutoReleasePool= new List<P.Tuple<float,object>>();

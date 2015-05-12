@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Properties.

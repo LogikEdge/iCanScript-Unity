@@ -4,10 +4,10 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript;
-using iCanScript.Engine;
-using P=iCanScript.Prelude;
+using iCanScript.Internal.Engine;
+using P=iCanScript.Internal.Prelude;
 
-namespace iCanScript.Engine {
+namespace iCanScript.Internal.Engine {
     [Serializable]
     public enum PortSpecification {
         Target= 0, Self, Parameter, Return,

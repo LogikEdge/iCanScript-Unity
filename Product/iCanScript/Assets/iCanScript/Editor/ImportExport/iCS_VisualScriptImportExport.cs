@@ -1,14 +1,14 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.Reflection;
 using System.Collections;
 using System.IO;
 using iCanScript;
-using iCanScript.JSON;
-using iCanScript.Engine;
+using iCanScript.Internal.JSON;
+using iCanScript.Internal.Engine;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public static class iCS_VisualScriptImportExport {
     	// =================================================================================

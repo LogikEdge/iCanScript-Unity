@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace iCanScript.Nodes {
+namespace iCanScript.TimeUtility {
 	
-	[iCS_Class(Company="iCanScript", Library= "Time", Icon= "iCS_ClockIcon.psd")]
-	public static class iCS_Timer {
+	public static class Timer {
 	    [iCS_Function(Return="endTime")]
 	    public static float StartTimer(float time) {
 	        return Time.time+time;

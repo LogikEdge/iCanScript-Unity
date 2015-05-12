@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public static partial class iCS_UserCommands {
         // ======================================================================

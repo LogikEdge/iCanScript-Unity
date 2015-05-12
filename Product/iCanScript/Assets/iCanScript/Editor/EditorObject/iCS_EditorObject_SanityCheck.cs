@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
-using iCanScript.Engine;
+using iCanScript.Internal.Engine;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public partial class iCS_EditorObject {
         // ----------------------------------------------------------------------
@@ -17,7 +17,8 @@ namespace iCanScript.Editor {
     		var visualScript= IStorage.VisualScript;
            // Verify that the runtime portion still exists.
            if(IsKindOfFunction) {
-               var memberInfo= LibraryController.LibraryDatabase.GetLibraryType(RuntimeType);
+               var runtimeType= RuntimeType;
+               var memberInfo= runtimeType != null ? LibraryController.LibraryDatabase.GetLibraryType(runtimeType) : null;
                if(memberInfo == null && !IStorage.IsLocalType(this)) {
                    var message= "Unable to find the runtime code for "+FullName;
                    ErrorController.AddError(serviceKey, message, visualScript, InstanceId);

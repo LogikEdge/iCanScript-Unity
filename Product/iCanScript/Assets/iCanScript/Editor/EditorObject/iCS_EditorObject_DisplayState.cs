@@ -8,11 +8,11 @@
 using UnityEngine;
 using System;
 using System.Collections;
-using P=iCanScript.Prelude;
+using P=iCanScript.Internal.Prelude;
 using iCanScript;
-using iCanScript.Engine;
+using iCanScript.Internal.Engine;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public partial class iCS_EditorObject {
         // ======================================================================

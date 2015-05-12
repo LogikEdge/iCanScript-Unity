@@ -5,11 +5,11 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript;
-using iCanScript.Engine;
-using P= iCanScript.Prelude;
-using Prefs= iCanScript.Editor.PreferencesController;
+using iCanScript.Internal.Engine;
+using P= iCanScript.Internal.Prelude;
+using Prefs= iCanScript.Internal.Editor.PreferencesController;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public partial class iCS_IStorage {
         // ======================================================================

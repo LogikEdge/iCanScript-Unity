@@ -1,13 +1,13 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.Text;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
-using P= iCanScript.Prelude;
+using P= iCanScript.Internal.Prelude;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	/// Defines the base class for all library object derived from MethodBase.

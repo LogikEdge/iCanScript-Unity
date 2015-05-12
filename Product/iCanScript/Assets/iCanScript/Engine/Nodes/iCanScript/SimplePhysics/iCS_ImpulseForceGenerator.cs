@@ -1,11 +1,11 @@
 using UnityEngine;
 using System.Collections;
+using iCanScript.Internal;
 
-namespace iCanScript.Nodes {
+namespace iCanScript.SimplePhysic {
 	
 	[System.Serializable]
-	[iCS_Class(Company="iCanScript", Library="SimplePhysic")]
-	public class iCS_ImpulseForceGenerator {
+	public class ImpulseForceGenerator {
 		bool	IsActive;
 		float	StartTime;
 		public Vector3	MainImpulse;
@@ -16,9 +16,9 @@ namespace iCanScript.Nodes {
 		public float   InitialVelocityBoost;
 	
 		[iCS_Function]
-		public iCS_ImpulseForceGenerator(Vector3 mainImpulseAccel, float mainImpulseTime,
-		                                 Vector3 secondaryImpulseAccel, float secondaryImpulseTime,
-		                                 float retriggerDelay=1.2f, float initialVelocityBoost= 10f) {
+		public ImpulseForceGenerator(Vector3 mainImpulseAccel, float mainImpulseTime,
+		                             Vector3 secondaryImpulseAccel, float secondaryImpulseTime,
+		                             float retriggerDelay=1.2f, float initialVelocityBoost= 10f) {
 			MainImpulse         = mainImpulseAccel;
 			MainImpulseTime     = mainImpulseTime;
 			SecondaryImpulse    = secondaryImpulseAccel;

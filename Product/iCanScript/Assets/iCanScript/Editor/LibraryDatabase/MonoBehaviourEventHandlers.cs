@@ -1,10 +1,10 @@
 using UnityEngine;
 using System;
 using System.Collections;
-using iCanScript.Engine;
-using P=iCanScript.Prelude;
+using iCanScript.Internal.Engine;
+using P=iCanScript.Internal.Prelude;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     // ======================================================================
     // This file installs predefined Unity event handlers.

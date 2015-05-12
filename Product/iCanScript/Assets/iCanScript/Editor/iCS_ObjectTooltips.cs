@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     public static class iCS_ObjectTooltips {
         public const string OnEntry=
             "OnEntry is called when the state is first activated before OnUpdate is called.";

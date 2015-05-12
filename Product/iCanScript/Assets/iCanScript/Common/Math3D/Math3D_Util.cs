@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
-namespace iCanScript {
-    using P=iCanScript.Prelude;
+namespace iCanScript.Internal {
+    using P=iCanScript.Internal.Prelude;
     
     public static partial class Math3D {
         // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

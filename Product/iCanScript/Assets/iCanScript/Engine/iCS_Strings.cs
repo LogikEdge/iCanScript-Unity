@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace iCanScript.Engine {
+namespace iCanScript.Internal.Engine {
     
     public static class iCS_Strings {
         // -----------------------------------------------------------------------

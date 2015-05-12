@@ -9,7 +9,7 @@ using System;
 using System.Collections;
 
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     public enum iCS_UpdateInterval { Daily= 0, Weekly= 1, Monthly= 2 };
     
     public static class PreferencesController {

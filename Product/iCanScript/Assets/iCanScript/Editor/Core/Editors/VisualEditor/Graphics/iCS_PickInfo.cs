@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public enum iCS_PickPartEnum { Unknown, EditorObject, Name, Value, FoldIcon, MinimizeIcon };
     public class iCS_PickInfo {

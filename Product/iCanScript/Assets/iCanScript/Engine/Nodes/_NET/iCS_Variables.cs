@@ -1,9 +1,9 @@
 using UnityEngine;
+using iCanScript.Internal;
 
-namespace iCanScript.Nodes {
+namespace iCanScript.Variables {
 	
-	[iCS_Class(Company="NET",Icon="iCS_LibraryIcon_32x32.png")]
-	public static class iCS_Variables {
+	public static class SimpleVariables {
 	    [iCS_Function]  public static bool      _bool  (bool value)    { return value; }
 	    [iCS_Function]  public static int       _int   (int value)     { return value; }
 	    [iCS_Function]  public static float     _float (float value)   { return value; }
@@ -12,7 +12,6 @@ namespace iCanScript.Nodes {
 
 
 	[System.Serializable]
-	[iCS_Class(Company="iCanScript",Library="Variables")]
 	public struct Bool {
 	    public bool myValue;
     
@@ -34,7 +33,6 @@ namespace iCanScript.Nodes {
 	}
 
 	[System.Serializable]
-	[iCS_Class(Company="iCanScript",Library="Variables")]
 	public struct Int {
 	    public int myValue;
     
@@ -93,7 +91,6 @@ namespace iCanScript.Nodes {
 	}
 
 	[System.Serializable]
-	[iCS_Class(Company="iCanScript",Library="Variables")]
 	public struct Float {
 	    public float myValue;
     

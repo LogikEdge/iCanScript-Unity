@@ -1,14 +1,14 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.Text;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScript.FuzzyLogic;
-using P= iCanScript.Prelude;
+using iCanScript.Internal.FuzzyLogic;
+using P= iCanScript.Internal.Prelude;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     /// Defines the root node that contains all library objects.
@@ -242,6 +242,7 @@ namespace iCanScript.Editor {
         /// @return The library type if found. _null_ otherwise.
         ///
         public LibraryType GetLibraryType(Type type) {
+            if(type == null) return null;
             string nsRoot= "";
             string nsChildren= "";
 			SplitNamespace(type.Namespace, out nsRoot, out nsChildren);

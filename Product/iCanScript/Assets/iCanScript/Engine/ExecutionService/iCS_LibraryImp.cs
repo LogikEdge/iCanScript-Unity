@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace iCanScript.Engine {
+namespace iCanScript.Internal.Engine {
     [AddComponentMenu("")]
     public class iCS_LibraryImp : iCS_MonoBehaviourImp {}    
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace iCanScript {
+namespace iCanScript.Internal {
     
     public enum iCS_AlphaBlendMode { Normal };
 

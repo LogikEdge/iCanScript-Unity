@@ -1,12 +1,18 @@
-//#define TEST_UPGRADE
+#define TEST_UPGRADE
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScript.Engine;
+using iCanScript.Internal.Engine;
 using iCanScript.Nodes;
+using iCanScript.Variables;
+using iCanScript.SimplePhysic;
+using iCanScript.Conversions;
+using iCanScript.TimeUtility;
+using iCanScript.MathUtility;
+using iCanScript.Logic;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public partial class iCS_IStorage {
         // ----------------------------------------------------------------------
@@ -47,8 +53,8 @@ namespace iCanScript.Editor {
     		if(storageVersion.IsOlderThen(2,0,9)) {
                 isUpgraded |= V2_0_9_EditorUpgrade();
             }
-    		if(storageVersion.IsOlderThen(2,0,11)) {
-                isUpgraded |= V2_0_11_EditorUpgrade();
+    		if(storageVersion.IsOlderThen(2,0,12)) {
+                isUpgraded |= V2_0_12_EditorUpgrade();
             }
 
             // -- Warn the user that an upgrade toke place --
@@ -114,99 +120,100 @@ namespace iCanScript.Editor {
         }
         // ----------------------------------------------------------------------
         /// Performs the editor data upgrade for v2.0.11.
-        bool V2_0_11_EditorUpgrade() {
+        bool V2_0_12_EditorUpgrade() {
+            Debug.Log("v2.0.12 Upgrade");
             bool isUpgraded= false;
             // -- Convert to new port specification --
             ForEach(
                 p=> {
                     var engineObject= p.EngineObject;
                     var qualifiedTypeName= p.QualifiedTypeName;
-                    if(qualifiedTypeName == "iCS_Package") {
+                    if(qualifiedTypeName == "iCS_Package" || qualifiedTypeName == "iCanScript.Engine.iCS_Package") {
                         engineObject.QualifiedType= typeof(iCS_Package).AssemblyQualifiedName;
                         isUpgraded= true;
                     }
-                    else if(qualifiedTypeName == "iCS_State") {
+                    else if(qualifiedTypeName == "iCS_State" || qualifiedTypeName == "iCanScript.Engine.iCS_State") {
                         engineObject.QualifiedType= typeof(iCS_State).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "iCS_StateChart") {
+                    else if(qualifiedTypeName == "iCS_StateChart" || qualifiedTypeName == "iCanScript.Engine.iCS_StateChart") {
                         engineObject.QualifiedType= typeof(iCS_StateChart).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "iCS_Math") {
-                        engineObject.QualifiedType= typeof(iCS_Math).AssemblyQualifiedName;
+                    else if(qualifiedTypeName == "iCS_Math" || qualifiedTypeName == "iCanScript.Nodes.iCS_Math") {
+                        engineObject.QualifiedType= typeof(Math).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "iCS_FromTo") {
-                        engineObject.QualifiedType= typeof(iCS_FromTo).AssemblyQualifiedName;
+                    else if(qualifiedTypeName == "iCS_FromTo" || qualifiedTypeName == "iCanScript.Nodes.iCS_FromTo") {
+                        engineObject.QualifiedType= typeof(FromTo).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "iCS_VisualScriptImp") {
+                    else if(qualifiedTypeName == "iCS_VisualScriptImp" || qualifiedTypeName == "iCanScript.Engine.iCS_VisualScriptImp") {
                         engineObject.QualifiedType= typeof(iCS_VisualScriptImp).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "iCS_ForceIntegrator") {
-                        engineObject.QualifiedType= typeof(iCS_ForceIntegrator).AssemblyQualifiedName;
+                    else if(qualifiedTypeName == "iCS_ForceIntegrator" || qualifiedTypeName == "iCanScript.Nodes.iCS_ForceIntegrator") {
+                        engineObject.QualifiedType= typeof(ForceIntegrator).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "iCS_ImpulseForceGenerator") {
-                        engineObject.QualifiedType= typeof(iCS_ImpulseForceGenerator).AssemblyQualifiedName;
+                    else if(qualifiedTypeName == "iCS_ImpulseForceGenerator" || qualifiedTypeName == "iCanScript.Nodes.iCS_ImpulseForceGenerator") {
+                        engineObject.QualifiedType= typeof(ImpulseForceGenerator).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "iCS_TimeUtility") {
-                        engineObject.QualifiedType= typeof(iCS_TimeUtility).AssemblyQualifiedName;
+                    else if(qualifiedTypeName == "iCS_TimeUtility" || qualifiedTypeName == "iCanScript.Nodes.iCS_TimeUtility") {
+                        engineObject.QualifiedType= typeof(DeltaTimeUtility).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "iCS_DesiredVelocityForceGenerator") {
-                        engineObject.QualifiedType= typeof(iCS_DesiredVelocityForceGenerator).AssemblyQualifiedName;
+                    else if(qualifiedTypeName == "iCS_DesiredVelocityForceGenerator" || qualifiedTypeName == "iCanScript.Nodes.iCS_DesiredVelocityForceGenerator") {
+                        engineObject.QualifiedType= typeof(DesiredVelocityForceGenerator).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "iCS_Variables") {
-                        engineObject.QualifiedType= typeof(iCS_Variables).AssemblyQualifiedName;
+                    else if(qualifiedTypeName == "iCS_Variables" || qualifiedTypeName == "iCanScript.Nodes.iCS_Variables") {
+                        engineObject.QualifiedType= typeof(SimpleVariables).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "Bool") {
+                    else if(qualifiedTypeName == "Bool" || qualifiedTypeName == "iCanScript.Nodes.Bool") {
                         engineObject.QualifiedType= typeof(Bool).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "Int") {
+                    else if(qualifiedTypeName == "Int" || qualifiedTypeName == "iCanScript.Nodes.Int") {
                         engineObject.QualifiedType= typeof(Int).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "Float") {
+                    else if(qualifiedTypeName == "Float" || qualifiedTypeName == "iCanScript.Nodes.Float") {
                         engineObject.QualifiedType= typeof(Float).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "iCS_GameController") {
-                        engineObject.QualifiedType= typeof(iCS_GameController).AssemblyQualifiedName;
+                    else if(qualifiedTypeName == "iCS_GameController" || qualifiedTypeName == "iCanScript.Nodes.iCS_GameController") {
+                        engineObject.QualifiedType= typeof(GameControllerUtility).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "iCS_Conditions") {
-                        engineObject.QualifiedType= typeof(iCS_Conditions).AssemblyQualifiedName;
+                    else if(qualifiedTypeName == "iCS_Conditions" || qualifiedTypeName == "iCanScript.Nodes.iCS_Conditions") {
+                        engineObject.QualifiedType= typeof(Conditions).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "iCS_Boolean") {
-                        engineObject.QualifiedType= typeof(iCS_Boolean).AssemblyQualifiedName;
+                    else if(qualifiedTypeName == "iCS_Boolean" || qualifiedTypeName == "iCanScript.Nodes.iCS_Boolean") {
+                        engineObject.QualifiedType= typeof(Boolean).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "iCS_Choice") {
-                        engineObject.QualifiedType= typeof(iCS_Choice).AssemblyQualifiedName;
+                    else if(qualifiedTypeName == "iCS_Choice" || qualifiedTypeName == "iCanScript.Nodes.iCS_Choice") {
+                        engineObject.QualifiedType= typeof(Choices).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "iCS_Oscillator") {
-                        engineObject.QualifiedType= typeof(iCS_Oscillator).AssemblyQualifiedName;
+                    else if(qualifiedTypeName == "iCS_Oscillator" || qualifiedTypeName == "iCanScript.Nodes.iCS_Oscillator") {
+                        engineObject.QualifiedType= typeof(Oscillator).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "iCS_PulseGenerator") {
-                        engineObject.QualifiedType= typeof(iCS_PulseGenerator).AssemblyQualifiedName;
+                    else if(qualifiedTypeName == "iCS_PulseGenerator" || qualifiedTypeName == "iCanScript.Nodes.iCS_PulseGenerator") {
+                        engineObject.QualifiedType= typeof(PulseGenerator).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "iCS_Timer") {
-                        engineObject.QualifiedType= typeof(iCS_Timer).AssemblyQualifiedName;
+                    else if(qualifiedTypeName == "iCS_Timer" || qualifiedTypeName == "iCanScript.Nodes.iCS_Timer") {
+                        engineObject.QualifiedType= typeof(Timer).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
-                    else if(qualifiedTypeName == "iCS_TypeCasts") {
-                        engineObject.QualifiedType= typeof(iCS_TypeCasts).AssemblyQualifiedName;
+                    else if(qualifiedTypeName == "iCS_TypeCasts" || qualifiedTypeName == "iCanScript.Nodes.iCS_TypeCasts") {
+                        engineObject.QualifiedType= typeof(TypeCasts).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
                     else if(qualifiedTypeName.StartsWith("iCS")) {
@@ -218,7 +225,7 @@ namespace iCanScript.Editor {
         }
         // ----------------------------------------------------------------------
         /// Performs the editor data upgrade for v2.0.12.
-        bool V2_0_12_EditorUpgrade() {
+        bool V2_0_13_EditorUpgrade() {
             bool isUpgraded= false;
             // -- Convert to new port specification --
             ForEach(

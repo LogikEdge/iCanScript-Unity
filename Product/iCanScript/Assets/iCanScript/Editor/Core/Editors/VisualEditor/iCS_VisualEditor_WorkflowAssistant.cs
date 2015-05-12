@@ -2,10 +2,10 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Collections;
-using P=iCanScript.Prelude;
-using iCanScript.Engine;
+using P=iCanScript.Internal.Prelude;
+using iCanScript.Internal.Engine;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Fields

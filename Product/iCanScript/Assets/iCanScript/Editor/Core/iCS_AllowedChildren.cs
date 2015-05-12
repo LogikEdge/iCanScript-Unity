@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections;
-using iCanScript.Engine;
+using iCanScript.Internal.Engine;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 public static class iCS_AllowedChildren {
     public static readonly string[] StateChildNames= null;
     public static readonly string[] StateChildTooltips= null;

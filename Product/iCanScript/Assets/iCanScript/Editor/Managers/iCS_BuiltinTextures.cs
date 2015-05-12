@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using iCanScript;
-using Prefs= iCanScript.Editor.PreferencesController;
+using Prefs= iCanScript.Internal.Editor.PreferencesController;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public static class iCS_BuiltinTextures {
         // =================================================================================

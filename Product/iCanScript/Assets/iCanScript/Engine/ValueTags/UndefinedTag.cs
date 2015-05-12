@@ -1,4 +1,4 @@
-﻿namespace iCanScript.Engine {
+namespace iCanScript.Internal.Engine {
 	// --------------------------------------------------------------------------
 	/// Tag to indicate to use the script owner as port input.
 	public class UndefinedTag {

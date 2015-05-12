@@ -3,10 +3,10 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScript.Engine;
+using iCanScript.Internal.Engine;
 
 
-namespace iCanScript.Editor.CodeEngineering {
+namespace iCanScript.Internal.Editor.CodeEngineering {
 
     public class GlobalDefinition : CodeBase {
         // ===================================================================

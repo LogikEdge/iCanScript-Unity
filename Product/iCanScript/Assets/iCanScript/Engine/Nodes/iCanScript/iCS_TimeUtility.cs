@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Collections;
+using iCanScript.Internal;
 
-namespace iCanScript.Nodes {
+namespace iCanScript.TimeUtility {
 
-	[iCS_Class(Company="iCanScript", Library= "Time", Icon= "iCS_ClockIcon.psd")]
-	public static class iCS_TimeUtility {
+	public static class DeltaTimeUtility {
 	    [iCS_Function(Return="value*dt")]
 	    public static float ScaleByDeltaTime(float value= 1f) {
 	        return Time.deltaTime*value;

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     public class iCS_MenuContext {
         public string               Command;
         public string               HiddenCommand;

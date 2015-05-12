@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-namespace iCanScript {
+namespace iCanScript.Internal {
     
     public static partial class Prelude {
     	public static class Tuple {

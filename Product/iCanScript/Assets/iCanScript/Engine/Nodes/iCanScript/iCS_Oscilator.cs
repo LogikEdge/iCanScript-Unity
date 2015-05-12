@@ -3,14 +3,13 @@ using System.Collections;
 
 namespace iCanScript.Nodes {
 
-	[iCS_Class(Company="iCanScript", Library= "Time", Icon= "iCS_ClockIcon.psd")]
-	public class iCS_Oscillator {
+	public class Oscillator {
 	    bool    myActiveState= false;
 	    float   myTrueElapseTime;
 	    float   myFalseElapseTime;
         
 	    [iCS_Function]
-	    public iCS_Oscillator() {}
+	    public Oscillator() {}
     
 	    [iCS_Function(Return="out")]
 	    public bool Oscillate(float trueTime, float falseTime, bool active, out bool invOut) {

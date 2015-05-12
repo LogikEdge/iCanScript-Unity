@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
-using iCanScript.Editor.CodeEngineering;
+using iCanScript.Internal.Editor.CodeEngineering;
 
 /*
     TODO: Should show runId in header bar.
 */
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     using Prefs= PreferencesController;
 
     public partial class iCS_VisualEditor : iCS_EditorBase {

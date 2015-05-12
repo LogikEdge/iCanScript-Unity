@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using iCanScript;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     public static class iCS_NodeTextures {
         // ======================================================================
         // CONSTANTS

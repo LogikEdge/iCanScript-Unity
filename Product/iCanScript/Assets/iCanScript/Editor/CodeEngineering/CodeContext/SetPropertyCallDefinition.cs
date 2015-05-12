@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Text;
 using System.Collections;
 
-namespace iCanScript.Editor.CodeEngineering {
+namespace iCanScript.Internal.Editor.CodeEngineering {
 
     public class SetPropertyCallDefinition : PropertyCallDefinition {
         // ===================================================================
