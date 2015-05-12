@@ -105,6 +105,9 @@ namespace iCanScript.Editor {
             // -- Update search score. --
             myDatabase.ComputeScore();
             
+            // -- Update visibility. --
+            myDatabase.ComputeVisibility();
+            
 			// -- Sort the database. --
             myDatabase.Sort();
 
