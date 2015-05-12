@@ -4,9 +4,9 @@
 //#define DEBUG
 using UnityEngine;
 using System.Collections;
-using iCanScript.Engine;
+using iCanScript.Internal.Engine;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public static partial class iCS_UserCommands {
         // ======================================================================

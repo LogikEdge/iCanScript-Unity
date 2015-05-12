@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-namespace iCanScript {
+namespace iCanScript.Internal {
     
     public class Maybe<A> {
     	public bool isNothing { get { return this is Nothing<A>; }}

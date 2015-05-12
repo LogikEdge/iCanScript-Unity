@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
-using P= iCanScript.Prelude;
+using P= iCanScript.Internal.Prelude;
 using iCanScript;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     using Prefs= PreferencesController;
 
     public partial class iCS_EditorObject {   

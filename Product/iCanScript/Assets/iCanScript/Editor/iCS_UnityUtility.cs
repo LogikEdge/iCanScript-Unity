@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using iCanScript;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public static class iCS_UnityUtility {
         // -----------------------------------------------------------------------

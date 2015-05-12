@@ -7,9 +7,9 @@ using System.Threading;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
-using P=iCanScript.Prelude;
+using P=iCanScript.Internal.Prelude;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 
     public static class LibraryController {
         // ======================================================================
@@ -46,12 +46,10 @@ namespace iCanScript.Editor {
             "Unity.DataContract"
         };
         static string[] namespacesToIgnore= new string[]{
-            "iCanScript",
             "UnityEditorInternal", "UnityEngineInternal",
             "Microsoft", "Mono", "JetBrains"
         };
         static string[] namespacesToInclude= new string[]{
-            "iCanScript.Nodes"
         };
         
         // ======================================================================

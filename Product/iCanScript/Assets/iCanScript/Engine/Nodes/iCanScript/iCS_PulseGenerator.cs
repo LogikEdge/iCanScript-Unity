@@ -3,13 +3,12 @@ using System.Collections;
 
 namespace iCanScript.Nodes {
 
-	[iCS_Class(Company="iCanScript", Library= "Time", Icon= "iCS_ClockIcon.psd")]
-	public class iCS_PulseGenerator {
+	public class PulseGenerator {
 	    bool  myIsActive= false;
 	    float myElapseTime;
     
 	    [iCS_Function]
-	    public iCS_PulseGenerator() {}
+	    public PulseGenerator() {}
     
 	    [iCS_Function(Return="pulse")]
 	    public bool GeneratePulse(float time, bool active= true, bool startWithPulse= false) {

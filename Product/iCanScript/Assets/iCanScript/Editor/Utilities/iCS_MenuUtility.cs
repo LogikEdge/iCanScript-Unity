@@ -4,10 +4,10 @@ using System;
 using System.Reflection;
 using System.IO;
 using System.Collections;
-using iCanScript.Engine;
-using P=iCanScript.Prelude;
+using iCanScript.Internal.Engine;
+using P=iCanScript.Internal.Prelude;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public static class iCS_MenuUtility {
         // ----------------------------------------------------------------------

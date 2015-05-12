@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using P=iCanScript.Prelude;
-using Prefs= iCanScript.Editor.PreferencesController;
+using P=iCanScript.Internal.Prelude;
+using Prefs= iCanScript.Internal.Editor.PreferencesController;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public partial class iCS_IStorage {
         // ======================================================================

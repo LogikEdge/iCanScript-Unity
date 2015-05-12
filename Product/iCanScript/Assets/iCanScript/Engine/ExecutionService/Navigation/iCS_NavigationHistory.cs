@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace iCanScript.Engine {
+namespace iCanScript.Internal.Engine {
     [Serializable]
     public class iCS_NavigationHistory {
         // ======================================================================

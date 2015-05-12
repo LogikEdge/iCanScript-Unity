@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace iCanScript {
+namespace iCanScript.Internal {
     
     public static partial class Prelude {
     	public class Tree<T> where T : class {

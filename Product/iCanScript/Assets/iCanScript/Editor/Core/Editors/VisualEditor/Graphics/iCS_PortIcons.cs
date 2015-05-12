@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using iCanScript;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     // TODO: Need to cleanup obsoleted data port icon code.
     public static class iCS_PortIcons {
         // ======================================================================

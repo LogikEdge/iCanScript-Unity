@@ -1,17 +1,17 @@
 using UnityEngine;
 using System.Collections;
+using iCanScript.Internal;
 
-namespace iCanScript.Nodes {
+namespace iCanScript.SimplePhysic {
 	
 	[System.Serializable]
-	[iCS_Class(Company="iCanScript", Library="SimplePhysic")]
-	public class iCS_DesiredVelocityForceGenerator {
+	public class DesiredVelocityForceGenerator {
 		public float MaxAcceleration;
 		public float MaxDeceleration;
 		public Vector3 AffectedCoordinates;
 
 		[iCS_Function]
-		public iCS_DesiredVelocityForceGenerator(float maxAcceleration, float maxDeceleration, Vector3 affectedCoordinates) {
+		public DesiredVelocityForceGenerator(float maxAcceleration, float maxDeceleration, Vector3 affectedCoordinates) {
 			MaxAcceleration= maxAcceleration;
 			MaxDeceleration= maxDeceleration;
 			AffectedCoordinates= affectedCoordinates;

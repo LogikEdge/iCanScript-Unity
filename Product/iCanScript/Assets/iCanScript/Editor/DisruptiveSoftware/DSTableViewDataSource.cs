@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 
     public interface DSTableViewDataSource {
         int     NumberOfRowsInTableView(DSTableView tableView);

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System;
 using UnityEditor;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public static class HelpDictionary {
     	

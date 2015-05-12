@@ -3,7 +3,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     using ActionVisualScript= System.Action<iCS_IStorage>;
     using ActionEditorObject= System.Action<iCS_EditorObject>;
     

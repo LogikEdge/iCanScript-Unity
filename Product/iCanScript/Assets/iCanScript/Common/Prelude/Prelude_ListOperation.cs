@@ -3,8 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace iCanScript {
-    using P=iCanScript.Prelude;
+namespace iCanScript.Internal {
+    using P=iCanScript.Internal.Prelude;
     
     public static partial class Prelude {
         // ----------------------------------------------------------------------

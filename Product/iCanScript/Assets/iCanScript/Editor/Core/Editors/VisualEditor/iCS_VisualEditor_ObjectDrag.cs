@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Collections;
-using iCanScript.Engine;
-using P=iCanScript.Prelude;
+using iCanScript.Internal.Engine;
+using P=iCanScript.Internal.Prelude;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Types

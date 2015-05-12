@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System.Reflection;
 using System.Collections;
-using iCanScript.FuzzyLogic;
+using iCanScript.Internal.FuzzyLogic;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 
     public class LibraryDisplayController : DSTreeViewDataSource {
         // =================================================================================

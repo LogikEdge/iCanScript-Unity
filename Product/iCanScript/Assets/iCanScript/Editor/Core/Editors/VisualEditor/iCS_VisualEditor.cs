@@ -10,10 +10,10 @@ using System.Threading;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScript.Engine;
+using iCanScript.Internal.Engine;
 
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     using Prefs= PreferencesController;
 
     public partial class iCS_VisualEditor : iCS_EditorBase {

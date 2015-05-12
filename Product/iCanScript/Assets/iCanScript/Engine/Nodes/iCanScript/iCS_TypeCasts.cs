@@ -1,11 +1,11 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using iCanScript.Internal;
 
-namespace iCanScript.Nodes {
+namespace iCanScript.Conversions {
 
-	[iCS_Class(Company="iCanScript")]
-	public static class iCS_TypeCasts {
+	public static class TypeCasts {
 	    // To Bool.
 	    [iCS_TypeCast] public static bool   ToBool(int v)       { return v != 0; }
 	    [iCS_TypeCast] public static bool   ToBool(float v)     { return Math3D.IsNotZero(v); }

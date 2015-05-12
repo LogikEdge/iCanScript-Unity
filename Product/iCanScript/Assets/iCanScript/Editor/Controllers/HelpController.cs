@@ -7,11 +7,11 @@ using System.Xml;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
-using iCanScript.JSON;
-using iCanScript.Engine;
+using iCanScript.Internal.JSON;
+using iCanScript.Internal.Engine;
 
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public static class HelpController {
     	static private string unityHelpIndex= null;

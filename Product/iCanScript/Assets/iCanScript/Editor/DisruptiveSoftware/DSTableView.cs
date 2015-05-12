@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public class DSTableView : DSView {
         // ======================================================================

@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 
-namespace iCanScript {
+namespace iCanScript.Internal {
     
     public static class iCS_DateTime {
         // ---------------------------------------------------------------------------------

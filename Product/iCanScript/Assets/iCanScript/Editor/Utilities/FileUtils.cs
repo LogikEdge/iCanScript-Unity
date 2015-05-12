@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Collections;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public static class FileUtils {
 

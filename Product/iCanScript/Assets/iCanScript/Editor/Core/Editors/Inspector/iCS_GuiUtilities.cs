@@ -4,9 +4,9 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
-using P= iCanScript.Prelude;
+using P= iCanScript.Internal.Prelude;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 public static class iCS_GuiUtilities {
     class GUIFieldInfo {
         public bool    Foldout= false;

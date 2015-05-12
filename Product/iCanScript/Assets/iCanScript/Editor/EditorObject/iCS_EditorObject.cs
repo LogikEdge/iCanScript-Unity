@@ -4,9 +4,9 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript;
-using iCanScript.Engine;
+using iCanScript.Internal.Engine;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     using Prefs= PreferencesController;
 
     public partial class iCS_EditorObject {

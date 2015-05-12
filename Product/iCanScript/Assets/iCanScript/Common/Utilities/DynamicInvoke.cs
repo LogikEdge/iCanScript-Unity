@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Reflection;
 using System.Collections;
 
-namespace iCanScript {
+namespace iCanScript.Internal {
     
     public class DynamicInvoke {
         // ======================================================================

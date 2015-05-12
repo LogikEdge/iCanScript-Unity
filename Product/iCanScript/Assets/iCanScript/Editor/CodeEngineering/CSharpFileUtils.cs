@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Collections;
 
-namespace iCanScript.Editor.CodeEngineering {
+namespace iCanScript.Internal.Editor.CodeEngineering {
 
     public static class CSharpFileUtils {
         const string    kFileExtension= ".cs";

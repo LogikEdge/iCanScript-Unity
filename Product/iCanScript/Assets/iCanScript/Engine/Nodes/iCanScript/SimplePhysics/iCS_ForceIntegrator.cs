@@ -1,11 +1,11 @@
 using UnityEngine;
 using System.Collections;
+using iCanScript.Internal;
 
-namespace iCanScript.Nodes {
+namespace iCanScript.SimplePhysic {
 
 	[System.Serializable]
-	[iCS_Class(Company="iCanScript", Library="SimplePhysic")]
-	public class iCS_ForceIntegrator {
+	public class ForceIntegrator {
 	    // ======================================================================
 	    // Fields
 		// ----------------------------------------------------------------------
@@ -31,9 +31,9 @@ namespace iCanScript.Nodes {
     
 		// ----------------------------------------------------------------------
 	    [iCS_Function]
-	    public iCS_ForceIntegrator() : this(new Vector3(0f,-9.8f,0f), 1f, 0.005f) {}
+	    public ForceIntegrator() : this(new Vector3(0f,-9.8f,0f), 1f, 0.005f) {}
 	    [iCS_Function]
-	    public iCS_ForceIntegrator(Vector3 gravity, float mass= 1f, float damping= 0.995f) {
+	    public ForceIntegrator(Vector3 gravity, float mass= 1f, float damping= 0.995f) {
 	        Gravity= gravity;
 	        Mass= mass;
 	        Damping= damping;

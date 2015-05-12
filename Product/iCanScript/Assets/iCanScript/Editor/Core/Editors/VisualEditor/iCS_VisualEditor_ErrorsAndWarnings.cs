@@ -2,12 +2,12 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScript.Editor;
-using P=iCanScript.Prelude;
-using EC=iCanScript.Editor.ErrorController;
-using TimedAction= iCanScript.Prelude.TimerService.TimedAction;
+using iCanScript.Internal.Editor;
+using P=iCanScript.Internal.Prelude;
+using EC=iCanScript.Internal.Editor.ErrorController;
+using TimedAction= iCanScript.Internal.Prelude.TimerService.TimedAction;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 public partial class iCS_VisualEditor {
 	// =======================================================================
 	// Fields

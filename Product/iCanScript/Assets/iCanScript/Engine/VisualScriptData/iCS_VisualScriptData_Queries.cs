@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using P=iCanScript.Prelude;
+using P=iCanScript.Internal.Prelude;
 
-namespace iCanScript.Engine {
+namespace iCanScript.Internal.Engine {
     
     public partial class iCS_VisualScriptData : iCS_IVisualScriptData {
         // =======================================================================

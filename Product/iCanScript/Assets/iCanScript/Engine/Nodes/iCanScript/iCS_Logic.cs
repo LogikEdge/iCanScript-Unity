@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using Object=System.Object;
+using iCanScript.Internal;
 
-namespace iCanScript.Nodes {
+namespace iCanScript.Logic {
 
-	[iCS_Class(Company="iCanScript", Library="Logic")]
-	public static class iCS_Conditions {
+	public static class Conditions {
 	    // Object comparaison.
 	    [iCS_Function(Return="isNull")]
 	    public static bool IsNull(object obj, out bool isNotNull)
@@ -108,8 +108,7 @@ namespace iCanScript.Nodes {
 	    }
 	}
 	
-	[iCS_Class(Company="iCanScript", Library="Logic")]
-	public static class iCS_Boolean {
+	public static class Boolean {
 	    [iCS_Function] public static bool And(bool a, bool b)                       { return a & b; }
 	    [iCS_Function] public static bool And(bool a, bool b, bool c)               { return a & b & c; }
 	    [iCS_Function] public static bool And(bool a, bool b, bool c, bool d)       { return a & b & c & d; }
@@ -124,8 +123,7 @@ namespace iCanScript.Nodes {
 	    [iCS_Function] public static bool Inverse(bool a)                           { return !a; } 
 	}
 	
-	[iCS_Class(Company="iCanScript", Library="Logic")]
-	public static class iCS_Choice {
+	public static class Choices {
 		[iCS_Function(Return="out")]
 		public static bool  Choice(bool trueValue,  bool falseValue,  bool sel) { return sel ? trueValue : falseValue; }
 		[iCS_Function(Return="out")]

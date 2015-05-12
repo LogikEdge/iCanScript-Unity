@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public partial class iCS_IStorage {
         public static void ExecuteIf(iCS_EditorObject obj, Func<iCS_EditorObject,bool> cond, Action<iCS_EditorObject> f) {

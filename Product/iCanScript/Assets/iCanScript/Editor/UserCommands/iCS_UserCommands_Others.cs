@@ -5,7 +5,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     using Prefs= PreferencesController;
 
     public static partial class iCS_UserCommands {

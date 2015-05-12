@@ -8,7 +8,7 @@ using System;
 using System.Collections;
 using iCanScript;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public static partial class iCS_UserCommands {
     	// ----------------------------------------------------------------------

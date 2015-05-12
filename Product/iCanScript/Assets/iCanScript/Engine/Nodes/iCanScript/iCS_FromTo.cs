@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace iCanScript.Nodes {
+namespace iCanScript.Conversions {
 
-	[iCS_Class(Company="iCanScript", Library="From <-> To", HideClassFromLibrary=true)]
-	public static class iCS_FromTo {
+	public static class FromTo {
 	//    [iCS_Function(Icon="iCS_SplitIcon_32x32.psd")]
 	//	public static void    FromVector(Vector2 v, out float x, out float y)                           { x= v.x; y= v.y; }
 	    [iCS_Function(Icon="iCS_SplitIcon_32x32.psd")]

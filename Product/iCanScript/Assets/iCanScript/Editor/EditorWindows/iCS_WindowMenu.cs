@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public static class iCS_WindowMenu {
         // ======================================================================

@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
-using iCanScript.Engine;
+using iCanScript.Internal.Engine;
 
-namespace iCanScript.Engine {
+namespace iCanScript.Internal.Engine {
 
     [AddComponentMenu("")]
     public class iCS_MonoBehaviourImp : MonoBehaviour, iCS_IVisualScriptData {

@@ -6,7 +6,7 @@ using System.Text;
 using System.Security;
 using System.Security.Cryptography;
 
-namespace iCanScript {
+namespace iCanScript.Internal {
     
     public static class iCS_TextUtility {
         // ----------------------------------------------------------------------

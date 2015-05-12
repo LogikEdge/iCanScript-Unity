@@ -3,7 +3,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 
-namespace iCanScript { namespace Editor {
+namespace iCanScript.Internal.Editor {
     
     public static class EditionController {
         // =================================================================================
@@ -80,4 +80,4 @@ namespace iCanScript { namespace Editor {
         }
     }
     
-}}
+}

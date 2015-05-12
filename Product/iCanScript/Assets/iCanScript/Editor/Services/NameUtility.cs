@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Text;
 using System.Collections;
 using iCanScript;
 
-namespace iCanScript {
+namespace iCanScript.Internal {
     
     public static class NameUtility {
         public enum NamingScheme {
