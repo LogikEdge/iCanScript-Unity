@@ -15,15 +15,63 @@ namespace iCanScript.Editor {
     	float           myFoldOffset     = 16f;
         LibraryObject   mySelected       = null;
         GUIStyle        myLabelStyle     = null;
-		int				myNumberOfItems  = 0;
-        bool            myShowInherited  = true;
-		bool			myShowProtected  = false;
         
         // =================================================================================
         // Properties
         // ---------------------------------------------------------------------------------
     	public DSView   	 	View		{ get { return myTreeView; }}
 		public LibraryObject	Selected	{ get { return mySelected; }}
+		public int numberOfItems {
+			get { return database.numberOfVisibleMembers; }
+		}
+		public LibraryRoot database {
+			get { return LibraryController.LibraryDatabase; }
+		}
+		public bool showInheritedMembers {
+			get { return database.showInheritedMembers; }
+			set {
+                if(database.showInheritedMembers != value) {
+                    database.showInheritedMembers= value;
+                    ShowVisible();                
+                }
+            }
+		}
+		public bool showProtectedMembers {
+			get { return database.showProtectedMembers; }
+			set {
+                if(database.showProtectedMembers != value) {
+                    database.showProtectedMembers= value;
+                    ShowVisible();
+                }
+            }
+		}
+		public string namespaceFilter {
+			get { return database.namespaceFilter; }
+			set {
+                if(database.namespaceFilter != value) {
+                    database.namespaceFilter= value;
+                    ShowVisible();
+                }
+            }
+		}
+		public string typeFilter {
+			get { return database.typeFilter; }
+			set {
+                if(database.typeFilter != value) {
+                    database.typeFilter= value;
+                    ShowVisible();
+                }
+            }
+		}
+		public string memberFilter {
+			get { return database.memberFilter; }
+			set {
+                if(database.memberFilter != value) {
+                    database.memberFilter= value;
+                    ShowVisible();
+                }
+            }
+		}
         public string displayString {
             get {
                 if(string.IsNullOrEmpty(myCursor.displayString)) {
@@ -44,34 +92,6 @@ namespace iCanScript.Editor {
                 return myLabelStyle;
             }
         }
-		public bool showInherited {
-			get { return myShowInherited; }
-			set {
-				if(value != myShowInherited) {
-					myShowInherited= value;
-					ComputeNumberOfItems();
-				}
-			}
-		}
-		public bool showProtected {
-			get { return myShowProtected; }
-			set {
-				if(value != myShowProtected) {
-					myShowProtected= value;
-					ComputeNumberOfItems();					
-				}
-			}
-		}
-		public int numberOfItems {
-			get { return myNumberOfItems; }
-			set { myNumberOfItems= value; }
-		}
-		public LibraryRoot database {
-			get { return LibraryController.LibraryDatabase; }
-		}
-		public float bestSearchScore {
-		    get { return database.score; }
-		}
         
         // =================================================================================
         // Constants
@@ -87,8 +107,6 @@ namespace iCanScript.Editor {
     	public LibraryDisplayController() {
             // -- Initialize panel. --
     		myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16, 2);
-			// -- Compute # of items --
-			ComputeNumberOfItems();
             // -- Initialize the cursor --
             Reset();
     	}
@@ -253,90 +271,21 @@ namespace iCanScript.Editor {
         /// @return _true_ if it should be shown. _false_ otherwise.
         ///
         bool ShouldShow(LibraryObject libraryObject) {
-			// -- Don't show containers without visible members. --
-			if(libraryObject is LibraryRootNamespace || libraryObject is LibraryChildNamespace || libraryObject is LibraryType) {
-				if(libraryObject.children == null) return false;
-				var showContainer= false;
-				foreach(var c in libraryObject.children) {
-					if(ShouldShow(c as LibraryObject)) {
-						showContainer= true;
-						break;
-					}
-				}
-				if(showContainer == false) return false;
-			}
-			var libraryMemberInfo= libraryObject as LibraryMemberInfo;
-			if(libraryMemberInfo != null) {
-				// -- Should we show inherited members? --
-	            if(myShowInherited == false) {
-	                if(libraryMemberInfo.isInherited) {
-	            		return false;
-	            	}
-				}
-				// -- Should we show protected members? --
-				if(myShowProtected == false) {
-					var methodBase= libraryMemberInfo.memberInfo as MethodBase;
-					if(methodBase != null && methodBase.IsFamily) {
-						return false;
-					}
-				}				
-			}
-            // -- Accept kMinScoreFactor of the best search score. --
-			if(libraryObject.score < LibraryRoot.kMinScoreFactor*bestSearchScore) {
-                return false;
-            }
-			return true;
+            return libraryObject.isVisible;
         }
         
         // -------------------------------------------------------------------
-        /// Determines the number of items to show.
-        void ComputeNumberOfItems() {
-			int nbItems= 0;
-			database.ForEach(
-				l=> {
-                    if(!ShouldShow(l)) return false;
-					var libraryMemberInfo= l as LibraryMemberInfo;
-					if(libraryMemberInfo != null) {
-						++nbItems;
-					}
-                    return true;
-				}
-			);
-			this.numberOfItems= nbItems;
+        /// Determine what should be shown.
+        void ShowVisible() {
 			// -- Display all visible items if only few remain visible. --
-			if(nbItems < 50) {
+			if(numberOfItems < 50) {
 				OpenAllVisible();
 			}
-			else if(nbItems < 250) {
+			else if(numberOfItems < 250) {
 				OpenAllVisibleWithScore(database.score);
 			}
         }
 
-        // -------------------------------------------------------------------
-		/// Computes the member score for the given string.
-		public void ComputeMemberScoreFor() {
-            database.ComputeMemberRawScore();
-			database.ComputeScore();
-            database.Sort();
-			ComputeNumberOfItems();	
-		}
-        // -------------------------------------------------------------------
-		/// Computes the type score for the given string.
-		public void ComputeTypeScoreFor() {
-            database.ComputeTypeRawScore();
-			database.ComputeScore();
-            database.Sort();
-			ComputeNumberOfItems();			
-		}
-        // -------------------------------------------------------------------
-		/// Computes the type score for the given string.
-		public void ComputeNamespaceScoreFor() {
-			database.ComputeNamespaceRawScore();
-			database.ComputeScore();
-            database.Sort();
-			ComputeNumberOfItems();			
-		}
-		
         // -------------------------------------------------------------------
         /// Determine if the curent library object requires a foldout.
         ///
@@ -371,11 +320,16 @@ namespace iCanScript.Editor {
 		void OpenAllVisibleWithScore(float score) {
 			database.ForEach(
 				l=> {
-					if(ShouldShow(l) && Math3D.IsEqual(score, l.score)) {
+					if(ShouldShow(l)) {
 						var libraryParent= l.parent;
-						if(libraryParent != null) {
-							myTreeView.Unfold(libraryParent);							
-						}
+                        if(Math3D.IsEqual(score, l.score)) {
+    						if(libraryParent != null) {
+    							myTreeView.Unfold(libraryParent);
+    						}
+    					}
+                        else {
+                            myTreeView.Fold(libraryParent);
+                        }
 					}
 				}
 			);

@@ -11,7 +11,7 @@ namespace iCanScript.Editor {
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     /// Defines a Unity event handler library object.
-    public class LibraryEventHandler : LibraryObject {
+    public class LibraryEventHandler : LibraryTypeMember {
         // ======================================================================
         // FIELDS
         // ----------------------------------------------------------------------

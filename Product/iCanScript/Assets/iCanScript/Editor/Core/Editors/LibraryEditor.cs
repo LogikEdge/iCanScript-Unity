@@ -25,28 +25,31 @@ namespace iCanScript.Editor {
         // =================================================================================
         // PROPERTIES
         // ---------------------------------------------------------------------------------
+        public LibraryRoot database {
+            get { return myController.database; }
+        }
 		public int numberOfItems {
 			get { return myController.numberOfItems; }
 		}
-		public bool showInherited {
-			get { return myController.showInherited; }
-			set { myController.showInherited= value; }
+		public bool showInheritedMembers {
+			get { return myController.showInheritedMembers; }
+			set { myController.showInheritedMembers= value; }
 		}
-		public bool showProtected {
-			get { return myController.showProtected; }
-			set { myController.showProtected= value; }
+		public bool showProtectedMembers {
+			get { return myController.showProtectedMembers; }
+			set { myController.showProtectedMembers= value; }
 		}
-		public string namespaceSearchString {
-			get { return myController.database.namespaceFilter; }
-			set { UpdateNamespaceSearchString(value); }
+		public string namespaceFilter {
+			get { return myController.namespaceFilter; }
+			set { myController.namespaceFilter= value; }
 		}
-		public string typeSearchString {
-			get { return myController.database.typeFilter; }
-			set { UpdateTypeSearchString(value); }
+		public string typeFilter {
+			get { return myController.typeFilter; }
+			set { myController.typeFilter= value; }
 		}
-		public string memberSearchString {
-			get { return myController.database.memberFilter; }
-			set { UpdateMemberSearchString(value); }
+		public string memberFilter {
+			get { return myController.memberFilter; }
+			set { myController.memberFilter= value; }
 		}
 		
         // =================================================================================
@@ -126,18 +129,18 @@ namespace iCanScript.Editor {
             //  -- Add display options -- 
             iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Show:", 0, 0);
             iCS_ToolbarUtility.Separator(ref line1Rect);
-            showInherited= iCS_ToolbarUtility.Toggle(ref line1Rect, showInherited, 10, 0);
+            showInheritedMembers= iCS_ToolbarUtility.Toggle(ref line1Rect, showInheritedMembers, 10, 0);
             iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Inherited", 0, 0);
             iCS_ToolbarUtility.Separator(ref line1Rect);
-            showProtected= iCS_ToolbarUtility.Toggle(ref line1Rect, showProtected, 10, 0);
+            showProtectedMembers= iCS_ToolbarUtility.Toggle(ref line1Rect, showProtectedMembers, 10, 0);
             iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Protected", 0, 0);
 	        iCS_ToolbarUtility.MiniLabel(ref line1Rect, "# items: "+numberOfItems.ToString(), 0, 0, true);
 			// -- Add search fields --
             iCS_ToolbarUtility.MiniLabel(ref line2Rect, "Search: ", 0, 0);
             iCS_ToolbarUtility.Separator(ref line2Rect);
-    		this.namespaceSearchString= iCS_ToolbarUtility.Search(ref line2Rect, 120.0f, this.namespaceSearchString, 0, 0, true);
-    		this.typeSearchString= iCS_ToolbarUtility.Search(ref line3Rect, 120.0f, this.typeSearchString, 0, 0, true);
-    		this.memberSearchString= iCS_ToolbarUtility.Search(ref line4Rect, 120.0f, this.memberSearchString, 0, 0, true);
+    		this.namespaceFilter= iCS_ToolbarUtility.Search(ref line2Rect, 120.0f, this.namespaceFilter, 0, 0, true);
+    		this.typeFilter= iCS_ToolbarUtility.Search(ref line3Rect, 120.0f, this.typeFilter, 0, 0, true);
+    		this.memberFilter= iCS_ToolbarUtility.Search(ref line4Rect, 120.0f, this.memberFilter, 0, 0, true);
             iCS_ToolbarUtility.MiniLabel(ref line2Rect, "Namespace", 0, 20, true);
             iCS_ToolbarUtility.MiniLabel(ref line3Rect, "Type", 0, 20, true);
             iCS_ToolbarUtility.MiniLabel(ref line4Rect, "Field/Property/Function", 0, 20, true);
@@ -211,30 +214,6 @@ namespace iCanScript.Editor {
             }   
         }
 
-    	// =================================================================================
-        // Search functionality.
-        // ---------------------------------------------------------------------------------
-		/// Updates member search string and ask controller to adjust it filter.
-		void UpdateMemberSearchString(string newValue) {
-			if(newValue == myController.database.memberFilter) return;
-            myController.database.memberFilter= newValue;
-			myController.ComputeMemberScoreFor();
-		}
-        // ---------------------------------------------------------------------------------
-		/// Updates type search string and ask controller to adjust it filter.
-		void UpdateTypeSearchString(string newValue) {
-			if(newValue == myController.database.typeFilter) return;
-			myController.database.typeFilter= newValue;
-			myController.ComputeTypeScoreFor();
-		}
-        // ---------------------------------------------------------------------------------
-		/// Updates namespace search string and ask controller to adjust it filter.
-		void UpdateNamespaceSearchString(string newValue) {
-			if(newValue == myController.database.namespaceFilter) return;
-			myController.database.namespaceFilter= newValue;
-			myController.ComputeNamespaceScoreFor();
-		}
-		
     	// =================================================================================
         // Drag events.
         // ---------------------------------------------------------------------------------

@@ -12,7 +12,7 @@ namespace iCanScript.Editor {
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     /// Defines the base class for all library objects that are based on a
     /// MemberInfo.
-    public abstract class LibraryMemberInfo : LibraryObject {
+    public abstract class LibraryMemberInfo : LibraryTypeMember {
         // ======================================================================
         // FIELDS
         // ----------------------------------------------------------------------

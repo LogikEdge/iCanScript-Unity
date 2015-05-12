@@ -39,8 +39,9 @@ namespace iCanScript.Editor {
         // ======================================================================
         // Fields
         // ----------------------------------------------------------------------
-        bool         myShowInherited  = true;
-        bool         myShowProtected  = false;
+        int          myNumberOfVisibleMembers= 0;
+        bool         myShowInheritedMembers  = true;
+        bool         myShowProtectedMembers  = false;
         FilterString myNamespaceFilter= new FilterString("");
         FilterString myTypeFilter     = new FilterString("");
         FilterString myMemberFilter   = new FilterString("");
@@ -48,18 +49,23 @@ namespace iCanScript.Editor {
         // ======================================================================
         // Properties
         // ----------------------------------------------------------------------
-        public bool showInherited {
-            get { return myShowInherited; }
+        public int numberOfVisibleMembers {
+            get { return myNumberOfVisibleMembers; }
+        }
+        public bool showInheritedMembers {
+            get { return myShowInheritedMembers; }
             set {
-                if(myShowInherited == value) return;
-                myShowInherited= value;
+                if(myShowInheritedMembers == value) return;
+                myShowInheritedMembers= value;
+                ComputeVisibility();
             }
         }
-        public bool showProtected {
-            get { return myShowProtected; }
+        public bool showProtectedMembers {
+            get { return myShowProtectedMembers; }
             set {
-                if(myShowProtected == value) return;
-                myShowProtected= value;
+                if(myShowProtectedMembers == value) return;
+                myShowProtectedMembers= value;
+                ComputeVisibility();
             }
         }
         public string namespaceFilter {
@@ -67,6 +73,10 @@ namespace iCanScript.Editor {
             set {
                 if(myNamespaceFilter.filter == value) return;
                 myNamespaceFilter.Init(value);
+                ComputeNamespaceRawScore();
+                ComputeScore();
+                ComputeVisibility();
+                Sort();
             }
         }
         public string typeFilter {
@@ -74,6 +84,10 @@ namespace iCanScript.Editor {
             set {
                 if(myTypeFilter.filter == value) return;
                 myTypeFilter.Init(value);
+                ComputeTypeRawScore();
+                ComputeScore();
+                ComputeVisibility();
+                Sort();
             }
         }
         public string memberFilter {
@@ -81,6 +95,10 @@ namespace iCanScript.Editor {
             set {
                 if(myMemberFilter.filter == value) return;
                 myMemberFilter.Init(value);
+                ComputeMemberRawScore();
+                ComputeScore();
+                ComputeVisibility();
+                Sort();
             }
         }
 
@@ -151,23 +169,38 @@ namespace iCanScript.Editor {
             var searchString= myMemberFilter.filterUpper;
 			ForEach(
 				l=> {
-					if(l is LibraryType) return true;
-					if(l is LibraryChildNamespace) return true;
-					if(l is LibraryRootNamespace) return true;
-					if(l is LibraryRoot) return true;
-					var libraryMember= l as LibraryObject;
-					if(myMemberFilter.filterLength == 0) {
-						libraryMember.rawScore= 1f;
-                        libraryMember.searchLength= 0;
-					}
-					else {
-						libraryMember.rawScore= FuzzyString.GetScore(searchString, libraryMember.nodeName.ToUpper());	
-                        libraryMember.searchLength= myMemberFilter.filterLength;
-					}
-                    return false;
+                    if(l is LibraryTypeMember) {
+    					var libraryMember= l as LibraryObject;
+    					if(myMemberFilter.filterLength == 0) {
+    						libraryMember.rawScore= 1f;
+                            libraryMember.searchLength= 0;
+    					}
+    					else {
+    						libraryMember.rawScore= FuzzyString.GetScore(searchString, libraryMember.nodeName.ToUpper());	
+                            libraryMember.searchLength= myMemberFilter.filterLength;
+    					}
+                        return false;                        
+                    }
+                    return true;
 				}
 			);
         }
+
+        // ----------------------------------------------------------------------
+		/// Computes the visibility for the entire library.
+        ///
+        /// We set the number of visible members to zero (0) before asking
+        /// the entire tree to compute its visibility.  The type members will
+        /// increment the visibility count as they progress.
+        ///
+		public override void ComputeVisibility() {
+            myNumberOfVisibleMembers= 0;
+            base.ComputeVisibility();
+		}
+        
+        // ----------------------------------------------------------------------
+        /// Used by the type members to increment the count of visible members.
+        public void IncrementVisibleMemberCount() { ++myNumberOfVisibleMembers; } 
         
         // ======================================================================
         // Utilities

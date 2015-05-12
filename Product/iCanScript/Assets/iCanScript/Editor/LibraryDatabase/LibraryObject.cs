@@ -42,15 +42,16 @@ namespace iCanScript.Editor {
         // ======================================================================
         // FIELDS
         // ----------------------------------------------------------------------
-				Texture	myLibraryIcon  = null;
-                string	myDisplayString= null;
-        public  Vector2 displaySize    = Vector2.zero;
-				float	myRawScore	   = 1f;
-				float   myScore        = 1f;
-                bool    myIsVisible    = true;
-
-        public  int     searchLength   = 0;
-        public  int     stringSortIndex= -1;
+                    LibraryRoot myLibraryRoot  = null;
+				    Texture	    myLibraryIcon  = null;
+                    string	    myDisplayString= null;
+        public      Vector2     displaySize    = Vector2.zero;
+				    float	    myRawScore	   = 1f;
+		protected   float       myScore        = 1f;
+        protected   bool        myIsVisible    = true;
+                                
+        public      int         searchLength   = 0;
+        public      int         stringSortIndex= -1;
 
         // ======================================================================
         // PROPERTIES
@@ -80,7 +81,26 @@ namespace iCanScript.Editor {
 			get { return myRawScore; }
 			set { myRawScore= value; }
 		}
-
+        public bool isVisible {
+            get { return myIsVisible; }
+        }
+        public LibraryRoot libraryRoot {
+            get {
+                if(myLibraryRoot == null) {
+                    var l= this;
+                    while(!(l is LibraryRoot)) {
+                        if(l == null) {
+                            Debug.LogWarning("iCanScript: Unable to find library root.  Please contact support.");
+                            return null;
+                        }
+                        l= l.parent as LibraryObject;
+                    }
+                    myLibraryRoot= l as LibraryRoot;
+                }
+                return myLibraryRoot;
+            }
+        }
+        
         // ======================================================================
         // FORMATTING HELPERS
         // ----------------------------------------------------------------------
@@ -209,27 +229,35 @@ namespace iCanScript.Editor {
 			}
 		}
         // ----------------------------------------------------------------------
-		/// Computes the score starting from this node going down to the tree leaf.
-		public void ComputeScore(float scoreProduct= 1f, float scoreSum= 0f, int scoreSumLen= 0) {
+        /// Updates the score information.
+        ///
+        /// @param scoreProduct The product of the raw score the parent nodes.
+        /// @param scoreSum The sum of the parent raw score.
+        /// @param scoreSumLen The total number of character the filter is based on.
+        /// @return All th einput parameters are updated to include this raw score
+        ///         of this library object.
+        ///
+        protected void UpdateScoreComponents(ref float scoreProduct, ref float scoreSum, ref int scoreSumLen) {
             // -- Update score components. --
             if(searchLength != 0) {
                 scoreProduct*= myRawScore;
                 scoreSumLen+= searchLength;
                 scoreSum+= myRawScore*searchLength;
-            }
-			// -- Update our score if we are a member of a type. --
-			if(parent is LibraryType) {
-                if(scoreSumLen == 0) {
-                    myScore= 1f;
-                }
-                else {
-                    myScore= scoreProduct * (scoreSum/scoreSumLen);
-                }
-				return;
-			}
-			// -- Ask each child to update their score. --
+            }            
+        }
+        
+        // ----------------------------------------------------------------------
+		/// Updates the compunded score for this libray object.
+        ///
+        /// @param scoreProduct The product of the raw score the parent nodes.
+        /// @param scoreSum The sum of the parent raw score.
+        /// @param scoreSumLen The total number of character the filter is based on.
+        ///
+		public virtual void ComputeScore(float scoreProduct= 1f, float scoreSum= 0f, int scoreSumLen= 0) {
 			myScore= 0f;
             if(children == null) return;
+			// -- Ask each child to update their score. --
+            UpdateScoreComponents(ref scoreProduct, ref scoreSum, ref scoreSumLen);
 			foreach(var child in children) {
 				var libraryChild= child as LibraryObject;
 				if(libraryChild != null) {
@@ -242,6 +270,28 @@ namespace iCanScript.Editor {
 				}
 			}
 		}
+
+        // ----------------------------------------------------------------------
+		/// Computes the visibility of the library objecy.
+        ///
+        /// The default behaviour is to assume that this library object is a
+        /// container of other library object.
+        ///
+		public virtual void ComputeVisibility() {
+			myIsVisible= false;
+            if(children == null) return;
+			// -- Ask each child to update their visibility first. --
+			foreach(var child in children) {
+				var libraryChild= child as LibraryObject;
+				if(libraryChild != null) {
+					libraryChild.ComputeVisibility();
+                    if(libraryChild.isVisible) {
+                        myIsVisible= true;
+                    }
+				}
+			}
+		}
+
      }
     
 }
