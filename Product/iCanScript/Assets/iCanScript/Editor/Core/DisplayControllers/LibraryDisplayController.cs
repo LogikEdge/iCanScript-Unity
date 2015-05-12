@@ -8,6 +8,11 @@ namespace iCanScript.Editor {
 
     public class LibraryDisplayController : DSTreeViewDataSource {
         // =================================================================================
+        // Constants
+        // ---------------------------------------------------------------------------------
+        const float kScoreWidth= 32f;
+        
+        // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
     	DSTreeView      myTreeView       = null;
@@ -193,7 +198,7 @@ namespace iCanScript.Editor {
             var size= myCursor.displaySize;
             if(size == Vector2.zero) {
                 size= labelStyle.CalcSize(new GUIContent(displayString));
-				size.x+= myFoldOffset+kIconWidth+kLabelSpacer;
+				size.x+= myFoldOffset+kIconWidth+kLabelSpacer+kScoreWidth;
             }
     	    return size;
     	}
@@ -217,7 +222,6 @@ namespace iCanScript.Editor {
             
 			// -- Show search score --
 			int score= (int)(myCursor.score * 100f);
-			float kScoreWidth= 32f;
 			var scoreRect= new Rect(displayArea.x, displayArea.y, kScoreWidth, displayArea.height);
 			GUI.Label(scoreRect, score.ToString()+"%");
 			
