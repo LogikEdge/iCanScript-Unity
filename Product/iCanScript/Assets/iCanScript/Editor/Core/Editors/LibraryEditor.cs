@@ -20,26 +20,36 @@ namespace iCanScript.Editor {
     	LibraryDisplayController    myController;
         DSScrollView                myMainView;
         Rect                        myScrollViewArea;
-    	Rect                        mySelectedAreaCache    = new Rect(0,0,0,0);
-        bool                        myShowInherited        = true;
-        bool                        myShowProtected        = false;
-        string                      myNamespaceSearchString= "";
-        string                      myTypeSearchString     = "";
-        string                      myMemberSearchString   = "";
+//    	Rect                        mySelectedAreaCache    = new Rect(0,0,0,0);
 
         // =================================================================================
         // PROPERTIES
         // ---------------------------------------------------------------------------------
-		public int numberOfItems {
-			get { return myController.numberOfItems; }
+        public LibraryRoot database {
+            get { return myController.database; }
+        }
+		public int numberOfVisibleMembers {
+			get { return myController.numberOfVisibleMembers; }
 		}
-		public bool showInherited {
-			get { return myController.showInherited; }
-			set { myController.showInherited= value; }
+		public bool showInheritedMembers {
+			get { return myController.showInheritedMembers; }
+			set { myController.showInheritedMembers= value; }
 		}
-		public bool showProtected {
-			get { return myController.showProtected; }
-			set { myController.showProtected= value; }
+		public bool showProtectedMembers {
+			get { return myController.showProtectedMembers; }
+			set { myController.showProtectedMembers= value; }
+		}
+		public string namespaceFilter {
+			get { return myController.namespaceFilter; }
+			set { myController.namespaceFilter= value; }
+		}
+		public string typeFilter {
+			get { return myController.typeFilter; }
+			set { myController.typeFilter= value; }
+		}
+		public string memberFilter {
+			get { return myController.memberFilter; }
+			set { myController.memberFilter= value; }
 		}
 		
         // =================================================================================
@@ -77,8 +87,14 @@ namespace iCanScript.Editor {
         // ---------------------------------------------------------------------------------
         /// Displays the editor window and processes the user events.
         public new void OnGUI() {
-//            // Wait until mouse is over our window.
-//            if(mouseOverWindow != this) return;
+            // -- Wait until library fully loaded. --
+            if(!LibraryController.IsLibraryLoaded) {
+                ShowNotification(new GUIContent("Waiting for library to load..."));
+                return;
+            }
+            RemoveNotification();
+            
+            // -- Initialize the display controller. --
     		if(!IsInitialized()) return;
 
             // -- Draw the base stuff for all windows --
@@ -87,6 +103,8 @@ namespace iCanScript.Editor {
             // -- Show toolbar --
     		var toolbarRect= ShowToolbar();
             myScrollViewArea= new Rect(0, toolbarRect.height, position.width, position.height-toolbarRect.height);
+
+            // -- Show library content --
     		myMainView.Display(myScrollViewArea);
     		ProcessEvents(myScrollViewArea);
 //    		// -- Make new selection visible --
@@ -111,18 +129,18 @@ namespace iCanScript.Editor {
             //  -- Add display options -- 
             iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Show:", 0, 0);
             iCS_ToolbarUtility.Separator(ref line1Rect);
-            showInherited= iCS_ToolbarUtility.Toggle(ref line1Rect, showInherited, 10, 0);
+            showInheritedMembers= iCS_ToolbarUtility.Toggle(ref line1Rect, showInheritedMembers, 10, 0);
             iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Inherited", 0, 0);
             iCS_ToolbarUtility.Separator(ref line1Rect);
-            showProtected= iCS_ToolbarUtility.Toggle(ref line1Rect, showProtected, 10, 0);
+            showProtectedMembers= iCS_ToolbarUtility.Toggle(ref line1Rect, showProtectedMembers, 10, 0);
             iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Protected", 0, 0);
-	        iCS_ToolbarUtility.MiniLabel(ref line1Rect, "# items: "+numberOfItems.ToString(), 0, 0, true);
+	        iCS_ToolbarUtility.MiniLabel(ref line1Rect, "# items: "+numberOfVisibleMembers.ToString(), 0, 0, true);
 			// -- Add search fields --
             iCS_ToolbarUtility.MiniLabel(ref line2Rect, "Search: ", 0, 0);
             iCS_ToolbarUtility.Separator(ref line2Rect);
-    		var newNamespaceSearchString= iCS_ToolbarUtility.Search(ref line2Rect, 120.0f, myNamespaceSearchString, 0, 0, true);
-    		var newTypeSearchString= iCS_ToolbarUtility.Search(ref line3Rect, 120.0f, myTypeSearchString, 0, 0, true);
-    		var newMemberSearchString= iCS_ToolbarUtility.Search(ref line4Rect, 120.0f, myMemberSearchString, 0, 0, true);
+    		this.namespaceFilter= iCS_ToolbarUtility.Search(ref line2Rect, 120.0f, this.namespaceFilter, 0, 0, true);
+    		this.typeFilter= iCS_ToolbarUtility.Search(ref line3Rect, 120.0f, this.typeFilter, 0, 0, true);
+    		this.memberFilter= iCS_ToolbarUtility.Search(ref line4Rect, 120.0f, this.memberFilter, 0, 0, true);
             iCS_ToolbarUtility.MiniLabel(ref line2Rect, "Namespace", 0, 20, true);
             iCS_ToolbarUtility.MiniLabel(ref line3Rect, "Type", 0, 20, true);
             iCS_ToolbarUtility.MiniLabel(ref line4Rect, "Field/Property/Function", 0, 20, true);
@@ -138,72 +156,61 @@ namespace iCanScript.Editor {
                 case EventType.MouseDrag: {
                     switch(Event.current.button) {
                         case 0: { // Left mouse button
-                            StartDragAndDrop(selected);                            
+                            StartDragAndDrop(selected);
                             Event.current.Use();
                             break;
                         }
                     }
                     break;
                 }
-//                case EventType.ScrollWheel: {
-//                    break;
-//                }
-//                case EventType.MouseDown: {
-//                    var mouseInScreenPoint= GUIUtility.GUIToScreenPoint(mousePosition);
-//                    var areaInScreenPoint= GUIUtility.GUIToScreenPoint(new Vector2(frameArea.x, frameArea.y));
-//                    var areaInScreenPosition= new Rect(areaInScreenPoint.x, areaInScreenPoint.y, frameArea.width, frameArea.height);
-//                    myController.MouseDownOn(null, mouseInScreenPoint, areaInScreenPosition);
-//                    Event.current.Use();
-//                    // Move keyboard focus to this window.			
-//                    GUI.FocusControl("");   // Removes focus from the search field.
-//    				break;
-//    			}
-//
-//                case EventType.MouseUp: {
-//    				break;
-//    			}
-//    			case EventType.KeyDown: {
-//    				var ev= Event.current;
-//    				if(!ev.isKey) break;
-//                    switch(ev.keyCode) {
-//                        // Tree navigation
-//                        case KeyCode.UpArrow: {
+                case EventType.ScrollWheel: {
+                    break;
+                }
+                case EventType.MouseDown: {
+                    var mouseInScreenPoint= GUIUtility.GUIToScreenPoint(mousePosition);
+                    var areaInScreenPoint= GUIUtility.GUIToScreenPoint(new Vector2(frameArea.x, frameArea.y));
+                    var areaInScreenPosition= new Rect(areaInScreenPoint.x, areaInScreenPoint.y, frameArea.width, frameArea.height);
+                    myController.MouseDownOn(null, mouseInScreenPoint, areaInScreenPosition);
+                    Event.current.Use();
+                    // Move keyboard focus to this window.			
+                    GUI.FocusControl("");   // Removes focus from the search field.
+    				break;
+    			}
+
+                case EventType.MouseUp: {
+    				break;
+    			}
+    			case EventType.KeyDown: {
+    				var ev= Event.current;
+    				if(!ev.isKey) break;
+                    switch(ev.keyCode) {
+                        // Tree navigation
+                        case KeyCode.UpArrow: {
 //                            myController.SelectPrevious();
-//                            ev.Use();
-//                            break;
-//                        }
-//                        case KeyCode.DownArrow: {
+                            ev.Use();
+                            break;
+                        }
+                        case KeyCode.DownArrow: {
 //                            myController.SelectNext();
-//                            ev.Use();
-//                            break;
-//                        }
-//                        // Fold/Unfold toggle
-//                        case KeyCode.Return: {
-//                            myController.ToggleFoldUnfoldSelected();
-//                            ev.Use();
-//                            break;
-//                        }
-//                    }
-//                    switch(ev.character) {
-//                        // Fold/Unfold.
-//                        case '+': {
-//                            myController.UnfoldSelected();
-//                            ev.Use();
-//                            break;
-//                        }
-//                        case '-': {
-//                            myController.FoldSelected();
-//                            ev.Use();
-//                            break;
-//                        }
-//    					case 'h': {
+                            ev.Use();
+                            break;
+                        }
+                        // Fold/Unfold toggle
+                        case KeyCode.Return: {
+                            myController.ToggleFoldUnfoldOnSelected();
+                            ev.Use();
+                            break;
+                        }
+                    }
+                    switch(ev.character) {
+    					case 'h': {
 //                            myController.Help();
-//                            ev.Use();
-//                            break;
-//    					}
-//                    }
-//                    break;
-//    			}
+                            ev.Use();
+                            break;
+    					}
+                    }
+                    break;
+    			}
             }   
         }
 
@@ -242,6 +249,7 @@ namespace iCanScript.Editor {
             // -- Release temporary game object in 60 seconds. --
             iCS_AutoReleasePool.AutoRelease(go, 60f);
         }
+
         // ---------------------------------------------------------------------------------
 		/// Creates a visual script node from the given library object.
 		///

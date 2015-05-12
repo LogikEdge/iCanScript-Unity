@@ -8,54 +8,46 @@ namespace iCanScript.FuzzyLogic {
     public static class FuzzyString {
         // ----------------------------------------------------------------------
         public static float GetScore(string search, string dest) {
-            // Local function to compute damping factor
-            Func<float,float> dampingFactor= (distance)=> {
-                distance= Mathf.Abs(distance);
-                if(distance > 10f) distance= 10f;
-                return 1f-(distance/100f);
-            };
-            // Convert to uppercase.
-            search= search.ToUpper();
-            dest  = dest.ToUpper();
-            // Compute fuzzy score.
-            float score= 0f;
+            // -- Assume perfect match for empty search string. --
             var searchLen= search.Length;
-            var destLen  = dest.Length;
-            var len= searchLen+destLen;
-            if(len == 0) return 0f;
-            int destCursor= -1;
-            for(int i= 0; i < searchLen; ++i) {
-                var c= search[i];
-                // Start by serach forward.
-                var found= false;
-                for(int j= destCursor+1; j < destLen; ++j) {
-                    if(dest[j] == c) {
-                        score+= 2f * dampingFactor(j-destCursor+1) * dampingFactor(0.5f*(i-j));
-                        destCursor= j;
-                        found= true;
-                        break;
-                    }
+            if(searchLen == 0) return 1f;
+            
+            // -- Convert to uppercase. --
+//            search= search.ToUpper();
+//            dest  = dest.ToUpper();
+
+            // -- Assume 100% for exact match and 50% for bad index. --
+            float score= 0f;
+            var destLen= dest.Length;
+            int searchIdx= 0;
+            int destIdx= 0;
+            while(searchIdx < searchLen && destIdx < destLen) {
+                var c= search[searchIdx];
+                var d= dest[destIdx];
+                if(c == d) {
+                    score+= 1f;
                 }
-                // If not found, try serach backward (for wrong order).
-                if(found == false) {
-                    for(int j= destCursor; j >= 0; --j) {
-                        if(dest[j] == c) {
-                            score+= 1f * dampingFactor(j-destCursor+1) * dampingFactor(0.35f*(i-j));
-                            destCursor= j;
-                            found= true;
+                else if(Char.ToUpper(c) == Char.ToUpper(d)) {
+                    score+= 0.75f;
+                }
+                else {
+                    for(++destIdx; destIdx < destLen; ++destIdx) {
+                        var nd= dest[destIdx];
+                        if(c == nd) {
+                            score+= 0.5f;
+                            break;
+                        }
+                        else if(Char.ToUpper(c) == Char.ToUpper(nd)) {
+                            score+= 0.375f;
                             break;
                         }
                     }
                 }
-                // Character not found.
-                if(found == false) {
-                    score-= 1f;
-                }
+                ++searchIdx;
+                ++destIdx;
             }
-            // Adjust for fuzzy output (0 to 1f).
-            score= score/(2*searchLen);
-            score= (score+0.5f)/1.5f;
-            return score * dampingFactor(destLen-searchLen);
+            score= score/searchLen;
+            return score*score;
         }
         // ----------------------------------------------------------------------
         public static float[] GetScores(string search, string[] lst) {

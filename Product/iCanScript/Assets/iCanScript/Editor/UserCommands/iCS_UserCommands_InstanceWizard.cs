@@ -46,9 +46,9 @@ namespace iCanScript.Editor {
         }
     	// ----------------------------------------------------------------------
         public static void DeletePropertiesWizardElement(iCS_EditorObject parent, LibraryObject libraryObject) {
-    #if DEBUG
-            Debug.Log("iCanScript: Delete Instance Element => "+desc.DisplayName);
-    #endif
+#if DEBUG
+            Debug.Log("iCanScript: Delete Instance Element => "+libraryObject.displayString);
+#endif
             if(parent == null || libraryObject == null) return;
             var iStorage= parent.IStorage;
             OpenTransaction(iStorage);

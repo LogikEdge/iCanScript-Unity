@@ -99,11 +99,20 @@ namespace iCanScript.Editor {
                 ExtractAssembly(assembly);
             }
 
+			// -- Install Unity Event handlers. --
+			InstallUnityEventHandlers();
+
+            // -- Update search score. --
+            myDatabase.ComputeScore();
+            
+            // -- Update visibility. --
+            myDatabase.ComputeVisibility();
+            
 			// -- Sort the database. --
             myDatabase.Sort();
 
-			// -- Install Unity Event handlers. --
-			InstallUnityEventHandlers();
+            // -- Take a snapshot of string sort to speed up sorting. --
+            myDatabase.TakeSnapshotOfStringSortIndex();
         }
 
         // ----------------------------------------------------------------------
@@ -158,6 +167,10 @@ namespace iCanScript.Editor {
 				SplitNamespace(namespaceName, out level1, out level2);
                 var rootNamespace = myDatabase.GetRootNamespace(level1);
                 var childNamespace= rootNamespace.GetChildNamespace(level2);
+                
+                // -- Ignore any child namespace that starts with "internal" or "private". --
+                if(level2.StartsWith("internal", true, null)) continue;
+                if(level2.StartsWith("private", true, null)) continue;
                 
                 // -- Extract type members --
                 ExtractType(childNamespace, type);

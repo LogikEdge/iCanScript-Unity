@@ -2,27 +2,81 @@
 using UnityEditor;
 using System.Reflection;
 using System.Collections;
+using iCanScript.FuzzyLogic;
 
 namespace iCanScript.Editor {
 
     public class LibraryDisplayController : DSTreeViewDataSource {
         // =================================================================================
-        // FIELDS
+        // Constants
+        // ---------------------------------------------------------------------------------
+        const float kScoreWidth= 32f;
+        
+        // =================================================================================
+        // Fields
         // ---------------------------------------------------------------------------------
     	DSTreeView      myTreeView       = null;
         LibraryObject   myCursor         = null;
     	float           myFoldOffset     = 16f;
         LibraryObject   mySelected       = null;
         GUIStyle        myLabelStyle     = null;
-		int				myNumberOfItems  = 0;
-        bool            myShowInherited  = true;
-		bool			myShowProtected  = false;
         
         // =================================================================================
         // Properties
         // ---------------------------------------------------------------------------------
-    	public DSView   	 	View		{ get { return myTreeView; }}
-		public LibraryObject	Selected	{ get { return mySelected; }}
+    	public DSView   	 	View		 { get { return myTreeView; }}
+		public LibraryObject	Selected	 { get { return mySelected; }}
+		public int numberOfVisibleNamespaces { get { return database.numberOfVisibleNamespaces; }}
+		public int numberOfVisibleTypes      { get { return database.numberOfVisibleTypes; }}
+		public int numberOfVisibleMembers    { get { return database.numberOfVisibleMembers; }}
+		public LibraryRoot database {
+			get { return LibraryController.LibraryDatabase; }
+		}
+		public bool showInheritedMembers {
+			get { return database.showInheritedMembers; }
+			set {
+                if(database.showInheritedMembers != value) {
+                    database.showInheritedMembers= value;
+                    ShowVisible();                
+                }
+            }
+		}
+		public bool showProtectedMembers {
+			get { return database.showProtectedMembers; }
+			set {
+                if(database.showProtectedMembers != value) {
+                    database.showProtectedMembers= value;
+                    ShowVisible();
+                }
+            }
+		}
+		public string namespaceFilter {
+			get { return database.namespaceFilter; }
+			set {
+                if(database.namespaceFilter != value) {
+                    database.namespaceFilter= value;
+                    ShowVisible();
+                }
+            }
+		}
+		public string typeFilter {
+			get { return database.typeFilter; }
+			set {
+                if(database.typeFilter != value) {
+                    database.typeFilter= value;
+                    ShowVisible();
+                }
+            }
+		}
+		public string memberFilter {
+			get { return database.memberFilter; }
+			set {
+                if(database.memberFilter != value) {
+                    database.memberFilter= value;
+                    ShowVisible();
+                }
+            }
+		}
         public string displayString {
             get {
                 if(string.IsNullOrEmpty(myCursor.displayString)) {
@@ -43,32 +97,7 @@ namespace iCanScript.Editor {
                 return myLabelStyle;
             }
         }
-		public bool showInherited {
-			get { return myShowInherited; }
-			set {
-				if(value != myShowInherited) {
-					myShowInherited= value;
-					ComputeNumberOfItems();
-				}
-			}
-		}
-		public bool showProtected {
-			get { return myShowProtected; }
-			set {
-				if(value != myShowProtected) {
-					myShowProtected= value;
-					ComputeNumberOfItems();					
-				}
-			}
-		}
-		public int numberOfItems {
-			get { return myNumberOfItems; }
-			set { myNumberOfItems= value; }
-		}
-		public LibraryRoot database {
-			get { return LibraryController.LibraryDatabase; }
-		}
-		
+        
         // =================================================================================
         // Constants
         // ---------------------------------------------------------------------------------
@@ -83,8 +112,6 @@ namespace iCanScript.Editor {
     	public LibraryDisplayController() {
             // -- Initialize panel. --
     		myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16, 2);
-			// -- Compute # of items --
-			ComputeNumberOfItems();
             // -- Initialize the cursor --
             Reset();
     	}
@@ -126,10 +153,12 @@ namespace iCanScript.Editor {
             if(parent == null) return false;
             var siblings= parent.children;
             if(siblings == null) return false;
+            int idx= siblings.IndexOf(myCursor);
+			if(idx < 0) return false;
 			do {
-	            int idx= siblings.IndexOf(myCursor);
-	            if(idx < 0 || idx >= siblings.Count-1) return false;
-	            myCursor= siblings[idx+1] as LibraryObject;				
+	            if(idx >= siblings.Count-1) return false;
+	            myCursor= siblings[idx+1] as LibraryObject;
+				++idx;				
 			} while(!ShouldShow(myCursor));
             return true;
     	}
@@ -141,7 +170,12 @@ namespace iCanScript.Editor {
     	public bool MoveToFirstChild() {
             var siblings= myCursor.children;
             if(siblings == null || siblings.Count == 0) return false;
-    	    myCursor= siblings[0] as LibraryObject;
+			int idx= 0;
+			do {
+	            if(idx >= siblings.Count) return false;
+	            myCursor= siblings[idx] as LibraryObject;
+				++idx;				
+			} while(!ShouldShow(myCursor));
             return true;
     	}
         // -------------------------------------------------------------------
@@ -164,7 +198,7 @@ namespace iCanScript.Editor {
             var size= myCursor.displaySize;
             if(size == Vector2.zero) {
                 size= labelStyle.CalcSize(new GUIContent(displayString));
-				size.x+= myFoldOffset+kIconWidth+kLabelSpacer;
+				size.x+= myFoldOffset+kIconWidth+kLabelSpacer+kScoreWidth;
             }
     	    return size;
     	}
@@ -186,11 +220,16 @@ namespace iCanScript.Editor {
                 labelStyle.richText= true;
     		}
             
+			// -- Show search score --
+			int score= (int)(myCursor.score * 100f);
+			var scoreRect= new Rect(displayArea.x, displayArea.y, kScoreWidth, displayArea.height);
+			GUI.Label(scoreRect, score.ToString()+"%");
+			
             // -- Show foldout (if needed) --
-    		bool foldoutState= ShouldUseFoldout ? EditorGUI.Foldout(new Rect(displayArea.x, displayArea.y, myFoldOffset, displayArea.height), foldout, "") : false;
+    		bool foldoutState= ShouldUseFoldout(myCursor) ? EditorGUI.Foldout(new Rect(displayArea.x+kScoreWidth, displayArea.y, myFoldOffset, displayArea.height), foldout, "") : false;
 
 			// -- Show icon --
-	        var pos= new Rect(myFoldOffset+displayArea.x, displayArea.y, displayArea.width-myFoldOffset, displayArea.height);
+	        var pos= new Rect(myFoldOffset+kScoreWidth+displayArea.x, displayArea.y, displayArea.width-myFoldOffset, displayArea.height);
 		    GUI.Label(pos, libraryIcon);
 	        pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);  // Move label up a bit.
 
@@ -222,58 +261,134 @@ namespace iCanScript.Editor {
     	}
 
         // -------------------------------------------------------------------
+        /// Toggles the foldout on the selected library object.
+        public void ToggleFoldUnfoldOnSelected() {
+            if(mySelected == null) return;
+            if(!ShouldUseFoldout(mySelected)) return;
+            myTreeView.ToggleFoldUnfold(mySelected);
+        }
+        
+        // -------------------------------------------------------------------
         /// Determines if type member should be shown.
         ///
         /// @param libraryObject Library object to test.
         /// @return _true_ if it should be shown. _false_ otherwise.
         ///
         bool ShouldShow(LibraryObject libraryObject) {
-			var libraryMemberInfo= libraryObject as LibraryMemberInfo;
-			if(libraryMemberInfo != null) {
-				// -- Should we show inherited members? --
-	            if(myShowInherited == false) {
-	                if(libraryMemberInfo.isInherited) {
-	            		return false;
-	            	}
-				}
-				// -- Should we show protected members? --
-				if(myShowProtected == false) {
-					var methodBase= libraryMemberInfo.memberInfo as MethodBase;
-					if(methodBase != null && methodBase.IsFamily) {
-						return false;
-					}
-				}				
-			}
-			return true;
+            return libraryObject.isVisible;
         }
         
         // -------------------------------------------------------------------
-        /// Determines the number of items to show.
-        void ComputeNumberOfItems() {
-			int nbItems= 0;
-			database.ForEach(
-				l=> {
-					var libraryMemberInfo= l as LibraryMemberInfo;
-					if(libraryMemberInfo != null && ShouldShow(libraryMemberInfo)) {
-						++nbItems;
-					}
-				}
-			);
-			this.numberOfItems= nbItems;
-        }
-
-        // ===================================================================
-        // -------------------------------------------------------------------
-        bool ShouldUseFoldout {
-            get {
-                if(myCursor == null) return false;
-                if(myCursor is LibraryRootNamespace) return true;
-                if(myCursor is LibraryChildNamespace) return true;
-                if(myCursor is LibraryType) return true;
-                return false;
+        /// Determine what should be shown.
+        void ShowVisible() {
+			// -- Display all visible items if only few remain visible. --
+			if(numberOfVisibleMembers < 50) {
+				UnfoldAllVisible();
+			}
+			else if(numberOfVisibleMembers < 250) {
+				UnfoldAllVisibleWithScore(database.score);
+			}
+            else if(numberOfVisibleNamespaces < 20) {
+                UnfoldVisibleNamespaces();
+                if(numberOfVisibleTypes < 20) {
+                    UnfoldVisibleTypes();
+                }
+            }
+            else {
+                FoldAllVisible();
             }
         }
 
+        // -------------------------------------------------------------------
+        /// Determine if the curent library object requires a foldout.
+        ///
+        /// @return _true_ if current library object requires a foldout.
+        ///         _false_ otherwise.
+        ///
+        bool ShouldUseFoldout(LibraryObject libraryObject) {
+            if(libraryObject == null) return false;
+            if(libraryObject is LibraryRootNamespace) return true;
+            if(libraryObject is LibraryChildNamespace) return true;
+            if(libraryObject is LibraryType) return true;
+            return false;
+        }
+
+        // -------------------------------------------------------------------
+		/// Folds all visible items.
+		void FoldAllVisible() {
+			database.ForEach(
+				l=> {
+					if(ShouldShow(l)) {
+                        if(!(l is LibraryTypeMember)) {
+							myTreeView.Fold(l);							
+                        }
+					}
+				}
+			);
+		}
+
+        // -------------------------------------------------------------------
+		/// Unfolds all visible items.
+		void UnfoldAllVisible() {
+			database.ForEach(
+				l=> {
+					if(ShouldShow(l)) {
+                        if(!(l is LibraryTypeMember)) {
+							myTreeView.Unfold(l);							
+                        }
+					}
+				}
+			);
+		}
+
+        // -------------------------------------------------------------------
+		/// Unfolds all visible items.
+		void UnfoldVisibleNamespaces() {
+			database.ForEach(
+				l=> {
+					if(ShouldShow(l)) {
+                        if(l is LibraryRootNamespace) {
+							myTreeView.Unfold(l);							
+                        }
+                        else {
+                            myTreeView.Fold(l);
+                        }
+					}
+				}
+			);
+		}
+
+        // -------------------------------------------------------------------
+		/// Unfolds all visible items.
+		void UnfoldVisibleTypes() {
+			database.ForEach(
+				l=> {
+					if(ShouldShow(l)) {
+                        if(l is LibraryChildNamespace) {
+							myTreeView.Unfold(l);							
+                        }
+					}
+				}
+			);
+		}
+        // -------------------------------------------------------------------
+		/// Unfolds all visible items with the best search score.
+		void UnfoldAllVisibleWithScore(float score) {
+			database.ForEach(
+				l=> {
+					if(ShouldShow(l)) {
+                        if(!(l is LibraryTypeMember)) {
+                            if(Math3D.IsEqual(score, l.score)) {
+        						myTreeView.Unfold(l);
+        					}
+                            else {
+                                myTreeView.Fold(l);
+                            }                            
+                        }
+					}
+				}
+			);
+		}
     }
     
 }

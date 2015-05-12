@@ -8,18 +8,11 @@
 	</array>
 	<key>binderSplitFrames</key>
 	<array>
-		<string>{{0, 0}, {282, 1304}}</string>
-		<string>{{283, 0}, {1204, 1304}}</string>
+		<string>{{0, 0}, {282, 1336}}</string>
+		<string>{{283, 0}, {997, 1336}}</string>
 	</array>
 	<key>binderState</key>
-	<array>
-		<integer>0</integer>
-		<integer>4</integer>
-		<integer>6</integer>
-		<integer>10</integer>
-		<integer>12</integer>
-		<integer>78</integer>
-	</array>
+	<array/>
 	<key>collectionsHeight</key>
 	<real>101</real>
 	<key>collectionsRepresentedBinderDocumentsInfo</key>
@@ -225,7 +218,7 @@
 		</array>
 	</dict>
 	<key>mainDocumentEditor.scrollRect</key>
-	<string>{{0, 0}, {1204, 1232}}</string>
+	<string>{{0, 0}, {997, 1264}}</string>
 	<key>mainDocumentEditor.selectedRanges</key>
 	<string>{0, 0}</string>
 	<key>mainDocumentEditor.textEditorState</key>
@@ -238,7 +231,7 @@
 		<false/>
 	</dict>
 	<key>mainWindowFrame</key>
-	<string>973 91 1487 1326 0 0 2560 1417 </string>
+	<string>1280 59 1280 1358 0 0 2560 1417 </string>
 	<key>supportingDocumentEditor.scrollRect</key>
 	<string>{{0, 0}, {621, 304}}</string>
 	<key>supportingDocumentEditor.selectedItemIDs</key>
