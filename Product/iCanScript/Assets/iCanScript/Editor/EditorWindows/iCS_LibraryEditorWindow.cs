@@ -1,1 +1,3 @@
-public sealed class iCS_LibraryEditorWindow : iCS_LibraryEditor {}
+namespace iCanScript.Internal.Editor {
+    public sealed class iCS_LibraryEditorWindow : LibraryEditor {}    
+}

@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace iCanScript.Editor.CodeEngineering {
+namespace iCanScript.Internal.Editor.CodeEngineering {
     public class TriggerSetDefinition : CodeBase {
         // ===================================================================
         // FIELDS

@@ -1,6 +1,6 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.9
+Version: v2.0.12
 CSS: Github.css
 
 
@@ -9,6 +9,48 @@ CSS: Github.css
 <!-- PDF: <<[front-matter/pdf.md] -->
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
+
+## iCanScript v2.0.12 ##
+
+_May 13, 2015_
+
+V2.0.12 introduces a redesigned library capable of supporting all features of an object-oriented programming language (ex: C# or C++).
+
+The new library component automatically imports any library added to the project and therefore includes all functionality available in the Unity Engine, Unity Editor, and .NET libraries.
+
+**<span style="color: red">WARNING:</span>** The option to display in the library the functions with a protected accessibility scope is not functional in this release.
+ 
+### List of Changes
+
+- **<span style="color: green">\[NEW\]</span>** The library database and its selection window has been fully designed to support all features of an object-oriented language (C# or C++).
+	- **<span style="color: green">\[NEW\]</span>** Imports all public libraries and source code available in the Unity project;
+	- **<span style="color: green">\[NEW\]</span>** Library database hierarchy is structured based on the namespaces and types imported from the libraries.
+	- **<span style="color: green">\[NEW\]</span>** Three search fields allow to filter the library database content based on the _**namespace**_, the _**type**_, and the _**member (field / property / function)**_ names.
+
+- **<span style="color: blue">\[CHANGED\]</span>** The iCanScript nodes were relocated under the iCanScript namespace to conform with the new library database structure.  A data upgrade will be performed the first a scene created with an earlier version of iCanScript.
+
+- **<span style="color: blue">\[REMOVED\]</span>** The ability to programatically import external libraries into the iCanScript library database has been removed (since all libraries are automatically imported).
+
+- **<span style="color: blue">\[REMOVED\]</span>** The option to include/exclude the Unity editor library using the _Global Configuration panel_ has been removed (the Unity Editor library is always imported).
+
+* * *
+
+
+## iCanScript v2.0.11 ##
+
+_May 8, 2015_
+
+V2.0.11 was rejected and therefore not  released.
+
+* * *
+
+## iCanScript v2.0.10 ##
+
+_May 1st, 2015_
+
+V2.0.10 was rejected and therefore not  released.
+
+* * *
 
 ## iCanScript v2.0.9 ##
 

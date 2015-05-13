@@ -2,10 +2,10 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Collections;
-using ActionVisualScript= System.Action<iCS_IStorage>;
-using ActionEditorObject= System.Action<iCS_EditorObject>;
 
-namespace iCanScript { namespace Editor {
+namespace iCanScript.Internal.Editor {
+    using ActionVisualScript= System.Action<iCS_IStorage>;
+    using ActionEditorObject= System.Action<iCS_EditorObject>;
     
     public static class SystemEvents {
         // ======================================================================
@@ -241,4 +241,4 @@ namespace iCanScript { namespace Editor {
         }
     }
 
-}}
+}

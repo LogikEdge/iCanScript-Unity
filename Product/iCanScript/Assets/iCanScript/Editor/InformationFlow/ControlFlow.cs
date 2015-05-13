@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScript.Engine;
-using P=Prelude;
+using iCanScript.Internal.Engine;
+using P=iCanScript.Internal.Prelude;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     // ===================================================================
     /// This class implements control flow utilities.
     public static class ControlFlow {

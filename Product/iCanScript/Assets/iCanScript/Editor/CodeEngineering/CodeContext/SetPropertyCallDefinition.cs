@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Text;
 using System.Collections;
 
-namespace iCanScript.Editor.CodeEngineering {
+namespace iCanScript.Internal.Editor.CodeEngineering {
 
     public class SetPropertyCallDefinition : PropertyCallDefinition {
         // ===================================================================
@@ -41,9 +41,8 @@ namespace iCanScript.Editor.CodeEngineering {
             if(Parameters.Length != 1) return "";
             var result= new StringBuilder(128);
             // Determine function prefix.
-            var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(VSObject);
-            result.Append(FunctionCallPrefix(memberInfo, VSObject));
-            result.Append(ToFieldOrPropertyName(memberInfo));
+            result.Append(FunctionCallPrefix(VSObject));
+            result.Append(ToFieldOrPropertyName());
             result.Append("= ");
             result.Append(Parameters[0].GenerateBody(0));
             return result.ToString();

@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScript.Engine;
+using iCanScript.Internal.Engine;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 
     public class PortEditor : VSObjectEditor {
         // ===================================================================
@@ -69,7 +69,7 @@ namespace iCanScript.Editor {
         // -------------------------------------------------------------------
         /// Display port value type information
         protected void EditPortValueType() {
-            var typeName= iCS_ObjectNames.ToTypeName(iCS_Types.TypeName(vsObject.RuntimeType));
+            var typeName= NameUtility.ToTypeName(iCS_Types.TypeName(vsObject.RuntimeType));
             if(!string.IsNullOrEmpty(typeName)) {
                 var label= "Port is a";
                 if(iCS_TextUtility.StartsWithAVowel(typeName)) {

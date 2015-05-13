@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Text;
 using System.Collections;
 
-namespace iCanScript.Editor.CodeEngineering {
+namespace iCanScript.Internal.Editor.CodeEngineering {
 
     public class GetPropertyCallDefinition : PropertyCallDefinition {
         // ===================================================================
@@ -29,9 +29,8 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public override string GenerateBody(int indentSize) {
             var result= new StringBuilder(128);
-            var memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(VSObject);
-            result.Append(FunctionCallPrefix(memberInfo, VSObject));
-            result.Append(ToFieldOrPropertyName(memberInfo));
+            result.Append(FunctionCallPrefix(VSObject));
+            result.Append(ToFieldOrPropertyName());
             result.Append(GenerateReturnTypeCastFragment(VSObject));
             return result.ToString();
         }

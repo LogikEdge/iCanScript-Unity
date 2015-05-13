@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-namespace iCanScript.Editor.CodeEngineering {
+namespace iCanScript.Internal.Editor.CodeEngineering {
 
     public class PropertyCallDefinition : FunctionCallDefinition {
         // ===================================================================
@@ -24,16 +24,12 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param memberInfo Member information associated with field or property.
         /// @return The name of the filed or property.
         ///
-        protected string ToFieldOrPropertyName(iCS_MemberInfo memberInfo) {
-            var propertyInfo= memberInfo.ToPropertyInfo;
-            if(propertyInfo != null) {
-                return propertyInfo.MethodName.Substring(4);
+        protected string ToFieldOrPropertyName() {
+            var codeName= VSObject.CodeName;
+            if(codeName.StartsWith("set_") || codeName.StartsWith("get_")) {
+                return codeName.Substring(4);
             }
-            var fieldInfo= memberInfo.ToFieldInfo;
-            if(fieldInfo != null) {
-                return fieldInfo.MethodName;
-            }
-            return null;            
+            return codeName;
         }
         
     }

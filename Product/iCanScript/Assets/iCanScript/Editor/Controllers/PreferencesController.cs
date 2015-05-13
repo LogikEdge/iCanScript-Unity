@@ -9,10 +9,8 @@ using System;
 using System.Collections;
 
 
-public enum iCS_UpdateInterval { Daily= 0, Weekly= 1, Monthly= 2 };
-
-
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
+    public enum iCS_UpdateInterval { Daily= 0, Weekly= 1, Monthly= 2 };
     
     public static class PreferencesController {
     	// =================================================================================
@@ -531,7 +529,6 @@ namespace iCanScript.Editor {
     	const string kEngineBaseType            = "UnityEngine.MonoBehaviour";
         const string kEngineNamespace           = "MyVisualScripts.Engine";
         const string kEditorNamespace           = "MyVisualScripts.Editor";
-        const bool   kUseUnityEditorLibrary     = false;
     
     	//
     	// Database access keys
@@ -541,7 +538,6 @@ namespace iCanScript.Editor {
     	const string kEngineBaseTypeKey            = "iCS_EngineBaseType";
         const string kEngineNamespaceKey           = "iCS_EngineNamespace";
         const string kEditorNamespaceKey           = "iCS_EditorNamespace";
-        const string kUseUnityEditorLibraryKey     = "iCS_UseUnityEditorLibrary";
 
     	//
     	// Reset to default value functions
@@ -561,9 +557,6 @@ namespace iCanScript.Editor {
     	public static void ResetEditorNamespace() {
     	    EditorNamespace= kEditorNamespace;
     	}
-        public static void ResetUseUnityEditorLibrary() {
-            UseUnityEditorLibrary= kUseUnityEditorLibrary;
-        }
     
     	//
     	// Accessors
@@ -588,10 +581,6 @@ namespace iCanScript.Editor {
             get { return EditorPrefs.GetString(kEditorNamespaceKey, kEditorNamespace); }
             set { EditorPrefs.SetString(kEditorNamespaceKey, value); }
         }
-        public static bool UseUnityEditorLibrary {
-            get { return EditorPrefs.GetBool(kUseUnityEditorLibraryKey, kUseUnityEditorLibrary); }
-            set { EditorPrefs.SetBool(kUseUnityEditorLibraryKey, value); }
-        }    
     
     	// =================================================================================
     	// Activation

@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     // ===================================================================
     /// This class implements utilties to navigate and query the visual

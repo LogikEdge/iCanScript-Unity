@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-namespace iCanScript { namespace Editor {
+namespace iCanScript.Internal.Editor {
     
 /// The AppController controls the Start and Shutdown of all sub-systems.
 [InitializeOnLoad]
@@ -51,4 +51,4 @@ public static class AppController {
     }
 }
 
-}}
+}

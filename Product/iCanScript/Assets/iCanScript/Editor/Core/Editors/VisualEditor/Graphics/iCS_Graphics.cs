@@ -3,9 +3,10 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using P= Prelude;
+using iCanScript.Internal.Engine;
+using P= iCanScript.Internal.Prelude;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     using Prefs= PreferencesController;
 
 
@@ -196,7 +197,7 @@ namespace iCanScript.Editor {
     		iCS_NodeTextures.BuildNodeTemplate(kInitialScale);
             // Load AA line texture.
             if(lineTexture == null) {
-                if(!iCS_TextureCache.GetTexture(iCS_EditorStrings.AALineTexture, out lineTexture)) {
+                if(!TextureCache.GetTexture(iCS_EditorStrings.AALineTexture, out lineTexture)) {
                     IsInitialized= false;
                     return IsInitialized;
                 }
@@ -207,19 +208,19 @@ namespace iCanScript.Editor {
             // Load maximize/minimize icon.
             maximizeIcon= iCS_BuiltinTextures.MaximizeIcon(1f);
             // Load line arrow heads.
-            if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.UpArrowHeadIcon, out upArrowHeadIcon)) {
+            if(!TextureCache.GetIcon(iCS_EditorStrings.UpArrowHeadIcon, out upArrowHeadIcon)) {
                 IsInitialized= false;
                 return IsInitialized;
             }        
-            if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.DownArrowHeadIcon, out downArrowHeadIcon)) {
+            if(!TextureCache.GetIcon(iCS_EditorStrings.DownArrowHeadIcon, out downArrowHeadIcon)) {
                 IsInitialized= false;
                 return IsInitialized;
             }        
-            if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.LeftArrowHeadIcon, out leftArrowHeadIcon)) {
+            if(!TextureCache.GetIcon(iCS_EditorStrings.LeftArrowHeadIcon, out leftArrowHeadIcon)) {
                 IsInitialized= false;
                 return IsInitialized;
             }        
-            if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.RightArrowHeadIcon, out rightArrowHeadIcon)) {
+            if(!TextureCache.GetIcon(iCS_EditorStrings.RightArrowHeadIcon, out rightArrowHeadIcon)) {
                 IsInitialized= false;
                 return IsInitialized;
             }        
@@ -254,7 +255,7 @@ namespace iCanScript.Editor {
             var screenWidth     = screenArea.width;
             var screenHeight    = screenArea.height;
             if(iCS_DevToolsConfig.UseBackgroundImage) {
-                Texture2D background= iCS_TextureCache.GetTexture("Assets/DevTools/Editor/resources/background.png");
+                Texture2D background= TextureCache.GetTexture("Assets/DevTools/Editor/resources/background.png");
                 var backgroundRect= new Rect(0,0,background.width, background.height);
                 GUI.DrawTexture(backgroundRect, background);            
             }
@@ -356,7 +357,7 @@ namespace iCanScript.Editor {
                     Handles.DrawLine(new Vector3(liveRect.xMax, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));                            
                 }
                     // Show iCanScript Title
-                    Texture2D title= iCS_TextureCache.GetTexture("Assets/DevTools/Editor/resources/iCanScript.png");
+                    Texture2D title= TextureCache.GetTexture("Assets/DevTools/Editor/resources/iCanScript.png");
                     if(title != null) {
                         float titleRatio= 0.65f;
                         float reservedTitleWidth= titleRatio*liveRect.width;
@@ -382,7 +383,7 @@ namespace iCanScript.Editor {
                 Handles.DrawLine(new Vector3(liveRect.x, liveRect.y, 0), new Vector3(liveRect.x, liveRect.yMax, 0));
                 Handles.DrawLine(new Vector3(liveRect.xMax, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));            
                 // Show iCanScript Title
-                Texture2D title= iCS_TextureCache.GetTexture("Assets/DevTools/Editor/resources/iCanScript.png");
+                Texture2D title= TextureCache.GetTexture("Assets/DevTools/Editor/resources/iCanScript.png");
                 if(title != null) {
                     var titleWidth= Mathf.Min(title.width, liveRect.width);
                     var titleHeight= title.height*(titleWidth/title.width);
@@ -453,7 +454,7 @@ namespace iCanScript.Editor {
     		}
     		Color alphaWhite= new Color(1f, 1f, 1f, alpha);
             GUI.color= alphaWhite;
-            Texture icon= iCS_Icons.GetIconFor(node);
+            Texture icon= Icons.GetIconFor(node);
     		var position= Math3D.Middle(displayRect);
             var iconWidth= icon.width;
             var iconHeight= icon.height;

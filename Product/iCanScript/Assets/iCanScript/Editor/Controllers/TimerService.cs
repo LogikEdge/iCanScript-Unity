@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using P=Prelude;
-using TimedAction= Prelude.TimerService.TimedAction;
+using P=iCanScript.Internal.Prelude;
+using TimedAction= iCanScript.Internal.Prelude.TimerService.TimedAction;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     /// @date 2015-04-08    Code review.
     public static class TimerService {

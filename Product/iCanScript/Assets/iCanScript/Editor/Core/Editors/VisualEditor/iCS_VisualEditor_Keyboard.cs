@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
-using iCanScript.Editor;
+using iCanScript.Internal.Editor;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ======================================================================
 	// Properties

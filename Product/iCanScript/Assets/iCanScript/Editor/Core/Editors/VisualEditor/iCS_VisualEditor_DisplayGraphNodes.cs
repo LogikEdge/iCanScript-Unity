@@ -3,12 +3,12 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using P= Prelude;
+using P= iCanScript.Internal.Prelude;
 
 /*
     TODO: Cleanup conditional tree descent VS full tree descent when drawing graph.
 */
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     using Pref= PreferencesController;
 
     public partial class iCS_VisualEditor : iCS_EditorBase {

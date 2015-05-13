@@ -2,9 +2,9 @@ using UnityEngine;
 using System;
 using System.Text;
 using System.Collections;
-using iCanScript.Engine;
+using iCanScript.Internal.Engine;
 
-namespace iCanScript.Editor.CodeEngineering {
+namespace iCanScript.Internal.Editor.CodeEngineering {
 
     public class VariableDefinition : CodeBase {
         // ===================================================================
@@ -123,7 +123,9 @@ namespace iCanScript.Editor.CodeEngineering {
                     result.Append(indent);
                 }
                 result.Append(ToAccessString(accessType));
+                result.Append(" ");
                 result.Append(ToScopeString(scopeType));
+                result.Append(" ");                
             }
 			result.Append(ToTypeName(variableType));
 			result.Append(" ");

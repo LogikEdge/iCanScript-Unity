@@ -5,9 +5,10 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using P=Prelude;
+using iCanScript.Internal.Engine;
+using P=iCanScript.Internal.Prelude;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Properties.
@@ -195,7 +196,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             outPort= overlappingPort.IsOutputPort ? overlappingPort : fixPort;
         }
         if(inPort != outPort) {
-            iCS_TypeCastInfo conversion= null;
+            LibraryFunction conversion= null;
             if(VerifyConnectionTypes(inPort, outPort, out conversion)) {
                 IStorage.SetAndAutoLayoutNewDataConnection(inPort, outPort, conversion);
             }
@@ -206,7 +207,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         return true;
     }
 	// ----------------------------------------------------------------------
-    bool VerifyConnectionTypes(iCS_EditorObject inPort, iCS_EditorObject outPort, out iCS_TypeCastInfo typeCast) {
+    bool VerifyConnectionTypes(iCS_EditorObject inPort, iCS_EditorObject outPort, out LibraryFunction typeCast) {
         typeCast= null;
 		Type inType= inPort.RuntimeType;
 		Type outType= outPort.RuntimeType;
@@ -220,7 +221,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
             return false;
 		}
-        typeCast= iCS_LibraryDatabase.FindTypeCast(outType, inType);
+        typeCast= FindTypeCast(outType, inType);
         if(typeCast == null) {
 			ShowNotification(new GUIContent("No automatic type conversion exists from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)));
             return false;
@@ -228,17 +229,22 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         return true;
     }
 	// ----------------------------------------------------------------------
+	// TODO: Automatically create type cast for frequent conversions.
+	LibraryFunction FindTypeCast(Type outType, Type inType) {
+		return null;
+	}
+	// ----------------------------------------------------------------------
 	void CreateMuxPort(iCS_EditorObject fixPort, iCS_EditorObject parentMuxPort) {
-        iCS_TypeCastInfo conversion= null;
+        LibraryFunction conversion= null;
         if(!VerifyConnectionTypes(parentMuxPort, fixPort, out conversion)) return;
-        var childPortType= parentMuxPort.IsInputPort ? iCS_ObjectTypeEnum.InChildMuxPort : iCS_ObjectTypeEnum.OutChildMuxPort;
+        var childPortType= parentMuxPort.IsInputPort ? VSObjectType.InChildMuxPort : VSObjectType.OutChildMuxPort;
 		var source= parentMuxPort.ProducerPort;
 		// Convert source port to child port.
 		if(source != null) {
 			var firstChildMux= IStorage.CreatePort(fixPort.DisplayName, parentMuxPort.InstanceId, parentMuxPort.RuntimeType, childPortType);
 			IStorage.SetSource(firstChildMux, source);
 			IStorage.SetSource(parentMuxPort, null);
-			parentMuxPort.ObjectType= parentMuxPort.IsInputPort ? iCS_ObjectTypeEnum.InParentMuxPort : iCS_ObjectTypeEnum.OutParentMuxPort;
+			parentMuxPort.ObjectType= parentMuxPort.IsInputPort ? VSObjectType.InParentMuxPort : VSObjectType.OutParentMuxPort;
             parentMuxPort.PortIndex= (int)iCS_PortIndex.Return;
 		}
 		// Create new mux input port.
@@ -254,7 +260,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         return parentModule;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject GetValidParentNodeUnder(Vector2 point, iCS_ObjectTypeEnum objType, string objName) {
+    iCS_EditorObject GetValidParentNodeUnder(Vector2 point, VSObjectType objType, string objName) {
         iCS_EditorObject newParent= IStorage.GetNodeAt(point);
         if(newParent != null && !iCS_AllowedChildren.CanAddChildNode(objName, objType, newParent, IStorage)) {
             newParent= null;
@@ -317,7 +323,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				}
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
-	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.DisplayName, newInputNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.DisplayName, newInputNode.InstanceId, inputPort.RuntimeType, VSObjectType.OutDynamicDataPort);
 				IStorage.SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
 				newPort.ProducerPort= inputPort.ProducerPort;
 				inputPort.ProducerPort= newPort;
@@ -343,7 +349,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				}
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
-	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.DisplayName, newDstNode.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicDataPort);
+	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.DisplayName, newDstNode.InstanceId, inputPort.RuntimeType, VSObjectType.OutDynamicDataPort);
 				IStorage.SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
 				newPort.ProducerPort= inputPort.ProducerPort;
 				inputPort.ProducerPort= newPort;
@@ -363,7 +369,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				}
 				RebuildDataConnection(outputPort, existingPort);
 			} else {
-	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.DisplayName, inputNodeParent.InstanceId, inputPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicDataPort);
+	            iCS_EditorObject newPort= IStorage.CreatePort(inputPort.DisplayName, inputNodeParent.InstanceId, inputPort.RuntimeType, VSObjectType.InDynamicDataPort);
 				IStorage.SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
 				newPort.ProducerPort= inputPort.ProducerPort;
 				inputPort.ProducerPort= newPort;
@@ -375,13 +381,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
     void CleanupConnections(iCS_EditorObject node) {
         switch(node.ObjectType) {
-            case iCS_ObjectTypeEnum.StateChart: {
+            case VSObjectType.StateChart: {
                 List<iCS_EditorObject> childNodes= new List<iCS_EditorObject>();
                 IStorage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
                 foreach(var childNode in childNodes) { CleanupConnections(childNode); }
                 break;                
             }
-            case iCS_ObjectTypeEnum.State: {
+            case VSObjectType.State: {
                 // Attempt to relocate transition modules.
                 IStorage.ForEachChildPort(node,
                     p=> {
@@ -414,18 +420,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 foreach(var childNode in childNodes) { CleanupConnections(childNode); }
                 break;
             }
-            case iCS_ObjectTypeEnum.TransitionPackage:
-            case iCS_ObjectTypeEnum.Package: {
+            case VSObjectType.TransitionPackage:
+            case VSObjectType.Package: {
                 List<iCS_EditorObject> childNodes= new List<iCS_EditorObject>();
                 IStorage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
                 foreach(var childNode in childNodes) { CleanupConnections(childNode); }
-                goto case iCS_ObjectTypeEnum.InstanceFunction;
+                goto case VSObjectType.NonStaticFunction;
             }
-            case iCS_ObjectTypeEnum.InstanceFunction:
-            case iCS_ObjectTypeEnum.ClassFunction:
-            case iCS_ObjectTypeEnum.InstanceField:
-            case iCS_ObjectTypeEnum.ClassField:
-            case iCS_ObjectTypeEnum.TypeCast: {
+            case VSObjectType.NonStaticFunction:
+            case VSObjectType.StaticFunction:
+            case VSObjectType.NonStaticField:
+            case VSObjectType.StaticField:
+            case VSObjectType.TypeCast: {
                 IStorage.ForEachChildPort(node,
                     port=> {
                         if(port.IsInDataOrControlPort) {
@@ -506,20 +512,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(validParent == null) {
 			var node= IStorage.GetNodeAt(point);
 			if(node == null && IStorage.IsEmptyBehaviour) {
-				int option= EditorUtility.DisplayDialogComplex("Message Handler required !", "Unity behaviour requires that nodes be added to a predefined message.  Use the buttons below to create the desired message type for your node.","Create Update", "More events...","Create OnGUI");
-				switch(option) {
-					case 0:
-						validParent= AutoCreateBehaviourMessage(iCS_Strings.Update, point);
-						break;
-					case 1:
-						ShowNotification(new GUIContent("Please use right mouse click on canvas to create behaviour event type before adding new object."));
-						SelectedObject= IStorage.EditorObjects[0];
-						myContextualMenu.Update(iCS_ContextualMenu.MenuType.SelectedObject, SelectedObject, IStorage, point);
-						return;
-					case 2:
-						validParent= AutoCreateBehaviourMessage(iCS_Strings.OnGUI, point);
-						break;
-				}
+				EditorUtility.DisplayDialog("Function or Event Handler required !", "You must create a function or event handler to paste into.", "Cancel");
+				return;
 			} else {
 	            EditorUtility.DisplayDialog("Operation Aborted", "Unable to find a suitable parent to paste into !!!", "Cancel");				
 				return;
@@ -527,11 +521,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         iCS_UserCommands.PasteIntoGraph(sourceMonoBehaviour, sourceRoot, IStorage, validParent, point);
     }
-	// ----------------------------------------------------------------------
-    iCS_EditorObject AutoCreateBehaviourMessage(string messageName, Vector2 globalPos) {
-        var updateDesc= P.filter(d => d.DisplayName == iCS_Strings.Update, iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour)));
-        if(updateDesc == null || updateDesc.Length == 0) return null;
-        return iCS_UserCommands.CreateMessageHandler(IStorage[0], globalPos, updateDesc[0]);
-    }
+//	// ----------------------------------------------------------------------
+//    iCS_EditorObject AutoCreateBehaviourMessage(string messageName, Vector2 globalPos) {
+//        var updateDesc= P.filter(d => d.DisplayName == iCS_Strings.Update, iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour)));
+//        if(updateDesc == null || updateDesc.Length == 0) return null;
+//        return iCS_UserCommands.CreateMessageHandler(IStorage[0], globalPos, updateDesc[0]);
+//    }
 }
 }

@@ -4,9 +4,9 @@ using UnityEditor;
 using System;
 using System.Text.RegularExpressions;
 using System.IO;
-using iCanScript.Editor;
+using iCanScript.Internal.Editor;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 public partial class iCS_VisualEditor : iCS_EditorBase {
 	
     // ======================================================================
@@ -30,8 +30,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
     void HelpInit() {
 #if HELP_HOTZONE
-        iCS_TextureCache.GetIcon(iCS_EditorStrings.HelpMediumIcon, out myHelpLogo);
-        iCS_TextureCache.GetIcon(iCS_EditorStrings.DontIcon_24, out myHelpDontLogo);                   
+        TextureCache.GetIcon(iCS_EditorStrings.HelpMediumIcon, out myHelpLogo);
+        TextureCache.GetIcon(iCS_EditorStrings.DontIcon_24, out myHelpDontLogo);                   
         HotZoneAdd(kHelpDisplayKey, HelpHotZone, HelpHotZoneGUI, HelpHotZoneMouseClick, null);
 #endif
     }
@@ -52,21 +52,21 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Mouse in detected over a library item, show help in the Visual Editor.
     // ----------------------------------------------------------------------
-	public void libraryHelp(iCS_MemberInfo memInfo ) {
-		EditorWindow edWin= EditorWindow.mouseOverWindow;
-		if(edWin!= null && iCS_Types.IsA<iCS_LibraryEditor>(edWin.GetType())) { 
-			if(memInfo == null) {
-				helpWindowChange();
-			} 
-			else {
-				myIsLibraryHelp= true;
-				string title= HelpController.GetHelpTitle(memInfo);
-				string help= HelpController.getHelp(memInfo);
-				string parameters= HelpController.GetHelpParameters(memInfo);
-				myHelpText= title + "\n" + (String.IsNullOrEmpty(help) ? "\n" : help + "\n\n")  + parameters;
-	            Repaint();	
-			} 
-		}
+	public void libraryHelp(LibraryMemberInfo memInfo ) {
+//		EditorWindow edWin= EditorWindow.mouseOverWindow;
+//		if(edWin!= null && iCS_Types.IsA<LibraryEditor>(edWin.GetType())) { 
+//			if(memInfo == null) {
+//				helpWindowChange();
+//			} 
+//			else {
+//				myIsLibraryHelp= true;
+//				string title= HelpController.GetHelpTitle(memInfo);
+//				string help= HelpController.getHelp(memInfo);
+//				string parameters= HelpController.GetHelpParameters(memInfo);
+//				myHelpText= title + "\n" + (String.IsNullOrEmpty(help) ? "\n" : help + "\n\n")  + parameters;
+//	            Repaint();	
+//			} 
+//		}
 	}
 				
     // ================================================================================

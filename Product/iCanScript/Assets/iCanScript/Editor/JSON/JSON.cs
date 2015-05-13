@@ -2,9 +2,9 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using P=Prelude;
+using P=iCanScript.Internal.Prelude;
 
-namespace iCanScript.JSON {
+namespace iCanScript.Internal.JSON {
     
 public abstract class JSON {
     // =============================================================================
@@ -321,4 +321,4 @@ public abstract class JSON {
     }
 }
 
-}   // namespace iCanScript.JSON
+}   // namespace iCanScript.Internal.JSON

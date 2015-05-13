@@ -1,10 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScript.Engine;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 
     public class FunctionDefinitionEditor : NodeEditor {
         // ===================================================================
@@ -36,16 +35,7 @@ namespace iCanScript.Editor {
         // -------------------------------------------------------------------
         /// Edit node specific information.
     	protected override void OnNodeSpecificGUI() {
-            GUI.changed= false;
-            var newAccess= EditorGUILayout.EnumPopup("Access Specifier", vsObject.accessSpecifier);
-            vsObject.accessSpecifier= (AccessSpecifier)newAccess;
-            var newScope= EditorGUILayout.EnumPopup("Scope Specifier", vsObject.scopeSpecifier);
-            vsObject.scopeSpecifier= (ScopeSpecifier)newScope;
-            var newAttributes= EditorGUILayout.TextField(".Net Attributes", vsObject.dotNetAttributes);
-            vsObject.dotNetAttributes= newAttributes;
-            if(GUI.changed) {
-                vsObject.IStorage.SaveStorage();
-            }
+            EditorGUILayout.EnumPopup("Function Type", FunctionType.Public);
     	}
         
     }

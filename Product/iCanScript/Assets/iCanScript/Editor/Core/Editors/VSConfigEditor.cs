@@ -1,13 +1,13 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScript.Engine;
-using TimedAction= Prelude.TimerService.TimedAction;
+using iCanScript.Internal.Engine;
+using TimedAction= iCanScript.Internal.Prelude.TimerService.TimedAction;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     using Prefs= PreferencesController;
 
     public class VSConfigEditor : ConfigEditorBase {
@@ -128,11 +128,6 @@ namespace iCanScript.Editor {
                 iStorage.BaseType        = "";
                 if(iStorage.NamespaceOverride == false) {
                     iStorage.Namespace= Prefs.EditorNamespace;
-                }
-                if(Prefs.UseUnityEditorLibrary == false) {
-                    if(EditorUtility.DisplayDialog("The Unity Editor Library must be enabled to create editor scipts.", "Do you want to enable the Unity Editor Library?", "Enable", "Abort")) {
-                        Prefs.UseUnityEditorLibrary= true;                        
-                    }
                 }
             }
             else {

@@ -24,10 +24,8 @@ ASSET_STORE_TOOLS_DIR=$ASSETS_DIR/AssetStoreTools
 PRODUCT_DIR=$ASSETS_DIR/iCanScript
 EDITOR_DIR=$PRODUCT_DIR/Editor
 ENGINE_DIR=$PRODUCT_DIR/Engine
-EDITOR_PUBLIC_NODE_INSTALLER_DIR=$EDITOR_DIR/NodeInstaller
 EDITOR_PUBLIC_EDITOR_WINDOWS_DIR=$EDITOR_DIR/EditorWindows
 ENGINE_PUBLIC_COMPONENTS_DIR=$ENGINE_DIR/Components
-ENGINE_PUBLIC_NODES_DIR=$ENGINE_DIR/Nodes
 DEMO_SCENES_DIR=$PRODUCT_DIR/Demo_Scenes
 STAGING_ROOT=$ROOT_DIR/../Staging
 STAGING_ASSETS_DIR=$STAGING_ROOT/Assets
@@ -44,11 +42,9 @@ find $EDITOR_DIR -name "*.cs" >_editorFiles
 # The engine files are all files outside the editor files.
 find $PRODUCT_DIR -name "*.cs" | grep -v -f _editorFiles - >_engineFiles
 # Build list of files to exclude from the editor space (compile)
-find $EDITOR_PUBLIC_NODE_INSTALLER_DIR -name "*.cs" >editorFilesToExclude
-find $EDITOR_PUBLIC_EDITOR_WINDOWS_DIR -name "*.cs" >>editorFilesToExclude
+find $EDITOR_PUBLIC_EDITOR_WINDOWS_DIR -name "*.cs" >editorFilesToExclude
 # Build list of files to exclude from the engine space (compile)
 find $ENGINE_PUBLIC_COMPONENTS_DIR -name "*.cs" >engineFilesToExclude
-find $ENGINE_PUBLIC_NODES_DIR -name "*.cs" >>engineFilesToExclude
 find $DEMO_SCENES_DIR >>engineFilesToExclude
 # Exclude editor & engine files from compile
 grep -v -f editorFilesToExclude _editorFiles >editorFiles

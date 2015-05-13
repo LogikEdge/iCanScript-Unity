@@ -1,12 +1,9 @@
-﻿using UnityEngine;
-using System;
+using UnityEngine;
 using System.Collections;
 
-namespace iCanScript.Engine {
+namespace iCanScript.Internal.Engine {
 
-    [Serializable]
     public enum AccessSpecifier   { Public, Private, Protected, Internal };
-    [Serializable]
     public enum ScopeSpecifier    { NonStatic, Static, Virtual, Abstract, Override, New, Const };
     
 }

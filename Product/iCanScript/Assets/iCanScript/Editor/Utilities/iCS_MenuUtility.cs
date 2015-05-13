@@ -4,12 +4,16 @@ using System;
 using System.Reflection;
 using System.IO;
 using System.Collections;
-using P=Prelude;
+using iCanScript.Internal.Engine;
+using P=iCanScript.Internal.Prelude;
 
-public static class iCS_MenuUtility {
-    // ----------------------------------------------------------------------
-    public static void RemoveVisualScriptFrom(iCS_VisualScriptImp visualScript) {
-        // Destroy the given component.
-        UnityEngine.Object.DestroyImmediate(visualScript);
+namespace iCanScript.Internal.Editor {
+    
+    public static class iCS_MenuUtility {
+        // ----------------------------------------------------------------------
+        public static void RemoveVisualScriptFrom(iCS_VisualScriptImp visualScript) {
+            // Destroy the given component.
+            UnityEngine.Object.DestroyImmediate(visualScript);
+        }
     }
 }

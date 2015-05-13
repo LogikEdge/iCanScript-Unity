@@ -4,11 +4,11 @@ using UnityEditor;
 using UnityEngine;
 using System;
 using System.Collections;
-using iCanScript.JSON;
-using iCanScript.Engine;
-using P=Prelude;
+using iCanScript.Internal.JSON;
+using iCanScript.Internal.Engine;
+using P=iCanScript.Internal.Prelude;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     using Prefs=PreferencesController;
     
     public static class SoftwareUpdateController {

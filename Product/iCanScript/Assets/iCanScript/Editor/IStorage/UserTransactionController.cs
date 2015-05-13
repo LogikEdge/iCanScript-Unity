@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
-using TimedAction= Prelude.TimerService.TimedAction;
+using TimedAction= iCanScript.Internal.Prelude.TimerService.TimedAction;
 
-namespace iCanScript { namespace Editor {
+namespace iCanScript.Internal.Editor {
 
     public class UserTransactionController {
         // ======================================================================
@@ -71,4 +71,4 @@ namespace iCanScript { namespace Editor {
 
     }
     
-}}
+}

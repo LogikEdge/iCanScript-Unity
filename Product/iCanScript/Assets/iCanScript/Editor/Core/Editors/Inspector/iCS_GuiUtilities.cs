@@ -4,8 +4,9 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using P= iCanScript.Internal.Prelude;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
 public static class iCS_GuiUtilities {
     class GUIFieldInfo {
         public bool    Foldout= false;
@@ -132,7 +133,6 @@ public static class iCS_GuiUtilities {
         // Support Type type.
         if(valueElementType == typeof(Type) || currentValue is Type) {
             string typeName= currentValue != null ? iCS_Types.ToTypeString(currentValue as Type) : "";
-//			string origTypeName= typeName;
             if(ModalEdit(niceName, name, ref typeName, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
                 Type newType= iCS_Types.GetTypeFromTypeString(typeName);
                 if(newType != null) {
@@ -140,9 +140,7 @@ public static class iCS_GuiUtilities {
                     return newType;
                 }
                 else {
-//                    Value(foldoutDB, compositeParent+"."+name, origTypeName);
                     Debug.LogWarning("Type: "+typeName+" was not found.");
-//					EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript").ShowNotification(new GUIContent("Type: '"+typeName+"' cannot be found.  Are you missing a namespace?"));
                 }
             } 
             return currentValue;
@@ -154,18 +152,31 @@ public static class iCS_GuiUtilities {
                 currentValue= iCS_Types.CreateInstance(baseElementType);                    
                 isDirty= true;
 				return currentValue;
-            } else { // Ask to create reference types.
-                Type[] derivedTypes= iCS_Reflection.GetAllTypesWithDefaultConstructorThatDeriveFrom(baseElementType);
-                if(derivedTypes.Length <= 1) {
+            } else {
+                // -- Create reference types with a default constructor --
+                var derivedTypes= P.fold(
+                    (lst,t)=> {
+                        // -- Append types with default constructor --
+                        foreach(var constructor in t.GetConstructors(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)) {
+                            if(constructor.GetParameters().Length == 0) {
+                                lst.Add(t);
+                            }
+                        }
+                        return lst;
+                    },
+                    new List<Type>(),
+                    iCS_Types.GetAllTypesThatDeriveFrom(baseElementType)
+                );
+                if(derivedTypes.Count <= 1) {
 					isDirty= true;
                     return iCS_Types.CreateInstance(baseType);
                 }
-                string[] typeNames= new string[derivedTypes.Length+1];
+                string[] typeNames= new string[derivedTypes.Count+1];
                 typeNames[0]= "None";
                 if(baseType.IsArray) {
-                    for(int i= 0; i < derivedTypes.Length; ++i) typeNames[i+1]= iCS_Types.GetName(derivedTypes[i])+"[]";                                        
+                    for(int i= 0; i < derivedTypes.Count; ++i) typeNames[i+1]= iCS_Types.GetName(derivedTypes[i])+"[]";                                        
                 } else {
-                    for(int i= 0; i < derivedTypes.Length; ++i) typeNames[i+1]= iCS_Types.GetName(derivedTypes[i]);                    
+                    for(int i= 0; i < derivedTypes.Count; ++i) typeNames[i+1]= iCS_Types.GetName(derivedTypes[i]);                    
                 }
                 int idx= EditorGUILayout.Popup(niceName, 0, typeNames);
                 if(idx == 0) return null;

@@ -7,10 +7,11 @@ using System.Xml;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
-using iCanScript.JSON;
+using iCanScript.Internal.JSON;
+using iCanScript.Internal.Engine;
 
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     
     public static class HelpController {
     	static private string unityHelpIndex= null;
@@ -175,42 +176,42 @@ namespace iCanScript.Editor {
     	}
     	
     	
-    	public static string getHelp(iCS_MemberInfo memberInfo )
+    	public static string getHelp(LibraryMemberInfo memberInfo )
     	{
     		if(memberInfo != null) {
-    			// Return help string if there is already one in the memberInfo
-    			if (memberInfo.HelpSummaryCache != null) {
-    				return memberInfo.HelpSummaryCache;
-    			}
-    			
-    			// Try and use MemberInfo Description
-    			if (!String.IsNullOrEmpty(memberInfo.StoredDescription)) {
-    				return memberInfo.StoredDescription;
-    			}
-    			
-    			// If there is no help string already in MemberInfo, try and look up Unity help
-    			if (memberInfo.HelpSummaryCache==null && memberInfo.Company == "Unity") {
-    				string search= getHelpUrl(memberInfo);
-    				string summary=null;
-    				unityHelpSummary.TryGetValue(search, out summary);
-    				if (!String.IsNullOrEmpty(summary)) {
-    					// cache and return the found help string
-    					memberInfo.HelpSummaryCache= summary;
-    					return summary;
-    				}
-    			}
-    			
-    			// If there is no help found yet, try and return help based on type
-    			String typeHelp= getHelp(memberInfo.GetType());
-    			if (!String.IsNullOrEmpty(typeHelp)) {
-    				memberInfo.HelpSummaryCache= typeHelp;
-    			}	
-    			else
-    			{
-    				// Mark cache as empty string (vs null), so we do not search again 
-    				memberInfo.HelpSummaryCache= "";	
-    			}				
-    			return typeHelp;
+//    			// Return help string if there is already one in the memberInfo
+//    			if (memberInfo.HelpSummaryCache != null) {
+//    				return memberInfo.HelpSummaryCache;
+//    			}
+//    			
+//    			// Try and use MemberInfo Description
+//    			if (!String.IsNullOrEmpty(memberInfo.StoredDescription)) {
+//    				return memberInfo.StoredDescription;
+//    			}
+//    			
+//    			// If there is no help string already in MemberInfo, try and look up Unity help
+//    			if (memberInfo.HelpSummaryCache==null && memberInfo.Company == "Unity") {
+//    				string search= getHelpUrl(memberInfo);
+//    				string summary=null;
+//    				unityHelpSummary.TryGetValue(search, out summary);
+//    				if (!String.IsNullOrEmpty(summary)) {
+//    					// cache and return the found help string
+//    					memberInfo.HelpSummaryCache= summary;
+//    					return summary;
+//    				}
+//    			}
+//    			
+//    			// If there is no help found yet, try and return help based on type
+//    			String typeHelp= getHelp(memberInfo.GetType());
+//    			if (!String.IsNullOrEmpty(typeHelp)) {
+//    				memberInfo.HelpSummaryCache= typeHelp;
+//    			}	
+//    			else
+//    			{
+//    				// Mark cache as empty string (vs null), so we do not search again 
+//    				memberInfo.HelpSummaryCache= "";	
+//    			}				
+//    			return typeHelp;
     		}
     		return null;
     	}
@@ -228,13 +229,13 @@ namespace iCanScript.Editor {
     		return help;
     	}
     		
-    	public static iCS_MemberInfo getAssociatedHelpMemberInfo(iCS_EditorObject edObj) 
+    	public static LibraryMemberInfo getAssociatedHelpMemberInfo(iCS_EditorObject edObj) 
     	{
     		if(edObj != null) {
     			if (edObj.IsPort) {	
     				// check for special types of ports. 
     				// TODO: support these.
-    				if (edObj.PortIndex == (int)iCS_PortIndex.Return && edObj.ParentNode.IsClassField) {
+    				if (edObj.PortIndex == (int)iCS_PortIndex.Return && edObj.ParentNode.IsStaticField) {
     					// return port will be same as parent node description.
     				}
     				else if(edObj.IsKindOfPackagePort && !edObj.IsInstanceNodePort && !edObj.IsProposedDataPort)
@@ -257,18 +258,13 @@ namespace iCanScript.Editor {
     				}							
     			}
     			
-    			iCS_MemberInfo memberInfo=null;
+    			LibraryMemberInfo memberInfo=null;
     			
     			// Try and Get Member Info from GetAssociatedDescriptor 
     			if(edObj.IsKindOfFunction || edObj.IsEventHandler) {
-    				memberInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(edObj);
+    				memberInfo= edObj.GetLibraryObject() as LibraryMemberInfo;
     			}
     			
-    			// If no member Info was found, try and get based on type.
-    			if(memberInfo == null) {
-    				memberInfo= iCS_LibraryDatabase.GetTypeInfo(edObj.RuntimeType);
-    			}
-    
     			return memberInfo;
     			
     		}
@@ -331,45 +327,49 @@ namespace iCanScript.Editor {
     	}	
     	
     	
-    	public static string GetHelpTitle(iCS_MemberInfo memberInfo) {
-    		string title= "<iCS_highlight>" + memberInfo.DisplayName + "</iCS_highlight>";
+    	public static string GetHelpTitle(LibraryObject libraryObject) {
+    		string title= "<iCS_highlight>" + libraryObject.nodeName + "</iCS_highlight>";
     		string typeName= null;
-    		string className= iCS_Types.TypeName(memberInfo.ClassType);
+			string className= null;
+			if(libraryObject is LibraryMemberInfo) {
+				var memberInfo= libraryObject as LibraryMemberInfo;
+	    		className= iCS_Types.TypeName(memberInfo.declaringType);				
+			}
     	
-    		if(memberInfo.IsField) {
+    		if(libraryObject is LibraryField) {
     			typeName="Property of " + className;
     		}
-    		else if(memberInfo.IsProperty) {
+    		else if(libraryObject is LibraryProperty) {
     			typeName= "Property of " + className;
     		}
-          	else if(memberInfo.IsConstructor) {
+          	else if(libraryObject is LibraryConstructor) {
     			typeName= "Variable Builder";
             } 
-    		else if(memberInfo.IsMethod) {
+    		else if(libraryObject is LibraryFunction) {
     			typeName="Function of " + className;             
             } 
-    		else if(memberInfo.IsMessage) {
-    			typeName="Message of " + className;
+    		else if(libraryObject is LibraryEventHandler) {
+    			typeName="Event Handler for " + className;
             }
-    		else if(memberInfo.IsTypeInfo) {
+    		else if(libraryObject is LibraryType) {
     			typeName="Class Instance";
     		}
     
     		return "<b>" + typeName + " " + title + "</b>";
     	}
     	
-    	public static string GetHelpParameters(iCS_MemberInfo memberInfo) {
+    	public static string GetHelpParameters(LibraryMethodBase libraryMethodBase) {
     		string parameters= null;
     
-          	if(memberInfo.IsConstructor) {
-                parameters= memberInfo.ToConstructorInfo.FunctionParameters();
-            } 
-    		else if(memberInfo.IsMethod) {
-                parameters= memberInfo.ToMethodInfo.FunctionParameters();                
-            } 
-    		else if(memberInfo.IsMessage) {
-                parameters= memberInfo.ToMessageInfo.FunctionParameters();
-            }
+//          	if(memberInfo.IsConstructor) {
+//                parameters= memberInfo.ToConstructorInfo.FunctionParameters();
+//            } 
+//    		else if(memberInfo.IsMethod) {
+//                parameters= memberInfo.ToMethodInfo.FunctionParameters();                
+//            } 
+//    		else if(memberInfo.IsMessage) {
+//                parameters= memberInfo.ToMessageInfo.FunctionParameters();
+//            }
     
     		return parameters;
     	}
@@ -383,84 +383,86 @@ namespace iCanScript.Editor {
     		openDetailedHelp(getAssociatedHelpMemberInfo(edObj));
     	}	
     
-    	public static void openDetailedHelp(iCS_MemberInfo memberInfo )	
+    	public static void openDetailedHelp(LibraryMemberInfo memberInfo )	
     	{	
-    		if(memberInfo != null) {
-    			if (memberInfo.Company == "Unity") {
-    				string search= getHelpUrl(memberInfo);
-    				if (search != null)
-    					Help.ShowHelpPage("file:///unity/ScriptReference/" + search + ".html");
-    			}
-    		}
+//    		if(memberInfo != null) {
+//    			if (memberInfo.Company == "Unity") {
+//    				string search= getHelpUrl(memberInfo);
+//    				if (search != null)
+//    					Help.ShowHelpPage("file:///unity/ScriptReference/" + search + ".html");
+//    			}
+//    		}
     	}	
     
     	// =================================================================================
     	// Get the Unity help file url 
     	// ---------------------------------------------------------------------------------		
-    	private static string getHelpUrl(iCS_MemberInfo memberInfo)	
+    	private static string getHelpUrl(LibraryMemberInfo memberInfo)	
     	{		
-    			string className="";
-    			string demarcator="";
-    			string methodName="";
-    			
-    			if (memberInfo.IsMessage) {
-    				className = memberInfo.ParentTypeInfo.ClassName;
-    				demarcator= ".";
-    				methodName= memberInfo.DisplayName; 
-    			}
-    			else if (memberInfo.IsTypeInfo) {
-    				// First level libray entries (classes and packages), just return className
-    				className = memberInfo.ToTypeInfo.ClassName;
-    			}
-    			else if (memberInfo.IsMethod) {
-    				if(memberInfo.ToMethodInfo.DeclaringType.Name == null)
-    					className= memberInfo.ParentTypeInfo.ClassName;
-    				else
-    					className= memberInfo.ToMethodInfo.DeclaringType.Name;
-    				
-    				methodName= memberInfo.ToMethodInfo.MethodName;
-    				if (memberInfo.IsProperty) {
-    					// Property Nodes
-    					demarcator="-";
-    					methodName= Regex.Replace(methodName, "get_", string.Empty);
-    					methodName= Regex.Replace(methodName, "set_", string.Empty);
-    				}
-    				else if(memberInfo.IsConstructor) {
-    					// Builders
-    					demarcator="-ctor";
-    					methodName= "";
-    				}
-    				else {
-    					// Functions, etc.
-    					demarcator= ".";
-    					// Remap arithmetic operator names
-    					if (methodName.Contains("op_")) {
-    						demarcator="-";
-    						methodName= Regex.Replace(methodName, "op_Addition", "operator_add");
-    						methodName= Regex.Replace(methodName, "op_Division", "operator_divide");
-    						methodName= Regex.Replace(methodName, "op_Equality", "operator_eq");
-    						methodName= Regex.Replace(methodName, "op_Inequality", "operator_ne");
-    						methodName= Regex.Replace(methodName, "op_Multiply", "operator_multiply");
-    						methodName= Regex.Replace(methodName, "op_Subtraction", "operator_subtract");
-    						//methodName= Regex.Replace(methodName, "op_UnaryNegation", ???);
-    						// TODO: else Debug.Log 
-    						// TODO: More opertators .. csharp operators.
-    					}
-    				}
-    			}
-    			else if (memberInfo.IsField) {
-    				// Field Nodes
-    				className= memberInfo.ParentTypeInfo.ClassName;
-    				methodName= memberInfo.ToFieldInfo.MethodName;	
-    				if(memberInfo.ToFieldInfo.IsClassMember)
-    					demarcator= ".";
-    				else if(memberInfo.ToFieldInfo.IsInstanceMember) 
-    					demarcator= "-";
-    				else 
-    					demarcator= ".";
-    			}		
-    	
-    			return className + demarcator + methodName;
+			return "";
+			
+//			string className="";
+//			string demarcator="";
+//			string methodName="";
+//			
+//			if (memberInfo.IsMessage) {
+//				className = memberInfo.ParentTypeInfo.ClassName;
+//				demarcator= ".";
+//				methodName= memberInfo.DisplayName; 
+//			}
+//			else if (memberInfo.IsTypeInfo) {
+//				// First level libray entries (classes and packages), just return className
+//				className = memberInfo.ToTypeInfo.ClassName;
+//			}
+//			else if (memberInfo.IsMethod) {
+//				if(memberInfo.ToMethodInfo.DeclaringType.Name == null)
+//					className= memberInfo.ParentTypeInfo.ClassName;
+//				else
+//					className= memberInfo.ToMethodInfo.DeclaringType.Name;
+//				
+//				methodName= memberInfo.ToMethodInfo.MethodName;
+//				if (memberInfo.IsProperty) {
+//					// Property Nodes
+//					demarcator="-";
+//					methodName= Regex.Replace(methodName, "get_", string.Empty);
+//					methodName= Regex.Replace(methodName, "set_", string.Empty);
+//				}
+//				else if(memberInfo.IsConstructor) {
+//					// Builders
+//					demarcator="-ctor";
+//					methodName= "";
+//				}
+//				else {
+//					// Functions, etc.
+//					demarcator= ".";
+//					// Remap arithmetic operator names
+//					if (methodName.Contains("op_")) {
+//						demarcator="-";
+//						methodName= Regex.Replace(methodName, "op_Addition", "operator_add");
+//						methodName= Regex.Replace(methodName, "op_Division", "operator_divide");
+//						methodName= Regex.Replace(methodName, "op_Equality", "operator_eq");
+//						methodName= Regex.Replace(methodName, "op_Inequality", "operator_ne");
+//						methodName= Regex.Replace(methodName, "op_Multiply", "operator_multiply");
+//						methodName= Regex.Replace(methodName, "op_Subtraction", "operator_subtract");
+//						//methodName= Regex.Replace(methodName, "op_UnaryNegation", ???);
+//						// TODO: else Debug.Log 
+//						// TODO: More opertators .. csharp operators.
+//					}
+//				}
+//			}
+//			else if (memberInfo.IsField) {
+//				// Field Nodes
+//				className= memberInfo.ParentTypeInfo.ClassName;
+//				methodName= memberInfo.ToFieldInfo.MethodName;	
+//				if(memberInfo.ToFieldInfo.IsClassMember)
+//					demarcator= ".";
+//				else if(memberInfo.ToFieldInfo.IsInstanceMember) 
+//					demarcator= "-";
+//				else 
+//					demarcator= ".";
+//			}		
+//	
+//			return className + demarcator + methodName;
     	}
     
    }

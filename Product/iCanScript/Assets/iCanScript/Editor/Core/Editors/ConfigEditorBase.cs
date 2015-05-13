@@ -1,13 +1,13 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScript.Engine;
-using TimedAction= Prelude.TimerService.TimedAction;
+using iCanScript.Internal.Engine;
+using TimedAction= iCanScript.Internal.Prelude.TimerService.TimedAction;
 
-namespace iCanScript.Editor {
+namespace iCanScript.Internal.Editor {
     using Prefs= PreferencesController;
 
     public abstract class ConfigEditorBase : iCS_EditorBase {
@@ -164,7 +164,7 @@ namespace iCanScript.Editor {
             var logoWidth= 64f;
             var logoHeight= 64f;
             Texture2D iCanScriptLogo= null;
-            if(iCS_TextureCache.GetTexture(iCS_EditorStrings.LogoIcon, out iCanScriptLogo)) {
+            if(TextureCache.GetTexture(iCS_EditorStrings.LogoIcon, out iCanScriptLogo)) {
                 Rect r= new Rect(0.5f*(kColumn1Width-logoWidth), position.height-logoHeight-10f-2f*versionSize.y, logoWidth, logoHeight);
                 GUI.DrawTexture(r, iCanScriptLogo);
             }        		

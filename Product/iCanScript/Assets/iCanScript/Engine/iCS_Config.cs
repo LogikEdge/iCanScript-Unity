@@ -1,14 +1,14 @@
 using UnityEngine;
 using System.Collections;
 
-namespace iCanScript.Engine {
+namespace iCanScript.Internal.Engine {
 	
 	public static class iCS_Config {
 	    // ----------------------------------------------------------------------
 	    // Product descriptions. 
 		public const int    MajorVersion = 2;
 		public const int    MinorVersion = 0;
-		public const int    BugFixVersion= 10;
+		public const int    BugFixVersion= 12;
 	    public const string ProductName             = "iCanScript";
 	    public const string ProductAcronym          = "iCS";
 		public const string ProductPrefix           = ProductAcronym+"_";

@@ -2,10 +2,10 @@ using UnityEngine;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScript.Engine;
-using P=Prelude;
+using iCanScript.Internal.Engine;
+using P=iCanScript.Internal.Prelude;
 
-namespace iCanScript.Editor.CodeEngineering {
+namespace iCanScript.Internal.Editor.CodeEngineering {
 
     public class FunctionCallDefinition : CodeBase {
         // ===================================================================
@@ -196,13 +196,9 @@ namespace iCanScript.Editor.CodeEngineering {
             // Ajust back the indentation.
             var result= new StringBuilder(128);
             // Simplified situation for property get.
-            var memberInfo= GetMemberInfo();
-            if(memberInfo == null) {
-                return "";
-            }
             bool isSpecial= false;
             bool isOperator= false;
-            var functionName= FunctionName(memberInfo, out isSpecial, out isOperator);                
+            var functionName= FunctionName(out isSpecial, out isOperator);                
             // Determine parameters information.
             var parameters= GetParameters(VSObject);
             var pLen= parameters.Length;
@@ -213,14 +209,14 @@ namespace iCanScript.Editor.CodeEngineering {
             }
             // Generate function call.
             if(isSpecial == false) {
-                result.Append(FunctionCallPrefix(memberInfo, VSObject));
+                result.Append(FunctionCallPrefix(VSObject));
             }
             // Declare function call.
             if(isOperator) {
-                result.Append(GenerateOperator(indentSize, memberInfo, functionName, paramStrings));
+                result.Append(GenerateOperator(indentSize, functionName, paramStrings));
             }
             else {
-                result.Append(GenerateFunctionCall(indentSize, memberInfo, functionName, paramStrings));                    
+                result.Append(GenerateFunctionCall(indentSize, functionName, paramStrings));                    
             }
             result.Append(GenerateReturnTypeCastFragment(VSObject));            
             return result.ToString();
@@ -241,35 +237,29 @@ namespace iCanScript.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Returns the method name from the member information.
         ///
-        /// @param memberInfo The member information from which to extract the
-        ///                   method name.
         /// @param isSpecialName Output _true_ if name is special method.
         /// @return The method name.
         ///
-        string FunctionName(iCS_MemberInfo memberInfo, out bool isSpecial, out bool isOperator) {
-            // Validate that the function still exists.
-            if(memberInfo == null) {
-                isSpecial= isOperator= false;
-                return "";
-            }
-            if(memberInfo.IsConstructor) {
+        string FunctionName(out bool isSpecial, out bool isOperator) {
+            if(VSObject.IsConstructor) {
                 isSpecial= true;
                 isOperator= false;
-                return ToTypeName(memberInfo.ClassType);
+                return ToTypeName(VSObject.RuntimeType);
             }
-            var functionName= memberInfo.ToFunctionPrototypeInfo.MethodName;
+            var functionName= VSObject.CodeName;
             isSpecial= isOperator= functionName.StartsWith("op_");
             return functionName;
         }
         
         // -------------------------------------------------------------------
-        /// Returns the MemberInfo for the current visual script object.
-        iCS_MemberInfo GetMemberInfo() {
-            return iCS_LibraryDatabase.GetAssociatedDescriptor(VSObject);
+        /// Determines if the function call is static.
+        bool IsStatic() {
+            if(VSObject.IsStaticFunction || VSObject.IsStaticField) return true;
+            return false;
         }
         
         // -------------------------------------------------------------------
-        public string GenerateFunctionCall(int indentSize, iCS_MemberInfo memberInfo, string functionName, string[] paramValues) {
+        public string GenerateFunctionCall(int indentSize, string functionName, string[] paramValues) {
             StringBuilder result= new StringBuilder();
             result.Append(functionName);
             result.Append("(");
@@ -285,7 +275,7 @@ namespace iCanScript.Editor.CodeEngineering {
         }
 
     	// -------------------------------------------------------------------------
-        public string GenerateOperator(int indentSize, iCS_MemberInfo memberInfo, string functionName, string[] paramValues) {
+        public string GenerateOperator(int indentSize, string functionName, string[] paramValues) {
             StringBuilder result= new StringBuilder();
             var symbol= OperatorNameToSymbol(functionName);
             var len= paramValues.Length;
@@ -354,9 +344,9 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param node Visual script function call node.
         /// @return The code fragment to prepend to the function call.
         ///
-        protected string FunctionCallPrefix(iCS_MemberInfo memberInfo, iCS_EditorObject node) {
+        protected string FunctionCallPrefix(iCS_EditorObject node) {
             var result= new StringBuilder(32);
-            if(memberInfo != null && memberInfo.IsClassFunctionBase) {
+            if(IsStatic()) {
                 if(!VSObject.IStorage.IsLocalType(VSObject)) {
                     result.Append(ToTypeName(node.RuntimeType));
                     result.Append(".");

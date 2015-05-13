@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using iCanScript.Engine;
+using UnityEngine;
+using iCanScript.Internal.Engine;
 
-namespace iCanScript.Editor.CodeEngineering {
+namespace iCanScript.Internal.Editor.CodeEngineering {
 
     public class CodeGenerator {    ///< @reviewed 2015-03-31
         // ===================================================================
@@ -22,7 +22,7 @@ namespace iCanScript.Editor.CodeEngineering {
             }
 
             // -- Build code global scope. --
-            var typeName= iCS_ObjectNames.ToTypeName(iStorage.TypeName);
+            var typeName= NameUtility.ToTypeName(iStorage.TypeName);
             var namespaceName= CodeGenerationUtility.GetNamespace(iStorage);
             var baseType= CodeGenerationUtility.GetBaseType(iStorage);
             myCodeRoot= new GlobalDefinition(typeName, namespaceName, baseType, iStorage);
@@ -43,7 +43,7 @@ namespace iCanScript.Editor.CodeEngineering {
         /// @param iStorage The VS storage to convert to code.
         ///
         public void DeleteGeneratedFilesFor(iCS_IStorage iStorage) {
-            var fileName= iCS_ObjectNames.ToTypeName(iStorage.EditorObjects[0].CodeName);
+            var fileName= NameUtility.ToTypeName(iStorage.EditorObjects[0].CodeName);
             var folder= CodeGenerationUtility.GetCodeGenerationFolder(iStorage);
             CSharpFileUtils.DeleteCSharpFile(folder, fileName);
         }

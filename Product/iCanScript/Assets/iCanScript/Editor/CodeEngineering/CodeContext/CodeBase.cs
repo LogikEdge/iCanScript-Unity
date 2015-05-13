@@ -4,10 +4,10 @@ using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
-using iCanScript.Engine;
-using P=Prelude;
+using iCanScript.Internal.Engine;
+using P=iCanScript.Internal.Prelude;
 
-namespace iCanScript.Editor.CodeEngineering {
+namespace iCanScript.Internal.Editor.CodeEngineering {
     // ===================================================================
     // USEFULL TYPES
     // -------------------------------------------------------------------
@@ -162,10 +162,10 @@ namespace iCanScript.Editor.CodeEngineering {
         ///
         public static string ToAccessString(AccessSpecifier accessType) {
             switch(accessType) {
-                case AccessSpecifier.Public:    return "public ";
-                case AccessSpecifier.Private:   return "private ";
-                case AccessSpecifier.Protected: return "protected ";
-                case AccessSpecifier.Internal:  return "internal ";
+                case AccessSpecifier.Public:    return "public";
+                case AccessSpecifier.Private:   return "private";
+                case AccessSpecifier.Protected: return "protected";
+                case AccessSpecifier.Internal:  return "internal";
             }
             return "public";
         }
@@ -178,11 +178,11 @@ namespace iCanScript.Editor.CodeEngineering {
         public static string ToScopeString(ScopeSpecifier scopeType) {
 			switch(scopeType) {
                 case ScopeSpecifier.NonStatic: return "";
-				case ScopeSpecifier.Static:    return "static ";
-				case ScopeSpecifier.Virtual:   return "virtual ";
-                case ScopeSpecifier.Abstract:  return "abstract ";
-                case ScopeSpecifier.Override:  return "override ";
-                case ScopeSpecifier.Const:     return "const ";
+				case ScopeSpecifier.Static:    return "static";
+				case ScopeSpecifier.Virtual:   return "virtual";
+                case ScopeSpecifier.Abstract:  return "abstract";
+                case ScopeSpecifier.Override:  return "override";
+                case ScopeSpecifier.Const:     return "const";
 			}
             return ""; 
         }
@@ -303,7 +303,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public string GetClassName(iCS_EditorObject vsObject) {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
-            return MakeNameUnique(iCS_ObjectNames.ToTypeName(vsObject.CodeName), vsObject);
+            return MakeNameUnique(NameUtility.ToTypeName(vsObject.CodeName), vsObject);
         }
         // ---------------------------------------------------------------------------------
         /// Convert the given VS object to a public class field name.
@@ -315,7 +315,7 @@ namespace iCanScript.Editor.CodeEngineering {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
             name= vsObject.IsConstructor ? vsObject.DisplayName : vsObject.CodeName;
-            return MakeNameUnique(iCS_ObjectNames.ToPublicFieldName(name), vsObject);
+            return MakeNameUnique(NameUtility.ToPublicFieldName(name), vsObject);
         }
         // ---------------------------------------------------------------------------------
         /// Convert the given VS object to a private class field name.
@@ -327,7 +327,7 @@ namespace iCanScript.Editor.CodeEngineering {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
             name= vsObject.IsConstructor ? vsObject.DisplayName : vsObject.CodeName;
-            return MakeNameUnique(iCS_ObjectNames.ToPrivateFieldName(name), vsObject);
+            return MakeNameUnique(NameUtility.ToPrivateFieldName(name), vsObject);
         }
         // ---------------------------------------------------------------------------------
         /// Convert the given VS object to a public static class field name.
@@ -339,7 +339,7 @@ namespace iCanScript.Editor.CodeEngineering {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
             name= vsObject.IsConstructor ? vsObject.DisplayName : vsObject.CodeName;
-            return MakeNameUnique(iCS_ObjectNames.ToPublicStaticFieldName(name), vsObject);
+            return MakeNameUnique(NameUtility.ToPublicStaticFieldName(name), vsObject);
         }
         // ---------------------------------------------------------------------------------
         /// Convert the given VS object to a private static class field name.
@@ -351,7 +351,7 @@ namespace iCanScript.Editor.CodeEngineering {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
             name= vsObject.IsConstructor ? vsObject.DisplayName : vsObject.CodeName;
-            return MakeNameUnique(iCS_ObjectNames.ToPrivateStaticFieldName(name), vsObject);
+            return MakeNameUnique(NameUtility.ToPrivateStaticFieldName(name), vsObject);
         }
         // ---------------------------------------------------------------------------------
         /// Convert the given VS object to a function parameter name.
@@ -362,7 +362,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public string GetFunctionParameterName(iCS_EditorObject vsObject) {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
-            name= iCS_ObjectNames.ToFunctionParameterName(vsObject.CodeName);
+            name= NameUtility.ToFunctionParameterName(vsObject.CodeName);
             return MakeNameUnique(name, vsObject);
         }
         // ---------------------------------------------------------------------------------
@@ -374,7 +374,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public string GetPublicFunctionName(iCS_EditorObject vsObject) {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
-            return MakeNameUnique(iCS_ObjectNames.ToPublicFunctionName(vsObject.CodeName), vsObject);
+            return MakeNameUnique(NameUtility.ToPublicFunctionName(vsObject.CodeName), vsObject);
         }
         // ---------------------------------------------------------------------------------
         /// Convert the given VS objec to a private function name.
@@ -385,7 +385,7 @@ namespace iCanScript.Editor.CodeEngineering {
         public string GetPrivateFunctionName(iCS_EditorObject vsObject) {
             var name= TryGetNameFor(vsObject);
             if(name != null) return name;
-            return MakeNameUnique(iCS_ObjectNames.ToPrivateFunctionName(vsObject.CodeName), vsObject);
+            return MakeNameUnique(NameUtility.ToPrivateFunctionName(vsObject.CodeName), vsObject);
         }
         // ---------------------------------------------------------------------------------
         /// Convert the given VS object to a functionlocal variable name.
@@ -407,7 +407,7 @@ namespace iCanScript.Editor.CodeEngineering {
             else {
                 name= vsObject.CodeName;
             }
-            return MakeNameUnique(iCS_ObjectNames.ToLocalVariableName(name), vsObject);
+            return MakeNameUnique(NameUtility.ToLocalVariableName(name), vsObject);
         }
         // ---------------------------------------------------------------------------------
         /// Convert the given VS object to a property name.
@@ -945,10 +945,8 @@ namespace iCanScript.Editor.CodeEngineering {
         public bool CanReplaceInputParameter(CodeBase code, CodeBase allowedParent, out iCS_EditorObject producerParent) {
             var producerPort= code.VSObject;
             producerParent= producerPort.ParentNode;
-            var producerInfo= iCS_LibraryDatabase.GetAssociatedDescriptor(producerParent);
-            if(producerInfo == null) return false;
             // Accept get field/property if we are the only consumer.
-			if(IsFieldOrPropertyGet(producerInfo)) {
+			if(IsFieldOrPropertyGet(producerParent)) {
                 if(producerPort.ConsumerPorts.Length == 1) {
                     return true;
                 }
@@ -973,31 +971,13 @@ namespace iCanScript.Editor.CodeEngineering {
         // Utilities
     	// -------------------------------------------------------------------------
         /// Returns _'true'_ if the node is a field or property get function.
-        public bool IsFieldOrPropertyGet(iCS_MemberInfo memberInfo) {
-            if(memberInfo == null) return false;
-            var propertyInfo= memberInfo.ToPropertyInfo;
-            if(propertyInfo != null) {
-                return propertyInfo.IsGet;
-            }
-            var fieldInfo= memberInfo.ToFieldInfo;
-            if(fieldInfo != null) {
-                return fieldInfo.IsGet;
-            }
-            return false;
+        public bool IsFieldOrPropertyGet(iCS_EditorObject vsObj) {
+            return vsObj.IsFieldGet || vsObj.IsPropertyGet;
         }
     	// -------------------------------------------------------------------------
         /// Returns _'true'_ if the node is a field or property set function.
-        public bool IsFieldOrPropertySet(iCS_MemberInfo memberInfo) {
-            if(memberInfo == null) return false;
-            var propertyInfo= memberInfo.ToPropertyInfo;
-            if(propertyInfo != null) {
-                return propertyInfo.IsSet;
-            }
-            var fieldInfo= memberInfo.ToFieldInfo;
-            if(fieldInfo != null) {
-                return fieldInfo.IsSet;
-            }
-            return false;
+        public bool IsFieldOrPropertySet(iCS_EditorObject vsObj) {
+            return vsObj.IsFieldSet || vsObj.IsPropertySet;
         }
 
     	// -------------------------------------------------------------------------
