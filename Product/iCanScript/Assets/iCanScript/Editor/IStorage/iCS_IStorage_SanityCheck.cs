@@ -8,6 +8,7 @@ namespace iCanScript.Internal.Editor {
         /// Ask each object to perform their own sanity check.
         public void SanityCheck() {
             // -- Don't perform sanity check on transient data --
+            if(!LibraryController.IsLibraryLoaded) return;
             if(!IsRootObjectAType) return;
         
             // -- Validate user inputs --

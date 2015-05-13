@@ -78,7 +78,7 @@ namespace iCanScript.Internal.Editor {
         // PROPERTIES
         // ----------------------------------------------------------------------
         public static bool IsLibraryLoaded {
-            get { return myThread.ThreadState == ThreadState.Stopped; }
+            get { return myThread == null || myThread.ThreadState == ThreadState.Stopped; }
         }
         
         // ----------------------------------------------------------------------
