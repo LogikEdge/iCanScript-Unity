@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using P=iCanScript.Internal.Prelude;
+using TimedAction= iCanScript.Internal.Prelude.TimerService.TimedAction;
 
 namespace iCanScript.Internal.Editor {
 
@@ -18,9 +19,12 @@ namespace iCanScript.Internal.Editor {
         /// Scans the application library and extracts the needed nodes.
     	static LibraryController() {
 #if USE_THREAD
-            // Create a thread to parse the AppDomain types.
+            // -- Create a thread to parse the AppDomain types. --
             myThread = new Thread(new ThreadStart(ExtractFromAppDomain));
             myThread.Start();
+            // -- Start a timer to annouce library loaded system event. --
+            myCheckLoadedTimer= TimerService.CreateTimedAction(0.5f, CheckLibraryLoaded, true);
+            myCheckLoadedTimer.Schedule();
 #else
             ExtractFromAppDomain();
 #endif
@@ -59,8 +63,9 @@ namespace iCanScript.Internal.Editor {
         static int 			myNbOfConstructors= 0;
         static int 			myNbOfFields      = 0;
         static int 			myNbOfFunctions   = 0;
-        static LibraryRoot  myDatabase= new LibraryRoot();
-        static Thread       myThread  = null;
+        static LibraryRoot  myDatabase        = new LibraryRoot();
+        static Thread       myThread          = null;
+        static TimedAction  myCheckLoadedTimer= null;
         
         // ======================================================================
         // PROPERTIES
@@ -74,6 +79,16 @@ namespace iCanScript.Internal.Editor {
         // ----------------------------------------------------------------------
         public static bool IsLibraryLoaded {
             get { return myThread.ThreadState == ThreadState.Stopped; }
+        }
+        
+        // ----------------------------------------------------------------------
+        /// Verifies and annouces that the library has been loaded.
+        static void CheckLibraryLoaded() {
+            if(IsLibraryLoaded) {
+                myCheckLoadedTimer.Stop();
+                // -- Annouce that the library is loaded. --
+                SystemEvents.AnnounceLibraryLoaded();
+            }
         }
         
         // ======================================================================

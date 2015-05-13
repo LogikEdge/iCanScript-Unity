@@ -22,6 +22,8 @@ namespace iCanScript.Internal.Editor {
         public static Action    OnEngineStopped         = null;   ///< Event: Engine stopping
         public static Action    OnEnginePaused          = null;   ///< Event: Engine paused
         public static Action    OnWindowUnderMouseChange= null;   ///< Event: Mouse is hovering a new window
+        // Events related to iCanScript operating states.
+        public static Action    OnLibraryLoaded         = null;   ///< Event: Library fully loaded
         // Events related to visual script edition.
         public static ActionVisualScript OnVisualScriptSaved               = null;  ///< Event: Changes to the Visual Script where saved
         public static ActionVisualScript OnVisualScriptReloaded            = null;  ///< Event: Visual Script was reloaded
@@ -93,6 +95,9 @@ namespace iCanScript.Internal.Editor {
         }
         public static void AnnounceSceneVisualScriptListChange() {
             Invoke(OnSceneVisualScriptListChange);
+        }
+        public static void AnnounceLibraryLoaded() {
+            Invoke(OnLibraryLoaded);
         }
         
         // ======================================================================
