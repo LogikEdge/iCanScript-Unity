@@ -181,10 +181,6 @@ namespace iCanScript.Internal.Editor {
         // ----------------------------------------------------------------------
         public iCS_IStorage(iCS_MonoBehaviourImp monoBehaviour) {
             Init(monoBehaviour);
-            SystemEvents.OnLibraryLoaded+= SanityCheck;
-        }
-        ~iCS_IStorage() {
-            SystemEvents.OnLibraryLoaded-= SanityCheck;
         }
         
         public void Init(iCS_MonoBehaviourImp monoBehaviour) {
