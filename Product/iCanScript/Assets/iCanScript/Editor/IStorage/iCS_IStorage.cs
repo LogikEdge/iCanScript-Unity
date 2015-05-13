@@ -182,6 +182,7 @@ namespace iCanScript.Internal.Editor {
         public iCS_IStorage(iCS_MonoBehaviourImp monoBehaviour) {
             Init(monoBehaviour);
         }
+        
         public void Init(iCS_MonoBehaviourImp monoBehaviour) {
             // Update the MonoBehaviour variable
             var oldMonoBehaviour= iCSMonoBehaviour;

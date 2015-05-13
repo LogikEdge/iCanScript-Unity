@@ -18,7 +18,7 @@ namespace iCanScript.Internal.Editor {
         /// Scans the application library and extracts the needed nodes.
     	static LibraryController() {
 #if USE_THREAD
-            // Create a thread to parse the AppDomain types.
+            // -- Create a thread to parse the AppDomain types. --
             myThread = new Thread(new ThreadStart(ExtractFromAppDomain));
             myThread.Start();
 #else
@@ -59,8 +59,8 @@ namespace iCanScript.Internal.Editor {
         static int 			myNbOfConstructors= 0;
         static int 			myNbOfFields      = 0;
         static int 			myNbOfFunctions   = 0;
-        static LibraryRoot  myDatabase= new LibraryRoot();
-        static Thread       myThread  = null;
+        static LibraryRoot  myDatabase        = new LibraryRoot();
+        static Thread       myThread          = null;
         
         // ======================================================================
         // PROPERTIES
@@ -73,7 +73,7 @@ namespace iCanScript.Internal.Editor {
         // PROPERTIES
         // ----------------------------------------------------------------------
         public static bool IsLibraryLoaded {
-            get { return myThread.ThreadState == ThreadState.Stopped; }
+            get { return myThread == null || myThread.ThreadState == ThreadState.Stopped; }
         }
         
         // ======================================================================

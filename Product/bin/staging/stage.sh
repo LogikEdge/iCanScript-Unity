@@ -26,7 +26,6 @@ EDITOR_DIR=$PRODUCT_DIR/Editor
 ENGINE_DIR=$PRODUCT_DIR/Engine
 EDITOR_PUBLIC_EDITOR_WINDOWS_DIR=$EDITOR_DIR/EditorWindows
 ENGINE_PUBLIC_COMPONENTS_DIR=$ENGINE_DIR/Components
-ENGINE_PUBLIC_NODES_DIR=$ENGINE_DIR/Nodes
 DEMO_SCENES_DIR=$PRODUCT_DIR/Demo_Scenes
 STAGING_ROOT=$ROOT_DIR/../Staging
 STAGING_ASSETS_DIR=$STAGING_ROOT/Assets
@@ -46,7 +45,6 @@ find $PRODUCT_DIR -name "*.cs" | grep -v -f _editorFiles - >_engineFiles
 find $EDITOR_PUBLIC_EDITOR_WINDOWS_DIR -name "*.cs" >editorFilesToExclude
 # Build list of files to exclude from the engine space (compile)
 find $ENGINE_PUBLIC_COMPONENTS_DIR -name "*.cs" >engineFilesToExclude
-find $ENGINE_PUBLIC_NODES_DIR -name "*.cs" >>engineFilesToExclude
 find $DEMO_SCENES_DIR >>engineFilesToExclude
 # Exclude editor & engine files from compile
 grep -v -f editorFilesToExclude _editorFiles >editorFiles
