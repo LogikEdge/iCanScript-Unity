@@ -91,7 +91,7 @@ namespace iCanScript.Internal.Editor {
     		GUI.Label(rBuildDate, buildDate);
 		
     		// Disclamer
-    		GUIContent copyright= new GUIContent("(c) copyright Disruptive Software 2014.  All rights reserved.");
+    		GUIContent copyright= new GUIContent("(c) copyright Disruptive Software 2015.  All rights reserved.");
     		var copyrightSize= GUI.skin.label.CalcSize(copyright);
     		var rCopyright= new Rect(column1X, rBuildDate.yMax+copyrightSize.y, copyrightSize.x, copyrightSize.y);
     		GUI.Label(rCopyright, copyright);

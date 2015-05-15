@@ -19,7 +19,7 @@ V2.0.13 is a critical bug fix release.
  
 ### List of Changes
 
-- **<span style="color: red">\[FIXED\]</span>** Fix issue created in v2.0.12 where new visual script could not be created.
+- **<span style="color: red">\[FIXED\]</span>** Fix issue introduced in v2.0.12 where new visual script could not be created.
 
 * * *
 
