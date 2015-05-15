@@ -205,7 +205,9 @@ namespace iCanScript.Internal.Editor {
                 if(myEditorObjects == null) {
                     myEditorObjects= new List<iCS_EditorObject>();
                 }
-                CreateBehaviour(HostGameObject.name);
+                if(VisualScript != null) {
+                    CreateBehaviour(HostGameObject.name);                    
+                }
             }
             
             // -- Count number of nodes to limit community version --
