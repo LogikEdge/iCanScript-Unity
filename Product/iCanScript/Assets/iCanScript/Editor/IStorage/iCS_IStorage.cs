@@ -200,6 +200,14 @@ namespace iCanScript.Internal.Editor {
                 ForceRelayout= true;
             }
 
+            // -- Force that a top-level type object exists. --
+            if(!HasRootObject) {
+                if(myEditorObjects == null) {
+                    myEditorObjects= new List<iCS_EditorObject>();
+                }
+                CreateBehaviour(HostGameObject.name);
+            }
+            
             // -- Count number of nodes to limit community version --
             if(EditionController.IsCommunityEdition) {
                 NumberOfNodes= 0;
