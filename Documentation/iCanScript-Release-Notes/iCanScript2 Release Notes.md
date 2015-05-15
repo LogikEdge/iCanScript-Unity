@@ -1,6 +1,6 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.13
+Version: v2.0.14
 CSS: Github.css
 
 
@@ -10,16 +10,25 @@ CSS: Github.css
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
 
-## iCanScript v2.0.13 ##
+## iCanScript v2.0.14 ##
 
 _May 15, 2015_
 
-V2.0.13 is a critical bug fix release.
+V2.0.14 is a critical bug fix release.
 
  
 ### List of Changes
 
 - **<span style="color: red">\[FIXED\]</span>** Fix issue introduced in v2.0.12 where new visual script could not be created.
+- **<span style="color: red">\[FIXED\]</span>** Fix "Unable to find suitable parent" error message when drawing from the library.
+
+* * *
+
+## iCanScript v2.0.13 ##
+
+_May 15, 2015_
+
+V2.0.13 was rejected due to critical bugs found.
 
 * * *
 
