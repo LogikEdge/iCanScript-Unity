@@ -119,22 +119,21 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             if(vsObj.IsInputPort) {
                 var producerPort= vsObj.FirstProducerPort;
                 if(producerPort.IsInputPort) {
-                    // Return value if we are the producer port and client desires the value.
-                    if(producerPort == vsObj) {
-                        return ToValueString(producerPort.InitialValue);
-                    }
                     // Find the code base for the producer port.
                     var producerPortCode= myContext.GetCodeFor(producerPort);
                     if(producerPortCode != null) {
                         if(producerPortCode is FunctionParameterDefinition ||
-                           producerPortCode is VariableDefinition ||
-                           producerPortCode is ConstantDefinition) {
-                            var parameterName= TryGetNameFor(vsObj);
+                           producerPortCode is VariableDefinition) {
+                            var parameterName= TryGetNameFor(producerPort);
                             if(parameterName == null) {
                                 return vsObj.CodeName;
                             }
                             return parameterName;
                         }
+                    }
+                    // Return value if we are the producer port and client desires the value.
+                    if(producerPort == vsObj) {
+                        return ToValueString(producerPort.InitialValue);
                     }
                     if(!IsPublicClassInterface(producerPort) && !(producerPort.IsInProposedDataPort && producerPort.ParentNode.IsEventHandler) && !producerPort.IsFixDataPort) {
                         return ToValueString(producerPort.InitialValue);
