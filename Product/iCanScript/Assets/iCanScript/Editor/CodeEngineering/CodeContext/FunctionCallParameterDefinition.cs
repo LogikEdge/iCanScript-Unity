@@ -16,7 +16,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Builds a parameter definition.
         ///
-        /// @param port The VS port producing the data.
+        /// @param port The VS port of the parameter.
         /// @param parent The parent code context.
         /// @return The newly created reference.
         ///
@@ -34,10 +34,11 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// @return The formatted body code for the parameter.
         ///
         public override string GenerateBody(int indentSize) {
-            var result= new StringBuilder(GetNameFor(VSObject), 64);
+            var producerPort= VSObject.FirstProducerPort;
+            var result= new StringBuilder(GetNameFor(producerPort), 64);
             if(myType != null) {
                 var desiredTypeName= ToTypeName(myType);
-                var producerType= Context.GetRuntimeTypeFor(VSObject);
+                var producerType= Context.GetRuntimeTypeFor(producerPort);
                 if(!iCS_Types.IsA(myType, producerType)) {
                     result.Append(" as ");
                     result.Append(desiredTypeName);

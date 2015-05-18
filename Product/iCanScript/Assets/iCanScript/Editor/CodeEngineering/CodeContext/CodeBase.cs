@@ -125,6 +125,19 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                     if(producerPort == vsObj && valueInsteadOfSelf) {
                         return ToValueString(producerPort.InitialValue);
                     }
+                    // Find the code base for the producer port.
+                    var producerPortCode= myContext.GetCodeFor(producerPort);
+                    if(producerPortCode != null) {
+                        if(producerPortCode is FunctionParameterDefinition ||
+                           producerPortCode is VariableDefinition ||
+                           producerPortCode is ConstantDefinition) {
+                            var parameterName= TryGetNameFor(vsObj);
+                            if(parameterName == null) {
+                                return vsObj.CodeName;
+                            }
+                            return parameterName;
+                        }
+                    }
                     if(!IsPublicClassInterface(producerPort) && !(producerPort.IsInProposedDataPort && producerPort.ParentNode.IsEventHandler) && !producerPort.IsFixDataPort) {
                         return ToValueString(producerPort.InitialValue);
                     }                    
@@ -927,7 +940,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         ///         is available.
         ///
         public CodeBase OptimizeInputParameter(CodeBase outputCode, CodeBase allowedParent) {
-            if(outputCode is FunctionCallOutParameterDefinition || outputCode is ValueDefinition) {
+            if(outputCode is FunctionCallOutParameterDefinition || outputCode is ConstantDefinition) {
                 return null;
             }
             iCS_EditorObject producerParent;

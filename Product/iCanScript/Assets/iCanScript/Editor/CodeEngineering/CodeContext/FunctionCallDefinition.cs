@@ -61,19 +61,19 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 if(p.IsInputPort) {
                     var producerPort= p.FirstProducerPort;
                     if(producerPort != null && producerPort != p) {
-                        myParameters[idx]= new FunctionCallParameterDefinition(producerPort, this, p.RuntimeType);
+                        myParameters[idx]= new FunctionCallParameterDefinition(p, this, p.RuntimeType);
                     }
                     else {
                         // Generate class variable for UnityEngine.Objects
-                        var producerPortType= producerPort.RuntimeType;
-                        if(iCS_Types.IsA<UnityEngine.Object>(producerPortType)) {
-                            myParameters[idx]= new FunctionCallParameterDefinition(producerPort, this, p.RuntimeType);
+                        var portType= p.RuntimeType;
+                        if(iCS_Types.IsA<UnityEngine.Object>(portType)) {
+                            myParameters[idx]= new FunctionCallParameterDefinition(p, this, p.RuntimeType);
                             var typeDef= GetTypeDefinition();
-                            var v= new VariableDefinition(producerPort, typeDef, AccessSpecifier.Public, ScopeSpecifier.NonStatic);
+                            var v= new VariableDefinition(p, typeDef, AccessSpecifier.Public, ScopeSpecifier.NonStatic);
                             typeDef.AddVariable(v);
                         }
                         else {
-                            myParameters[idx]= new ValueDefinition(p, this);                            
+                            myParameters[idx]= new ConstantDefinition(p, this);                            
                         }
                     }
                 }
