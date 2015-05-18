@@ -113,16 +113,14 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// Returns or creates the pre-built name for a given visual script object.
         ///
         /// @param vsObj The visual script object to search.
-        /// @param valueInsteadOfSelf Forces usage of port value if port does not
-        ///                           have a producer.
         /// @return The pre-built name for the visual script object.
         ///
-        public string GetNameFor(iCS_EditorObject vsObj, bool valueInsteadOfSelf= false) {
+        public string GetNameFor(iCS_EditorObject vsObj) {
             if(vsObj.IsInputPort) {
                 var producerPort= vsObj.FirstProducerPort;
                 if(producerPort.IsInputPort) {
                     // Return value if we are the producer port and client desires the value.
-                    if(producerPort == vsObj && valueInsteadOfSelf) {
+                    if(producerPort == vsObj) {
                         return ToValueString(producerPort.InitialValue);
                     }
                     // Find the code base for the producer port.
@@ -150,6 +148,25 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 return vsObj.CodeName;
             }
             return name;
+        }
+
+    	// -------------------------------------------------------------------------
+        /// Returns the value for the given visual script port object.
+        ///
+        /// @param vsObj The visual script object to search.
+        /// @return The value defined of the port defined in the visual script.
+        ///
+        public string GetValueFor(iCS_EditorObject vsObj) {
+            if(!vsObj.IsInputPort) {
+                Debug.LogWarning("iCanScript: Internal error: Invoking GetValueFor(...) without an input port.  Contact support.");
+                return null;
+            }
+            var producerPort= CodeFlow.GetProducerPort(vsObj);
+            if(!producerPort.IsInputPort) {
+                Debug.LogWarning("iCanScript: Internal error: Invoking GetValueFor(...) on a port connected to an output port.  Contact support.");
+                return null;
+            }
+            return ToValueString(producerPort.InitialValue);
         }
 
     	// -------------------------------------------------------------------------
