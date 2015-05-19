@@ -1,6 +1,6 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.14
+Version: v2.0.15
 CSS: Github.css
 
 
@@ -9,6 +9,19 @@ CSS: Github.css
 <!-- PDF: <<[front-matter/pdf.md] -->
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
+
+## iCanScript v2.0.15 ##
+
+_May 15, 2015_
+
+V2.0.15 is a library database bug fixed release.
+
+### List of Changes
+
+- **<span style="color: blue">\[IMPROVED\]</span>** The _**show inheritance**_ option of the library window is now defaulted to _off (unchecked)_.
+- **<span style="color: blue">\[IMPROVED\]</span>** Rename library branches for element without a namespace to "_**-- no namespace --**_" instead of _\<empty\>_.
+
+* * *
 
 ## iCanScript v2.0.14 ##
 
