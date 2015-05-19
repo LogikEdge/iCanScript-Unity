@@ -18,7 +18,7 @@ V2.0.15 is a library database bug fixed release.
 
 ### List of Changes
 
-- **<span style="color: blue">\[IMPROVED\]</span>** The _**show inheritance**_ option of the library window is now defaulted to _off (unchecked)_.
+- **<span style="color: blue">\[IMPROVED\]</span>** Don't show the inherited members by default in the library window.
 - **<span style="color: blue">\[IMPROVED\]</span>** Rename library branches for element without a namespace to "_**-- no namespace --**_" instead of _\<empty\>_.
 
 * * *
