@@ -36,7 +36,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         }
 
         // -------------------------------------------------------------------
-        /// Generate the definition for the function definition parameter.
+        /// Generate the definition code for the function definition parameter.
         public override string GenerateDefinition() {
             var result= new StringBuilder(64);
             if(VSObject.IsOutDataPort) {

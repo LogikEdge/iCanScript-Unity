@@ -355,37 +355,44 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             else {
                 var thisPort= DataFlow.GetTargetPort(node);
                 if(thisPort != null) {
-                    var producerPort= CodeFlow.GetProducerPort(thisPort);
-	                var producerType= Context.GetRuntimeTypeFor(producerPort);
-					if(producerPort.InitialValue is OwnerTag) {
-						if(producerType == typeof(Transform)) {
-							result.Append("transform.");
-						}
-						else if(producerType == typeof(GameObject)) {
-							result.Append("gameObject.");
-						}
-					}
-                    else if(producerPort != null && producerPort != thisPort) {
-						var desiredType= VSObject.RuntimeType;
-		                var desiredTypeName= ToTypeName(desiredType);
-		                var isUpcastNeeded= producerType != desiredType && iCS_Types.IsA(producerType, desiredType);
-                        if(isUpcastNeeded) {
-                            result.Append("(");
-                        }
-                        var producerNode= producerPort.ParentNode;
-                        if(producerNode.IsConstructor) {
-                            result.Append(GetNameFor(producerNode));                                                
-                        }
-                        else {
-                            result.Append(GetNameFor(producerPort));                        
-                        }
-                        if(isUpcastNeeded) {
-                            result.Append(" as ");
-                            result.Append(desiredTypeName);
-                            result.Append(")");
-                        }
-                        result.Append(".");
-                    }
+					result.Append(GetExpressionFor(thisPort));
+					result.Append(".");
+//                    var producerPort= CodeFlow.GetProducerPort(thisPort);
+//	                var producerType= Context.GetRuntimeTypeFor(producerPort);
+//					var producerCode= Context.GetCodeFor(producerPort);
+//					if(producerCode is FunctionDefinitionParameter) {
+//						result.Append(GetNameFor(producerPort));
+//						result.Append(".");
+//					}
+//					else if(producerPort.InitialValue is OwnerTag) {
+//						if(producerType == typeof(Transform)) {
+//							result.Append("transform.");
+//						}
+//						else if(producerType == typeof(GameObject)) {
+//							result.Append("gameObject.");
+//						}
+//					}
+//                    else if(producerPort != null && producerPort != thisPort) {
+//						var desiredType= VSObject.RuntimeType;
+//		                var desiredTypeName= ToTypeName(desiredType);
+//		                var isUpcastNeeded= producerType != desiredType && iCS_Types.IsA(producerType, desiredType);
+//                        if(isUpcastNeeded) {
+//                            result.Append("(");
+//                        }
+//                        var producerNode= producerPort.ParentNode;
+//                        if(producerNode.IsConstructor) {
+//                            result.Append(GetNameFor(producerNode));                                                
+//                        }
+//                        else {
+//                            result.Append(GetNameFor(producerPort));                        
+//                        }
+//                        if(isUpcastNeeded) {
+//                            result.Append(" as ");
+//                            result.Append(desiredTypeName);
+//                            result.Append(")");
+//                        }
+//                        result.Append(".");
+//                    }
                 }
             }
             return result.ToString();

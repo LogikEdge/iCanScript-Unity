@@ -169,7 +169,58 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 Debug.LogWarning("iCanScript: Internal error: Invoking GetValueFor(...) on a port connected to an output port.  Contact support.");
                 return null;
             }
-            return ToValueString(producerPort.InitialValue);
+			// Special case for 'OwnerTag'.
+			var initialValue= producerPort.InitialValue;
+			if(initialValue is OwnerTag) {
+				var producerType= producerPort.RuntimeType;
+				if(producerType == typeof(Transform)) {
+					return "transform";
+				}
+				else if(producerType == typeof(GameObject)) {
+					return "gameObject";
+				}
+			}
+            return ToValueString(initialValue);
+        }
+
+    	// -------------------------------------------------------------------------
+        /// Returns the expression code string for the given visual script port.
+        ///
+        /// @param vsObj The visual script port.
+        /// @return The expression string.
+        ///
+        public string GetExpressionFor(iCS_EditorObject vsObj) {
+            if(!vsObj.IsInputPort) {
+				Debug.LogWarning("iCanScript: Internal error: Trying to extract port expression from non-port object.  Contact support.");
+				return "";
+			}
+            var producerPort= CodeFlow.GetProducerPort(vsObj);
+			// Return value if the port is not connected.
+			if(producerPort == vsObj) {
+				return GetValueFor(vsObj);					
+			}
+            if(producerPort.IsInputPort) {
+                // Find the code base for the producer port.
+                var producerPortCode= myContext.GetCodeFor(producerPort);
+				if(producerPortCode == null) {
+					Debug.LogWarning("iCanScript: Internal error: Unable to find code for port: "+producerPort+". Contact support.");
+					return vsObj.CodeName;
+				}
+				// Return the name of the parameter for function definition parameters.
+                if(producerPortCode is FunctionDefinitionParameter) {
+					var portType= vsObj.RuntimeType;
+					var producerPortType= producerPort.RuntimeType;
+                   	var portName= TryGetNameFor(producerPort);
+					if(!iCS_Types.IsA(portType, producerPortType)) {
+						return "("+portName+" as "+ToTypeName(portType)+")";
+					}
+					return portName;
+                }
+                // Return the value for any other type of input port.
+				return GetValueFor(producerPort);				
+            }
+			// Return port name for output ports.
+			return GetNameFor(producerPort);
         }
 
     	// -------------------------------------------------------------------------
