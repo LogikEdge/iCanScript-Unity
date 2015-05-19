@@ -8,7 +8,7 @@ using iCanScript.Internal.Engine;
 
 namespace iCanScript.Internal.Editor.CodeEngineering {
 
-    public class GlobalDefinition : CodeBase {
+    public class FileDefinition : CodeBase {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
@@ -29,7 +29,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
         /// Builds the code global scope.
-        public GlobalDefinition(string typeName, string namespaceName, Type baseType, iCS_IStorage iStorage)
+        public FileDefinition(string typeName, string namespaceName, Type baseType, iCS_IStorage iStorage)
         : base(iStorage.EditorObjects[0], null) {
             // -- Initialise attributes --
 			myNamespace= namespaceName;
