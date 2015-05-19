@@ -68,7 +68,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                         var portType= p.RuntimeType;
                         if(iCS_Types.IsA<UnityEngine.Object>(portType)) {
                             myParameters[idx]= new FunctionCallParameterDefinition(p, this, p.RuntimeType);
-                            var typeDef= GetTypeDefinition();
+                            var typeDef= GetClassDefinition();
                             var v= new VariableDefinition(p, typeDef, AccessSpecifier.Public, ScopeSpecifier.NonStatic);
                             typeDef.AddVariable(v);
                         }
@@ -123,7 +123,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 var returnParent= GetProperParentForProducerPort(myReturnVariable);
                 if(returnParent != null && returnParent != myParent) {
                     var returnPort= myReturnVariable.VSObject;
-                    if(returnParent is TypeDefinition) {
+                    if(returnParent is ClassDefinition) {
                         var v= new VariableDefinition(returnPort, returnParent, AccessSpecifier.Private, ScopeSpecifier.NonStatic);
                         returnParent.AddVariable(v);
                         myReturnVariable= null;
@@ -164,7 +164,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 
         // -------------------------------------------------------------------
         public override void AddExecutable(CodeBase executableDefinition)       { Debug.LogWarning("iCanScript: Trying to add a child executable definition to a function call definition."); }
-        public override void AddType(TypeDefinition typeDefinition)             { Debug.LogWarning("iCanScript: Trying to add a type definition to a function call definition."); }
+        public override void AddType(ClassDefinition typeDefinition)            { Debug.LogWarning("iCanScript: Trying to add a type definition to a function call definition."); }
         public override void AddFunction(FunctionDefinition functionDefinition) { Debug.LogWarning("iCanScript: Trying to add a function definition to a function call definition."); }
 
         // ===================================================================

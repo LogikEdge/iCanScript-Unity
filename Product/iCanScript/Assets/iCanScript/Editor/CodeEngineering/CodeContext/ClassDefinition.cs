@@ -8,7 +8,7 @@ using P=iCanScript.Internal.Prelude;
 
 namespace iCanScript.Internal.Editor.CodeEngineering {
 
-    public class TypeDefinition : CodeBase {
+    public class ClassDefinition : CodeBase {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
@@ -35,8 +35,8 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// @param associatedObjects VS objects associated with this code context.
         /// @return The newly created class definition.
         ///
-        public TypeDefinition(iCS_EditorObject typeNode, CodeBase parent, Type baseClass,
-                              AccessSpecifier accessType, ScopeSpecifier scopeType)
+        public ClassDefinition(iCS_EditorObject typeNode, CodeBase parent, Type baseClass,
+                               AccessSpecifier accessType, ScopeSpecifier scopeType)
         : base(typeNode, parent) {
             myClassNode      = typeNode;
             myBaseClass      = baseClass;

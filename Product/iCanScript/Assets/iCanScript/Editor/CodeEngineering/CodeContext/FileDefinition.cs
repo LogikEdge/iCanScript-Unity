@@ -13,7 +13,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         // FIELDS
         // -------------------------------------------------------------------
         string                myNamespace= null;
-        List<TypeDefinition>  myTypes    = new List<TypeDefinition>();
+        List<ClassDefinition> myTypes    = new List<ClassDefinition>();
         Type                  myBaseType = null;
         
         // ===================================================================
@@ -72,10 +72,10 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 		///
 		void BuildRootTypes(iCS_EditorObject vsRootObject) {
             // Add root class defintion.
-            var classDefinition= new TypeDefinition(vsRootObject, this,
-                                                    myBaseType,
-                                                    AccessSpecifier.Public,
-                                                    ScopeSpecifier.NonStatic);
+            var classDefinition= new ClassDefinition(vsRootObject, this,
+                                                     myBaseType,
+                                                     AccessSpecifier.Public,
+                                                     ScopeSpecifier.NonStatic);
             AddType(classDefinition);			
 		}
 		
@@ -94,7 +94,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         ///
         /// @param typeDefinition Type (class or struct) definition to add.
         ///
-        public override void AddType(TypeDefinition typeDefinition) {
+        public override void AddType(ClassDefinition typeDefinition) {
             myTypes.Add(typeDefinition);
             typeDefinition.Parent= this;
         }

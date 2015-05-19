@@ -78,7 +78,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         public virtual void ResolveDependencies() {}
         public virtual void AddVariable(VariableDefinition variableDefinition) {}
         public virtual void AddExecutable(CodeBase executableDefinition)       {}
-        public virtual void AddType(TypeDefinition typeDefinition)             {}
+        public virtual void AddType(ClassDefinition typeDefinition)            {}
         public virtual void AddFunction(FunctionDefinition functionDefinition) {}
         public virtual void Remove(CodeBase toRemove)                          {}
 
@@ -781,10 +781,10 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         // ITERATION UTILITIES
     	// -------------------------------------------------------------------------
         /// Returns the type definition.
-        public TypeDefinition GetTypeDefinition() {
-            if(this is TypeDefinition) return this as TypeDefinition;
+        public ClassDefinition GetClassDefinition() {
+            if(this is ClassDefinition) return this as ClassDefinition;
             if(myParent == null) return null;
-            return myParent.GetTypeDefinition();
+            return myParent.GetClassDefinition();
         }
 
     	// -------------------------------------------------------------------------

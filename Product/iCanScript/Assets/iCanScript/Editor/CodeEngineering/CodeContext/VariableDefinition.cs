@@ -93,7 +93,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 return "";
             }
             string variableName;
-            if(Parent is TypeDefinition) {
+            if(Parent is ClassDefinition) {
                 if(myAccessSpecifier == AccessSpecifier.Public) {
                     variableName= Parent.GetPublicFieldName(myVSObject);
                 }
@@ -117,11 +117,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 									   Type variableType, string variableName, string initializer) {
 			string indent= ToIndent(indentSize);
             StringBuilder result= new StringBuilder(indent);
-            if(myParent is TypeDefinition) {
-                if(accessType == AccessSpecifier.Public) {
-                    result.Append("[iCS_InOutPort]\n");
-                    result.Append(indent);
-                }
+            if(myParent is ClassDefinition) {
                 result.Append(ToAccessString(accessType));
                 result.Append(" ");
                 result.Append(ToScopeString(scopeType));
