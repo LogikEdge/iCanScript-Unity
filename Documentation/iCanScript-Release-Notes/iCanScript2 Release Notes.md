@@ -14,7 +14,7 @@ CSS: Github.css
 
 _May 15, 2015_
 
-V2.0.15 is a library database bug fixed release.
+V2.0.15 is a library database bug fix release.
 
 ### List of Changes
 
