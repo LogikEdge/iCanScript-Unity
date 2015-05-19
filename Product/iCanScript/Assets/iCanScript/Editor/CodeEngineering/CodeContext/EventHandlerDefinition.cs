@@ -29,9 +29,9 @@ public class EventHandlerDefinition : FunctionDefinition {
         protected override void BuildParameterList() {
             var parameters= GetParameters(VSObject);
             parameters= P.filter(p=> p.IsFixDataPort, parameters);
-            myParameters= new FunctionParameterDefinition[parameters.Length];
+            myParameters= new FunctionDefinitionParameter[parameters.Length];
             foreach(var p in parameters) {
-                myParameters[p.PortIndex]= new FunctionParameterDefinition(p, this);                    
+                myParameters[p.PortIndex]= new FunctionDefinitionParameter(p, this);                    
             }
         }
         

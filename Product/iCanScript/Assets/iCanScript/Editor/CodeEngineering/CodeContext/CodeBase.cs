@@ -95,8 +95,10 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         public virtual  string GenerateHeader(int indentSize)  { return ""; }
 		public virtual  string GenerateBody(int indentSize)    { return ""; }
         public virtual  string GenerateTrailer(int indentSize) { return ""; }
-        public abstract string GenerateDefinition();
-        public abstract string GenerateExpression(out Type expressionType);
+        public virtual  string GenerateDefinition() 		   { return GenerateBody(0); }
+        public virtual  string GenerateExpression(out Type expressionType) {
+			expressionType= typeof(void); return GenerateBody(0);
+		}
         
         // =========================================================================
         // CONVERSION UTILITIES
@@ -124,7 +126,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                     // Find the code base for the producer port.
                     var producerPortCode= myContext.GetCodeFor(producerPort);
                     if(producerPortCode != null) {
-                        if(producerPortCode is FunctionParameterDefinition ||
+                        if(producerPortCode is FunctionDefinitionParameter ||
                            producerPortCode is VariableDefinition) {
                             var parameterName= TryGetNameFor(producerPort);
                             if(parameterName == null) {

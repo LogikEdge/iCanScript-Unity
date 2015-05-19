@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace iCanScript.Internal.Editor.CodeEngineering {
 
-    public class FunctionParameterDefinition : CodeBase {
+    public class FunctionDefinitionParameter : CodeBase {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
@@ -19,7 +19,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// @param parent The parent code context.
         /// @return The newly created reference.
         ///
-        public FunctionParameterDefinition(iCS_EditorObject port, CodeBase parent)
+        public FunctionDefinitionParameter(iCS_EditorObject port, CodeBase parent)
         : base(port, parent) {
         }
 
@@ -37,7 +37,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 
         // -------------------------------------------------------------------
         /// Generate the definition for the function definition parameter.
-        public string GenerateDefinition() {
+        public override string GenerateDefinition() {
             var result= new StringBuilder(64);
             if(VSObject.IsOutDataPort) {
                 result.Append("out ");
@@ -50,7 +50,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 
         // -------------------------------------------------------------------
         /// Generate execution code for the function definition parameter.
-        public string GenerateExpression(out Type expressionType) {
+        public override string GenerateExpression(out Type expressionType) {
             expressionType= VSObject.RuntimeType;
             return GetParameterName();
         }

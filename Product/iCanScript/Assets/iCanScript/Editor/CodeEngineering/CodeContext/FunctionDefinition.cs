@@ -14,7 +14,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         protected AccessSpecifier               myAccessSpecifier= AccessSpecifier.Private;
         protected ScopeSpecifier                myScopeSpecifier = ScopeSpecifier.NonStatic;
-        protected FunctionParameterDefinition[] myParameters     = null;
+        protected FunctionDefinitionParameter[] myParameters     = null;
         protected List<VariableDefinition>      myVariables      = new List<VariableDefinition>();
         
         // ===================================================================
@@ -49,9 +49,9 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         protected virtual void BuildParameterList() {
             var parameters= GetParameters(VSObject);
 			parameters= P.filter(p=> p.IsInDataPort && p.ProducerPort == null, parameters);
-            myParameters= new FunctionParameterDefinition[parameters.Length];
+            myParameters= new FunctionDefinitionParameter[parameters.Length];
             foreach(var p in parameters) {
-                myParameters[p.PortIndex]= new FunctionParameterDefinition(p, this);
+                myParameters[p.PortIndex]= new FunctionDefinitionParameter(p, this);
             }
         }
         
