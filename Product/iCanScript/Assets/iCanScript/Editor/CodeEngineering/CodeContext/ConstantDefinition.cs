@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace iCanScript.Internal.Editor.CodeEngineering {
 
-    public class ConstantDefinition : CodeBase {
+    public class ConstantDefinition : ValueDefinition {
     
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
