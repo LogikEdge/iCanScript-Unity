@@ -8,7 +8,7 @@ using P=iCanScript.Internal.Prelude;
 
 namespace iCanScript.Internal.Editor.CodeEngineering {
 
-    public class ClassDefinition : CodeBase {
+    public class ClassDefinition : TypeDefinition {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
