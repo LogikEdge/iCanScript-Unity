@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Text;
+using System;
 using System.Collections;
 
 namespace iCanScript.Internal.Editor.CodeEngineering {
@@ -31,16 +32,34 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// @return The formatted body code for the parameter.
         ///
         public override string GenerateBody(int indentSize) {
+            return GenerateDefinition();
+        }
+
+        // -------------------------------------------------------------------
+        /// Generate the definition for the function definition parameter.
+        public string GenerateDefinition() {
             var result= new StringBuilder(64);
             if(VSObject.IsOutDataPort) {
                 result.Append("out ");
             }
             result.Append(ToTypeName(VSObject.RuntimeType));
             result.Append(" ");
-            result.Append(Parent.GetFunctionParameterName(VSObject));
-            return result.ToString();
+            result.Append(GetParameterName());
+            return result.ToString();            
         }
 
+        // -------------------------------------------------------------------
+        /// Generate execution code for the function definition parameter.
+        public string GenerateExpression(out Type expressionType) {
+            expressionType= VSObject.RuntimeType;
+            return GetParameterName();
+        }
+
+        // -------------------------------------------------------------------
+        /// Generate the name for the function definition parameter.
+        string GetParameterName() {
+            return Parent.GetFunctionParameterName(VSObject);
+        }
     }
 
 }

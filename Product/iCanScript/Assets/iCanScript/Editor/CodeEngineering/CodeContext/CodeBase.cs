@@ -72,15 +72,15 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         }
         // -------------------------------------------------------------------
 		public virtual Type GetRuntimeType()					  { return VSObject.RuntimeType; }
-        public virtual void OnParentChange(CodeBase newParent)    { }
+        public virtual void OnParentChange(CodeBase newParent)    {}
         public virtual iCS_EditorObject[] GetRelatedEnablePorts() { return new iCS_EditorObject[0]; }
         public virtual iCS_EditorObject[] GetDependencies()       { return new iCS_EditorObject[0]; }
         public virtual void ResolveDependencies() {}
         public virtual void AddVariable(VariableDefinition variableDefinition) {}
-        public virtual void AddExecutable(CodeBase executableDefinition)    {}
+        public virtual void AddExecutable(CodeBase executableDefinition)       {}
         public virtual void AddType(TypeDefinition typeDefinition)             {}
         public virtual void AddFunction(FunctionDefinition functionDefinition) {}
-        public virtual void Remove(CodeBase toRemove)                       {}
+        public virtual void Remove(CodeBase toRemove)                          {}
 
         // ===================================================================
         // CODE GENERATION FUNCTIONS
@@ -92,9 +92,11 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             result.Append(GenerateTrailer(indentSize));
 			return result.ToString();
         }
-        public virtual string GenerateHeader(int indentSize)  { return ""; }
-		public virtual string GenerateBody(int indentSize)    { return ""; }
-        public virtual string GenerateTrailer(int indentSize) { return ""; }
+        public virtual  string GenerateHeader(int indentSize)  { return ""; }
+		public virtual  string GenerateBody(int indentSize)    { return ""; }
+        public virtual  string GenerateTrailer(int indentSize) { return ""; }
+        public abstract string GenerateDefinition();
+        public abstract string GenerateExpression(out Type expressionType);
         
         // =========================================================================
         // CONVERSION UTILITIES
