@@ -80,7 +80,10 @@ namespace iCanScript.Internal.Editor {
         public string displayString {
             get {
                 if(string.IsNullOrEmpty(myCursor.displayString)) {
-                    return "<empty>";
+                    if(myCursor is LibraryRootNamespace) {
+                        return "-- no namespace --";
+                    }
+                    return "-- no child namespace --";
                 }
                 return myCursor.displayString;
             }

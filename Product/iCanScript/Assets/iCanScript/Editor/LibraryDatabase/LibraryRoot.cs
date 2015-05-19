@@ -43,7 +43,7 @@ namespace iCanScript.Internal.Editor {
         int          myNumberOfVisibleNamespaces= 0;
         int          myNumberOfVisibleTypes     = 0;
         int          myNumberOfVisibleMembers   = 0;
-        bool         myShowInheritedMembers     = true;
+        bool         myShowInheritedMembers     = false;
         bool         myShowProtectedMembers     = false;
         FilterString myNamespaceFilter          = new FilterString("");
         FilterString myTypeFilter               = new FilterString("");
