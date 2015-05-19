@@ -12,7 +12,6 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        iCS_EditorObject         myClassNode = null;  ///< VS objects associated with code context
         Type                     myBaseClass = null;  ///< The base class for this class
         AccessSpecifier          myAccessSpecifier= AccessSpecifier.Private;
         ScopeSpecifier           myScopeSpecifier = ScopeSpecifier.NonStatic;
@@ -24,7 +23,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Returns the VS objects associated with code context
         public iCS_EditorObject ClassNode {
-            get { return myClassNode; }
+            get { return VSObject; }
         }
         
         // ===================================================================
@@ -38,7 +37,6 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         public ClassDefinition(iCS_EditorObject typeNode, CodeBase parent, Type baseClass,
                                AccessSpecifier accessType, ScopeSpecifier scopeType)
         : base(typeNode, parent) {
-            myClassNode      = typeNode;
             myBaseClass      = baseClass;
             myAccessSpecifier= accessType;
             myScopeSpecifier = scopeType;
@@ -71,7 +69,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Searches for child constrcutors and adds them to class definition.
         void AddChildConstructorsAsFields() {
-            var constructors= myClassNode.FilterChildRecursive(c=> c.IsConstructor);
+            var constructors= ClassNode.FilterChildRecursive(c=> c.IsConstructor);
             foreach(var c in constructors) {
                 if(AreAllInputsConstant(c)) {
                     AccessSpecifier fieldAccess= AccessSpecifier.Private;
@@ -85,7 +83,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Searches public interfaces as class fields.
         void AddPublicInterfaces() {
-            var publicInterfaces= myClassNode.FilterChildRecursive(c=> IsPublicClassInterface(c));
+            var publicInterfaces= ClassNode.FilterChildRecursive(c=> IsPublicClassInterface(c));
             foreach(var c in publicInterfaces) {
                 var field= new VariableDefinition(c, this, AccessSpecifier.Public, ScopeSpecifier.NonStatic);
                 AddVariable(field);
@@ -95,7 +93,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Searches for child functions and adds them to class definition.
         void AddChildFunctions() {
-    		myClassNode.ForEachChildNode(
+    		ClassNode.ForEachChildNode(
     			n=> {
     				if(n.IsPublicFunction) {
                         var functionDefinition= new FunctionDefinition(n, this, AccessSpecifier.Public, ScopeSpecifier.NonStatic);
@@ -130,7 +128,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         ///
         public override string GenerateHeader(int indentSize) {
             // Determine class properties.
-            var className= GetClassName(myClassNode);
+            var className= GetClassName(ClassNode);
             
             // Generate the class outline code.
             var indent= ToIndent(indentSize);
