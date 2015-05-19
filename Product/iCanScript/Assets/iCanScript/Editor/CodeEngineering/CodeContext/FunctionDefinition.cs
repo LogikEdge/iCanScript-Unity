@@ -156,16 +156,6 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             StringBuilder result= new StringBuilder("\n");
             // Add iCanScript tag for public functions.
             var hasDescription= !string.IsNullOrEmpty(VSObject.Description);
-            if(myAccessSpecifier == AccessSpecifier.Public) {
-                result.Append(indent);
-                result.Append("[iCS_Function");
-//                if(VSObject != null && hasDescription) {
-//                    result.Append("(Description=\"");
-//                    result.Append(VSObject.Description);
-//                    result.Append("\")");
-//                }
-                result.Append("]\n");
-            }
             // Add function comment block.
             if(hasDescription) {
                 result.Append(GenerateFunctionComment(indent));

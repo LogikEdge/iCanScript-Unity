@@ -47,6 +47,30 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             return result.ToString();
         }
 
+        // -------------------------------------------------------------------
+        /// Generate the definition code for the function call parameter.
+        public override string GenerateDefinition() {
+            return "";            
+        }
+
+        // -------------------------------------------------------------------
+        /// Generate execution code for the function call parameter.
+        public override string GenerateExpression(out Type expressionType) {
+            var producerPort= CodeFlow.GetProducerPort(VSObject);
+			var producerCode= Context.GetCodeFor(producerPort);
+			expressionType= producerPort.RuntimeType;
+			if(producerCode == null) {
+				Debug.LogWarning("iCanScript: Internal error: Unable to find code for: "+producerPort.FullName);
+				return "";
+			}
+			Type producerType;
+			var producerExpression= producerCode.GenerateExpression(out producerType);
+			if(!iCS_Types.IsA(expressionType, producerType)) {
+				producerExpression= "("+producerExpression+" as "+ToTypeName(expressionType)+")";
+			}
+			return producerExpression;
+        }
+
     }
 
 }
