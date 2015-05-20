@@ -95,10 +95,6 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         public virtual  string GenerateHeader(int indentSize)  { return ""; }
 		public virtual  string GenerateBody(int indentSize)    { return ""; }
         public virtual  string GenerateTrailer(int indentSize) { return ""; }
-        public virtual  string GenerateDefinition() 		   { return GenerateBody(0); }
-        public virtual  string GenerateExpression(out Type expressionType) {
-			expressionType= typeof(void); return GenerateBody(0);
-		}
         
         // =========================================================================
         // CONVERSION UTILITIES
@@ -1032,7 +1028,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         
     	// -------------------------------------------------------------------------
         public bool CanReplaceInputParameter(CodeBase code, CodeBase allowedParent, out iCS_EditorObject producerParent) {
-            var producerPort= code.VSObject;
+            var producerPort= CodeFlow.GetProducerPort(code.VSObject);
             producerParent= producerPort.ParentNode;
             // Accept get field/property if we are the only consumer.
 			if(IsFieldOrPropertyGet(producerParent)) {

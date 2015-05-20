@@ -69,7 +69,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             // Generate variable from port.
             if(VSObject.IsDataPort) {
                 if(VSObject.IsInDataPort && !iCS_Types.IsA<UnityEngine.Object>(myRuntimeType)) {
-                    initializer= GetValueFor(VSObject);                    
+                    initializer= GetValueFor(VSObject);
                 }
                 else {
                     initializer= "default("+ToTypeName(myRuntimeType)+")";

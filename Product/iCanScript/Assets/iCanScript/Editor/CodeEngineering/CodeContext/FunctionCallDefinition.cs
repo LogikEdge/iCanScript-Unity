@@ -59,7 +59,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             foreach(var p in parameters) {
                 int idx= p.PortIndex;
                 if(p.IsInputPort) {
-                    var producerPort= p.FirstProducerPort;
+                    var producerPort= CodeFlow.GetProducerPort(p);
                     if(producerPort != null && producerPort != p) {
                         myParameters[idx]= new FunctionCallParameterDefinition(p, this, p.RuntimeType);
                     }
@@ -360,7 +360,8 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                     var producerPort= CodeFlow.GetProducerPort(thisPort);
 	                var producerType= Context.GetRuntimeTypeFor(producerPort);
 					var producerCode= Context.GetCodeFor(producerPort);
-					if(producerCode is FunctionDefinitionParameter) {
+					if(producerCode is FunctionDefinitionParameter ||
+                       producerCode is LocalVariableDefinition) {
 						result.Append(GetNameFor(producerPort));
 						result.Append(".");
 					}

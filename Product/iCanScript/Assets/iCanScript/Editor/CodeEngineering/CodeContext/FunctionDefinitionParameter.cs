@@ -37,7 +37,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 
         // -------------------------------------------------------------------
         /// Generate the definition code for the function definition parameter.
-        public override string GenerateDefinition() {
+        public string GenerateDefinition() {
             var result= new StringBuilder(64);
             if(VSObject.IsOutDataPort) {
                 result.Append("out ");
@@ -46,13 +46,6 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             result.Append(" ");
             result.Append(GetParameterName());
             return result.ToString();            
-        }
-
-        // -------------------------------------------------------------------
-        /// Generate execution code for the function definition parameter.
-        public override string GenerateExpression(out Type expressionType) {
-            expressionType= VSObject.RuntimeType;
-            return GetParameterName();
         }
 
         // -------------------------------------------------------------------

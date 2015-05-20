@@ -382,10 +382,13 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         string GenerateFunctionComment(string indent) {
             var result= new StringBuilder(indent);
             result.Append(CodeBannerBottom);
-            result.Append(indent);
-            result.Append("/// ");
-            result.Append(VSObject.Description);
-            result.Append("\n");
+            var splitDescription= SplitDescription(VSObject.Description);
+            foreach(var d in splitDescription) {
+                result.Append(indent);
+                result.Append("/// ");
+                result.Append(d);
+                result.Append("\n");
+            }
             var returnPort= GetReturnPort(VSObject);
             var showPorts= myParameters.Length != 0 || returnPort != null;
             if(showPorts) {
@@ -396,10 +399,19 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 foreach(var p in myParameters) {
                     result.Append(indent);
                     result.Append("/// @param ");
-                    result.Append(NameUtility.ToFunctionParameterName(p.VSObject.CodeName));
+                    var paramName= NameUtility.ToFunctionParameterName(p.VSObject.CodeName);
+                    result.Append(paramName);
                     result.Append(' ');
-                    result.Append(p.VSObject.Description);
+                    var splitParamDescription= SplitDescription(p.VSObject.Description);
+                    result.Append(splitParamDescription[0]);
                     result.Append("\n");
+                    for(int i= 1; i < splitParamDescription.Length; ++i) {
+                        result.Append(indent);
+                        result.Append("///        ");
+                        result.Append(new String(' ', paramName.Length+1));
+                        result.Append(splitParamDescription[i]);
+                        result.Append("\n");
+                    }
                 }
             }
             if(returnPort != null) {
@@ -413,6 +425,28 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 result.Append("///\n");
             }
             return result.ToString();
+        }
+
+    	// -------------------------------------------------------------------------
+        /// Splits the provided user description into lines to be used as code
+        /// comments.
+        ///
+        /// @param description The user description to split into lines.
+        /// @return The description split in lines.
+        ///
+        string[] SplitDescription(string description) {
+            // Split into lines.
+            var result= description.Split(new Char[1]{'\n'});
+            // Remove empty trailing lines.
+            for(int i= result.Length-1; i >= 0; --i) {
+                if(string.IsNullOrEmpty(result[i].Trim())) {
+                    Array.Resize(ref result, i);
+                }
+                else {
+                    break;
+                }
+            }
+            return result;
         }
     }
 
