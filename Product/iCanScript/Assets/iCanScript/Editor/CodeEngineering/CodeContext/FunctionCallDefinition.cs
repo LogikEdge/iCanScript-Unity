@@ -59,7 +59,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             foreach(var p in parameters) {
                 int idx= p.PortIndex;
                 if(p.IsInputPort) {
-                    var producerPort= p.FirstProducerPort;
+                    var producerPort= CodeFlow.GetProducerPort(p);
                     if(producerPort != null && producerPort != p) {
                         myParameters[idx]= new FunctionCallParameterDefinition(p, this, p.RuntimeType);
                     }
@@ -361,7 +361,19 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 	                var producerType= Context.GetRuntimeTypeFor(producerPort);
 					var producerCode= Context.GetCodeFor(producerPort);
 					if(producerCode is FunctionDefinitionParameter) {
+                        var producerPortName= GetNameFor(producerPort);
+                        if(producerPortName == null || producerPortName == "null") {
+                            Debug.LogWarning("producer port is null: "+producerPort.CodeName);
+                        }
 						result.Append(GetNameFor(producerPort));
+						result.Append(".");
+					}
+					else if(producerCode is LocalVariableDefinition) {
+                        var producerPortName= Parent.GetLocalVariableName(producerPort);
+                        if(producerPortName == null || producerPortName == "null") {
+                            Debug.LogWarning("producer port is null: "+producerPort.CodeName);
+                        }
+						result.Append(producerPortName);
 						result.Append(".");
 					}
 					else if(producerPort.InitialValue is OwnerTag) {
@@ -372,7 +384,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 							result.Append("gameObject.");
 						}
 					}
-                    else if(producerPort != null && producerPort != thisPort) {
+                    else if(producerPort != thisPort) {
 						var desiredType= VSObject.RuntimeType;
 		                var desiredTypeName= ToTypeName(desiredType);
 		                var isUpcastNeeded= producerType != desiredType && iCS_Types.IsA(producerType, desiredType);

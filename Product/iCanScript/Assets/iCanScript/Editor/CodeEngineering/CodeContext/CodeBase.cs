@@ -95,10 +95,6 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         public virtual  string GenerateHeader(int indentSize)  { return ""; }
 		public virtual  string GenerateBody(int indentSize)    { return ""; }
         public virtual  string GenerateTrailer(int indentSize) { return ""; }
-        public virtual  string GenerateDefinition() 		   { return GenerateBody(0); }
-        public virtual  string GenerateExpression(out Type expressionType) {
-			expressionType= typeof(void); return GenerateBody(0);
-		}
         
         // =========================================================================
         // CONVERSION UTILITIES
@@ -634,14 +630,26 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// @return A foramtted code banner.
         ///
         public string GenerateCodeBanner(string indent, string bannerText) {
+            var result= new StringBuilder(256);
+            result.Append(GenerateCodeBannerNoBottom(indent, bannerText));
+            result.Append(indent);
+            result.Append(CodeBannerBottom);
+            return result.ToString();
+        }
+        // ---------------------------------------------------------------------------------
+        /// Generates a code banner without a bottom.
+        ///
+        /// @param indent White space string to be prepended to each line.
+        /// @param bannerText The banner text.
+        /// @return A foramtted code banner.
+        ///
+        public string GenerateCodeBannerNoBottom(string indent, string bannerText) {
             var result= new StringBuilder(indent, 256);
             result.Append(CodeBannerTop);
             result.Append(indent);
             result.Append("// ");
             result.Append(bannerText);
             result.Append("\n");
-            result.Append(indent);
-            result.Append(CodeBannerBottom);
             return result.ToString();
         }
         // ---------------------------------------------------------------------------------
@@ -1032,7 +1040,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         
     	// -------------------------------------------------------------------------
         public bool CanReplaceInputParameter(CodeBase code, CodeBase allowedParent, out iCS_EditorObject producerParent) {
-            var producerPort= code.VSObject;
+            var producerPort= CodeFlow.GetProducerPort(code.VSObject);
             producerParent= producerPort.ParentNode;
             // Accept get field/property if we are the only consumer.
 			if(IsFieldOrPropertyGet(producerParent)) {
