@@ -15,7 +15,11 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// @return The newly created type.
         ///
         public LocalVariableDefinition(iCS_EditorObject vsObject, CodeBase parent)
-            : base(vsObject, parent) {}
+            : base(vsObject, parent) {
+                // Generate a local name.
+                // FIXME: The local name is not working.
+                parent.GetLocalVariableName(VSObject);
+            }
 
     }
 
