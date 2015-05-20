@@ -630,14 +630,26 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// @return A foramtted code banner.
         ///
         public string GenerateCodeBanner(string indent, string bannerText) {
+            var result= new StringBuilder(256);
+            result.Append(GenerateCodeBannerNoBottom(indent, bannerText));
+            result.Append(indent);
+            result.Append(CodeBannerBottom);
+            return result.ToString();
+        }
+        // ---------------------------------------------------------------------------------
+        /// Generates a code banner without a bottom.
+        ///
+        /// @param indent White space string to be prepended to each line.
+        /// @param bannerText The banner text.
+        /// @return A foramtted code banner.
+        ///
+        public string GenerateCodeBannerNoBottom(string indent, string bannerText) {
             var result= new StringBuilder(indent, 256);
             result.Append(CodeBannerTop);
             result.Append(indent);
             result.Append("// ");
             result.Append(bannerText);
             result.Append("\n");
-            result.Append(indent);
-            result.Append(CodeBannerBottom);
             return result.ToString();
         }
         // ---------------------------------------------------------------------------------
