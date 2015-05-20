@@ -13,7 +13,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         ///
         /// @param vsObject VS objects being referenced.
         /// @param parent The parent code context.
-        /// @return The newly created reference.
+        /// @return The newly created value.
         ///
         public ValueDefinition(iCS_EditorObject vsObject, CodeBase parent)
             : base(vsObject, parent) {}

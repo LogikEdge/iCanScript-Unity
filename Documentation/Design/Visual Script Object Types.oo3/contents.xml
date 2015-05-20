@@ -1,0 +1,1160 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE outline PUBLIC "-//omnigroup.com//DTD OUTLINE 3.0//EN" "http://www.omnigroup.com/namespace/OmniOutliner/xmloutline-v3.dtd">
+<outline xmlns="http://www.omnigroup.com/namespace/OmniOutliner/v3">
+  <style-attribute-registry>
+    <style-attribute version="0" key="font-family" group="font" name="family" class="string">Helvetica</style-attribute>
+    <style-attribute version="1" key="font-fill" group="font" name="fill color" class="color">
+      <color w="0"/>
+    </style-attribute>
+    <style-attribute version="0" key="font-italic" group="font" name="italic" class="bool">no</style-attribute>
+    <style-attribute version="0" key="font-size" group="font" name="size" class="number" integral="0" min="1" max="65536">12</style-attribute>
+    <style-attribute version="0" key="item-post-gap(com.omnigroup.OmniOutliner)" group="row" name="post gap" class="number" integral="1" min="0" max="1000">0</style-attribute>
+    <style-attribute version="0" key="item-pre-gap(com.omnigroup.OmniOutliner)" group="row" name="pre gap" class="number" integral="1" min="0" max="1000">1</style-attribute>
+    <style-attribute version="0" key="item-row-padding(com.omnigroup.OmniOutliner)" group="row" name="row padding" class="string">4</style-attribute>
+    <style-attribute version="0" key="paragraph-alignment" group="paragraph" name="alignment" class="enum">
+      <enum-name-table default-value="4">
+        <enum-name-table-element value="0" name="left"/>
+        <enum-name-table-element value="1" name="right"/>
+        <enum-name-table-element value="2" name="center"/>
+        <enum-name-table-element value="3" name="justified"/>
+        <enum-name-table-element value="4" name="natural"/>
+      </enum-name-table>
+    </style-attribute>
+    <style-attribute version="0" key="paragraph-base-writing-direction" group="paragraph" name="writing direction" class="enum">
+      <enum-name-table default-value="-1">
+        <enum-name-table-element value="-1" name="natural"/>
+        <enum-name-table-element value="0" name="left-to-right"/>
+        <enum-name-table-element value="1" name="right-to-left"/>
+      </enum-name-table>
+    </style-attribute>
+    <style-attribute version="0" key="paragraph-line-height-multiple" group="paragraph" name="line height multiple" class="number" integral="0" min="0" max="1000">0</style-attribute>
+    <style-attribute version="0" key="text-background-color" group="text" name="background color" class="color">
+      <color w="0" a="0"/>
+    </style-attribute>
+  </style-attribute-registry>
+  <named-styles>
+    <named-style id="hAecNJ3qyDn" name="Heading 1" display-order="0">
+      <style>
+        <value key="font-family">Baskerville</value>
+        <value key="font-fill">
+          <color r="0.545098" g="0.168627" b="0.54902"/>
+        </value>
+        <value key="font-size">32</value>
+        <value key="text-background-color">
+          <color r="0.545098" g="0.168627" b="0.54902" a="0.15"/>
+        </value>
+      </style>
+    </named-style>
+    <named-style id="k3cRQAvEM0-" name="Heading 2" display-order="1">
+      <style>
+        <value key="font-family">Baskerville</value>
+        <value key="font-fill">
+          <color r="0.0666667" g="0.482353" b="0.552941"/>
+        </value>
+        <value key="font-size">24</value>
+        <value key="text-background-color">
+          <color r="0.0666667" g="0.482353" b="0.552941" a="0.15"/>
+        </value>
+      </style>
+    </named-style>
+    <named-style id="mKyELKyOp-4" name="Heading 3" display-order="2">
+      <style>
+        <value key="font-family">Baskerville</value>
+        <value key="font-fill">
+          <color r="0.326809" g="0.326809" b="0.326809"/>
+        </value>
+        <value key="font-italic">yes</value>
+        <value key="font-size">16</value>
+        <value key="item-post-gap(com.omnigroup.OmniOutliner)">6</value>
+        <value key="item-pre-gap(com.omnigroup.OmniOutliner)">6</value>
+        <value key="item-row-padding(com.omnigroup.OmniOutliner)">6</value>
+        <value key="paragraph-base-writing-direction">left-to-right</value>
+        <value key="paragraph-line-height-multiple">1.1</value>
+        <value key="text-background-color">
+          <color r="0.494118" g="0.494118" b="0.494118" a="0.12"/>
+        </value>
+      </style>
+    </named-style>
+    <named-style id="esaGNHoovYO" name="Vermilion" display-order="3">
+      <style>
+        <value key="font-fill">
+          <color r="0.54902" g="0.168627" b="0.168627"/>
+        </value>
+      </style>
+    </named-style>
+    <named-style id="iiDYggGaunu" name="Ultramarine" display-order="4">
+      <style>
+        <value key="font-fill">
+          <color r="0.292118" g="0.307424" b="0.795601"/>
+        </value>
+      </style>
+    </named-style>
+    <named-style id="g0MTwSIvHLI" name="Malachite" display-order="5">
+      <style>
+        <value key="font-fill">
+          <color r="0.199422" g="0.543139" b="0.307461"/>
+        </value>
+      </style>
+    </named-style>
+    <named-style id="hzc-jeI75P5" name="Ochre" display-order="6">
+      <style>
+        <value key="font-fill">
+          <color r="0.685971" g="0.499191" b="0.0794553"/>
+        </value>
+      </style>
+    </named-style>
+    <named-style id="eiUz6IBsQl4" name="Kohl" display-order="7">
+      <style>
+        <value key="font-fill">
+          <color r="0" g="0" b="0"/>
+        </value>
+      </style>
+    </named-style>
+  </named-styles>
+  <settings>
+    <base-style>
+      <style>
+        <value key="font-family">Optima</value>
+        <value key="font-fill">
+          <color r="0.326809" g="0.326809" b="0.326809"/>
+        </value>
+        <value key="font-size">13</value>
+        <value key="item-post-gap(com.omnigroup.OmniOutliner)">6</value>
+        <value key="item-pre-gap(com.omnigroup.OmniOutliner)">6</value>
+        <value key="item-row-padding(com.omnigroup.OmniOutliner)">6</value>
+        <value key="paragraph-base-writing-direction">left-to-right</value>
+        <value key="paragraph-line-height-multiple">1.1</value>
+        <value key="text-background-color">
+          <color r="1" g="1" b="1"/>
+        </value>
+      </style>
+    </base-style>
+    <horizontal-grid-color>
+      <color w="0" a="0.05"/>
+    </horizontal-grid-color>
+    <print-info>
+      <print-info-key name="NSPaperSize" type="size">{611.99998474121094, 792}</print-info-key>
+      <print-info-key name="OOScaleDocumentToFitPageWidth" type="boolean">true</print-info-key>
+    </print-info>
+    <auto-generate-level-styles>no</auto-generate-level-styles>
+  </settings>
+  <editor content-size="{1176, 684}" scroll-position="{0, 82}" column-titles-display-mode="auto" status-visible="no" hide-attachment-tags="yes" is-spellchecking-enabled="yes">
+    <drawer display="sections" width="185" palette-height="414"/>
+    <note-split-view height="141"/>
+    <selected-rows ids="bRDLOip54-o"/>
+    <selected-columns ids="dTpN3JwYpBn"/>
+    <selected-characters range="{65, 0}"/>
+  </editor>
+  <outline-title>
+    <text>
+      <p>
+        <run>
+          <style>
+            <value key="font-family">Helvetica</value>
+            <value key="paragraph-alignment">center</value>
+          </style>
+          <lit><cell variable="OODocumentFilenameVariableIdentifier"/></lit>
+        </run>
+      </p>
+    </text>
+  </outline-title>
+  <columns>
+    <column id="dTpN3JwYpBn" type="text" width="18" minimum-width="18" maximum-width="18" text-export-width="1" is-note-column="yes">
+      <style>
+        <value key="font-fill">
+          <color r="0.502123" g="0.502123" b="0.502123"/>
+        </value>
+        <value key="font-italic">yes</value>
+      </style>
+      <title>
+        <text>
+          <p/>
+        </text>
+      </title>
+    </column>
+    <column id="jFqHUGd_Dg1" type="text" width="329" minimum-width="13" maximum-width="1000000" text-export-width="72" is-outline-column="yes">
+      <title>
+        <text>
+          <p>
+            <run>
+              <lit>Topic</lit>
+            </run>
+          </p>
+        </text>
+      </title>
+    </column>
+    <column id="aVSUektG_Dx" type="text" width="271" minimum-width="13" maximum-width="1000000" text-export-width="40">
+      <title>
+        <text>
+          <p>
+            <run>
+              <lit>Code Definition</lit>
+            </run>
+          </p>
+        </text>
+      </title>
+    </column>
+    <column id="fLENpJP_cSA" type="text" width="162" minimum-width="13" maximum-width="1000000" text-export-width="40">
+      <title>
+        <text>
+          <p>
+            <run>
+              <lit>Code Usage</lit>
+            </run>
+          </p>
+        </text>
+      </title>
+    </column>
+    <column id="js6gm5QMN-V" type="text" width="112" minimum-width="13" maximum-width="1000000" text-export-width="40">
+      <title>
+        <text>
+          <p>
+            <run>
+              <lit>Code Extra</lit>
+            </run>
+          </p>
+        </text>
+      </title>
+    </column>
+  </columns>
+  <root>
+    <item id="aZ9QUVD2z3n" expanded="yes">
+      <style>
+        <inherited-style name="Heading 1" idref="hAecNJ3qyDn"/>
+      </style>
+      <values>
+        <text>
+          <p>
+            <run>
+              <lit>Port Types</lit>
+            </run>
+          </p>
+        </text>
+        <null/>
+        <null/>
+        <null/>
+      </values>
+      <children>
+        <item id="eOV2AtKsXX4" expanded="yes">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>Function Definition Port</lit>
+                </run>
+              </p>
+            </text>
+            <null/>
+            <null/>
+            <null/>
+          </values>
+          <children>
+            <item id="h8CuxghAkIk">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Function Definition Parameter Input Port</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Type Name</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Name</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+            </item>
+            <item id="lsHulqOjLuH">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Function Definition Parameter Output Port</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <style>
+                        <value key="font-fill">
+                          <color r="0" g="0.501961" b="1"/>
+                        </value>
+                      </style>
+                      <lit>out</lit>
+                    </run>
+                    <run>
+                      <lit> Type Name</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Name</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+            </item>
+            <item id="mL8Xb3ldPW7">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Function Definition Return Port</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <style>
+                        <value key="font-fill">
+                          <color w="0.33"/>
+                        </value>
+                      </style>
+                      <lit>???</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <lit>???</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+            </item>
+          </children>
+        </item>
+        <item id="a3Zd9tbUN0C" expanded="yes">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>Function Call Port</lit>
+                </run>
+              </p>
+            </text>
+            <null/>
+            <null/>
+            <null/>
+          </values>
+          <children>
+            <item id="fwnzA23XaBE">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Function Call Input Port</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <lit>—</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <lit>&lt;Producer Port ???&gt;</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+            </item>
+            <item id="bybXk5ecnjE">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Function Call Output Port</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <style>
+                        <value key="font-fill">
+                          <color r="0" g="0.501961" b="1"/>
+                        </value>
+                      </style>
+                      <lit>out</lit>
+                    </run>
+                    <run>
+                      <lit> Name</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Name</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Type Name;</lit>
+                    </run>
+                  </p>
+                </text>
+              </values>
+              <note expanded="yes">
+                <text>
+                  <p>
+                    <run>
+                      <lit>Extra code generation needed to define the output variable.</lit>
+                    </run>
+                  </p>
+                </text>
+              </note>
+            </item>
+            <item id="hBl7BARjyEJ">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Function Call Return Port</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <style>
+                        <value key="font-fill">
+                          <color r="0" g="0.501961" b="1"/>
+                        </value>
+                      </style>
+                      <lit>var</lit>
+                    </run>
+                    <run>
+                      <lit> Name</lit>
+                    </run>
+                    <run>
+                      <style>
+                        <value key="font-fill">
+                          <color r="0" g="0.501961" b="1"/>
+                        </value>
+                      </style>
+                      <lit>=</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Name</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+              <note expanded="yes">
+                <text>
+                  <p>
+                    <run>
+                      <lit>Code definition needed if not inlined.</lit>
+                    </run>
+                  </p>
+                </text>
+              </note>
+            </item>
+          </children>
+        </item>
+        <item id="n4F85wgFO-h" expanded="yes">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>Instance Port</lit>
+                </run>
+              </p>
+            </text>
+            <null/>
+            <null/>
+            <null/>
+          </values>
+          <children>
+            <item id="iYJwm2KeWH2">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Target Port</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <lit>—</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <lit>&lt;Producer Port ???&gt;</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+            </item>
+            <item id="eDar4eS-PaA">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Self Port</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <lit>—</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <lit>&lt;Producer Port ???&gt;</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+              <note expanded="yes">
+                <text>
+                  <p>
+                    <run>
+                      <lit>Code usage only available for constructors or variables</lit>
+                    </run>
+                  </p>
+                </text>
+              </note>
+            </item>
+          </children>
+        </item>
+        <item id="hzaEbIce0Pk" expanded="yes">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>Control Port</lit>
+                </run>
+              </p>
+            </text>
+            <null/>
+            <null/>
+            <null/>
+          </values>
+          <children>
+            <item id="bRDLOip54-o">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Enable Port</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <text>
+                  <p>
+                    <run>
+                      <lit>if(&lt;Producer Port ???&gt; || &lt;Producer Port ???&gt;) { … }</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+              </values>
+              <note expanded="yes">
+                <text>
+                  <p>
+                    <run>
+                      <lit>Code generation needed if sequencing cannot resolve control flow.</lit>
+                    </run>
+                  </p>
+                </text>
+              </note>
+            </item>
+            <item id="ndidKu8ms9S">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Trigger Port</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <lit>bool triggerName= false;</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <lit>triggerName</lit>
+                    </run>
+                  </p>
+                </text>
+                <text>
+                  <p>
+                    <run>
+                      <lit>triggerName= true;</lit>
+                    </run>
+                  </p>
+                </text>
+              </values>
+              <note expanded="yes">
+                <text>
+                  <p>
+                    <run>
+                      <lit>Code generation is need when sequencing cannot resolve control flow.</lit>
+                    </run>
+                  </p>
+                  <p>
+                    <run>
+                      <lit>	- Code definition needed before control block. </lit>
+                    </run>
+                  </p>
+                  <p>
+                    <run>
+                      <lit>	- Extra code needed at the end of the control block.</lit>
+                    </run>
+                  </p>
+                </text>
+              </note>
+            </item>
+          </children>
+        </item>
+        <item id="fuFcFrljD-X">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>Value Input Port</lit>
+                </run>
+              </p>
+            </text>
+            <null/>
+            <null/>
+            <null/>
+          </values>
+          <children>
+            <item id="pxAYanYPfnQ">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Constant Value Port</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+            </item>
+            <item id="eOdYLlPgJps">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Public Variable Port</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+              <note expanded="yes">
+                <text>
+                  <p>
+                    <run>
+                      <lit>Variables to be exposed in the inspector.</lit>
+                    </run>
+                  </p>
+                </text>
+              </note>
+            </item>
+            <item id="oWUuoEyj1pq">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Private Variable Port</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+              <note expanded="yes">
+                <text>
+                  <p>
+                    <run>
+                      <lit>Ex: between top-level function definitions &amp; event handlers.</lit>
+                    </run>
+                  </p>
+                </text>
+              </note>
+            </item>
+          </children>
+        </item>
+        <item id="nLyQSRBHjKO">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>State Transition Port</lit>
+                </run>
+              </p>
+            </text>
+            <null/>
+            <null/>
+            <null/>
+          </values>
+          <children>
+            <item id="fEdRbhPU1gg">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>State Exit Port</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+            </item>
+            <item id="jq1fCF5Pkd8">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>State Entry Port</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+            </item>
+            <item id="lb6HUCmiK4W">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Transition Node Entry Port</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+            </item>
+            <item id="isssAjD84Eo">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Transition Node Exit Port</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+            </item>
+          </children>
+        </item>
+      </children>
+    </item>
+    <item id="g9EKP-EuF8T" expanded="yes">
+      <style>
+        <inherited-style name="Heading 1" idref="hAecNJ3qyDn"/>
+      </style>
+      <values>
+        <text>
+          <p>
+            <run>
+              <lit>Node Types</lit>
+            </run>
+          </p>
+        </text>
+        <null/>
+        <null/>
+        <null/>
+      </values>
+      <children>
+        <item id="ahuJhQ9Tc2l">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>File Specification Node</lit>
+                </run>
+              </p>
+            </text>
+            <null/>
+            <null/>
+            <null/>
+          </values>
+          <note expanded="yes">
+            <text>
+              <p>
+                <run>
+                  <lit>Root visual script object (at least for now)</lit>
+                </run>
+              </p>
+              <p>
+                <run>
+                  <lit>Include:</lit>
+                </run>
+              </p>
+              <p>
+                <run>
+                  <lit>	- using directives</lit>
+                </run>
+              </p>
+              <p>
+                <run>
+                  <lit>	- code namespace</lit>
+                </run>
+              </p>
+            </text>
+          </note>
+        </item>
+        <item id="p24dkVHxShk" expanded="yes">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>Lambda Execution Node</lit>
+                </run>
+              </p>
+            </text>
+            <null/>
+            <null/>
+            <null/>
+          </values>
+          <note expanded="yes">
+            <text>
+              <p>
+                <run>
+                  <lit>Scope Specifier: Non-Static or Static</lit>
+                </run>
+              </p>
+            </text>
+          </note>
+          <children>
+            <item id="fau4Gjh1EWz">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Property Node</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+              <children>
+                <item id="hADJFo3XwCz">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Set Property Node</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                    <null/>
+                    <null/>
+                  </values>
+                </item>
+                <item id="ih7QvYe7V-7">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Get Property Node</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                    <null/>
+                    <null/>
+                  </values>
+                </item>
+              </children>
+            </item>
+            <item id="a5P86EeDLHZ">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Field Node</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+              <children>
+                <item id="hLng0uAusvs">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Set Field Node</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                    <null/>
+                    <null/>
+                  </values>
+                </item>
+                <item id="ia96zi29_TG">
+                  <values>
+                    <text>
+                      <p>
+                        <run>
+                          <lit>Get Field Node</lit>
+                        </run>
+                      </p>
+                    </text>
+                    <null/>
+                    <null/>
+                    <null/>
+                  </values>
+                </item>
+              </children>
+            </item>
+            <item id="pb4vV-kbSjG">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Constructor Node</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+              <note expanded="yes">
+                <text>
+                  <p>
+                    <run>
+                      <lit>Also included in variable creation.</lit>
+                    </run>
+                  </p>
+                </text>
+              </note>
+            </item>
+            <item id="aqqpJEEMvyq">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Function Call Node</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+            </item>
+          </children>
+        </item>
+        <item id="pdC1u77CHX3" expanded="yes">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>Package Node</lit>
+                </run>
+              </p>
+            </text>
+            <null/>
+            <null/>
+            <null/>
+          </values>
+          <children>
+            <item id="gNJNEO_4oMz">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>State Transition Node</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+            </item>
+            <item id="bFtNo3MGru_">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>On State Entry Node</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+            </item>
+            <item id="laGreYXzODp">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>On State Update Node</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+            </item>
+            <item id="cLaTKUQBmpP">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>On State Exit Node</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+            </item>
+            <item id="nIBKYr9-qWB">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>State Node</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+            </item>
+            <item id="dY-S_0wdbE3">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>State Chart Node</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+            </item>
+            <item id="eE4fjwqwbf8">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Function Definition Node</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+            </item>
+            <item id="hXeO0m8_Ztl">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Event Handler Node</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+            </item>
+            <item id="fIH2L3v8Aq6">
+              <values>
+                <text>
+                  <p>
+                    <run>
+                      <lit>Type Node</lit>
+                    </run>
+                  </p>
+                </text>
+                <null/>
+                <null/>
+                <null/>
+              </values>
+            </item>
+          </children>
+        </item>
+      </children>
+    </item>
+  </root>
+</outline>

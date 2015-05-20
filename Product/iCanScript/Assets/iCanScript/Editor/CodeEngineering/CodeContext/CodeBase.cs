@@ -219,6 +219,11 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 // Return the value for any other type of input port.
 				return GetValueFor(producerPort);				
             }
+            // Return the name of the variable for constructor output
+            var producerNode= producerPort.ParentNode;
+            if(producerNode.IsConstructor) {
+                return GetNameFor(producerNode);
+            }
 			// Return port name for output ports.
 			return GetNameFor(producerPort);
         }
