@@ -8,12 +8,12 @@ using iCanScript.Internal.Engine;
 
 namespace iCanScript.Internal.Editor.CodeEngineering {
 
-    public class GlobalDefinition : CodeBase {
+    public class FileDefinition : CodeBase {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
         string                myNamespace= null;
-        List<TypeDefinition>  myTypes    = new List<TypeDefinition>();
+        List<ClassDefinition> myTypes    = new List<ClassDefinition>();
         Type                  myBaseType = null;
         
         // ===================================================================
@@ -29,7 +29,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
         /// Builds the code global scope.
-        public GlobalDefinition(string typeName, string namespaceName, Type baseType, iCS_IStorage iStorage)
+        public FileDefinition(string typeName, string namespaceName, Type baseType, iCS_IStorage iStorage)
         : base(iStorage.EditorObjects[0], null) {
             // -- Initialise attributes --
 			myNamespace= namespaceName;
@@ -72,10 +72,10 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 		///
 		void BuildRootTypes(iCS_EditorObject vsRootObject) {
             // Add root class defintion.
-            var classDefinition= new TypeDefinition(vsRootObject, this,
-                                                    myBaseType,
-                                                    AccessSpecifier.Public,
-                                                    ScopeSpecifier.NonStatic);
+            var classDefinition= new ClassDefinition(vsRootObject, this,
+                                                     myBaseType,
+                                                     AccessSpecifier.Public,
+                                                     ScopeSpecifier.NonStatic);
             AddType(classDefinition);			
 		}
 		
@@ -94,7 +94,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         ///
         /// @param typeDefinition Type (class or struct) definition to add.
         ///
-        public override void AddType(TypeDefinition typeDefinition) {
+        public override void AddType(ClassDefinition typeDefinition) {
             myTypes.Add(typeDefinition);
             typeDefinition.Parent= this;
         }

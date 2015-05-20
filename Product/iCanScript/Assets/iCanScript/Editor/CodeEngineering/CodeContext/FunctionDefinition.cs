@@ -14,7 +14,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         protected AccessSpecifier               myAccessSpecifier= AccessSpecifier.Private;
         protected ScopeSpecifier                myScopeSpecifier = ScopeSpecifier.NonStatic;
-        protected FunctionParameterDefinition[] myParameters     = null;
+        protected FunctionDefinitionParameter[] myParameters     = null;
         protected List<VariableDefinition>      myVariables      = new List<VariableDefinition>();
         
         // ===================================================================
@@ -49,9 +49,9 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         protected virtual void BuildParameterList() {
             var parameters= GetParameters(VSObject);
 			parameters= P.filter(p=> p.IsInDataPort && p.ProducerPort == null, parameters);
-            myParameters= new FunctionParameterDefinition[parameters.Length];
+            myParameters= new FunctionDefinitionParameter[parameters.Length];
             foreach(var p in parameters) {
-                myParameters[p.PortIndex]= new FunctionParameterDefinition(p, this);
+                myParameters[p.PortIndex]= new FunctionDefinitionParameter(p, this);
             }
         }
         
@@ -156,16 +156,6 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             StringBuilder result= new StringBuilder("\n");
             // Add iCanScript tag for public functions.
             var hasDescription= !string.IsNullOrEmpty(VSObject.Description);
-            if(myAccessSpecifier == AccessSpecifier.Public) {
-                result.Append(indent);
-                result.Append("[iCS_Function");
-//                if(VSObject != null && hasDescription) {
-//                    result.Append("(Description=\"");
-//                    result.Append(VSObject.Description);
-//                    result.Append("\")");
-//                }
-                result.Append("]\n");
-            }
             // Add function comment block.
             if(hasDescription) {
                 result.Append(GenerateFunctionComment(indent));
@@ -392,10 +382,13 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         string GenerateFunctionComment(string indent) {
             var result= new StringBuilder(indent);
             result.Append(CodeBannerBottom);
-            result.Append(indent);
-            result.Append("/// ");
-            result.Append(VSObject.Description);
-            result.Append("\n");
+            var splitDescription= SplitDescription(VSObject.Description);
+            foreach(var d in splitDescription) {
+                result.Append(indent);
+                result.Append("/// ");
+                result.Append(d);
+                result.Append("\n");
+            }
             var returnPort= GetReturnPort(VSObject);
             var showPorts= myParameters.Length != 0 || returnPort != null;
             if(showPorts) {
@@ -406,10 +399,19 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 foreach(var p in myParameters) {
                     result.Append(indent);
                     result.Append("/// @param ");
-                    result.Append(NameUtility.ToFunctionParameterName(p.VSObject.CodeName));
+                    var paramName= NameUtility.ToFunctionParameterName(p.VSObject.CodeName);
+                    result.Append(paramName);
                     result.Append(' ');
-                    result.Append(p.VSObject.Description);
+                    var splitParamDescription= SplitDescription(p.VSObject.Description);
+                    result.Append(splitParamDescription[0]);
                     result.Append("\n");
+                    for(int i= 1; i < splitParamDescription.Length; ++i) {
+                        result.Append(indent);
+                        result.Append("///        ");
+                        result.Append(new String(' ', paramName.Length+1));
+                        result.Append(splitParamDescription[i]);
+                        result.Append("\n");
+                    }
                 }
             }
             if(returnPort != null) {
@@ -423,6 +425,28 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 result.Append("///\n");
             }
             return result.ToString();
+        }
+
+    	// -------------------------------------------------------------------------
+        /// Splits the provided user description into lines to be used as code
+        /// comments.
+        ///
+        /// @param description The user description to split into lines.
+        /// @return The description split in lines.
+        ///
+        string[] SplitDescription(string description) {
+            // Split into lines.
+            var result= description.Split(new Char[1]{'\n'});
+            // Remove empty trailing lines.
+            for(int i= result.Length-1; i >= 0; --i) {
+                if(string.IsNullOrEmpty(result[i].Trim())) {
+                    Array.Resize(ref result, i);
+                }
+                else {
+                    break;
+                }
+            }
+            return result;
         }
     }
 

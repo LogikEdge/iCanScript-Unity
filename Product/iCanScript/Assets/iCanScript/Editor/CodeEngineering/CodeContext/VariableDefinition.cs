@@ -6,7 +6,7 @@ using iCanScript.Internal.Engine;
 
 namespace iCanScript.Internal.Editor.CodeEngineering {
 
-    public class VariableDefinition : CodeBase {
+    public class VariableDefinition : ValueDefinition {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
@@ -69,7 +69,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             // Generate variable from port.
             if(VSObject.IsDataPort) {
                 if(VSObject.IsInDataPort && !iCS_Types.IsA<UnityEngine.Object>(myRuntimeType)) {
-                    initializer= GetNameFor(VSObject, /*valueInsteadOfSelf=*/true);                    
+                    initializer= GetValueFor(VSObject);
                 }
                 else {
                     initializer= "default("+ToTypeName(myRuntimeType)+")";
@@ -82,7 +82,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 myVSObject.ForEachChildPort(
                     p=> {
                         if(p.PortIndex < (int)iCS_PortIndex.ParametersEnd) {
-                            initValues[p.PortIndex]= GetNameFor(p.FirstProducerPort, /*valueInsteadOfSelf=*/true);
+                            initValues[p.PortIndex]= GetValueFor(p);
                         }
                     }
                 );
@@ -93,7 +93,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 return "";
             }
             string variableName;
-            if(Parent is TypeDefinition) {
+            if(Parent is ClassDefinition) {
                 if(myAccessSpecifier == AccessSpecifier.Public) {
                     variableName= Parent.GetPublicFieldName(myVSObject);
                 }
@@ -117,11 +117,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 									   Type variableType, string variableName, string initializer) {
 			string indent= ToIndent(indentSize);
             StringBuilder result= new StringBuilder(indent);
-            if(myParent is TypeDefinition) {
-                if(accessType == AccessSpecifier.Public) {
-                    result.Append("[iCS_InOutPort]\n");
-                    result.Append(indent);
-                }
+            if(myParent is ClassDefinition) {
                 result.Append(ToAccessString(accessType));
                 result.Append(" ");
                 result.Append(ToScopeString(scopeType));

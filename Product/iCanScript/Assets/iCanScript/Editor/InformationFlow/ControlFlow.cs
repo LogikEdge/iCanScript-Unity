@@ -92,7 +92,7 @@ namespace iCanScript.Internal.Editor {
             var producerPort= CodeFlow.GetProducerPort(enablePort);
             if(producerPort.IsInputPort) {
                 var initialValue= producerPort.InitialValue;
-                if(initialValue is UndefinedTag) return false;
+                if(initialValue is UndefinedTag || initialValue == null) return false;
                 var value= (bool)initialValue;
                 return value == false;
             }  

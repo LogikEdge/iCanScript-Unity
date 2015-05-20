@@ -72,15 +72,15 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         }
         // -------------------------------------------------------------------
 		public virtual Type GetRuntimeType()					  { return VSObject.RuntimeType; }
-        public virtual void OnParentChange(CodeBase newParent)    { }
+        public virtual void OnParentChange(CodeBase newParent)    {}
         public virtual iCS_EditorObject[] GetRelatedEnablePorts() { return new iCS_EditorObject[0]; }
         public virtual iCS_EditorObject[] GetDependencies()       { return new iCS_EditorObject[0]; }
         public virtual void ResolveDependencies() {}
         public virtual void AddVariable(VariableDefinition variableDefinition) {}
-        public virtual void AddExecutable(CodeBase executableDefinition)    {}
-        public virtual void AddType(TypeDefinition typeDefinition)             {}
+        public virtual void AddExecutable(CodeBase executableDefinition)       {}
+        public virtual void AddType(ClassDefinition typeDefinition)            {}
         public virtual void AddFunction(FunctionDefinition functionDefinition) {}
-        public virtual void Remove(CodeBase toRemove)                       {}
+        public virtual void Remove(CodeBase toRemove)                          {}
 
         // ===================================================================
         // CODE GENERATION FUNCTIONS
@@ -92,9 +92,9 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             result.Append(GenerateTrailer(indentSize));
 			return result.ToString();
         }
-        public virtual string GenerateHeader(int indentSize)  { return ""; }
-		public virtual string GenerateBody(int indentSize)    { return ""; }
-        public virtual string GenerateTrailer(int indentSize) { return ""; }
+        public virtual  string GenerateHeader(int indentSize)  { return ""; }
+		public virtual  string GenerateBody(int indentSize)    { return ""; }
+        public virtual  string GenerateTrailer(int indentSize) { return ""; }
         
         // =========================================================================
         // CONVERSION UTILITIES
@@ -113,30 +113,27 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// Returns or creates the pre-built name for a given visual script object.
         ///
         /// @param vsObj The visual script object to search.
-        /// @param valueInsteadOfSelf Forces usage of port value if port does not
-        ///                           have a producer.
         /// @return The pre-built name for the visual script object.
         ///
-        public string GetNameFor(iCS_EditorObject vsObj, bool valueInsteadOfSelf= false) {
+        public string GetNameFor(iCS_EditorObject vsObj) {
             if(vsObj.IsInputPort) {
                 var producerPort= vsObj.FirstProducerPort;
                 if(producerPort.IsInputPort) {
-                    // Return value if we are the producer port and client desires the value.
-                    if(producerPort == vsObj && valueInsteadOfSelf) {
-                        return ToValueString(producerPort.InitialValue);
-                    }
                     // Find the code base for the producer port.
                     var producerPortCode= myContext.GetCodeFor(producerPort);
                     if(producerPortCode != null) {
-                        if(producerPortCode is FunctionParameterDefinition ||
-                           producerPortCode is VariableDefinition ||
-                           producerPortCode is ConstantDefinition) {
-                            var parameterName= TryGetNameFor(vsObj);
+                        if(producerPortCode is FunctionDefinitionParameter ||
+                           producerPortCode is VariableDefinition) {
+                            var parameterName= TryGetNameFor(producerPort);
                             if(parameterName == null) {
                                 return vsObj.CodeName;
                             }
                             return parameterName;
                         }
+                    }
+                    // Return value if we are the producer port and client desires the value.
+                    if(producerPort == vsObj) {
+                        return ToValueString(producerPort.InitialValue);
                     }
                     if(!IsPublicClassInterface(producerPort) && !(producerPort.IsInProposedDataPort && producerPort.ParentNode.IsEventHandler) && !producerPort.IsFixDataPort) {
                         return ToValueString(producerPort.InitialValue);
@@ -150,6 +147,81 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 return vsObj.CodeName;
             }
             return name;
+        }
+
+    	// -------------------------------------------------------------------------
+        /// Returns the value for the given visual script port object.
+        ///
+        /// @param vsObj The visual script object to search.
+        /// @return The value defined of the port defined in the visual script.
+        ///
+        public string GetValueFor(iCS_EditorObject vsObj) {
+            if(!vsObj.IsInputPort) {
+                Debug.LogWarning("iCanScript: Internal error: Invoking GetValueFor(...) without an input port.  Contact support.");
+                return null;
+            }
+            var producerPort= CodeFlow.GetProducerPort(vsObj);
+            if(!producerPort.IsInputPort) {
+                Debug.LogWarning("iCanScript: Internal error: Invoking GetValueFor(...) on a port connected to an output port.  Contact support.");
+                return null;
+            }
+			// Special case for 'OwnerTag'.
+			var initialValue= producerPort.InitialValue;
+			if(initialValue is OwnerTag) {
+				var producerType= producerPort.RuntimeType;
+				if(producerType == typeof(Transform)) {
+					return "transform";
+				}
+				else if(producerType == typeof(GameObject)) {
+					return "gameObject";
+				}
+			}
+            return ToValueString(initialValue);
+        }
+
+    	// -------------------------------------------------------------------------
+        /// Returns the expression code string for the given visual script port.
+        ///
+        /// @param vsObj The visual script port.
+        /// @return The expression string.
+        ///
+        public string GetExpressionFor(iCS_EditorObject vsObj) {
+            if(!vsObj.IsInputPort) {
+				Debug.LogWarning("iCanScript: Internal error: Trying to extract port expression from non-port object.  Contact support.");
+				return "";
+			}
+            var producerPort= CodeFlow.GetProducerPort(vsObj);
+			// Return value if the port is not connected.
+			if(producerPort == vsObj) {
+				return GetValueFor(vsObj);					
+			}
+            if(producerPort.IsInputPort) {
+                // Find the code base for the producer port.
+                var producerPortCode= myContext.GetCodeFor(producerPort);
+				if(producerPortCode == null) {
+					Debug.LogWarning("iCanScript: Internal error: Unable to find code for port: "+producerPort+". Contact support.");
+					return vsObj.CodeName;
+				}
+				// Return the name of the parameter for function definition parameters.
+                if(producerPortCode is FunctionDefinitionParameter) {
+					var portType= vsObj.RuntimeType;
+					var producerPortType= producerPort.RuntimeType;
+                   	var portName= TryGetNameFor(producerPort);
+					if(!iCS_Types.IsA(portType, producerPortType)) {
+						return "("+portName+" as "+ToTypeName(portType)+")";
+					}
+					return portName;
+                }
+                // Return the value for any other type of input port.
+				return GetValueFor(producerPort);				
+            }
+            // Return the name of the variable for constructor output
+            var producerNode= producerPort.ParentNode;
+            if(producerNode.IsConstructor) {
+                return GetNameFor(producerNode);
+            }
+			// Return port name for output ports.
+			return GetNameFor(producerPort);
         }
 
     	// -------------------------------------------------------------------------
@@ -558,14 +630,26 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// @return A foramtted code banner.
         ///
         public string GenerateCodeBanner(string indent, string bannerText) {
+            var result= new StringBuilder(256);
+            result.Append(GenerateCodeBannerNoBottom(indent, bannerText));
+            result.Append(indent);
+            result.Append(CodeBannerBottom);
+            return result.ToString();
+        }
+        // ---------------------------------------------------------------------------------
+        /// Generates a code banner without a bottom.
+        ///
+        /// @param indent White space string to be prepended to each line.
+        /// @param bannerText The banner text.
+        /// @return A foramtted code banner.
+        ///
+        public string GenerateCodeBannerNoBottom(string indent, string bannerText) {
             var result= new StringBuilder(indent, 256);
             result.Append(CodeBannerTop);
             result.Append(indent);
             result.Append("// ");
             result.Append(bannerText);
             result.Append("\n");
-            result.Append(indent);
-            result.Append(CodeBannerBottom);
             return result.ToString();
         }
         // ---------------------------------------------------------------------------------
@@ -710,10 +794,10 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         // ITERATION UTILITIES
     	// -------------------------------------------------------------------------
         /// Returns the type definition.
-        public TypeDefinition GetTypeDefinition() {
-            if(this is TypeDefinition) return this as TypeDefinition;
+        public ClassDefinition GetClassDefinition() {
+            if(this is ClassDefinition) return this as ClassDefinition;
             if(myParent == null) return null;
-            return myParent.GetTypeDefinition();
+            return myParent.GetClassDefinition();
         }
 
     	// -------------------------------------------------------------------------
@@ -956,7 +1040,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         
     	// -------------------------------------------------------------------------
         public bool CanReplaceInputParameter(CodeBase code, CodeBase allowedParent, out iCS_EditorObject producerParent) {
-            var producerPort= code.VSObject;
+            var producerPort= CodeFlow.GetProducerPort(code.VSObject);
             producerParent= producerPort.ParentNode;
             // Accept get field/property if we are the only consumer.
 			if(IsFieldOrPropertyGet(producerParent)) {

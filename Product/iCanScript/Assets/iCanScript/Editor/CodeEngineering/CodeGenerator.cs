@@ -7,7 +7,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        GlobalDefinition    myCodeRoot= null;   ///< Code global definition.
+        FileDefinition    myCodeRoot= null;   ///< Code global definition.
 
     	// -------------------------------------------------------------------------
         /// Builds global scope code definition.
@@ -25,7 +25,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             var typeName= NameUtility.ToTypeName(iStorage.TypeName);
             var namespaceName= CodeGenerationUtility.GetNamespace(iStorage);
             var baseType= CodeGenerationUtility.GetBaseType(iStorage);
-            myCodeRoot= new GlobalDefinition(typeName, namespaceName, baseType, iStorage);
+            myCodeRoot= new FileDefinition(typeName, namespaceName, baseType, iStorage);
             
             // -- Generate code. --
             var result= myCodeRoot.GenerateCode(0);

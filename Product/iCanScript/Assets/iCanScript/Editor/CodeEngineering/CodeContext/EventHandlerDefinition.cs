@@ -22,16 +22,31 @@ public class EventHandlerDefinition : FunctionDefinition {
         ///
         public EventHandlerDefinition(iCS_EditorObject node, CodeBase parent, AccessSpecifier accessType, ScopeSpecifier scopeType)
         : base(node, parent, accessType, scopeType) {
+            CreateLocalVariables();
         }
     
+        // -------------------------------------------------------------------
+        /// Scan the input ports to create special local variables.
+        void CreateLocalVariables() {
+    		VSObject.ForEachChildPort(
+    			p=> {
+    				if(p.PortIndex < (int)iCS_PortIndex.ParametersEnd) {
+                        if(p.IsInProposedDataPort && iCS_Types.IsA<Component>(p.RuntimeType)) {
+                            new LocalVariableDefinition(p, this);
+                        }
+    				}
+    			}
+    		);
+        }
+        
         // -------------------------------------------------------------------
         /// Builds the list of function parameters.
         protected override void BuildParameterList() {
             var parameters= GetParameters(VSObject);
             parameters= P.filter(p=> p.IsFixDataPort, parameters);
-            myParameters= new FunctionParameterDefinition[parameters.Length];
+            myParameters= new FunctionDefinitionParameter[parameters.Length];
             foreach(var p in parameters) {
-                myParameters[p.PortIndex]= new FunctionParameterDefinition(p, this);                    
+                myParameters[p.PortIndex]= new FunctionDefinitionParameter(p, this);                    
             }
         }
         

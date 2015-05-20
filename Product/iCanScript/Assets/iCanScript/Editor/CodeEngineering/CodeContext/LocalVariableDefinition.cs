@@ -1,22 +1,26 @@
 ﻿using UnityEngine;
-using System;
 using System.Collections;
 
 namespace iCanScript.Internal.Editor.CodeEngineering {
 
-    public class TypeDefinition : CodeBase {
-    
+    public class LocalVariableDefinition : CodeBase {
+
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
         // -------------------------------------------------------------------
-        /// Builds a reference to a visual script type.
+        /// Builds a reference to a statement block local variable.
         ///
         /// @param vsObject VS objects being referenced.
         /// @param parent The parent code context.
         /// @return The newly created type.
         ///
-        public TypeDefinition(iCS_EditorObject vsObject, CodeBase parent)
-            : base(vsObject, parent) {}
-    
+        public LocalVariableDefinition(iCS_EditorObject vsObject, CodeBase parent)
+            : base(vsObject, parent) {
+                // Generate a local name.
+                // FIXME: The local name is not working.
+                parent.GetLocalVariableName(VSObject);
+            }
+
     }
+
 }

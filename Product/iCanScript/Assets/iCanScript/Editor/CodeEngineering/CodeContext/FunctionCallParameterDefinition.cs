@@ -34,7 +34,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// @return The formatted body code for the parameter.
         ///
         public override string GenerateBody(int indentSize) {
-            var producerPort= VSObject.FirstProducerPort;
+            var producerPort= CodeFlow.GetProducerPort(VSObject);
             var result= new StringBuilder(GetNameFor(producerPort), 64);
             if(myType != null) {
                 var desiredTypeName= ToTypeName(myType);

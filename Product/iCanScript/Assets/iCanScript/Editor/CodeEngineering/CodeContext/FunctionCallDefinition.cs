@@ -59,7 +59,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             foreach(var p in parameters) {
                 int idx= p.PortIndex;
                 if(p.IsInputPort) {
-                    var producerPort= p.FirstProducerPort;
+                    var producerPort= CodeFlow.GetProducerPort(p);
                     if(producerPort != null && producerPort != p) {
                         myParameters[idx]= new FunctionCallParameterDefinition(p, this, p.RuntimeType);
                     }
@@ -68,7 +68,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                         var portType= p.RuntimeType;
                         if(iCS_Types.IsA<UnityEngine.Object>(portType)) {
                             myParameters[idx]= new FunctionCallParameterDefinition(p, this, p.RuntimeType);
-                            var typeDef= GetTypeDefinition();
+                            var typeDef= GetClassDefinition();
                             var v= new VariableDefinition(p, typeDef, AccessSpecifier.Public, ScopeSpecifier.NonStatic);
                             typeDef.AddVariable(v);
                         }
@@ -123,7 +123,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 var returnParent= GetProperParentForProducerPort(myReturnVariable);
                 if(returnParent != null && returnParent != myParent) {
                     var returnPort= myReturnVariable.VSObject;
-                    if(returnParent is TypeDefinition) {
+                    if(returnParent is ClassDefinition) {
                         var v= new VariableDefinition(returnPort, returnParent, AccessSpecifier.Private, ScopeSpecifier.NonStatic);
                         returnParent.AddVariable(v);
                         myReturnVariable= null;
@@ -164,7 +164,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 
         // -------------------------------------------------------------------
         public override void AddExecutable(CodeBase executableDefinition)       { Debug.LogWarning("iCanScript: Trying to add a child executable definition to a function call definition."); }
-        public override void AddType(TypeDefinition typeDefinition)             { Debug.LogWarning("iCanScript: Trying to add a type definition to a function call definition."); }
+        public override void AddType(ClassDefinition typeDefinition)            { Debug.LogWarning("iCanScript: Trying to add a type definition to a function call definition."); }
         public override void AddFunction(FunctionDefinition functionDefinition) { Debug.LogWarning("iCanScript: Trying to add a function definition to a function call definition."); }
 
         // ===================================================================
@@ -355,9 +355,28 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             else {
                 var thisPort= DataFlow.GetTargetPort(node);
                 if(thisPort != null) {
+//					result.Append(GetExpressionFor(thisPort));
+//					result.Append(".");
                     var producerPort= CodeFlow.GetProducerPort(thisPort);
 	                var producerType= Context.GetRuntimeTypeFor(producerPort);
-					if(producerPort.InitialValue is OwnerTag) {
+					var producerCode= Context.GetCodeFor(producerPort);
+					if(producerCode is FunctionDefinitionParameter) {
+                        var producerPortName= GetNameFor(producerPort);
+                        if(producerPortName == null || producerPortName == "null") {
+                            Debug.LogWarning("producer port is null: "+producerPort.CodeName);
+                        }
+						result.Append(GetNameFor(producerPort));
+						result.Append(".");
+					}
+					else if(producerCode is LocalVariableDefinition) {
+                        var producerPortName= Parent.GetLocalVariableName(producerPort);
+                        if(producerPortName == null || producerPortName == "null") {
+                            Debug.LogWarning("producer port is null: "+producerPort.CodeName);
+                        }
+						result.Append(producerPortName);
+						result.Append(".");
+					}
+					else if(producerPort.InitialValue is OwnerTag) {
 						if(producerType == typeof(Transform)) {
 							result.Append("transform.");
 						}
@@ -365,7 +384,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 							result.Append("gameObject.");
 						}
 					}
-                    else if(producerPort != null && producerPort != thisPort) {
+                    else if(producerPort != thisPort) {
 						var desiredType= VSObject.RuntimeType;
 		                var desiredTypeName= ToTypeName(desiredType);
 		                var isUpcastNeeded= producerType != desiredType && iCS_Types.IsA(producerType, desiredType);

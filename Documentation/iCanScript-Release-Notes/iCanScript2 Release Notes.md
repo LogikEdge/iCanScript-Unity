@@ -1,6 +1,6 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.15
+Version: v2.0.16
 CSS: Github.css
 
 
@@ -9,6 +9,19 @@ CSS: Github.css
 <!-- PDF: <<[front-matter/pdf.md] -->
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
+
+## iCanScript v2.0.16 ##
+
+_May 20, 2015_
+
+V2.0.16 is a code generation bug fix release.
+
+### List of Changes
+
+- **<span style="color: green">\[NEW\]</span>** Support code generation for function definition input parameters.
+	- **NOTE:** Output parameters and return value is not yet supported.
+
+* * *
 
 ## iCanScript v2.0.15 ##
 
