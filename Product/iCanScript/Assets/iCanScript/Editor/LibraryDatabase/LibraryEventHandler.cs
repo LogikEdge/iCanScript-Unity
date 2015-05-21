@@ -43,6 +43,16 @@ namespace iCanScript.Internal.Editor {
 			this.parameterTypes= parameterTypes;
 			this.parameterNames= parameterNames;
 		}
+
+        // ----------------------------------------------------------------------
+		/// Computes the visibility of the event handlers.
+        ///
+        /// The event handlers are not visible in the library.
+        ///
+		public override void ComputeVisibility() {
+            // -- All event handlers are filtered out. --
+            myIsVisible= false;
+        }
     }
     
 }

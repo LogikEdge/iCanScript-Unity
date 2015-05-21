@@ -48,7 +48,7 @@ namespace iCanScript.Internal.Editor {
 		}
 
         // ----------------------------------------------------------------------
-		/// Computes the visibility of the library objecy.
+		/// Computes the visibility of the library object.
         ///
         /// For type members, the visibility is affected by the "Show Inheritance"
         /// and "Show Protected" flags as well as the filtering score.
