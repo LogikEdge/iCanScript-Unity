@@ -231,6 +231,7 @@ namespace iCanScript.Internal {
 			// -- iCanScript remains intact --
     		if(name == "iCanScript") return name;
 			// -- Convert standard operators --
+            if(name == "op_Assignment")         return "operator =";            
             if(name == "op_Equality")           return "operator ==";
             if(name == "op_Inequality")         return "operator !=";
             if(name == "op_Addition")           return "operator +";

@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace CSharp.Variables {
     
-    public struct Boolean {
+    public struct Bool {
 //	    public static bool And(bool a, bool b)                       { return a & b; }
 //	    public static bool And(bool a, bool b, bool c)               { return a & b & c; }
 //	    public static bool And(bool a, bool b, bool c, bool d)       { return a & b & c & d; }
