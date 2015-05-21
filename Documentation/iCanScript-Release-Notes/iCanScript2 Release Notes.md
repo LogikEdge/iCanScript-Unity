@@ -24,6 +24,7 @@ V2.0.17 adds the operators for simple primitive types such as Boolean, Int, and 
 	- _**operator ^**_ --> Exclusive Or;
 	- _**operator !**_ --> Inverse;
 - **<span style="color: blue">\[IMPROVED\]</span>** Properly indent the generated code for the first line of the class declaration.
+- **<span style="color: blue">\[IMPROVED\]</span>** The Unity event handlers in the dynamic menu are now sorted.
 
 * * *
 
