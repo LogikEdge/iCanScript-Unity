@@ -307,6 +307,10 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             if(operatorName == "op_Subtraction")        return "-";
             if(operatorName == "op_Multiply")           return "*";
             if(operatorName == "op_Division")           return "/";
+            if(operatorName == "op_AdditionAssign")     return "+=";
+            if(operatorName == "op_SubtractionAssign")  return "-=";
+            if(operatorName == "op_MultiplyAssign")     return "*=";
+            if(operatorName == "op_DivisionAssign")     return "/=";
             if(operatorName == "op_Equality")           return "==";
             if(operatorName == "op_Inequality")         return "!=";
 			if(operatorName == "op_GreaterThan")        return ">";
@@ -317,6 +321,9 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             if(operatorName == "op_BitwiseOr")          return "|";
             if(operatorName == "op_BitwiseAnd")         return "&";
             if(operatorName == "op_ExclusiveOr")        return "^";
+            if(operatorName == "op_BitwiseOrAssign")    return "|=";
+            if(operatorName == "op_BitwiseAndAssign")   return "&=";
+            if(operatorName == "op_ExclusiveOrAssign")  return "^=";
             Debug.LogWarning("iCanScript: Unknown operator=> "+operatorName);
             return operatorName;
         }

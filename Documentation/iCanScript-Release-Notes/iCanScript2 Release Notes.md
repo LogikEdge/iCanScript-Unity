@@ -1,6 +1,6 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.16
+Version: v2.0.17
 CSS: Github.css
 
 
@@ -9,6 +9,23 @@ CSS: Github.css
 <!-- PDF: <<[front-matter/pdf.md] -->
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
+
+## iCanScript v2.0.17 ##
+
+_May 20, 2015_
+
+V2.0.17 adds the operators for simple primitive types such as Boolean, Int, and Float.
+
+### List of Changes
+
+- **<span style="color: green">\[NEW\]</span>** Support of the following operators on the _**Boolean**_ type:
+	- _**operator &**_ --> And;
+	- _**operator |**_ --> Or;
+	- _**operator ^**_ --> Exclusive Or;
+	- _**operator !**_ --> Inverse;
+- **<span style="color: blue">\[IMPROVED\]</span>** Properly indent the generated code for the first line of the class declaration.
+
+* * *
 
 ## iCanScript v2.0.16 ##
 

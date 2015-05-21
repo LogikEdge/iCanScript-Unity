@@ -6,27 +6,20 @@ namespace iCanScript.Logic {
 
 	public static class Conditions {
 	    // Object comparaison.
-	    [iCS_Function(Return="isNull")]
 	    public static bool IsNull(object obj, out bool isNotNull)
 	        { isNotNull= obj != null; return !isNotNull; }
 	
 	    // Float comparaison.
-	    [iCS_Function(Return="isZero")]
 	    public static bool IsZero(float a, out bool isNotZero)
 	        { isNotZero= Math3D.IsNotZero(a); return !isNotZero; }
-	    [iCS_Function(Return="isEqual")]
 	    public static bool IsEqual(float a, float b, out bool isNotEqual)
 	        { isNotEqual= Math3D.IsNotEqual(a,b); return !isNotEqual; }
-	    [iCS_Function(Return="isGreater")]
 	    public static bool IsGreater(float value, float bias, out bool isSmallerOrEqual)
 	        { isSmallerOrEqual= Math3D.IsSmallerOrEqual(value,bias); return !isSmallerOrEqual; }
-	    [iCS_Function(Return="isSmaller")]
 	    public static bool IsSmaller(float value, float bias, out bool isGreaterOrEqual)
 	        { isGreaterOrEqual= Math3D.IsGreaterOrEqual(value,bias); return !isGreaterOrEqual; }
-	    [iCS_Function(Return="isGreaterOrEqual")]
 	    public static bool IsGreaterOrEqual(float value, float bias, out bool isSmaller)
 	        { isSmaller= Math3D.IsSmaller(value,bias); return !isSmaller; }
-	    [iCS_Function(Return="isSmallerOrEqual")]
 	    public static bool IsSmallerOrEqual(float value, float bias, out bool isGreater)
 	        { isGreater= Math3D.IsGreater(value,bias); return !isGreater; }
 	    [iCS_Function(Return="isEqual")]
@@ -43,22 +36,16 @@ namespace iCanScript.Logic {
 	    }
 	
 	    // Int comparaison.
-	    [iCS_Function(Return="isZero")]
 	    public static bool IsZero(int a, out bool isNotZero)
 	        { isNotZero= a != 0; return !isNotZero; }
-	    [iCS_Function(Return="isEqual")]
 	    public static bool IsEqual(int a, int b, out bool isNotEqual)
 	        { isNotEqual= a != b; return !isNotEqual; }
-	    [iCS_Function(Return="isGreater")]
 	    public static bool IsGreater(int value, int bias, out bool isSmallerOrEqual)
 	        { isSmallerOrEqual= value <= bias; return !isSmallerOrEqual; }
-	    [iCS_Function(Return="isSmaller")]
 	    public static bool IsSmaller(int value, int bias, out bool isGreaterOrEqual)
 	        { isGreaterOrEqual= value >= bias; return !isGreaterOrEqual; }
-	    [iCS_Function(Return="isGreaterOrEqual")]
 	    public static bool IsGreaterOrEqual(int value, int bias, out bool isSmaller)
 	        { isSmaller= value < bias; return !isSmaller; }
-	    [iCS_Function(Return="isSmallerOrEqual")]
 	    public static bool IsSmallerOrEqual(int value, int bias, out bool isGreater)
 	        { isGreater= value > bias; return !isGreater; }
 	    [iCS_Function(Return="isEqual")]
@@ -117,14 +104,14 @@ namespace iCanScript.Logic {
 	    public static bool Or (bool a, bool b, bool c, bool d)       { return a | b | c | d; }
 	    public static bool Xor(bool a, bool b)                       { return a ^ b; }
 	    public static bool Not(bool a)                               { return !a; } 
-		public static bool NotAnd(bool a, bool b)                    { return !(a & b); }
-		public static bool NotAnd(bool a, bool b, bool c)            { return !(a & b & c); }
-		public static bool NotAnd(bool a, bool b, bool c, bool d)    { return !(a & b & c & d); }
 	    public static bool Inverse(bool a)                           { return !a; } 
         public static bool op_LogicalNot(bool a)                     { return !a; }
         public static bool op_BitwiseAnd(bool a, bool b)             { return a & b; }
         public static bool op_BitwiseOr(bool a, bool b)              { return a | b; }
         public static bool op_ExclusiveOr(bool a, bool b)            { return a ^ b; }
+        public static bool op_Equality(bool a, bool b)               { return a == b; }
+        public static bool op_Inequality(bool a, bool b)             { return a != b; }
+        public static bool IfTrue(bool a, out bool ifFalse)          { ifFalse= !a; return a; }
 	}
 	
 	public static class Choices {

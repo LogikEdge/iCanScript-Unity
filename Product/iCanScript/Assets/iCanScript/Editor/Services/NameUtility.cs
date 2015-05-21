@@ -237,15 +237,22 @@ namespace iCanScript.Internal {
             if(name == "op_Subtraction")        return "operator -";
             if(name == "op_Multiply")           return "operator *";
             if(name == "op_Division")           return "operator /";
+            if(name == "op_AdditionAssign")     return "operator +=";
+            if(name == "op_SubtractionAssign")  return "operator -=";
+            if(name == "op_MultiplyAssign")     return "operator *=";
+            if(name == "op_DivisionAssign")     return "operator /=";
 			if(name == "op_UnaryNegation")      return "operator -";
 			if(name == "op_GreaterThan")        return "operator >";
 			if(name == "op_LessThan")           return "operator <";
 			if(name == "op_GreaterThanOrEqual")	return "operator >=";
 			if(name == "op_LessThanOrEqual")    return "operator <=";
-            if(name == "op_LogicalNot")         return "operator !";
-            if(name == "op_BitwiseOr")          return "operator |";
-            if(name == "op_BitwiseAnd")         return "operator &";
-            if(name == "op_ExclusiveOr")        return "operator ^";
+            if(name == "op_LogicalNot")         return "operator Not";
+            if(name == "op_BitwiseOr")          return "operator Or";
+            if(name == "op_BitwiseAnd")         return "operator And";
+            if(name == "op_ExclusiveOr")        return "operator Xor";
+            if(name == "op_BitwiseOrAssign")    return "operator Or=";
+            if(name == "op_BitwiseAndAssign")   return "operator And=";
+            if(name == "op_ExclusiveOrAssign")  return "operator Xor=";
 			if(name == "get_Item")		        return "Get operator []";
 			if(name == "set_Item")		        return "Set operator []";
 			// -- Create nice readable name --
