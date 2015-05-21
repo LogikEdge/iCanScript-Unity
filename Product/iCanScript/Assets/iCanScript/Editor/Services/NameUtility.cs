@@ -242,6 +242,10 @@ namespace iCanScript.Internal {
 			if(name == "op_LessThan")           return "operator <";
 			if(name == "op_GreaterThanOrEqual")	return "operator >=";
 			if(name == "op_LessThanOrEqual")    return "operator <=";
+            if(name == "op_LogicalNot")         return "operator !";
+            if(name == "op_BitwiseOr")          return "operator |";
+            if(name == "op_BitwiseAnd")         return "operator &";
+            if(name == "op_ExclusiveOr")        return "operator ^";
 			if(name == "get_Item")		        return "Get operator []";
 			if(name == "set_Item")		        return "Set operator []";
 			// -- Create nice readable name --

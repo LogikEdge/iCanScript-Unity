@@ -134,10 +134,6 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             var indent= ToIndent(indentSize);
             var result= new StringBuilder(indent, 1024);
             // Access Type
-            if(myAccessSpecifier == AccessSpecifier.Public) {
-//                result.Append("[iCS_FileSpec(iCanScriptFile=\"Assets/fred.ics2\", iCanScriptFileGUID=\"ABCDEF12345\")]");
-                result.Append(indent);
-            }
             result.Append(ToAccessString(myAccessSpecifier));
             // Scope Type
             if(myScopeSpecifier != ScopeSpecifier.NonStatic) {

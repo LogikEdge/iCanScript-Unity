@@ -109,30 +109,29 @@ namespace iCanScript.Logic {
 	}
 	
 	public static class Boolean {
-	    [iCS_Function] public static bool And(bool a, bool b)                       { return a & b; }
-	    [iCS_Function] public static bool And(bool a, bool b, bool c)               { return a & b & c; }
-	    [iCS_Function] public static bool And(bool a, bool b, bool c, bool d)       { return a & b & c & d; }
-	    [iCS_Function] public static bool Or (bool a, bool b)                       { return a | b; }
-	    [iCS_Function] public static bool Or (bool a, bool b, bool c)               { return a | b | c; }
-	    [iCS_Function] public static bool Or (bool a, bool b, bool c, bool d)       { return a | b | c | d; }
-	    [iCS_Function] public static bool Xor(bool a, bool b)                       { return a ^ b; }
-	    [iCS_Function] public static bool Not(bool a)                               { return !a; } 
-		[iCS_Function] public static bool NotAnd(bool a, bool b)                    { return !(a & b); }
-		[iCS_Function] public static bool NotAnd(bool a, bool b, bool c)            { return !(a & b & c); }
-		[iCS_Function] public static bool NotAnd(bool a, bool b, bool c, bool d)    { return !(a & b & c & d); }
-	    [iCS_Function] public static bool Inverse(bool a)                           { return !a; } 
+	    public static bool And(bool a, bool b)                       { return a & b; }
+	    public static bool And(bool a, bool b, bool c)               { return a & b & c; }
+	    public static bool And(bool a, bool b, bool c, bool d)       { return a & b & c & d; }
+	    public static bool Or (bool a, bool b)                       { return a | b; }
+	    public static bool Or (bool a, bool b, bool c)               { return a | b | c; }
+	    public static bool Or (bool a, bool b, bool c, bool d)       { return a | b | c | d; }
+	    public static bool Xor(bool a, bool b)                       { return a ^ b; }
+	    public static bool Not(bool a)                               { return !a; } 
+		public static bool NotAnd(bool a, bool b)                    { return !(a & b); }
+		public static bool NotAnd(bool a, bool b, bool c)            { return !(a & b & c); }
+		public static bool NotAnd(bool a, bool b, bool c, bool d)    { return !(a & b & c & d); }
+	    public static bool Inverse(bool a)                           { return !a; } 
+        public static bool op_LogicalNot(bool a)                     { return !a; }
+        public static bool op_BitwiseAnd(bool a, bool b)             { return a & b; }
+        public static bool op_BitwiseOr(bool a, bool b)              { return a | b; }
+        public static bool op_ExclusiveOr(bool a, bool b)            { return a ^ b; }
 	}
 	
 	public static class Choices {
-		[iCS_Function(Return="out")]
-		public static bool  Choice(bool trueValue,  bool falseValue,  bool sel) { return sel ? trueValue : falseValue; }
-		[iCS_Function(Return="out")]
+		public static bool   Choice(bool trueValue,  bool falseValue,  bool sel) { return sel ? trueValue : falseValue; }
 		public static float  Choice(float trueValue,  float falseValue,  bool sel) { return sel ? trueValue : falseValue; }
-		[iCS_Function(Return="out")]
 		public static int    Choice(int trueValue,    int falseValue,    bool sel) { return sel ? trueValue : falseValue; }
-		[iCS_Function(Return="out")]
 		public static string Choice(string trueValue, string falseValue, bool sel) { return sel ? trueValue : falseValue; }
-		[iCS_Function(Return="out")]
 		public static Object Choice(Object trueValue, Object falseValue, bool sel) { return sel ? trueValue : falseValue; }
 	}
 }

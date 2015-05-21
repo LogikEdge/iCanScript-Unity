@@ -313,6 +313,10 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 			if(operatorName == "op_LessThan")           return "<";
 			if(operatorName == "op_GreaterThanOrEqual")	return ">=";
 			if(operatorName == "op_LessThanOrEqual")    return "<=";
+            if(operatorName == "op_LogicalNot")         return "!";
+            if(operatorName == "op_BitwiseOr")          return "|";
+            if(operatorName == "op_BitwiseAnd")         return "&";
+            if(operatorName == "op_ExclusiveOr")        return "^";
             Debug.LogWarning("iCanScript: Unknown operator=> "+operatorName);
             return operatorName;
         }
