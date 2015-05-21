@@ -24,12 +24,6 @@ namespace iCanScript.Internal.Editor {
 		public string		memberName	     { get { return memberInfo.Name; }}
         public MemberTypes  memberType       { get { return memberInfo.MemberType; }}
 		public Type			declaringType    { get { return memberInfo.DeclaringType; }}
-        public bool         isField          { get { return memberType == MemberTypes.Field; }}
-        public bool         isProperty       { get { return isPropertyGetter || isPropertySetter; }}
-        public bool         isConstructor    { get { return memberType == MemberTypes.Constructor; }}
-        public bool         isMethod         { get { return memberType == MemberTypes.Method; }}
-        public bool         isPropertyGetter { get { return this is LibraryPropertyGetter; }}
-        public bool         isPropertySetter { get { return this is LibraryPropertySetter; }}
         public bool         isInherited   {
             get {
 				var libraryType= parent as LibraryType;

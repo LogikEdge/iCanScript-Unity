@@ -66,7 +66,7 @@ namespace iCanScript.Internal.Editor {
         /// Sorts the child members according to their type.
         public void Sort(float minScore) {
             // -- Sort our children --
-            Sort<LibraryMemberInfo>(
+            Sort<LibraryTypeMember>(
                 (x,y)=> {
                     // -- Handler null parameters. --
                     if (x == null && y == null) return 0;

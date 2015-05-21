@@ -6,8 +6,14 @@ namespace iCanScript.Internal.Editor {
     /// Defines a Unity event handler library object.
     public abstract class LibraryTypeMember : LibraryObject {
         // ======================================================================
-        // FIELDS
+        // Properties
         // ----------------------------------------------------------------------
+        public bool isField          { get { return this is LibraryField; }}
+        public bool isProperty       { get { return this is LibraryProperty; }}
+        public bool isConstructor    { get { return this is LibraryConstructor; }}
+        public bool isMethod         { get { return this is LibraryMemberInfo && (this as LibraryMemberInfo).memberType == MemberTypes.Method; }}
+        public bool isPropertyGetter { get { return this is LibraryPropertyGetter; }}
+        public bool isPropertySetter { get { return this is LibraryPropertySetter; }}
 		
         // ======================================================================
         // INTERFACES
@@ -42,7 +48,7 @@ namespace iCanScript.Internal.Editor {
 		}
 
         // ----------------------------------------------------------------------
-		/// Computes the visibility of the library objecy.
+		/// Computes the visibility of the library object.
         ///
         /// For type members, the visibility is affected by the "Show Inheritance"
         /// and "Show Protected" flags as well as the filtering score.

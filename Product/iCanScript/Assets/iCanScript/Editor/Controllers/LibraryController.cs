@@ -103,12 +103,12 @@ namespace iCanScript.Internal.Editor {
             // -- Update search score. --
             myDatabase.ComputeScore();
             
-            // -- Update visibility. --
-            myDatabase.ComputeVisibility();
-            
 			// -- Sort the database. --
             myDatabase.Sort();
 
+            // -- Update visibility. --
+            myDatabase.ComputeVisibility();
+            
             // -- Take a snapshot of string sort to speed up sorting. --
             myDatabase.TakeSnapshotOfStringSortIndex();
         }
