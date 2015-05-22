@@ -95,18 +95,6 @@ namespace iCanScript.Logic {
 	    }
 	}
 	
-	public static class Boolean {
-	    public static bool And(bool a, bool b)                       { return a & b; }
-	    public static bool And(bool a, bool b, bool c)               { return a & b & c; }
-	    public static bool And(bool a, bool b, bool c, bool d)       { return a & b & c & d; }
-	    public static bool Or (bool a, bool b)                       { return a | b; }
-	    public static bool Or (bool a, bool b, bool c)               { return a | b | c; }
-	    public static bool Or (bool a, bool b, bool c, bool d)       { return a | b | c | d; }
-	    public static bool Xor(bool a, bool b)                       { return a ^ b; }
-	    public static bool Not(bool a)                               { return !a; } 
-	    public static bool Inverse(bool a)                           { return !a; } 
-	}
-	
 	public static class Choices {
 		public static bool   Choice(bool trueValue,  bool falseValue,  bool sel) { return sel ? trueValue : falseValue; }
 		public static float  Choice(float trueValue,  float falseValue,  bool sel) { return sel ? trueValue : falseValue; }
