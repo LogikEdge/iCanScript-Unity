@@ -324,6 +324,8 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             if(operatorName == "op_BitwiseOrAssign")    return "|=";
             if(operatorName == "op_BitwiseAndAssign")   return "&=";
             if(operatorName == "op_ExclusiveOrAssign")  return "^=";
+            if(operatorName == "op_Assignment")         return "=";
+            
             Debug.LogWarning("iCanScript: Unknown operator=> "+operatorName);
             return operatorName;
         }

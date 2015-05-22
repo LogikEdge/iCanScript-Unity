@@ -90,6 +90,22 @@ namespace iCanScript.Internal.Editor {
                 }
             }
         }
+
+        // ----------------------------------------------------------------------
+		/// Computes the visibility for the namespace root object.
+        ///
+        /// Updates the number of visible namespaces.
+        ///
+		public override void ComputeVisibility() {
+            base.ComputeVisibility();
+            if(this.libraryRoot.showUnityEditorMembers == false) {
+                if(GetRawName() == "UnityEditor") {
+                    myIsVisible= false;
+                }
+            }
+            if(isVisible) this.libraryRoot.IncrementVisibleNamespaceCount();
+		}
+        
     }
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

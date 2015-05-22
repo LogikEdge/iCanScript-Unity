@@ -89,7 +89,7 @@ namespace iCanScript.Internal.Editor {
                     if(y.isProperty && !(x.isProperty)) return 1;
                     if(x.isConstructor && !(y.isConstructor)) return -1;
                     if(y.isConstructor && !(x.isConstructor)) return 1;
-                    return string.Compare(x.GetRawName(), y.GetRawName());
+                    return string.Compare(x.GetNodeName(), y.GetNodeName());
                 }
             );
         }

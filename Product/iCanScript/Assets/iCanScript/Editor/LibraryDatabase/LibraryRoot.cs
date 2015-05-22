@@ -43,8 +43,9 @@ namespace iCanScript.Internal.Editor {
         int          myNumberOfVisibleNamespaces= 0;
         int          myNumberOfVisibleTypes     = 0;
         int          myNumberOfVisibleMembers   = 0;
-        bool         myShowInheritedMembers     = false;
+        bool         myShowInheritedMembers     = true;
         bool         myShowProtectedMembers     = false;
+        bool         myShowUnityEditorMembers   = true;
         FilterString myNamespaceFilter          = new FilterString("");
         FilterString myTypeFilter               = new FilterString("");
         FilterString myMemberFilter             = new FilterString("");
@@ -74,6 +75,14 @@ namespace iCanScript.Internal.Editor {
             set {
                 if(myShowProtectedMembers == value) return;
                 myShowProtectedMembers= value;
+                ComputeVisibility();
+            }
+        }
+        public bool showUnityEditorMembers {
+            get { return myShowUnityEditorMembers; }
+            set {
+                if(myShowUnityEditorMembers == value) return;
+                myShowUnityEditorMembers= value;
                 ComputeVisibility();
             }
         }
