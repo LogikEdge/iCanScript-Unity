@@ -1,6 +1,6 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.16
+Version: v2.0.17
 CSS: Github.css
 
 
@@ -9,6 +9,27 @@ CSS: Github.css
 <!-- PDF: <<[front-matter/pdf.md] -->
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
+
+## iCanScript v2.0.17 ##
+
+_May 20, 2015_
+
+V2.0.17 adds the operators for simple primitive types such as Boolean, Int, and Float.
+
+**<span style="color: red">\[WARNING\]:</span>**  The library _**iCanScript.Logic.Boolean**_ has been replaced by _**CSharp.Primitives.Bool**_.  Note that you may have to regenerate the source code from the visual script if you see errors after you upgrade.
+
+### List of Changes
+
+- **<span style="color: green">\[NEW\]</span>** Added support for C# primitive variable operators. The new operators can be access from the library under namespace: _**CSharp.Primitives**_.  The primitive types that are affected are:
+	- _**Bool**_, _**Int**_, and _**Float**_.
+- **<span style="color: green">\[NEW\]</span>** An option to _**Show / Hide the Unity Editor library**_ has been added to the library toolbar.
+- **<span style="color: blue">\[IMPROVED\]</span>** Properly indent the generated code for the first line of the class declaration.
+- **<span style="color: blue">\[IMPROVED\]</span>** The Unity event handlers in the dynamic menu are now sorted.
+- **<span style="color: blue">\[IMPROVED\]</span>** The library options _**Show Inherited**_ is now preserved after a recompile or a restart of Unity.
+- **<span style="color: blue">\[CHANGED\]</span>** The library options _**Show Protected**_ has been removed from the library toolbar.
+- **<span style="color: red">\[REMOVED\]</span>** The library node _**iCanScript.Logic.Boolean**_ has been removed.  Use _**CSharp.Primitives.Bool**_ instead.
+
+* * *
 
 ## iCanScript v2.0.16 ##
 

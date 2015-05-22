@@ -5,6 +5,7 @@ using System.Collections;
 using iCanScript.Internal.FuzzyLogic;
 
 namespace iCanScript.Internal.Editor {
+    using Prefs= PreferencesController;
 
     public class LibraryDisplayController : DSTreeViewDataSource {
         // =================================================================================
@@ -36,6 +37,7 @@ namespace iCanScript.Internal.Editor {
 			get { return database.showInheritedMembers; }
 			set {
                 if(database.showInheritedMembers != value) {
+                    Prefs.LibraryInheritedOption= value;
                     database.showInheritedMembers= value;
                     ShowVisible();                
                 }
@@ -45,7 +47,18 @@ namespace iCanScript.Internal.Editor {
 			get { return database.showProtectedMembers; }
 			set {
                 if(database.showProtectedMembers != value) {
+                    Prefs.LibraryProtectedOption= value;
                     database.showProtectedMembers= value;
+                    ShowVisible();
+                }
+            }
+		}
+		public bool showUnityEditorMembers {
+			get { return database.showUnityEditorMembers; }
+			set {
+                if(database.showUnityEditorMembers != value) {
+                    Prefs.LibraryUnityEditorOption= value;
+                    database.showUnityEditorMembers= value;
                     ShowVisible();
                 }
             }
@@ -117,6 +130,9 @@ namespace iCanScript.Internal.Editor {
     		myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16, 2);
             // -- Initialize the cursor --
             Reset();
+            // -- Load the user options. --
+            showInheritedMembers= Prefs.LibraryInheritedOption;
+            showProtectedMembers= Prefs.LibraryProtectedOption;
     	}
 
         // ===================================================================

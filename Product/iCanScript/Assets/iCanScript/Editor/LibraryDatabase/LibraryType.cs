@@ -66,7 +66,7 @@ namespace iCanScript.Internal.Editor {
         /// Sorts the child members according to their type.
         public void Sort(float minScore) {
             // -- Sort our children --
-            Sort<LibraryMemberInfo>(
+            Sort<LibraryTypeMember>(
                 (x,y)=> {
                     // -- Handler null parameters. --
                     if (x == null && y == null) return 0;
@@ -89,7 +89,7 @@ namespace iCanScript.Internal.Editor {
                     if(y.isProperty && !(x.isProperty)) return 1;
                     if(x.isConstructor && !(y.isConstructor)) return -1;
                     if(y.isConstructor && !(x.isConstructor)) return 1;
-                    return string.Compare(x.GetRawName(), y.GetRawName());
+                    return string.Compare(x.GetNodeName(), y.GetNodeName());
                 }
             );
         }

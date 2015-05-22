@@ -231,19 +231,31 @@ namespace iCanScript.Internal {
 			// -- iCanScript remains intact --
     		if(name == "iCanScript") return name;
 			// -- Convert standard operators --
-            if(name == "op_Equality")           return "operator ==";
-            if(name == "op_Inequality")         return "operator !=";
+            if(name == "op_Assignment")         return "operator =";            
+            if(name == "op_Equality")           return "Is Equal";
+            if(name == "op_Inequality")         return "Is Not Equal";
             if(name == "op_Addition")           return "operator +";
             if(name == "op_Subtraction")        return "operator -";
             if(name == "op_Multiply")           return "operator *";
             if(name == "op_Division")           return "operator /";
-			if(name == "op_UnaryNegation")      return "operator -";
+            if(name == "op_AdditionAssign")     return "operator +=";
+            if(name == "op_SubtractionAssign")  return "operator -=";
+            if(name == "op_MultiplyAssign")     return "operator *=";
+            if(name == "op_DivisionAssign")     return "operator /=";
+			if(name == "op_UnaryNegation")      return "Negate";
 			if(name == "op_GreaterThan")        return "operator >";
 			if(name == "op_LessThan")           return "operator <";
 			if(name == "op_GreaterThanOrEqual")	return "operator >=";
 			if(name == "op_LessThanOrEqual")    return "operator <=";
-			if(name == "get_Item")		        return "Get operator []";
-			if(name == "set_Item")		        return "Set operator []";
+            if(name == "op_LogicalNot")         return "Inverse";
+            if(name == "op_BitwiseOr")          return "Or";
+            if(name == "op_BitwiseAnd")         return "And";
+            if(name == "op_ExclusiveOr")        return "Xor";
+            if(name == "op_BitwiseOrAssign")    return "Or and Update";
+            if(name == "op_BitwiseAndAssign")   return "And and Update";
+            if(name == "op_ExclusiveOrAssign")  return "Xor and Update";
+			if(name == "get_Item")		        return "Get Item At[idx]";
+			if(name == "set_Item")		        return "Set Item At[idx]";
 			// -- Create nice readable name --
             var result= new StringBuilder(128);
             bool upperNext= true;

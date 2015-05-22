@@ -583,6 +583,52 @@ namespace iCanScript.Internal.Editor {
         }
     
     	// =================================================================================
+    	// Library Preferences
+        // ---------------------------------------------------------------------------------
+    	//
+    	// Default Values
+    	//
+    	const bool kLibraryInheritedOption  = true;
+        const bool kLibraryProtectedOption  = false;
+    	const bool kLibraryUnityEditorOption= true;
+    
+    	//
+    	// Database access keys
+    	//
+    	const string kLibraryInheritedOptionKey  = "iCS_LibraryInheritedOption";
+    	const string kLibraryProtectedOptionKey  = "iCS_LibraryProtectedOption";
+    	const string kLibraryUnityEditorOptionKey= "iCS_LibraryUnityEditorOption";
+
+    	//
+    	// Reset to default value functions
+    	//
+    	public static void ResetLibraryInheritedOption() {
+    	    LibraryInheritedOption= kLibraryInheritedOption;
+    	}
+    	public static void ResetLibraryProtectedOption() {
+    	    LibraryProtectedOption= kLibraryProtectedOption;
+    	}
+    	public static void ResetLibraryUnityEditorOption() {
+    	    LibraryUnityEditorOption= kLibraryUnityEditorOption;
+    	}
+    
+    	//
+    	// Accessors
+    	//
+        public static bool LibraryInheritedOption {
+            get { return EditorPrefs.GetBool(kLibraryInheritedOptionKey, kLibraryInheritedOption); }
+            set { EditorPrefs.SetBool(kLibraryInheritedOptionKey, value); }
+        }
+        public static bool LibraryProtectedOption {
+            get { return EditorPrefs.GetBool(kLibraryProtectedOptionKey, kLibraryProtectedOption); }
+            set { EditorPrefs.SetBool(kLibraryProtectedOptionKey, value); }
+        }
+        public static bool LibraryUnityEditorOption {
+            get { return EditorPrefs.GetBool(kLibraryUnityEditorOptionKey, kLibraryUnityEditorOption); }
+            set { EditorPrefs.SetBool(kLibraryUnityEditorOptionKey, value); }
+        }
+
+    	// =================================================================================
     	// Activation
     	// ---------------------------------------------------------------------------------
     	static PreferencesController() {

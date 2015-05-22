@@ -39,6 +39,10 @@ namespace iCanScript.Internal.Editor {
 			get { return myController.showProtectedMembers; }
 			set { myController.showProtectedMembers= value; }
 		}
+		public bool showUnityEditorMembers {
+			get { return myController.showUnityEditorMembers; }
+			set { myController.showUnityEditorMembers= value; }
+		}
 		public string namespaceFilter {
 			get { return myController.namespaceFilter; }
 			set { myController.namespaceFilter= value; }
@@ -129,11 +133,15 @@ namespace iCanScript.Internal.Editor {
             //  -- Add display options -- 
             iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Show:", 0, 0);
             iCS_ToolbarUtility.Separator(ref line1Rect);
-            showInheritedMembers= iCS_ToolbarUtility.Toggle(ref line1Rect, showInheritedMembers, 10, 0);
+            showInheritedMembers= iCS_ToolbarUtility.Toggle(ref line1Rect, showInheritedMembers, 5, 0);
             iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Inherited", 0, 0);
             iCS_ToolbarUtility.Separator(ref line1Rect);
-            showProtectedMembers= iCS_ToolbarUtility.Toggle(ref line1Rect, showProtectedMembers, 10, 0);
-            iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Protected", 0, 0);
+//            showProtectedMembers= iCS_ToolbarUtility.Toggle(ref line1Rect, showProtectedMembers, 5, 0);
+//            iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Protected", 0, 0);
+//            iCS_ToolbarUtility.Separator(ref line1Rect);
+            showUnityEditorMembers= iCS_ToolbarUtility.Toggle(ref line1Rect, showUnityEditorMembers, 5, 0);
+            iCS_ToolbarUtility.MiniLabel(ref line1Rect, "Unity Editor", 0, 0);
+            iCS_ToolbarUtility.Separator(ref line1Rect);
 	        iCS_ToolbarUtility.MiniLabel(ref line1Rect, "# items: "+numberOfVisibleMembers.ToString(), 0, 0, true);
 			// -- Add search fields --
             iCS_ToolbarUtility.MiniLabel(ref line2Rect, "Search: ", 0, 0);

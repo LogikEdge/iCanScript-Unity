@@ -16,20 +16,23 @@ namespace iCanScript.Variables {
 	    public bool myValue;
     
 	    public bool Value {
-	        [iCS_Function] get { return myValue; }
-	        [iCS_Function] set { myValue= value; }
+	        get { return myValue; }
+	        set { myValue= value; }
 	    }
 	    public bool Not {
-	        [iCS_Function] get { return !myValue; }
+	        get { return !myValue; }
 	    }
 	    public bool Inverse {
-	        [iCS_Function] get { return !myValue; }        
+	        get { return !myValue; }        
 	    }
     
-	    [iCS_Function] public Bool(bool init= false) { myValue= init; }
-	    [iCS_Function] public bool And(bool b) { return myValue & b; }
-	    [iCS_Function] public bool Or(bool b)  { return myValue | b; }
-	    [iCS_Function] public bool Xor(bool b) { return myValue ^ b; }
+	    public Bool(bool init= false) { myValue= init; }
+	    public bool And(bool b) { return myValue & b; }
+	    public bool Or(bool b)  { return myValue | b; }
+	    public bool Xor(bool b) { return myValue ^ b; }
+        public static bool operator &(Bool a, Bool b) { return a.myValue & b.myValue; }
+        public static bool operator |(Bool a, Bool b) { return a.myValue | b.myValue; }
+        public static bool operator ^(Bool a, Bool b) { return a.myValue | b.myValue; }
 	}
 
 	[System.Serializable]
