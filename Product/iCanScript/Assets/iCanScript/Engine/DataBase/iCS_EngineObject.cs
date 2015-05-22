@@ -37,7 +37,7 @@ namespace iCanScript.Internal.Engine {
         // Database Fields
         // ----------------------------------------------------------------------
         public string                RawName            = "";
-        public VSObjectType    ObjectType         = VSObjectType.Unknown;
+        public VSObjectType          ObjectType         = VSObjectType.Unknown;
         public int                   InstanceId         = -1;
         public int                   ParentId           = -1;
         public string                QualifiedType      = "";

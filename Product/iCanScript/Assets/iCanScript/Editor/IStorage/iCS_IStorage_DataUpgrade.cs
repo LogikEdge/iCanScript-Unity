@@ -1,4 +1,4 @@
-//#define TEST_UPGRADE
+#define TEST_UPGRADE
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
@@ -11,6 +11,7 @@ using iCanScript.Conversions;
 using iCanScript.TimeUtility;
 using iCanScript.MathUtility;
 using iCanScript.Logic;
+using CSharp.Primitives;
 
 namespace iCanScript.Internal.Editor {
     
@@ -55,6 +56,9 @@ namespace iCanScript.Internal.Editor {
             }
     		if(storageVersion.IsOlderThen(2,0,12)) {
                 isUpgraded |= V2_0_12_EditorUpgrade();
+            }
+    		if(storageVersion.IsOlderThen(2,0,17)) {
+                isUpgraded |= V2_0_17_EditorUpgrade();
             }
 
             // -- Warn the user that an upgrade toke place --
@@ -172,15 +176,15 @@ namespace iCanScript.Internal.Editor {
                         isUpgraded= true;                        
                     }
                     else if(qualifiedTypeName == "Bool" || qualifiedTypeName == "iCanScript.Nodes.Bool") {
-                        engineObject.QualifiedType= typeof(Bool).AssemblyQualifiedName;
+                        engineObject.QualifiedType= typeof(iCanScript.Variables.Bool).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
                     else if(qualifiedTypeName == "Int" || qualifiedTypeName == "iCanScript.Nodes.Int") {
-                        engineObject.QualifiedType= typeof(Int).AssemblyQualifiedName;
+                        engineObject.QualifiedType= typeof(iCanScript.Variables.Int).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
                     else if(qualifiedTypeName == "Float" || qualifiedTypeName == "iCanScript.Nodes.Float") {
-                        engineObject.QualifiedType= typeof(Float).AssemblyQualifiedName;
+                        engineObject.QualifiedType= typeof(iCanScript.Variables.Float).AssemblyQualifiedName;
                         isUpgraded= true;                        
                     }
                     else if(qualifiedTypeName == "iCS_GameController" || qualifiedTypeName == "iCanScript.Nodes.iCS_GameController") {
@@ -201,7 +205,7 @@ namespace iCanScript.Internal.Editor {
                     }
                     else if(qualifiedTypeName == "iCS_Oscillator" || qualifiedTypeName == "iCanScript.Nodes.iCS_Oscillator") {
                         engineObject.QualifiedType= typeof(Oscillator).AssemblyQualifiedName;
-                        isUpgraded= true;                        
+                        isUpgraded= true;                      
                     }
                     else if(qualifiedTypeName == "iCS_PulseGenerator" || qualifiedTypeName == "iCanScript.Nodes.iCS_PulseGenerator") {
                         engineObject.QualifiedType= typeof(PulseGenerator).AssemblyQualifiedName;
@@ -223,8 +227,48 @@ namespace iCanScript.Internal.Editor {
             return isUpgraded;
         }
         // ----------------------------------------------------------------------
-        /// Performs the editor data upgrade for v2.0.12.
-        bool V2_0_13_EditorUpgrade() {
+        /// Performs the editor data upgrade for v2.0.17.
+        bool V2_0_17_EditorUpgrade() {
+            bool isUpgraded= false;
+            // -- Convert to new port specification --
+            ForEach(
+                p=> {
+                    var engineObject= p.EngineObject;
+                    var qualifiedTypeName= p.QualifiedTypeName;
+                    if(qualifiedTypeName == "iCanScript.Logic.Boolean") {
+                        var methodName= engineObject.MethodName;
+                        var newQualifiedTypeName= typeof(CSharp.Primitives.Bool).AssemblyQualifiedName;
+                        if(methodName == "Not" || methodName == "Inverse") {
+                            engineObject.QualifiedType= newQualifiedTypeName;
+                            engineObject.MethodName= "op_LogicalNot";
+                            isUpgraded= true;
+                        }
+                        else if(methodName == "And") {
+                            engineObject.QualifiedType= newQualifiedTypeName;
+                            engineObject.MethodName= "op_BitwiseAnd";
+                            isUpgraded= true;
+                        }
+                        else if(methodName == "Or") {
+                            engineObject.QualifiedType= newQualifiedTypeName;
+                            engineObject.MethodName= "op_BitwiseOr";
+                            isUpgraded= true;
+                        }
+                        else if(methodName == "Xor") {
+                            engineObject.QualifiedType= newQualifiedTypeName;
+                            engineObject.MethodName= "op_ExclusiveOr";
+                            isUpgraded= true;
+                        }
+                        else {
+                            Debug.LogWarning("Need to convert=> "+qualifiedTypeName+"."+methodName);                            
+                        }
+                    }
+                }
+            );
+            return isUpgraded;
+        }
+        // ----------------------------------------------------------------------
+        /// Performs the editor data upgrade for v2.0.18.
+        bool V2_0_18_EditorUpgrade() {
             bool isUpgraded= false;
             // -- Convert to new port specification --
             ForEach(

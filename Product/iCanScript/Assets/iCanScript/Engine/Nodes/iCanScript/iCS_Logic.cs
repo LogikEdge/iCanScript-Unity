@@ -105,13 +105,6 @@ namespace iCanScript.Logic {
 	    public static bool Xor(bool a, bool b)                       { return a ^ b; }
 	    public static bool Not(bool a)                               { return !a; } 
 	    public static bool Inverse(bool a)                           { return !a; } 
-        public static bool op_LogicalNot(bool a)                     { return !a; }
-        public static bool op_BitwiseAnd(bool a, bool b)             { return a & b; }
-        public static bool op_BitwiseOr(bool a, bool b)              { return a | b; }
-        public static bool op_ExclusiveOr(bool a, bool b)            { return a ^ b; }
-        public static bool op_Equality(bool a, bool b)               { return a == b; }
-        public static bool op_Inequality(bool a, bool b)             { return a != b; }
-        public static bool IfTrue(bool a, out bool ifFalse)          { ifFalse= !a; return a; }
 	}
 	
 	public static class Choices {
