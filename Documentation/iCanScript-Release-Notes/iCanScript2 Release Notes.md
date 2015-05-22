@@ -23,8 +23,11 @@ V2.0.17 adds the operators for simple primitive types such as Boolean, Int, and 
 	- _**operator |**_ --> Or;
 	- _**operator ^**_ --> Exclusive Or;
 	- _**operator !**_ --> Inverse;
+- **<span style="color: green">\[NEW\]</span>** An option to _**Show / Hide the Unity Editor library**_ has been added to the library toolbar.
 - **<span style="color: blue">\[IMPROVED\]</span>** Properly indent the generated code for the first line of the class declaration.
 - **<span style="color: blue">\[IMPROVED\]</span>** The Unity event handlers in the dynamic menu are now sorted.
+- **<span style="color: blue">\[IMPROVED\]</span>** The library options _**Show Inherited**_ is now preserved after a recompile or a restart of Unity.
+- **<span style="color: blue">\[CHANGED\]</span>** The library options _**Show Protected**_ has been removed from the library toolbar.
 
 * * *
 
