@@ -219,6 +219,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 						return;
 					}
                     if(IsFieldOrPropertyGet(vsObj)) {
+                        Debug.Log("Found get property: "+vsObj.FullName);
                         code.Add(new GetPropertyCallDefinition(vsObj, this));
                     }
                     else if(IsFieldOrPropertySet(vsObj)) {

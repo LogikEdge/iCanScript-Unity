@@ -19,7 +19,10 @@ V2.0.18 ...
 
 ### List of Changes
 
-**<span style="color: blue">\[IMPROVED\]:</span>**  The length of the generated comments have been readjusted to match the forum post width.
+- **<span style="color: green">\[NEW\]:</span>** Added support for _**operator +(string, Object)**_ in the C# primitive namespace.
+- **<span style="color: blue">\[IMPROVED\]:</span>**  The length of the generated comments have been readjusted to match the forum post width.
+- **<span style="color: blue">\[IMPROVED\]:</span>** Removed unnecessary using clause for Sharp language primitives.
+- **<span style="color: red">\[FIXED\]:</span>** Invalid generated code to _**Get**_ the value of a _Field_ variable.
 
 * * *
 

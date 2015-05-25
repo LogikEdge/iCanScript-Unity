@@ -814,11 +814,11 @@ namespace iCanScript.Internal.Editor {
         iCS_EditorObject CreateBaseFieldGetterCallNode(int parentId, LibraryFieldGetter libraryField, VSObjectType nodeType) {
 			// -- Create base node --
 			var instance= CreateBaseNode(parentId, libraryField, nodeType);
-            // -- Create parameter ports. --
+    		// -- Create return port. --
 			var fieldName= libraryField.fieldName;
             var fieldType= libraryField.fieldType;
             var portType = VSObjectType.OutFixDataPort;
-            var portIndex= (int)iCS_PortIndex.ParametersStart;
+            var portIndex= (int)iCS_PortIndex.Return;
             CreatePort(fieldName, instance.InstanceId, fieldType, portType, portIndex);
             return instance;
         }
