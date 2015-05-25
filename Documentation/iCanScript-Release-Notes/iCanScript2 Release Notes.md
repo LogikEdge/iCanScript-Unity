@@ -14,15 +14,16 @@ CSS: Github.css
 
 _May 25, 2015_
 
-V2.0.18 ...
+V2.0.18 is a minor bug fix and code generation optimization release.
 
 
 ### List of Changes
 
-- **<span style="color: green">\[NEW\]:</span>** Added support for _**operator +(string, Object)**_ in the C# primitive namespace.
-- **<span style="color: blue">\[IMPROVED\]:</span>**  The length of the generated comments have been readjusted to match the forum post width.
-- **<span style="color: blue">\[IMPROVED\]:</span>** Removed unnecessary using clause for Sharp language primitives.
-- **<span style="color: red">\[FIXED\]:</span>** Invalid generated code to _**Get**_ the value of a _Field_ variable.
+- **<span style="color: green">\[NEW\] </span>** Added support for _**operator +(string, Object)**_ in the C# primitive namespace.
+- **<span style="color: blue">\[IMPROVED\] </span>**  The length of the generated comments have been readjusted to match the forum post width.
+- **<span style="color: blue">\[IMPROVED\] </span>** Removed unnecessary _"using CSharp.Primitive;"_ generated for each file.
+- **<span style="color: blue">\[IMPROVED\] </span>** Code generation optimization when target port of a function is connected to the output of a property or field.
+- **<span style="color: red">\[FIXED\] </span>** Invalid generated code for the _**Get**_  of a _Field_ variable.
 
 * * *
 
