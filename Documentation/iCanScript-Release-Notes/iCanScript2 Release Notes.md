@@ -1,6 +1,6 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.17
+Version: v2.0.18
 CSS: Github.css
 
 
@@ -9,6 +9,20 @@ CSS: Github.css
 <!-- PDF: <<[front-matter/pdf.md] -->
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
+
+## iCanScript v2.0.18 ##
+
+_May 25, 2015_
+
+V2.0.18 ...
+
+
+### List of Changes
+
+**<span style="color: blue">\[IMPROVED\]:</span>**  The length of the generated comments have been readjusted to match the forum post width.
+
+* * *
+
 
 ## iCanScript v2.0.17 ##
 
