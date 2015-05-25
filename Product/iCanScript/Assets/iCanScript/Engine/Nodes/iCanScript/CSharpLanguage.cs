@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
 
 namespace CSharp.Primitives {
     
@@ -82,5 +81,8 @@ namespace CSharp.Primitives {
 		public static bool op_LessThanOrEqual(float value, float bias)      { return value <= bias; }
 
     }
+	public static class String {
+        public static string op_Addition(string a, Object b)					{ return a + b; }		
+	}
 
 }

@@ -14,6 +14,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         CodeBase[]               myParameters     = null;
         List<VariableDefinition> myOutputVariables= new List<VariableDefinition>();
         CodeBase                 myReturnVariable = null;
+        CodeBase                 myTargetCode     = null;
 		
         // ===================================================================
         // PROPERTIES
@@ -111,6 +112,21 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                     producerCode.Parent= myParent;
                 }
 				myParameters[i].ResolveDependencies();
+            }
+            // -- Optimize target port from get fields/properties. --
+            if(!IsStatic()) {
+                var targetPort= DataFlow.GetTargetPort(VSObject);
+                if(targetPort != null) {
+                    var producerPort= CodeFlow.GetProducerPort(targetPort);
+					var producerCode= Context.GetCodeFor(producerPort.ParentNode);
+                    if(producerCode is GetPropertyCallDefinition) {
+                        if(producerPort.ConsumerPorts.Length == 1) {
+                            myTargetCode= producerCode;
+                            producerCode.Parent.Remove(producerCode);
+                            producerCode.Parent= myParent;
+                        }
+                    }
+                }
             }
             // Ask output objects to resolve their own child dependencies.
 			foreach(var v in myOutputVariables) {
@@ -370,6 +386,12 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 if(thisPort != null) {
 //					result.Append(GetExpressionFor(thisPort));
 //					result.Append(".");
+                    // -- Prepend target code producer if optimized. --
+                    if(myTargetCode != null) {
+                        result.Append(myTargetCode.GenerateBody(0));
+                        result.Append(".");
+                        return result.ToString();
+                    }
                     var producerPort= CodeFlow.GetProducerPort(thisPort);
 	                var producerType= Context.GetRuntimeTypeFor(producerPort);
 					var producerCode= Context.GetCodeFor(producerPort);
