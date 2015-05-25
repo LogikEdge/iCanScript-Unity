@@ -106,7 +106,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         ///
         public void AddNamespace(string namespaceName) {
             if(string.IsNullOrEmpty(namespaceName)) return;
-            if(Namespace != namespaceName) {
+            if(Namespace != namespaceName && !namespaceName.StartsWith("CSharp.")) {
                 Context.AddNamespace(namespaceName);
             }
         }
