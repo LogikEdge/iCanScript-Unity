@@ -230,6 +230,11 @@ namespace iCanScript.Internal {
         public static string ToDisplayName(string name) {
 			// -- iCanScript remains intact --
     		if(name == "iCanScript") return name;
+            bool prependICanScript= false;
+            if(name.StartsWith("iCanScript")) {
+                prependICanScript= true;
+                name= name.Substring(10, name.Length-10);
+            }
 			// -- Convert standard operators --
             if(name == "op_Assignment")         return "operator =";            
             if(name == "op_Equality")           return "Is Equal";
@@ -315,7 +320,7 @@ namespace iCanScript.Internal {
                     wasDigit= false;
                 }
             }
-            return result.ToString();
+            return (prependICanScript ? "iCanScript ":"")+result.ToString();
         }
 
     	// =================================================================================

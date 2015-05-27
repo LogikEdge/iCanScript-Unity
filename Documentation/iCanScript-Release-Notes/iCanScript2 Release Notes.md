@@ -1,6 +1,6 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.18
+Version: v2.0.19
 CSS: Github.css
 
 
@@ -9,6 +9,21 @@ CSS: Github.css
 <!-- PDF: <<[front-matter/pdf.md] -->
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
+
+## iCanScript v2.0.19 ##
+
+_May 28, 2015_
+
+V2.0.19 is another minor bug fix and code generation optimization release.
+
+
+### List of Changes
+
+- **<span style="color: blue">\[IMPROVED\] </span>** Partial conversion of the API that changed between Unity 5.0.1 and 5.0.2.
+	- **NOTE:** To remain compatible with Unity 5.0.1, not all of the API changes have been applied.
+- **<span style="color: red">\[FIXED\] </span>** Null exception when generating comments for a function parameter that has no description field.
+
+* * *
 
 ## iCanScript v2.0.18 ##
 

@@ -403,14 +403,16 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                     result.Append(paramName);
                     result.Append(' ');
                     var splitParamDescription= SplitDescription(p.VSObject.Description);
-                    result.Append(splitParamDescription[0]);
-                    result.Append("\n");
-                    for(int i= 1; i < splitParamDescription.Length; ++i) {
-                        result.Append(indent);
-                        result.Append("///        ");
-                        result.Append(new String(' ', paramName.Length+1));
-                        result.Append(splitParamDescription[i]);
+                    if(splitParamDescription != null && splitParamDescription.Length > 0) {
+                        result.Append(splitParamDescription[0]);
                         result.Append("\n");
+                        for(int i= 1; i < splitParamDescription.Length; ++i) {
+                            result.Append(indent);
+                            result.Append("///        ");
+                            result.Append(new String(' ', paramName.Length+1));
+                            result.Append(splitParamDescription[i]);
+                            result.Append("\n");
+                        }                        
                     }
                 }
             }
