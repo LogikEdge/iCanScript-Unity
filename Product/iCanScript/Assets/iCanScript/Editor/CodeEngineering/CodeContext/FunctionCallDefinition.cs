@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
@@ -212,9 +213,8 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             // Ajust back the indentation.
             var result= new StringBuilder(128);
             // Simplified situation for property get.
-            bool isSpecial= false;
             bool isOperator= false;
-            var functionName= FunctionName(out isSpecial, out isOperator);                
+            var functionName= FunctionName(out isOperator);                
             // Determine parameters information.
             var parameters= GetParameters(VSObject);
             var pLen= parameters.Length;
@@ -223,16 +223,26 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 int idx= p.PortIndex;
                 paramStrings[idx]= myParameters[idx].GenerateBody(indentSize);
             }
-            // Generate function call.
-            if(isSpecial == false) {
-                result.Append(FunctionCallPrefix(VSObject));
-            }
             // Declare function call.
             if(isOperator) {
-                result.Append(GenerateOperator(indentSize, functionName, paramStrings));
+				// -- The first parameter is the instance if not static. --
+				if(!IsStatic()) {
+					var variable= FunctionCallPrefix(VSObject);
+					var variableLen= variable.Length;
+					if(variableLen != 0) {
+						var len= paramStrings.Length;
+						Array.Resize(ref paramStrings, len+1);
+						for(int i= len-1; i >= 0; --i) {
+							paramStrings[i+1]= paramStrings[i]; 
+						}
+			        	paramStrings[0]= variable.Substring(0, variableLen-1);
+					}
+				}
+	            result.Append(GenerateOperator(indentSize, functionName, paramStrings));
             }
             else {
-                result.Append(GenerateFunctionCall(indentSize, functionName, paramStrings));                    
+	        	result.Append(FunctionCallPrefix(VSObject));
+				result.Append(GenerateFunctionCall(indentSize, functionName, paramStrings));                    
             }
             result.Append(GenerateReturnTypeCastFragment(VSObject));            
             return result.ToString();
@@ -253,17 +263,17 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Returns the method name from the member information.
         ///
-        /// @param isSpecialName Output _true_ if name is special method.
+        /// @param isUnaryOperator _true_ if this is a unary operator.
+		/// @param isOperator _true_ if this is an operator.
         /// @return The method name.
         ///
-        string FunctionName(out bool isSpecial, out bool isOperator) {
+        string FunctionName(out bool isOperator) {
             if(VSObject.IsConstructor) {
-                isSpecial= true;
                 isOperator= false;
                 return ToTypeName(VSObject.RuntimeType);
             }
             var functionName= VSObject.CodeName;
-            isSpecial= isOperator= functionName.StartsWith("op_");
+            isOperator= functionName.StartsWith("op_");
             return functionName;
         }
         
@@ -313,8 +323,8 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                     Debug.LogWarning("iCanScript: Unknown trinary operator=> "+symbol);
                     break;
                 }
-            }
-            return result.ToString();
+            }				
+			return result.ToString();
         }
 
     	// -------------------------------------------------------------------------
@@ -341,6 +351,8 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             if(operatorName == "op_BitwiseAndAssign")   return "&=";
             if(operatorName == "op_ExclusiveOrAssign")  return "^=";
             if(operatorName == "op_Assignment")         return "=";
+            if(operatorName == "op_Increment")          return "++";
+            if(operatorName == "op_Decrement")          return "--";
             
             Debug.LogWarning("iCanScript: Unknown operator=> "+operatorName);
             return operatorName;

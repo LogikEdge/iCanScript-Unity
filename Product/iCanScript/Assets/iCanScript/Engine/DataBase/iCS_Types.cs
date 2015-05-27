@@ -37,6 +37,11 @@ namespace iCanScript.Internal {
             return GetElementType(type).IsClass;
         }
         // ----------------------------------------------------------------------
+        // Returns true if type is a language primitive type.
+        public static bool IsPrimitive(Type type) {
+			return type.IsPrimitive;
+        }
+        // ----------------------------------------------------------------------
         // Returns the coded name for the given type.
         public static string GetName(Type type) {
             string result= type.Name;
@@ -180,6 +185,11 @@ namespace iCanScript.Internal {
         // ======================================================================
         // TYPE STRING UTILITIES
         // ----------------------------------------------------------------------
+		/// Returns the type string associated with the given type.
+		///
+		/// @param type The type from which to generate the type string.
+		/// @return The formatted type string.
+		///
         public static string ToTypeString(Type type) {
             var namespaceName= type.Namespace;
             if(!string.IsNullOrEmpty(namespaceName)) {
@@ -187,6 +197,18 @@ namespace iCanScript.Internal {
             }
             return type.Name;
         }
+        // ----------------------------------------------------------------------
+		// Extracts the namespace from the type string.
+		///
+		/// @param typeString The type string.
+		/// @return The namespace of the type.
+		///
+		public static string GetNamespaceFromTypeString(string typeString) {
+			string namespaceName;
+			string typeName;
+			SplitTypeString(typeString, out namespaceName, out typeName);
+			return namespaceName;
+		}
         // ----------------------------------------------------------------------
         /// Extract the namespace and type names from a type string.
         ///

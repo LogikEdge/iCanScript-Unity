@@ -247,6 +247,8 @@ namespace iCanScript.Internal {
             if(name == "op_SubtractionAssign")  return "operator -=";
             if(name == "op_MultiplyAssign")     return "operator *=";
             if(name == "op_DivisionAssign")     return "operator /=";
+			if(name == "op_Increment")          return "operator ++";
+			if(name == "op_Decrement")          return "operator --";
 			if(name == "op_UnaryNegation")      return "Negate";
 			if(name == "op_GreaterThan")        return "operator >";
 			if(name == "op_LessThan")           return "operator <";
@@ -310,7 +312,7 @@ namespace iCanScript.Internal {
                     wasDigit= false;
                 }
                 else {
-                    if(result.Length != 0) {
+                    if(result.Length != 0 && (wasLetter || wasDigit)) {
                         result.Append(' ');                    
                     }
                     result.Append(c);
