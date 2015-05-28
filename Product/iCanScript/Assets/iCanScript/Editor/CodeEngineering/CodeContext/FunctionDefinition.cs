@@ -51,7 +51,12 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 			parameters= P.filter(p=> p.IsInDataPort && p.ProducerPort == null, parameters);
             myParameters= new FunctionDefinitionParameter[parameters.Length];
             foreach(var p in parameters) {
-                myParameters[p.PortIndex]= new FunctionDefinitionParameter(p, this);
+				if(p.PortIndex >= parameters.Length) {
+					Debug.LogWarning("iCanScript: Internal error: Port index out of range: "+p.PortIndex);
+				}
+				else {
+	                myParameters[p.PortIndex]= new FunctionDefinitionParameter(p, this);
+				}
             }
         }
         
