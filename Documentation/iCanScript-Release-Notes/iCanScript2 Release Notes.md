@@ -19,8 +19,11 @@ V2.0.19 is another minor bug fix and code generation optimization release.
 
 ### List of Changes
 
+- **<span style="color: green">\[NEW\] </span>** Added support for the creation and usage of C# primitive types: _bool_, _int_, _float_, _string_.  The C# primitive types are located in namespace _**CSharp.Primitives**_.
+	- **IMPORTANT:** The variables in namespace _**iCanScript.Variables**_ should be replaced by their C# equivalent.  The iCanScript variables are now obsoleted and will be removed in a future release.
 - **<span style="color: blue">\[IMPROVED\] </span>** Partial conversion of the API that changed between Unity 5.0.1 and 5.0.2.
 	- **NOTE:** To remain compatible with Unity 5.0.1, not all of the API changes have been applied.
+- **<span style="color: blue">\[IMPROVED\] </span>** Avoid generating variable and function names that collide with C# reserved keywords.
 - **<span style="color: red">\[FIXED\] </span>** Null exception when generating comments for a function parameter that has no description field.
 
 * * *
