@@ -564,6 +564,9 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// @return The format code fragment of the allocator.
         ///
         public string GenerateAllocatorFragment(Type type, string[] paramValues) {
+			if(iCS_Types.IsPrimitive(type) || type == typeof(String)) {
+				return paramValues[0] ?? "";
+			}
             var result= new StringBuilder(" new ");
             result.Append(ToTypeName(type));
             result.Append("(");

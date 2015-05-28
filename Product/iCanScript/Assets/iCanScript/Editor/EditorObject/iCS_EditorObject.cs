@@ -113,6 +113,19 @@ namespace iCanScript.Internal.Editor {
     		get {
                 if(c_RuntimeType == null) {
                     c_RuntimeType= EngineObject.RuntimeType;
+					// -- Convert language primitive types. --
+					if(c_RuntimeType == typeof(CSharp.Primitives.Int)) {
+						c_RuntimeType= typeof(int);
+					}
+					if(c_RuntimeType == typeof(CSharp.Primitives.Float)) {
+						c_RuntimeType= typeof(float);
+					}
+					if(c_RuntimeType == typeof(CSharp.Primitives.Bool)) {
+						c_RuntimeType= typeof(bool);
+					}
+					if(c_RuntimeType == typeof(CSharp.Primitives.String)) {
+						c_RuntimeType= typeof(String);
+					}
                 }
                 return c_RuntimeType;
             }

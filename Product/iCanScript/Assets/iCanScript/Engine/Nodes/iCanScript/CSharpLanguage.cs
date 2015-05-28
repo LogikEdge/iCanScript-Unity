@@ -4,47 +4,51 @@ namespace CSharp.Primitives {
     
     public struct Bool {
 //        public static bool op_Ctor()                                 { return default(bool); }
-//        public static bool op_Ctor(bool value)                       { return value; }
+        public Bool(bool value)                       				{}
 
-//        public static bool op_Assignment(ref bool target, bool value){ return target= value;}
+        public bool op_Assignment(bool value)						{ return false;}
 
-        public static bool op_LogicalNot(bool a)                     { return !a; }
-        public static bool op_BitwiseAnd(bool a, bool b)             { return a & b; }
-        public static bool op_BitwiseOr(bool a, bool b)              { return a | b; }
-        public static bool op_ExclusiveOr(bool a, bool b)            { return a ^ b; }
+        public static bool op_LogicalNot(bool a)                    { return !a; }
+        public static bool op_LogicalOr(bool a, bool b)             { return a || b; }
+        public static bool op_LogicalAnd(bool a, bool b)            { return a && b; }
+        public static bool op_BitwiseAnd(bool a, bool b)            { return a & b; }
+        public static bool op_BitwiseOr(bool a, bool b)             { return a | b; }
+        public static bool op_ExclusiveOr(bool a, bool b)           { return a ^ b; }
 
-//        public static bool op_BitwiseAndAssign(ref bool target, bool b)   { return target &= b; }
-//        public static bool op_BitwiseOrAssign(ref bool target, bool b)    { return target |= b; }
-//        public static bool op_ExclusiveOrAssign(ref bool target, bool b)  { return target ^= b; }
+        public bool op_BitwiseAndAssign(bool b)   					{ return false; }
+        public bool op_BitwiseOrAssign(bool b)    					{ return false; }
+        public bool op_ExclusiveOrAssign(bool b)  					{ return false; }
 
-        public static bool op_Equality(bool a, bool b)               { return a == b; }
-        public static bool op_Inequality(bool a, bool b)             { return a != b; }
+        public static bool op_Equality(bool a, bool b)              { return a == b; }
+        public static bool op_Inequality(bool a, bool b)            { return a != b; }
     }
 
     public struct Int {
 //        public static int  op_Ctor()                                    { return default(int); }
-//        public static int  op_Ctor(int value)                           { return value; }
+        public Int(int value)                           				{}
                                                                         
-//        public static int  op_Assignment(ref int target, int value)     { return target= value;}
+        public int op_Assignment(int value)     						{ return 0;}
         public static int  op_UnaryNegation(int a)                      { return -a; }
                                                                         
         public static int  op_BitwiseAnd(int a, int b)                  { return a & b; }
         public static int  op_BitwiseOr(int a, int b)                   { return a | b; }
         public static int  op_ExclusiveOr(int a, int b)                 { return a ^ b; }
 
-//        public static int  op_BitwiseAndAssign(ref int target, int b)   { return target &= b; }
-//        public static int  op_BitwiseOrAssign(ref int target, int b)    { return target |= b; }
-//        public static int  op_ExclusiveOrAssign(ref int target, int b)  { return target ^= b; }
+        public int  op_BitwiseAndAssign(int value)   					{ return 0; }
+        public int  op_BitwiseOrAssign(int value)    					{ return 0; }
+        public int  op_ExclusiveOrAssign(int value)  					{ return 0; }
 
         public static int op_Addition(int a, int b)                     { return a + b; }
         public static int op_Subtraction(int value, int toRemove)       { return value - toRemove; }
         public static int op_Multiply(int a, int b)                     { return a * b; }
         public static int op_Division(int quantity, int divider)        { return quantity / divider; }
         
-//        public static int op_AdditionAssign(ref int target, int b)              { return target += b; }
-//        public static int op_SubtractionAssign(ref int target, int toRemove)    { return target -= toRemove; }
-//        public static int op_MultiplyAssign(ref int target, int b)              { return target *= b; }
-//        public static int op_DivisionAssign(ref int target, int divider)        { return target /= divider; }
+		public int op_Increment() 										{ return 0; }
+		public int op_Decrement() 										{ return 0; }
+        public int op_AdditionAssign(int toAdd)              			{ return 0; }
+        public int op_SubtractionAssign(int toRemove)    				{ return 0; }
+        public int op_MultiplyAssign(int value)              			{ return 0; }
+        public int op_DivisionAssign(int divider)        				{ return 0; }
 
         public static bool op_Equality(int a, int b)                    { return a == b; }
         public static bool op_Inequality(int a, int b)                  { return a != b; }
@@ -55,11 +59,11 @@ namespace CSharp.Primitives {
 		public static bool op_LessThanOrEqual(int value, int bias)      { return value <= bias; }
 
     }
-    public static class Float {
+    public struct Float {
+		public Float(float value)											{}
 //        public static float op_Ctor()                                       { return default(float); }
-//        public static float op_Ctor(float value)                            { return value; }
                                                                         
-//        public static float op_Assignment(ref float target, float value)    { return target= value;}
+        public float op_Assignment(float value)    							{ return 0;}
         public static float op_UnaryNegation(float a)                       { return -a; }
                                                                         
         public static float op_Addition(float a, float b)                   { return a + b; }
@@ -67,10 +71,12 @@ namespace CSharp.Primitives {
         public static float op_Multiply(float a, float b)                   { return a * b; }
         public static float op_Division(float quantity, float divider)      { return quantity / divider; }
         
-//        public static float op_AdditionAssign(ref float target, float b)              { return target += b; }
-//        public static float op_SubtractionAssign(ref float target, float toRemove)    { return target -= toRemove; }
-//        public static float op_MultiplyAssign(ref float target, float b)              { return target *= b; }
-//        public static float op_DivisionAssign(ref float target, float divider)        { return target /= divider; }
+		public float op_Increment() 										{ return 0; }
+		public float op_Decrement() 										{ return 0; }
+        public float op_AdditionAssign(float toAdd)              			{ return 0; }
+        public float op_SubtractionAssign(float toRemove)    				{ return 0; }
+        public float op_MultiplyAssign(float b)              				{ return 0; }
+        public float op_DivisionAssign(float divider)        				{ return 0; }
 
         public static bool op_Equality(float a, float b)                    { return a == b; }
         public static bool op_Inequality(float a, float b)                  { return a != b; }
@@ -81,8 +87,10 @@ namespace CSharp.Primitives {
 		public static bool op_LessThanOrEqual(float value, float bias)      { return value <= bias; }
 
     }
-	public static class String {
-        public static string op_Addition(string a, Object b)					{ return a + b; }		
+	public class String {
+		public String(string value)											{}
+        public static string op_Addition(string a, Object b)				{ return a + b; }		
+		public string op_AdditionAssign(string toAppend)					{ return toAppend; }
 	}
 
 }

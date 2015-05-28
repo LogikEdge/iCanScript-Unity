@@ -247,12 +247,16 @@ namespace iCanScript.Internal {
             if(name == "op_SubtractionAssign")  return "operator -=";
             if(name == "op_MultiplyAssign")     return "operator *=";
             if(name == "op_DivisionAssign")     return "operator /=";
+			if(name == "op_Increment")          return "operator ++";
+			if(name == "op_Decrement")          return "operator --";
 			if(name == "op_UnaryNegation")      return "Negate";
 			if(name == "op_GreaterThan")        return "operator >";
 			if(name == "op_LessThan")           return "operator <";
 			if(name == "op_GreaterThanOrEqual")	return "operator >=";
 			if(name == "op_LessThanOrEqual")    return "operator <=";
             if(name == "op_LogicalNot")         return "Inverse";
+            if(name == "op_LogicalOr")          return "operator ||";
+            if(name == "op_LogicalAnd")         return "operator &&";
             if(name == "op_BitwiseOr")          return "Or";
             if(name == "op_BitwiseAnd")         return "And";
             if(name == "op_ExclusiveOr")        return "Xor";
@@ -310,7 +314,7 @@ namespace iCanScript.Internal {
                     wasDigit= false;
                 }
                 else {
-                    if(result.Length != 0) {
+                    if(result.Length != 0 && (wasLetter || wasDigit)) {
                         result.Append(' ');                    
                     }
                     result.Append(c);
