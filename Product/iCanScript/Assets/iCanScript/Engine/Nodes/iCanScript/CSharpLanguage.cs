@@ -9,6 +9,8 @@ namespace CSharp.Primitives {
         public bool op_Assignment(bool value)						{ return false;}
 
         public static bool op_LogicalNot(bool a)                    { return !a; }
+        public static bool op_LogicalOr(bool a, bool b)             { return a || b; }
+        public static bool op_LogicalAnd(bool a, bool b)            { return a && b; }
         public static bool op_BitwiseAnd(bool a, bool b)            { return a & b; }
         public static bool op_BitwiseOr(bool a, bool b)             { return a | b; }
         public static bool op_ExclusiveOr(bool a, bool b)           { return a ^ b; }
@@ -41,6 +43,8 @@ namespace CSharp.Primitives {
         public static int op_Multiply(int a, int b)                     { return a * b; }
         public static int op_Division(int quantity, int divider)        { return quantity / divider; }
         
+		public int op_Increment() 										{ return 0; }
+		public int op_Decrement() 										{ return 0; }
         public int op_AdditionAssign(int toAdd)              			{ return 0; }
         public int op_SubtractionAssign(int toRemove)    				{ return 0; }
         public int op_MultiplyAssign(int value)              			{ return 0; }

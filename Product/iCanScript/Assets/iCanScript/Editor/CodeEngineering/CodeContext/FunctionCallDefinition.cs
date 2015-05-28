@@ -344,6 +344,8 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 			if(operatorName == "op_GreaterThanOrEqual")	return ">=";
 			if(operatorName == "op_LessThanOrEqual")    return "<=";
             if(operatorName == "op_LogicalNot")         return "!";
+            if(operatorName == "op_LogicalOr")          return "||";
+            if(operatorName == "op_LogicalAnd")         return "&&";
             if(operatorName == "op_BitwiseOr")          return "|";
             if(operatorName == "op_BitwiseAnd")         return "&";
             if(operatorName == "op_ExclusiveOr")        return "^";

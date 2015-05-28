@@ -255,6 +255,8 @@ namespace iCanScript.Internal {
 			if(name == "op_GreaterThanOrEqual")	return "operator >=";
 			if(name == "op_LessThanOrEqual")    return "operator <=";
             if(name == "op_LogicalNot")         return "Inverse";
+            if(name == "op_LogicalOr")          return "operator ||";
+            if(name == "op_LogicalAnd")         return "operator &&";
             if(name == "op_BitwiseOr")          return "Or";
             if(name == "op_BitwiseAnd")         return "And";
             if(name == "op_ExclusiveOr")        return "Xor";
