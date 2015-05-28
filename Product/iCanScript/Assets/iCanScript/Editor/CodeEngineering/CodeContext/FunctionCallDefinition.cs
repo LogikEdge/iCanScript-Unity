@@ -226,10 +226,12 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             // Declare function call.
             if(isOperator) {
 				// -- The first parameter is the instance if not static. --
+                int paramOffset= 0;
 				if(!IsStatic()) {
 					var variable= FunctionCallPrefix(VSObject);
 					var variableLen= variable.Length;
 					if(variableLen != 0) {
+                        paramOffset= -1;
 						var len= paramStrings.Length;
 						Array.Resize(ref paramStrings, len+1);
 						for(int i= len-1; i >= 0; --i) {
@@ -238,7 +240,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 			        	paramStrings[0]= variable.Substring(0, variableLen-1);
 					}
 				}
-	            result.Append(GenerateOperator(indentSize, functionName, paramStrings));
+	            result.Append(GenerateOperator(indentSize, functionName, paramStrings, paramOffset));
             }
             else {
 	        	result.Append(FunctionCallPrefix(VSObject));
@@ -301,22 +303,37 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         }
 
     	// -------------------------------------------------------------------------
-        public string GenerateOperator(int indentSize, string functionName, string[] paramValues) {
+        public string GenerateOperator(int indentSize, string functionName, string[] paramValues, int paramOffset) {
             StringBuilder result= new StringBuilder();
             var symbol= OperatorNameToSymbol(functionName);
             var len= paramValues.Length;
             switch(len) {
                 case 1: {
                     result.Append(symbol);
+                    var isParamAnOperator= false;
+                    if(paramOffset >= 0) {
+                       isParamAnOperator= myParameters[paramOffset].IsOperatorFunctionCall();
+                       if(isParamAnOperator) result.Append("(");                        
+                    }
                     result.Append(paramValues[0]);
+                    if(isParamAnOperator) result.Append(")");
                     break;
                 }
                 case 2: {
+                    var isParamAnOperator= false;
+                    if(paramOffset >= 0) {
+                        isParamAnOperator= myParameters[paramOffset].IsOperatorFunctionCall();
+                        if(isParamAnOperator) result.Append("(");
+                    }
                     result.Append(paramValues[0]);
+                    if(isParamAnOperator) result.Append(")");
                     result.Append(" ");
                     result.Append(symbol);
                     result.Append(" ");
+                    isParamAnOperator= myParameters[1+paramOffset].IsOperatorFunctionCall();
+                    if(isParamAnOperator) result.Append("(");
                     result.Append(paramValues[1]);
+                    if(isParamAnOperator) result.Append(")");
                     break;
                 }
                 default: {

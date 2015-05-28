@@ -576,6 +576,13 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             "unchecked", "unsafe", "ushort", "using", "virtual", "void", "volatile", "while"
         };
         
+        // -----------------------------------------------------------------------
+        /// Returns true if code base is an operator functional call.
+        public bool IsOperatorFunctionCall() {
+            if(!(this is FunctionCallDefinition)) return false;
+            return VSObject.CodeName.StartsWith("op_");
+        }
+        
         // =========================================================================
         // COMMON GENERATION UTILITIES
         // -------------------------------------------------------------------
