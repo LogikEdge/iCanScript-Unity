@@ -33,11 +33,15 @@ namespace CSharp.Primitives {
         public static int  op_BitwiseAnd(int a, int b)                  { return a & b; }
         public static int  op_BitwiseOr(int a, int b)                   { return a | b; }
         public static int  op_ExclusiveOr(int a, int b)                 { return a ^ b; }
-
         public int  op_BitwiseAndAssign(int value)   					{ return 0; }
         public int  op_BitwiseOrAssign(int value)    					{ return 0; }
         public int  op_ExclusiveOrAssign(int value)  					{ return 0; }
 
+        public static int op_RightShift(Int toBeShifted, int nbOfBits)  { return 0; }
+        public static int op_LeftShift(Int toBeShifted, int nbOfBits)   { return 0; }
+        public int op_RightShiftAssign(int nbOfBits)                    { return 0; }
+        public int op_LeftShiftAssign(int nbOfBits)                     { return 0; }
+        
         public static int op_Addition(int a, int b)                     { return a + b; }
         public static int op_Subtraction(int value, int toRemove)       { return value - toRemove; }
         public static int op_Multiply(int a, int b)                     { return a * b; }

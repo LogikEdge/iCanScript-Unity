@@ -355,6 +355,10 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             if(operatorName == "op_Assignment")         return "=";
             if(operatorName == "op_Increment")          return "++";
             if(operatorName == "op_Decrement")          return "--";
+            if(operatorName == "op_LeftShift")          return "<<";
+            if(operatorName == "op_RightShift")         return ">>";
+            if(operatorName == "op_LeftShiftAssign")    return "<<=";
+            if(operatorName == "op_RightShiftAssign")   return ">>=";
             
             Debug.LogWarning("iCanScript: Unknown operator=> "+operatorName);
             return operatorName;
