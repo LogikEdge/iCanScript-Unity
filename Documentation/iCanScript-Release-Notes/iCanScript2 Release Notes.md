@@ -14,8 +14,7 @@ CSS: Github.css
 
 _May 28, 2015_
 
-V2.0.19 is another minor bug fix and code generation optimization release.
-
+V2.0.19 adds the support for C# primitive variables _**Bool**_, _**Int**_, _**Float**_, and _**String**_.
 
 ### List of Changes
 
