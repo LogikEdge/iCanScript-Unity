@@ -1,6 +1,6 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.19
+Version: v2.0.20
 CSS: Github.css
 
 
@@ -9,6 +9,18 @@ CSS: Github.css
 <!-- PDF: <<[front-matter/pdf.md] -->
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
+
+## iCanScript v2.0.20 ##
+
+_May 28, 2015_
+
+V2.0.20 is a bug fix release.
+
+### List of Changes
+
+- **<span style="color: red">\[FIXED\] </span>** Resolve invalid casting to the same value type in the generated code.
+
+* * *
 
 ## iCanScript v2.0.19 ##
 

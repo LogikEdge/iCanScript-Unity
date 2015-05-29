@@ -126,6 +126,7 @@ namespace iCanScript.Internal.Editor {
 					if(c_RuntimeType == typeof(CSharp.Primitives.String)) {
 						c_RuntimeType= typeof(String);
 					}
+                    c_RuntimeType= iCS_Types.RemoveRefOrPointer(c_RuntimeType);
                 }
                 return c_RuntimeType;
             }
