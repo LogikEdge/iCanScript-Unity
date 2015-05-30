@@ -10,7 +10,7 @@ using P=iCanScript.Internal.Prelude;
 namespace iCanScript.Internal.Engine {
     [Serializable]
     public enum PortSpecification {
-        Target= 0, Self, Parameter, Return,
+        Target= 0, Self, Parameter, ReturnValue,
         LocalVariable= 10,
         PublicVariable= 20, PrivateVariable,
         StaticPublicVariable= 30, StaticPrivateVariable,

@@ -151,7 +151,7 @@ namespace iCanScript.Internal.Editor {
                         isUpgraded= true;
                     }
                     else if(p.IsReturnPort) {
-                        p.PortSpec= PortSpecification.Return;
+                        p.PortSpec= PortSpecification.ReturnValue;
                         isUpgraded= true;
                     }
                     else if(parentNode.IsKindOfFunction) {
