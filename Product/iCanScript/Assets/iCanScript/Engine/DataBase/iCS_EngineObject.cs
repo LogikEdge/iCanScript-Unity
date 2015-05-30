@@ -11,11 +11,11 @@ namespace iCanScript.Internal.Engine {
     [Serializable]
     public enum PortSpecification {
         Target= 0, Self, Parameter, Return,
-        PublicVariable= 10, PrivateVariable,
-        StaticPublicVariable= 20, StaticPrivateVariable,
-        Enable= 30, Trigger,
+        LocalVariable= 10,
+        PublicVariable= 20, PrivateVariable,
+        StaticPublicVariable= 30, StaticPrivateVariable,
         Constant= 40,
-        Owner= 50,
+        Enable= 50, Trigger,
         Default= 1000
     };
     [Serializable]

@@ -69,7 +69,7 @@ namespace iCanScript.Internal.Editor {
             var allowedValues= Enum.GetValues(typeof(R));
             foreach(var v in allowedValues) {
                 if((int)Convert.ChangeType(v, typeof(int)) == (int)Convert.ChangeType(value, typeof(int))) {
-                    return (R)Convert.ChangeType(value, typeof(R));
+                    return (R)v;
                 }
             }
             return defaultValue;

@@ -23,7 +23,7 @@ namespace iCanScript.Internal.Editor {
             StaticPrivateVariable= PortSpecification.StaticPrivateVariable            
         };
         public enum ThisPortType {
-            Owner= PortSpecification.Owner
+            Owner= PortSpecification.Target
         };
         public enum ParameterPortType {
             Parameter= PortSpecification.Parameter

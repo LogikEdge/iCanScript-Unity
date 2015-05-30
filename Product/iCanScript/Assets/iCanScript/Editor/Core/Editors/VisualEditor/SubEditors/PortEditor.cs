@@ -58,8 +58,8 @@ namespace iCanScript.Internal.Editor {
             // Display port name.
             EditName("Port Name");
             
-            var newPortSpec= EditorGUILayout.EnumPopup("Port Spec", vsObject.PortSpec);
-            vsObject.PortSpec= ConvertEnum(newPortSpec, PortSpecification.Default);
+//            var newPortSpec= EditorGUILayout.EnumPopup("Port Spec", vsObject.PortSpec);
+//            vsObject.PortSpec= ConvertEnum(newPortSpec, PortSpecification.Default);
             
             OnPortSpecificGUI();
             
