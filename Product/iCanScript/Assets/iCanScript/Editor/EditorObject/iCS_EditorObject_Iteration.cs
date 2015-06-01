@@ -445,6 +445,17 @@ namespace iCanScript.Internal.Editor {
             return commonParent;
         }
         // ----------------------------------------------------------------------
+        /// Returns the common parent with the list of VSObjects.
+        ///
+        /// @param vsObjects The list of visual script objects.
+        public iCS_EditorObject GetCommonParent(iCS_EditorObject[] vsObjects) {
+            var commonParent= this;
+            foreach(var o in vsObjects) {
+                commonParent= GetCommonParent(o);
+            }
+            return commonParent;
+        }
+        // ----------------------------------------------------------------------
         public iCS_EditorObject GetParentStateChart() {
             var parent= ParentNode;
             while(parent != null && !parent.IsStateChart) {
