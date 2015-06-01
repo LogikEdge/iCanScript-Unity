@@ -33,7 +33,7 @@ namespace iCanScript.Internal.Editor {
 			if(parent.IsEventHandler) {
 				return EventHandlerPortEditor.Create(port, screenPosition);
 			}
-			if(parent.IsPublicFunction) {
+			if(parent.IsFunctionDefinition) {
 				return FunctionDefinitionPortEditor.Create(port, screenPosition);
 			}
             if(parent.IsPackage) {

@@ -24,7 +24,7 @@ namespace iCanScript.Internal.Editor {
             if(node.IsEventHandler) {
                 return EventHandlerEditor.Create(node, screenPosition);
             }
-            if(node.IsPublicFunction) {
+            if(node.IsFunctionDefinition) {
                 return FunctionDefinitionEditor.Create(node, screenPosition);
             }
             if(node.IsInstanceNode) {

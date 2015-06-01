@@ -383,7 +383,7 @@ namespace iCanScript.Internal.Editor {
     	                        }
     						}
                             // -- Convert any dynamic ports on public functions to proposed ports --
-                            if(obj.IsDynamicDataPort && obj.ParentNode.IsPublicFunction) {
+                            if(obj.IsDynamicDataPort && obj.ParentNode.IsFunctionDefinition) {
                                 obj.ObjectType= obj.IsInDynamicDataPort ?
                                     VSObjectType.InProposedDataPort :
                                     VSObjectType.OutProposedDataPort;

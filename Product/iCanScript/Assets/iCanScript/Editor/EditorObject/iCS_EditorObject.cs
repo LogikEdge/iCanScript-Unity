@@ -282,7 +282,7 @@ namespace iCanScript.Internal.Editor {
             get {
                 if(c_DisplayName == null) {
                     if(IsDataPort && IsProgrammaticInstancePort) {
-                        if(IsOutputPort || ParentNode.IsEventHandler || ParentNode.IsPublicFunction) {
+                        if(IsOutputPort || ParentNode.IsEventHandler || ParentNode.IsFunctionDefinition) {
                             c_DisplayName= "Self";
                         }
                         else {
@@ -381,7 +381,7 @@ namespace iCanScript.Internal.Editor {
                     if(IsConstructor) {
                         c_NodeSubTitle= BuildIsASubTitle("Self", RuntimeType);
                     }
-                    else if(IsEventHandler || IsPublicFunction) {
+                    else if(IsEventHandler || IsFunctionDefinition) {
                         c_NodeSubTitle= "Self is a "+NameUtility.ToDisplayName(EditorObjects[0].DisplayName);                    
                     }
                     else if(IsKindOfFunction || IsInstanceNode) {
