@@ -464,7 +464,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 								}									
 							}
                             // -- public Function should use "proposed ports" instead of dynamic ports --
-                            if(newPortParent.IsPublicFunction) {
+                            if(newPortParent.IsFunctionDefinition) {
                                 newPortType= newPortType == VSObjectType.InDynamicDataPort ?
                                     VSObjectType.InProposedDataPort :
                                     VSObjectType.OutProposedDataPort;

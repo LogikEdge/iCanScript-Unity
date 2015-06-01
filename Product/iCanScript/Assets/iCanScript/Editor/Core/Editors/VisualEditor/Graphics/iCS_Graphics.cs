@@ -509,7 +509,7 @@ namespace iCanScript.Internal.Editor {
             if(node.IsEventHandler) {
                 return Prefs.MessageNodeColor;
             }
-            if(node.IsPublicFunction) {
+            if(node.IsFunctionDefinition) {
                 return Prefs.UserFunctionNodeColor;
             }
             if(node.IsEntryState) {

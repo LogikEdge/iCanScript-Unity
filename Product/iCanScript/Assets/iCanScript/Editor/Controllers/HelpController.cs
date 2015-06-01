@@ -148,9 +148,9 @@ namespace iCanScript.Internal.Editor {
     			// Otherwise try and get help based on engineObject Type.
     			// Carefull with the order, since for example some specific types are also a package, class, builder, or function!
     			if (edObj.IsNode) {
-    				if(edObj.IsPublicFunction)
+    				if(edObj.IsFunctionDefinition)
     					return getHelp("PublicFunction");
-    				else if(edObj.IsPublicVariable)
+    				else if(edObj.IsVariableDefinition)
     					return getHelp("PublicVariable");
     				else if(edObj.IsConstructor)
     					return getHelp("Constructor");
@@ -288,10 +288,10 @@ namespace iCanScript.Internal.Editor {
     				// Carefull with the order, since for example some specific types are also a package, class, builder, or function!
     				if(edObj.IsEventHandler)
     					typeName= "Unity Event Handler";
-    				else if(edObj.IsPublicFunction)
-    					typeName= "Public Function";
-    				else if(edObj.IsPublicVariable)
-    					typeName= "Public Variable";
+    				else if(edObj.IsFunctionDefinition)
+    					typeName= "Function Definition";
+    				else if(edObj.IsVariableDefinition)
+    					typeName= "Variable Definition";
     				else if(edObj.IsConstructor)
     					typeName= "Variable Builder";
     				else if(edObj.IsKindOfFunction)

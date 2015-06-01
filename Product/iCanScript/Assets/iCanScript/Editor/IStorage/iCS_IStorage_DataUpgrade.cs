@@ -1,4 +1,4 @@
-//#define TEST_UPGRADE
+#define TEST_UPGRADE
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
@@ -50,6 +50,9 @@ namespace iCanScript.Internal.Editor {
             // -- Upgrade each version --
     		if(storageVersion.IsOlderThen(2,0,17)) {
                 isUpgraded |= V2_0_17_EditorUpgrade();
+            }
+    		if(storageVersion.IsOlderThen(2,0,20)) {
+                isUpgraded |= V2_0_20_EditorUpgrade();
             }
 
             // -- Warn the user that an upgrade toke place --
@@ -123,60 +126,113 @@ namespace iCanScript.Internal.Editor {
             return isUpgraded;
         }
         // ----------------------------------------------------------------------
-        /// Performs the editor data upgrade for v2.0.18.
-        bool V2_0_18_EditorUpgrade() {
-            bool isUpgraded= false;
-            // -- Convert to new port specification --
+        /// Upgrade port specification in preparation for user configurable
+        /// port specification.
+        bool V2_0_20_EditorUpgrade() {
+            // -- Erase any stored port specification, --
             ForEach(
                 p=> {
                     if(!p.IsPort) return;
-                    // -- Abort if conversion already took place --
-                    if(p.PortSpec != PortSpecification.Default) return;
-                    // -- Initial setup of the port specification --
-                    var parentNode= p.ParentNode;
-                    if(p.IsEnablePort) {
-                        p.PortSpec= PortSpecification.Enable;
-                        isUpgraded= true;
-                    }
-                    else if(p.IsTriggerPort) {
-                        p.PortSpec= PortSpecification.Trigger;
-                        isUpgraded= true;
-                    }
-                    else if(p.IsTargetPort) {
-                        p.PortSpec= PortSpecification.Target;
-                        isUpgraded= true;
-                    }
-                    else if(p.IsSelfPort) {
-                        p.PortSpec= PortSpecification.Self;
-                        isUpgraded= true;
-                    }
-                    else if(p.IsReturnPort) {
-                        p.PortSpec= PortSpecification.ReturnValue;
-                        isUpgraded= true;
-                    }
-                    else if(parentNode.IsKindOfFunction) {
-                        p.PortSpec= PortSpecification.Parameter;
-                        isUpgraded= true;
-                    }
-                    else if(parentNode.IsEventHandler) {
-                        if(p.IsFixDataPort) {
-                            p.PortSpec= PortSpecification.Parameter;
+                    p.PortSpec= PortSpecification.Default;
+                }
+            );
+            // -- Convert to new port specification --
+            bool isUpgraded= false;
+            bool newPassNeeded= true;
+            while(newPassNeeded) {
+                newPassNeeded= false;
+                ForEach(
+                    p=> {
+                        if(!p.IsPort) return;
+                        // -- Abort if conversion already took place --
+                        if(p.PortSpec != PortSpecification.Default) return;
+                        // -- Setup spec for control ports. --
+                        var parentNode= p.ParentNode;
+                        var producerPort= p.FirstProducerPort;
+                        if(p.IsEnablePort) {
+                            p.PortSpec= PortSpecification.Enable;
+                            isUpgraded= true;
+                        }
+                        else if(p.IsTriggerPort) {
+                            p.PortSpec= PortSpecification.Trigger;
+                            isUpgraded= true;
+                        }
+                        // -- Connected port follow the producer. --
+                        else if(producerPort != p) {
+                            if(producerPort.PortSpec != PortSpecification.Default) {
+                                p.PortSpec= producerPort.PortSpec;                                        
+                            }
+                            else {
+                                newPassNeeded= true;
+                            }                                    
+                        }
+                        else if(parentNode.IsFunctionDefinition) {
+                            if(p.IsInDataPort) {
+                                if(producerPort == p) {
+                                    p.PortSpec= PortSpecification.Parameter;
+                                }
+                                else {
+                                    if(producerPort.PortSpec != PortSpecification.Default) {
+                                        p.PortSpec= producerPort.PortSpec;                                        
+                                    }
+                                    else {
+                                        newPassNeeded= true;
+                                    }
+                                }
+                            }
+                            if(p.IsOutDataPort) {
+                                if(p.ConsumerPorts.Length == 0) {
+                                    p.PortSpec= PortSpecification.Parameter;
+                                }
+                                else {
+                                    if(producerPort.PortSpec != PortSpecification.Default) {
+                                        p.PortSpec= producerPort.PortSpec;                                        
+                                    }
+                                    else {
+                                        newPassNeeded= true;
+                                    }                                    
+                                }
+                            }
+                            isUpgraded= true;
+                        }
+                        else if(parentNode.IsEventHandler) {
+                            if(p.IsFixDataPort) {
+                                p.PortSpec= PortSpecification.Parameter;
+                            }
+                            else {
+                                p.PortSpec= PortSpecification.PublicVariable;
+                            }
+                            isUpgraded= true;
+                        }
+                        else if(parentNode.IsVariableDefinition) {
+                            if(p.IsOutDataPort) {
+                                p.PortSpec= PortSpecification.PublicVariable;
+                            }
+                            else if(p.IsInDataPort && producerPort == p) {
+                                p.PortSpec= PortSpecification.Constant;
+                            }
+                            else {
+                                p.PortSpec= PortSpecification.LocalVariable;
+                            }
+                            isUpgraded= true;                            
+                        }
+                        // TODO: Needs to be verified...
+                        else if(parentNode.IsKindOfFunction) {
+                            if(p.IsInDataPort && producerPort == p) {
+                                p.PortSpec= PortSpecification.Constant;
+                            }
+                            else {
+                                p.PortSpec= PortSpecification.LocalVariable;
+                            }
                             isUpgraded= true;
                         }
                         else {
-                            p.PortSpec= PortSpecification.PublicVariable;
+                            p.PortSpec= PortSpecification.LocalVariable;
                             isUpgraded= true;
                         }
                     }
-                    else if(parentNode.IsPublicFunction) {
-                        p.PortSpec= PortSpecification.Parameter;
-                        isUpgraded= true;
-                    }
-                    else {
-                    
-                    }
-                }
-            );        
+                );        
+            }
             return isUpgraded;
         }
 

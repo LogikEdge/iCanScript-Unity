@@ -95,7 +95,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         void AddChildFunctions() {
     		ClassNode.ForEachChildNode(
     			n=> {
-    				if(n.IsPublicFunction) {
+    				if(n.IsFunctionDefinition) {
                         var functionDefinition= new FunctionDefinition(n, this, AccessSpecifier.Public, ScopeSpecifier.NonStatic);
                         AddFunction(functionDefinition);
     				}
