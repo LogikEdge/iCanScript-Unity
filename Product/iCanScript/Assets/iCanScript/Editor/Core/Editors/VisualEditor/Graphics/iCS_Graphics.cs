@@ -734,9 +734,16 @@ namespace iCanScript.Internal.Editor {
     		if(port.IsInputPort) {
                 switch(port.PortSpec) {
                     case PortSpecification.PublicVariable:
-                    case PortSpecification.PrivateVariable:
                     case PortSpecification.Constant: {
         				DrawInPublicVariablePort(_center, _fillColor, isSelected);                        
+                        break;
+                    }
+                    case PortSpecification.PrivateVariable: {
+        				DrawInPrivateVariablePort(_center, _fillColor, isSelected);                        
+                        break;
+                    }
+                    case PortSpecification.Parameter: {
+        				DrawInParameterPort(_center, _fillColor, isSelected);                        
                         break;
                     }
                     default: {
@@ -747,9 +754,16 @@ namespace iCanScript.Internal.Editor {
     		} else {
                 switch(port.PortSpec) {
                     case PortSpecification.PublicVariable:
-                    case PortSpecification.PrivateVariable:
                     case PortSpecification.Constant: {
         				DrawOutPublicVariablePort(_center, _fillColor, isSelected);
+                        break;
+                    }
+                    case PortSpecification.PrivateVariable: {
+        				DrawOutPrivateVariablePort(_center, _fillColor, isSelected);
+                        break;
+                    }
+                    case PortSpecification.Parameter: {
+        				DrawOutParameterPort(_center, _fillColor, isSelected);                        
                         break;
                     }
                     default: {
@@ -761,7 +775,6 @@ namespace iCanScript.Internal.Editor {
         }
     	// ----------------------------------------------------------------------
         void DrawControlPort(iCS_EditorObject port, Vector3 _center, Color _fillColor, bool isSelected) {
-    		Vector3 center= TranslateAndScale(_center);
     		Texture2D portIcon= null;
     		if(port.IsInputPort) {
     			portIcon= isSelected ? iCS_PortIcons.GetSelectedEnablePortIcon(_fillColor) :
@@ -770,56 +783,66 @@ namespace iCanScript.Internal.Editor {
     			portIcon= isSelected ? iCS_PortIcons.GetSelectedTriggerPortIcon(_fillColor) :
     			                       iCS_PortIcons.GetTriggerPortIcon(_fillColor);			
     		}
-    		Rect pos= new Rect(center.x-0.5f*portIcon.width,
-    						   center.y-0.5f*portIcon.height,
-    						   portIcon.width,
-    						   portIcon.height);
-    		GUI.DrawTexture(pos, portIcon);
+            DrawSymetricalPort(_center, portIcon);
         }
     	// ----------------------------------------------------------------------
         void DrawInLocalVariablePort(Vector3 _center, Color _fillColor, bool isSelected) {
-    		Vector3 center= TranslateAndScale(_center);
     		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedInLocalVariablePortIcon(_fillColor) :
     		                                 iCS_PortIcons.GetInLocalVariablePortIcon(_fillColor);
-    		Rect pos= new Rect(center.x-0.5f*portIcon.width,
-    						   center.y-0.5f*portIcon.height,
-    						   portIcon.width,
-    						   portIcon.height);
-    		GUI.DrawTexture(pos, portIcon);
+            DrawSymetricalPort(_center, portIcon);
         }
     	// ----------------------------------------------------------------------
         void DrawOutLocalVariablePort(Vector3 _center, Color _fillColor, bool isSelected) {
-    		Vector3 center= TranslateAndScale(_center);
     		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutLocalVariablePortIcon(_fillColor) :
     		                                 iCS_PortIcons.GetOutLocalVariablePortIcon(_fillColor);
-    		Rect pos= new Rect(center.x-0.5f*portIcon.width,
-    						   center.y-0.5f*portIcon.height,
-    						   portIcon.width,
-    						   portIcon.height);
-    		GUI.DrawTexture(pos, portIcon);
+            DrawSymetricalPort(_center, portIcon);
         }
     	// ----------------------------------------------------------------------
         void DrawInPublicVariablePort(Vector3 _center, Color _fillColor, bool isSelected) {
-    		Vector3 center= TranslateAndScale(_center);
     		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedInPublicVariablePortIcon(_fillColor) :
     		                                 iCS_PortIcons.GetInPublicVariablePortIcon(_fillColor);
-    		Rect pos= new Rect(center.x-0.5f*portIcon.width,
-    						   center.y-0.5f*portIcon.height,
-    						   portIcon.width,
-    						   portIcon.height);
-    		GUI.DrawTexture(pos, portIcon);
+            DrawSymetricalPort(_center, portIcon);
         }
     	// ----------------------------------------------------------------------
         void DrawOutPublicVariablePort(Vector3 _center, Color _fillColor, bool isSelected) {
-    		Vector3 center= TranslateAndScale(_center);
     		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutPublicVariablePortIcon(_fillColor) :
     		                                 iCS_PortIcons.GetOutPublicVariablePortIcon(_fillColor);
+            DrawSymetricalPort(_center, portIcon);
+        }
+    	// ----------------------------------------------------------------------
+        void DrawInPrivateVariablePort(Vector3 _center, Color _fillColor, bool isSelected) {
+    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedInPrivateVariablePortIcon(_fillColor) :
+    		                                 iCS_PortIcons.GetInPrivateVariablePortIcon(_fillColor);
+            DrawSymetricalPort(_center, portIcon);
+        }
+    	// ----------------------------------------------------------------------
+        void DrawOutPrivateVariablePort(Vector3 _center, Color _fillColor, bool isSelected) {
+    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutPrivateVariablePortIcon(_fillColor) :
+    		                                 iCS_PortIcons.GetOutPrivateVariablePortIcon(_fillColor);
+            DrawSymetricalPort(_center, portIcon);
+        }
+    	// ----------------------------------------------------------------------
+        void DrawInParameterPort(Vector3 _center, Color _fillColor, bool isSelected) {
+    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedInParameterPortIcon(_fillColor) :
+    		                                 iCS_PortIcons.GetInParameterPortIcon(_fillColor);
+            DrawSymetricalPort(_center, portIcon);
+        }
+    	// ----------------------------------------------------------------------
+        void DrawOutParameterPort(Vector3 _center, Color _fillColor, bool isSelected) {
+    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutParameterPortIcon(_fillColor) :
+    		                                 iCS_PortIcons.GetOutParameterPortIcon(_fillColor);
+            DrawSymetricalPort(_center, portIcon);
+        }
+    	// ----------------------------------------------------------------------
+        void DrawSymetricalPort(Vector3 _center, Texture2D portIcon) {
+    		Vector3 center= TranslateAndScale(_center);
     		Rect pos= new Rect(center.x-0.5f*portIcon.width,
     						   center.y-0.5f*portIcon.height,
     						   portIcon.width,
     						   portIcon.height);
     		GUI.DrawTexture(pos, portIcon);
         }
+    
     
     	// ----------------------------------------------------------------------
         void DrawInMuxPort(Vector3 _center, Color _fillColor, bool isSelected, iCS_EdgeEnum edge) {
