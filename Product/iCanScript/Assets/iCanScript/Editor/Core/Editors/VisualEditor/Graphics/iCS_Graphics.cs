@@ -764,11 +764,11 @@ namespace iCanScript.Internal.Editor {
     		Vector3 center= TranslateAndScale(_center);
     		Texture2D portIcon= null;
     		if(port.IsInputPort) {
-    			portIcon= isSelected ? iCS_PortIcons.GetSelectedInTriggerPortIcon(_fillColor) :
-    			                       iCS_PortIcons.GetInTriggerPortIcon(_fillColor);
+    			portIcon= isSelected ? iCS_PortIcons.GetSelectedEnablePortIcon(_fillColor) :
+    			                       iCS_PortIcons.GetEnablePortIcon(_fillColor);
     		} else {
-    			portIcon= isSelected ? iCS_PortIcons.GetSelectedOutTriggerPortIcon(_fillColor) :
-    			                       iCS_PortIcons.GetOutTriggerPortIcon(_fillColor);			
+    			portIcon= isSelected ? iCS_PortIcons.GetSelectedTriggerPortIcon(_fillColor) :
+    			                       iCS_PortIcons.GetTriggerPortIcon(_fillColor);			
     		}
     		Rect pos= new Rect(center.x-0.5f*portIcon.width,
     						   center.y-0.5f*portIcon.height,

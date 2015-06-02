@@ -22,6 +22,11 @@ namespace iCanScript.Internal.Editor {
     	static Texture2D	mySelectedInPublicVariablePortTemplate      = null;
     	static Texture2D	mySelectedOutPublicVariablePortTemplate     = null;
         
+        static Texture2D    myEnablePortTemplate                        = null;
+        static Texture2D    myTriggerPortTemplate                       = null;
+    	static Texture2D    mySelectedEnablePortTemplate                = null;
+    	static Texture2D    mySelectedTriggerPortTemplate               = null;
+
     	static Texture2D    myInMuxPortTopTemplate                      = null;
     	static Texture2D    myInMuxPortBottomTemplate                   = null;
     	static Texture2D    myInMuxPortLeftTemplate                     = null;
@@ -30,8 +35,6 @@ namespace iCanScript.Internal.Editor {
     	static Texture2D    myOutMuxPortBottomTemplate                  = null;
     	static Texture2D    myOutMuxPortLeftTemplate                    = null;
     	static Texture2D    myOutMuxPortRightTemplate                   = null;
-        static Texture2D    myInTriggerPortTemplate                     = null;
-        static Texture2D    myOutTriggerPortTemplate                    = null;
     	static Texture2D    mySelectedInMuxPortTopTemplate              = null;
     	static Texture2D    mySelectedInMuxPortBottomTemplate           = null;
     	static Texture2D    mySelectedInMuxPortLeftTemplate             = null;
@@ -40,8 +43,6 @@ namespace iCanScript.Internal.Editor {
     	static Texture2D    mySelectedOutMuxPortBottomTemplate          = null;
     	static Texture2D    mySelectedOutMuxPortLeftTemplate            = null;
     	static Texture2D    mySelectedOutMuxPortRightTemplate           = null;
-    	static Texture2D    mySelectedInTriggerPortTemplate             = null;
-    	static Texture2D    mySelectedOutTriggerPortTemplate            = null;
 	
         // ----------------------------------------------------------------------
     	static Dictionary<Color,Texture2D>	myInLocalVariablePortIcons               = null;
@@ -54,6 +55,11 @@ namespace iCanScript.Internal.Editor {
     	static Dictionary<Color,Texture2D>	mySelectedInPublicVariablePortIcons      = null;
     	static Dictionary<Color,Texture2D>	mySelectedOutPublicVariablePortIcons     = null;
 
+        static Dictionary<Color,Texture2D>  myEnablePortIcons                        = null;
+        static Dictionary<Color,Texture2D>  myTriggerPortIcons                       = null;
+    	static Dictionary<Color,Texture2D>	mySelectedEnablePortIcons                = null;
+    	static Dictionary<Color,Texture2D>	mySelectedTriggerPortIcons               = null;
+
         static Dictionary<Color,Texture2D>  myInMuxPortTopIcons            = null;
         static Dictionary<Color,Texture2D>  myInMuxPortBottomIcons         = null;
         static Dictionary<Color,Texture2D>  myInMuxPortLeftIcons           = null;
@@ -62,8 +68,6 @@ namespace iCanScript.Internal.Editor {
         static Dictionary<Color,Texture2D>  myOutMuxPortBottomIcons        = null;
         static Dictionary<Color,Texture2D>  myOutMuxPortLeftIcons          = null;
         static Dictionary<Color,Texture2D>  myOutMuxPortRightIcons         = null;
-        static Dictionary<Color,Texture2D>  myInTriggerPortIcons           = null;
-        static Dictionary<Color,Texture2D>  myOutTriggerPortIcons          = null;
     	static Dictionary<Color,Texture2D>	mySelectedInMuxPortTopIcons    = null;
     	static Dictionary<Color,Texture2D>	mySelectedInMuxPortBottomIcons = null;
     	static Dictionary<Color,Texture2D>	mySelectedInMuxPortLeftIcons   = null;
@@ -72,14 +76,12 @@ namespace iCanScript.Internal.Editor {
     	static Dictionary<Color,Texture2D>	mySelectedOutMuxPortBottomIcons= null;
     	static Dictionary<Color,Texture2D>	mySelectedOutMuxPortLeftIcons  = null;
     	static Dictionary<Color,Texture2D>	mySelectedOutMuxPortRightIcons = null;
-    	static Dictionary<Color,Texture2D>	mySelectedInTriggerPortIcons   = null;
-    	static Dictionary<Color,Texture2D>	mySelectedOutTriggerPortIcons  = null;
 
         // ======================================================================
         // PORT POLYGONS
         // ----------------------------------------------------------------------
         static Vector2[] myMuxPortPolygon    = null;
-        static Vector2[] myTriggerPortPolygon= null;
+        static Vector2[] myControlPortPolygon= null;
     
         // ======================================================================
         // POLYGON BUILDER
@@ -91,12 +93,12 @@ namespace iCanScript.Internal.Editor {
             myMuxPortPolygon[1]= new Vector2( 0.25f, -0.25f);
             myMuxPortPolygon[2]= new Vector2( 0.25f,  0.25f);
             myMuxPortPolygon[3]= new Vector2(-0.25f, 0.5f);        
-            // Trigger Port Polygon
-            myTriggerPortPolygon= new Vector2[4];
-            myTriggerPortPolygon[0]= new Vector2( 0,   -0.5f);
-            myTriggerPortPolygon[1]= new Vector2( 0.5f, 0);
-            myTriggerPortPolygon[2]= new Vector2( 0,    0.5f);
-            myTriggerPortPolygon[3]= new Vector2(-0.5f, 0);
+            // Control Port Polygon
+            myControlPortPolygon= new Vector2[4];
+            myControlPortPolygon[0]= new Vector2( 0,   -0.5f);
+            myControlPortPolygon[1]= new Vector2( 0.5f, 0);
+            myControlPortPolygon[2]= new Vector2( 0,    0.5f);
+            myControlPortPolygon[3]= new Vector2(-0.5f, 0);
         }
 
     	// ----------------------------------------------------------------------
@@ -107,7 +109,7 @@ namespace iCanScript.Internal.Editor {
     		BuildLocalVariablePortTemplates(scale);
     		BuildPublicVariablePortTemplates(scale);
             BuildMuxPortTemplates(scale);
-            BuildTriggerPortTemplates(scale);
+            BuildControlPortTemplates(scale);
     		FlushCachedIcons();
     	}
     	// ----------------------------------------------------------------------
@@ -120,12 +122,12 @@ namespace iCanScript.Internal.Editor {
     		BuildOutPublicVariablePortTemplate(selectedLen, ref mySelectedOutPublicVariablePortTemplate);
     	}
     	// ----------------------------------------------------------------------
-    	static void BuildTriggerPortTemplates(float scale) {
+    	static void BuildControlPortTemplates(float scale) {
             float selectedScale= scale*iCS_EditorConfig.SelectedPortFactor;
-    		BuildInTriggerPortTemplate(scale, ref myInTriggerPortTemplate);
-    		BuildInTriggerPortTemplate(selectedScale, ref mySelectedInTriggerPortTemplate);
-    		BuildOutTriggerPortTemplate(scale, ref myOutTriggerPortTemplate);
-    		BuildOutTriggerPortTemplate(selectedScale, ref mySelectedOutTriggerPortTemplate);
+    		BuildEnablePortTemplate(scale, ref myEnablePortTemplate);
+    		BuildEnablePortTemplate(selectedScale, ref mySelectedEnablePortTemplate);
+    		BuildTriggerPortTemplate(scale, ref myTriggerPortTemplate);
+    		BuildTriggerPortTemplate(selectedScale, ref mySelectedTriggerPortTemplate);
     	}
     	// ----------------------------------------------------------------------
     	static void BuildMuxPortTemplates(float scale) {
@@ -197,14 +199,14 @@ namespace iCanScript.Internal.Editor {
             float radius= scale*iCS_EditorConfig.PortRadius;
             float inInnerRadius= radius-2f*scale;
             float outInnerRadius= radius-2.5f*scale;
-    		BuildInEndPortTemplate(radius, inInnerRadius, ref myInLocalVariablePortTemplate);
-    		BuildOutEndPortTemplate(radius, outInnerRadius, ref myOutLocalVariablePortTemplate);
+    		BuildInLocalVariablePortTemplate(radius, inInnerRadius, ref myInLocalVariablePortTemplate);
+    		BuildOutLocalVariablePortTemplate(radius, outInnerRadius, ref myOutLocalVariablePortTemplate);
             float selectedFactor= iCS_EditorConfig.SelectedPortFactor;
     		float selectedRadius= selectedFactor*radius;
     		float selectedInInnerRadius= selectedFactor*inInnerRadius;
     		float selectedOutInnerRadius= selectedFactor*outInnerRadius;
-    		BuildInEndPortTemplate(selectedRadius, selectedInInnerRadius, ref mySelectedInLocalVariablePortTemplate);
-    		BuildOutEndPortTemplate(selectedRadius, selectedOutInnerRadius, ref mySelectedOutLocalVariablePortTemplate);
+    		BuildInLocalVariablePortTemplate(selectedRadius, selectedInInnerRadius, ref mySelectedInLocalVariablePortTemplate);
+    		BuildOutLocalVariablePortTemplate(selectedRadius, selectedOutInnerRadius, ref mySelectedOutLocalVariablePortTemplate);
     	}
     	// ----------------------------------------------------------------------
         delegate void PortTemplateBuilder(float radius, float innerRadius, ref Texture2D template);
@@ -221,15 +223,15 @@ namespace iCanScript.Internal.Editor {
     		template.Apply();
     	}
     	// ----------------------------------------------------------------------
-    	static void BuildInEndPortTemplate(float radius, float innerRadius, ref Texture2D template) {
-            BuildPortTemplate(radius, innerRadius, ref template, BuildInEndPortTemplateImp);
+    	static void BuildInLocalVariablePortTemplate(float radius, float innerRadius, ref Texture2D template) {
+            BuildPortTemplate(radius, innerRadius, ref template, BuildInLocalVariablePortTemplateImp);
     	}
     	// ----------------------------------------------------------------------
-    	static void BuildOutEndPortTemplate(float radius, float innerRadius, ref Texture2D template) {
-            BuildPortTemplate(radius, innerRadius, ref template, BuildOutEndPortTemplateImp);
+    	static void BuildOutLocalVariablePortTemplate(float radius, float innerRadius, ref Texture2D template) {
+            BuildPortTemplate(radius, innerRadius, ref template, BuildOutLocalVariablePortTemplateImp);
     	}
     	// ----------------------------------------------------------------------
-    	public static void BuildInEndPortTemplateImp(float radius, float innerRadius, ref Texture2D texture) {
+    	public static void BuildInLocalVariablePortTemplateImp(float radius, float innerRadius, ref Texture2D texture) {
             float cx= 0.5f*texture.width;
             float cy= 0.5f*texture.height;
             var center= new Vector2(cx,cy);
@@ -238,7 +240,7 @@ namespace iCanScript.Internal.Editor {
             iCS_TextureUtil.DrawCircle(ref texture, innerRadius, center, Color.red, 1f+0.25f*myScale);
     	}
     	// ----------------------------------------------------------------------
-    	public static void BuildOutEndPortTemplateImp(float radius, float innerRadius, ref Texture2D texture) {
+    	public static void BuildOutLocalVariablePortTemplateImp(float radius, float innerRadius, ref Texture2D texture) {
             float cx= 0.5f*texture.width;
             float cy= 0.5f*texture.height;
             var center= new Vector2(cx,cy);
@@ -303,7 +305,7 @@ namespace iCanScript.Internal.Editor {
     		texture.Apply();
     	}
         // ----------------------------------------------------------------------
-    	public static void BuildInTriggerPortTemplate(float scale, ref Texture2D texture) {
+    	public static void BuildEnablePortTemplate(float scale, ref Texture2D texture) {
             float len= scale*iCS_EditorConfig.PortDiameter*1.4f;
     	    var borderSize= 2.8f*scale;
     	    if(borderSize < 1f) borderSize= 1f;
@@ -313,17 +315,17 @@ namespace iCanScript.Internal.Editor {
     		iCS_TextureUtil.Clear(ref texture);
             // Draw black background polygon
             var textureCenter= new Vector2(0.5f*textureSize,0.5f*textureSize);
-            var outterPolygon= Math3D.ScaleAndTranslatePolygon(myTriggerPortPolygon, new Vector2(len, len), textureCenter);
+            var outterPolygon= Math3D.ScaleAndTranslatePolygon(myControlPortPolygon, new Vector2(len, len), textureCenter);
             iCS_TextureUtil.DrawFilledPolygon(ref texture, outterPolygon, Color.black);
             // Draw inner color polygon.
-            var innerPolygon= Math3D.ScaleAndTranslatePolygon(myTriggerPortPolygon, new Vector2(0.6f*len, 0.6f*len), textureCenter);
+            var innerPolygon= Math3D.ScaleAndTranslatePolygon(myControlPortPolygon, new Vector2(0.6f*len, 0.6f*len), textureCenter);
             iCS_TextureUtil.DrawPolygonOutline(ref texture, innerPolygon, Color.red, 1.4f);
             // Finalize texture.
             texture.hideFlags= HideFlags.DontSave;
      		texture.Apply();
     	}
         // ----------------------------------------------------------------------
-    	public static void BuildOutTriggerPortTemplate(float scale, ref Texture2D texture) {
+    	public static void BuildTriggerPortTemplate(float scale, ref Texture2D texture) {
             float len= scale*iCS_EditorConfig.PortDiameter*1.4f;
     	    var borderSize= 2.8f*scale;
     	    if(borderSize < 1f) borderSize= 1f;
@@ -333,10 +335,10 @@ namespace iCanScript.Internal.Editor {
     		iCS_TextureUtil.Clear(ref texture);
             // Draw black background polygon
             var textureCenter= new Vector2(0.5f*textureSize,0.5f*textureSize);
-            var outterPolygon= Math3D.ScaleAndTranslatePolygon(myTriggerPortPolygon, new Vector2(len, len), textureCenter);
+            var outterPolygon= Math3D.ScaleAndTranslatePolygon(myControlPortPolygon, new Vector2(len, len), textureCenter);
             iCS_TextureUtil.DrawFilledPolygon(ref texture, outterPolygon, Color.black);
             // Draw inner color polygon.
-            var innerPolygon= Math3D.ScaleAndTranslatePolygon(myTriggerPortPolygon, new Vector2(0.6f*len, 0.6f*len), textureCenter);
+            var innerPolygon= Math3D.ScaleAndTranslatePolygon(myControlPortPolygon, new Vector2(0.6f*len, 0.6f*len), textureCenter);
             iCS_TextureUtil.DrawFilledPolygon(ref texture, innerPolygon, Color.red);
             // Finalize texture.
             texture.hideFlags= HideFlags.DontSave;
@@ -345,6 +347,29 @@ namespace iCanScript.Internal.Editor {
 	
         // ======================================================================
         // Icon retreival functions
+    	// ----------------------------------------------------------------------
+    	// Returns a texture representing an enable port.
+    	public static Texture2D GetEnablePortIcon(Color typeColor) {
+    		return GetPortIcon(typeColor, ref myEnablePortIcons, ref myEnablePortTemplate);
+    	}
+    	// ----------------------------------------------------------------------
+    	// Returns a texture representing a trigger port.
+    	public static Texture2D GetTriggerPortIcon(Color typeColor) {
+    		return GetPortIcon(typeColor, ref myTriggerPortIcons, ref myTriggerPortTemplate);
+    	}
+    	// ----------------------------------------------------------------------
+    	// Returns a texture representing a selected enable port.
+    	public static Texture2D GetSelectedEnablePortIcon(Color typeColor) {
+    		return GetPortIcon(typeColor,
+    			               ref mySelectedEnablePortIcons, ref mySelectedEnablePortTemplate);
+    	}
+    	// ----------------------------------------------------------------------
+    	// Returns a texture representing a trigger port.
+    	public static Texture2D GetSelectedTriggerPortIcon(Color typeColor) {
+    		return GetPortIcon(typeColor,
+    			               ref mySelectedTriggerPortIcons, ref mySelectedTriggerPortTemplate);
+    	}
+
     	// ----------------------------------------------------------------------
     	// Returns a texture representing a local variable port.
     	public static Texture2D GetInLocalVariablePortIcon(Color typeColor) {
@@ -431,16 +456,6 @@ namespace iCanScript.Internal.Editor {
     	}
     	// ----------------------------------------------------------------------
     	// Returns a texture representing the requested mux port icon.
-    	public static Texture2D GetInTriggerPortIcon(Color typeColor) {
-    		return GetPortIcon(typeColor, ref myInTriggerPortIcons, ref myInTriggerPortTemplate);
-    	}
-    	// ----------------------------------------------------------------------
-    	// Returns a texture representing the requested port icon.
-    	public static Texture2D GetOutTriggerPortIcon(Color typeColor) {
-    		return GetPortIcon(typeColor, ref myOutTriggerPortIcons, ref myOutTriggerPortTemplate);
-    	}
-    	// ----------------------------------------------------------------------
-    	// Returns a texture representing the requested mux port icon.
     	public static Texture2D GetSelectedInMuxPortTopIcon(Color typeColor) {
     		return GetPortIcon(typeColor,
     			               ref mySelectedInMuxPortTopIcons, ref mySelectedInMuxPortTopTemplate);
@@ -486,18 +501,6 @@ namespace iCanScript.Internal.Editor {
     	public static Texture2D GetSelectedOutMuxPortRightIcon(Color typeColor) {
     		return GetPortIcon(typeColor,
     			               ref mySelectedOutMuxPortRightIcons, ref mySelectedOutMuxPortRightTemplate);
-    	}
-    	// ----------------------------------------------------------------------
-    	// Returns a selected trigger port icon.
-    	public static Texture2D GetSelectedInTriggerPortIcon(Color typeColor) {
-    		return GetPortIcon(typeColor,
-    			               ref mySelectedInTriggerPortIcons, ref mySelectedInTriggerPortTemplate);
-    	}
-    	// ----------------------------------------------------------------------
-    	// Returns a selected trigger port icon.
-    	public static Texture2D GetSelectedOutTriggerPortIcon(Color typeColor) {
-    		return GetPortIcon(typeColor,
-    			               ref mySelectedOutTriggerPortIcons, ref mySelectedOutTriggerPortTemplate);
     	}
     	// ----------------------------------------------------------------------
     	// Returns a texture representing the requested circular port icon.
@@ -556,12 +559,13 @@ namespace iCanScript.Internal.Editor {
     		FlushCachedIcons(ref mySelectedInPublicVariablePortIcons);
     		FlushCachedIcons(ref mySelectedOutPublicVariablePortIcons);
 
+    		FlushCachedIcons(ref myEnablePortIcons);
+    		FlushCachedIcons(ref myTriggerPortIcons);
+    		FlushCachedIcons(ref mySelectedEnablePortIcons);
+    		FlushCachedIcons(ref mySelectedTriggerPortIcons);
+
     		FlushCachedIcons(ref myOutMuxPortRightIcons);
-    		FlushCachedIcons(ref myInTriggerPortIcons);
-    		FlushCachedIcons(ref myOutTriggerPortIcons);
     		FlushCachedIcons(ref mySelectedOutMuxPortRightIcons);
-    		FlushCachedIcons(ref mySelectedInTriggerPortIcons);
-    		FlushCachedIcons(ref mySelectedOutTriggerPortIcons);
     	}
     	// ----------------------------------------------------------------------
     	static void FlushCachedIcons(ref Dictionary<Color,Texture2D> iconSet) {
