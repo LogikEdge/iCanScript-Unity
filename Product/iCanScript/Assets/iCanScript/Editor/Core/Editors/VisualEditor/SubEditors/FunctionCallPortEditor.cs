@@ -10,14 +10,22 @@ namespace iCanScript.Internal.Editor {
         // ===================================================================
         // TYPES
         // -------------------------------------------------------------------
-        public enum VariableType {
+        public enum InVariableType {
             LocalVariable        = PortSpecification.LocalVariable,
             PublicVariable       = PortSpecification.PublicVariable,
             PrivateVariable      = PortSpecification.PrivateVariable,
-            Constant             = PortSpecification.Constant,
+            StaticPublicVariable = PortSpecification.StaticPublicVariable,
+            StaticPrivateVariable= PortSpecification.StaticPrivateVariable,
+            Constant             = PortSpecification.Constant
+        };
+        public enum OutVariableType {
+            LocalVariable        = PortSpecification.LocalVariable,
+            PublicVariable       = PortSpecification.PublicVariable,
+            PrivateVariable      = PortSpecification.PrivateVariable,
             StaticPublicVariable = PortSpecification.StaticPublicVariable,
             StaticPrivateVariable= PortSpecification.StaticPrivateVariable
         };
+        
         
         // ===================================================================
         // BUILDER
@@ -44,9 +52,16 @@ namespace iCanScript.Internal.Editor {
             EditPortValue();
 
             // -- Edit port variable type. --
-            VariableType variableType= ConvertEnum(vsObject.PortSpec, VariableType.LocalVariable);
-            variableType= (VariableType)EditorGUILayout.EnumPopup("Variable Type", variableType);
-            vsObject.PortSpec= ConvertEnum(variableType, PortSpecification.Default);
+            if(vsObject.IsInDataPort) {
+                InVariableType variableType= ConvertEnum(vsObject.PortSpec, InVariableType.LocalVariable);
+                variableType= (InVariableType)EditorGUILayout.EnumPopup("Variable Type", variableType);
+                vsObject.PortSpec= ConvertEnum(variableType, PortSpecification.Default);                
+            }
+            else if(vsObject.IsOutDataPort) {
+                OutVariableType variableType= ConvertEnum(vsObject.PortSpec, OutVariableType.LocalVariable);
+                variableType= (OutVariableType)EditorGUILayout.EnumPopup("Variable Type", variableType);
+                vsObject.PortSpec= ConvertEnum(variableType, PortSpecification.Default);                
+            }
             
             // -- Show port value type. --
             EditPortValueType();

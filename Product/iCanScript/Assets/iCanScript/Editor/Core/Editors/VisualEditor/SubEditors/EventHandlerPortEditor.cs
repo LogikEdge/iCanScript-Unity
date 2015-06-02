@@ -9,25 +9,19 @@ namespace iCanScript.Internal.Editor {
         // ===================================================================
         // TYPES
         // -------------------------------------------------------------------
-        public enum InputPortType {
+        public enum InVariableType {
             PublicVariable=        PortSpecification.PublicVariable,
             PrivateVariable=       PortSpecification.PrivateVariable,
             StaticPublicVariable=  PortSpecification.StaticPublicVariable,
             StaticPrivateVariable= PortSpecification.StaticPrivateVariable,
             Constant=              PortSpecification.Constant
         };
-        public enum OutputPortType {
+        public enum OutVariableType {
             PublicVariable=        PortSpecification.PublicVariable,
             PrivateVariable=       PortSpecification.PrivateVariable,
             StaticPublicVariable=  PortSpecification.StaticPublicVariable,
             StaticPrivateVariable= PortSpecification.StaticPrivateVariable            
         };
-        public enum ThisPortType {
-            Owner= PortSpecification.Target
-        };
-        public enum ParameterPortType {
-            Parameter= PortSpecification.Parameter
-        }
         
         // ===================================================================
         // BUILDER
@@ -50,78 +44,33 @@ namespace iCanScript.Internal.Editor {
         // EDITOR ENTRY POINT
         // -------------------------------------------------------------------
         protected override void OnPortSpecificGUI() {
-            // Port type selection.
-            EditGeneratedVariableType();
+            // -- Port type selection. --
+            if(vsObject.IsFixDataPort) {
+                // -- Edit port variable type. --
+                EditorGUI.BeginDisabledGroup(true);
+                EditorGUILayout.EnumPopup("Variable Type", vsObject.PortSpec);
+                EditorGUI.EndDisabledGroup();
+            }
+            else {
+                // -- Edit port variable type. --
+                if(vsObject.IsInDataPort) {
+                    InVariableType variableType= ConvertEnum(vsObject.PortSpec, InVariableType.PublicVariable);
+                    variableType= (InVariableType)EditorGUILayout.EnumPopup("Variable Type", variableType);
+                    vsObject.PortSpec= ConvertEnum(variableType, PortSpecification.Default);                
+                }
+                else if(vsObject.IsOutDataPort) {
+                    OutVariableType variableType= ConvertEnum(vsObject.PortSpec, OutVariableType.PublicVariable);
+                    variableType= (OutVariableType)EditorGUILayout.EnumPopup("Variable Type", variableType);
+                    vsObject.PortSpec= ConvertEnum(variableType, PortSpecification.Default);                
+                }
             
-            // Edit the value of the port.
-            if(!(IsEventParameter() || IsHelperPort())) {
+                // -- Edit the value of the port. --
                 EditPortValue();                
             }
-            
-            // Show port value type.
+            // -- Show port value type. --
             EditPortValueType();
         }
                 
-        // -------------------------------------------------------------------
-        /// Edits the generated variable specification.
-        void EditGeneratedVariableType() {
-            var port= vsObject;
-            var generatedVariableLabel= "Generated Variable";
-            if(port.IsTargetPort) {
-                var newPortType= EditorGUILayout.EnumPopup(generatedVariableLabel, ThisPortType.Owner);
-                vsObject.PortSpec= (PortSpecification)newPortType;
-                return;                
-            }
-            if(IsHelperPort()) {
-                var newPortType= EditorGUILayout.EnumPopup(generatedVariableLabel, ThisPortType.Owner);
-                vsObject.PortSpec= (PortSpecification)newPortType;
-                return;                                
-            }
-            if(IsEventParameter()) {
-                var newPortType= EditorGUILayout.EnumPopup(generatedVariableLabel, ParameterPortType.Parameter);                
-                vsObject.PortSpec= (PortSpecification)newPortType;
-                return;                
-            }
-            if(port.IsInDataPort) {
-                var newPortType= EditorGUILayout.EnumPopup(generatedVariableLabel, ToInputPortType());                
-                vsObject.PortSpec= (PortSpecification)newPortType;
-                return;
-            }
-            if(port.IsOutDataPort) {
-                var newPortType= EditorGUILayout.EnumPopup(generatedVariableLabel, ToOutputPortType());                                
-                vsObject.PortSpec= (PortSpecification)newPortType;
-                return;
-            }
-        }
-
-        // -------------------------------------------------------------------
-        /// Determines if the port is a fix parameter for the event handler.
-        ///
-        /// @return _true_ if the port is a fix parameter. _false_ otherwise.
-        ///
-        bool IsEventParameter() {
-            return vsObject.IsParameterPort || vsObject.IsInDataPort;
-        }
-
-        // -------------------------------------------------------------------
-        /// Determines if the port is an helper port for this event handler.
-        ///
-        /// @return _true_ if the port is a fix parameter. _false_ otherwise.
-        ///
-        bool IsHelperPort() {
-            return vsObject.IsProposedDataPort;
-        }
-
-        // -------------------------------------------------------------------
-        /// Converts from a standard PortType.
-        InputPortType ToInputPortType() {
-			return ConvertEnum(vsObject.PortSpec, InputPortType.PublicVariable);
-       }
-        // -------------------------------------------------------------------
-        /// Converts from a standard PortType.
-        OutputPortType ToOutputPortType() {
-			return ConvertEnum(vsObject.PortSpec, OutputPortType.PrivateVariable);
-        }
 	}
 
 }

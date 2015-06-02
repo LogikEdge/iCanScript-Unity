@@ -37,6 +37,9 @@ namespace iCanScript.Internal.Editor {
     	static Texture2D	mySelectedInParameterPortTemplate           = null;
     	static Texture2D	mySelectedOutParameterPortTemplate          = null;
         
+    	static Texture2D	myConstantPortTemplate  	                = null;
+    	static Texture2D	mySelectedConstantPortTemplate              = null;
+        
     	static Texture2D    myInMuxPortTopTemplate                      = null;
     	static Texture2D    myInMuxPortBottomTemplate                   = null;
     	static Texture2D    myInMuxPortLeftTemplate                     = null;
@@ -79,6 +82,9 @@ namespace iCanScript.Internal.Editor {
     	static Dictionary<Color,Texture2D>	myOutParameterPortIcons                  = null;
     	static Dictionary<Color,Texture2D>	mySelectedInParameterPortIcons           = null;
     	static Dictionary<Color,Texture2D>	mySelectedOutParameterPortIcons          = null;
+
+    	static Dictionary<Color,Texture2D>	myConstantPortIcons                      = null;
+    	static Dictionary<Color,Texture2D>	mySelectedConstantPortIcons              = null;
 
         static Dictionary<Color,Texture2D>  myInMuxPortTopIcons            = null;
         static Dictionary<Color,Texture2D>  myInMuxPortBottomIcons         = null;
@@ -136,6 +142,7 @@ namespace iCanScript.Internal.Editor {
     		BuildPublicVariablePortTemplates(scale);
     		BuildPrivateVariablePortTemplates(scale);
             BuildParameterPortTemplates(scale);
+            BuildConstantPortTemplates(scale);
             BuildMuxPortTemplates(scale);
             BuildControlPortTemplates(scale);
     		FlushCachedIcons();
@@ -298,6 +305,16 @@ namespace iCanScript.Internal.Editor {
     		BuildOutLocalVariablePortTemplate(selectedRadius, selectedOutInnerRadius, ref mySelectedOutLocalVariablePortTemplate);
     	}
     	// ----------------------------------------------------------------------
+    	static void BuildConstantPortTemplates(float scale) {
+            float radius= scale*iCS_EditorConfig.PortRadius;
+            float inInnerRadius= radius-2f*scale;
+    		BuildConstantPortTemplate(radius, inInnerRadius, ref myConstantPortTemplate);
+            float selectedFactor= iCS_EditorConfig.SelectedPortFactor;
+    		float selectedRadius= selectedFactor*radius;
+    		float selectedInInnerRadius= selectedFactor*inInnerRadius;
+    		BuildConstantPortTemplate(selectedRadius, selectedInInnerRadius, ref mySelectedConstantPortTemplate);
+    	}
+    	// ----------------------------------------------------------------------
         delegate void PortTemplateBuilder(float radius, float innerRadius, ref Texture2D template);
     	static void BuildPortTemplate(float radius, float innerRadius, ref Texture2D template, PortTemplateBuilder builder) {
             // Remove previous template.
@@ -336,6 +353,24 @@ namespace iCanScript.Internal.Editor {
             iCS_TextureUtil.Clear(ref texture);
             iCS_TextureUtil.DrawFilledCircle(ref texture, radius, center, Color.black);
             iCS_TextureUtil.DrawFilledCircle(ref texture, innerRadius, center, Color.red);
+    	}
+    	// ----------------------------------------------------------------------
+    	public static void BuildConstantPortTemplate(float radius, float innerRadius, ref Texture2D template) {
+            // -- Remove previous template. --
+            if(template != null) Texture2D.DestroyImmediate(template);
+    		// -- Create texture. --
+    		int widthInt= (int)(2f*radius+3f);
+    		int heightInt= (int)(2f*radius+3f);
+    		template= new Texture2D(widthInt, heightInt, TextureFormat.ARGB32, false);
+            // -- Build port image. --
+            float cx= 0.5f*template.width;
+            float cy= 0.5f*template.height;
+            var center= new Vector2(cx,cy);
+            iCS_TextureUtil.Fill(ref template, Color.black);
+            iCS_TextureUtil.DrawCircle(ref template, innerRadius, center, Color.red, 1f+0.25f*myScale);
+    		// -- Finalize texture. --
+    		template.hideFlags= HideFlags.DontSave;
+    		template.Apply();
     	}
     	// ----------------------------------------------------------------------
     	public static void BuildMuxPortTemplate(float width, float height, ref Texture2D texture, bool isInPort, float rotation= 0f) {
@@ -591,6 +626,18 @@ namespace iCanScript.Internal.Editor {
     	}
 
     	// ----------------------------------------------------------------------
+    	// Returns a texture representing a parameter port.
+    	public static Texture2D GetConstantPortIcon(Color typeColor) {
+    		return GetPortIcon(typeColor, ref myConstantPortIcons, ref myConstantPortTemplate);
+    	}
+    	// ----------------------------------------------------------------------
+    	// Returns a texture representing a selected parameter port.
+    	public static Texture2D GetSelectedConstantPortIcon(Color typeColor) {
+    		return GetPortIcon(typeColor,
+    			               ref mySelectedConstantPortIcons, ref mySelectedConstantPortTemplate);
+    	}
+
+    	// ----------------------------------------------------------------------
     	// Returns a texture representing the requested mux port icon.
     	public static Texture2D GetInMuxPortTopIcon(Color typeColor) {
     		return GetPortIcon(typeColor, ref myInMuxPortTopIcons, ref myInMuxPortTopTemplate);
@@ -749,6 +796,9 @@ namespace iCanScript.Internal.Editor {
     		FlushCachedIcons(ref myOutParameterPortIcons);
     		FlushCachedIcons(ref mySelectedInParameterPortIcons);
     		FlushCachedIcons(ref mySelectedOutParameterPortIcons);
+
+    		FlushCachedIcons(ref myConstantPortIcons);
+    		FlushCachedIcons(ref mySelectedConstantPortIcons);
 
     		FlushCachedIcons(ref myOutMuxPortRightIcons);
     		FlushCachedIcons(ref mySelectedOutMuxPortRightIcons);

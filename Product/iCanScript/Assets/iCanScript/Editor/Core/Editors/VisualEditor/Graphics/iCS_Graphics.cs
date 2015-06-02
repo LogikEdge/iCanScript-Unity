@@ -733,9 +733,12 @@ namespace iCanScript.Internal.Editor {
         void DrawDataPort(iCS_EditorObject port, Vector3 _center, Color _fillColor, bool isSelected) {
     		if(port.IsInputPort) {
                 switch(port.PortSpec) {
-                    case PortSpecification.PublicVariable:
-                    case PortSpecification.Constant: {
+                    case PortSpecification.PublicVariable: {
         				DrawInPublicVariablePort(_center, _fillColor, isSelected);                        
+                        break;
+                    }
+                    case PortSpecification.Constant: {
+        				DrawConstantPort(_center, _fillColor, isSelected);                        
                         break;
                     }
                     case PortSpecification.PrivateVariable: {
@@ -753,8 +756,7 @@ namespace iCanScript.Internal.Editor {
                 }
     		} else {
                 switch(port.PortSpec) {
-                    case PortSpecification.PublicVariable:
-                    case PortSpecification.Constant: {
+                    case PortSpecification.PublicVariable: {
         				DrawOutPublicVariablePort(_center, _fillColor, isSelected);
                         break;
                     }
@@ -831,6 +833,12 @@ namespace iCanScript.Internal.Editor {
         void DrawOutParameterPort(Vector3 _center, Color _fillColor, bool isSelected) {
     		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutParameterPortIcon(_fillColor) :
     		                                 iCS_PortIcons.GetOutParameterPortIcon(_fillColor);
+            DrawSymetricalPort(_center, portIcon);
+        }
+    	// ----------------------------------------------------------------------
+        void DrawConstantPort(Vector3 _center, Color _fillColor, bool isSelected) {
+    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedConstantPortIcon(_fillColor) :
+    		                                 iCS_PortIcons.GetConstantPortIcon(_fillColor);
             DrawSymetricalPort(_center, portIcon);
         }
     	// ----------------------------------------------------------------------
