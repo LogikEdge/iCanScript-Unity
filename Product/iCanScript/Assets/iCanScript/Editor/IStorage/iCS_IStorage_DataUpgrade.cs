@@ -244,6 +244,21 @@ namespace iCanScript.Internal.Editor {
                             }
                             isUpgraded= true;
                         }
+                        else if(parentNode.IsKindOfPackage) {
+                            if(p.IsInDataPort) {
+                                if(producerPort == p) {
+                                    var initialValue= p.InitialValue;
+                                    if(initialValue != null) {
+                                        p.PortSpec= PortSpecification.Constant;
+                                        isUpgraded= true;
+                                    }
+                                    else {
+                                        p.PortSpec= PortSpecification.PublicVariable;
+                                        isUpgraded= true;
+                                    }
+                                }
+                            }
+                        }
                         else {
                             p.PortSpec= PortSpecification.LocalVariable;
                             isUpgraded= true;
