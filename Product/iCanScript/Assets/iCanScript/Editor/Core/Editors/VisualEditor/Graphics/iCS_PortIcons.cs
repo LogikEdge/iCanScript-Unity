@@ -599,7 +599,7 @@ namespace iCanScript.Internal.Editor {
     	// Returns a texture representing a selected private variable.
     	public static Texture2D GetSelectedOutPrivateVariablePortIcon(Color typeColor) {
     		return GetPortIcon(typeColor,
-    			               ref mySelectedOutPrivateVariablePortIcons, ref mySelectedOutPublicVariablePortTemplate);
+    			               ref mySelectedOutPrivateVariablePortIcons, ref mySelectedOutPrivateVariablePortTemplate);
     	}
 
     	// ----------------------------------------------------------------------
