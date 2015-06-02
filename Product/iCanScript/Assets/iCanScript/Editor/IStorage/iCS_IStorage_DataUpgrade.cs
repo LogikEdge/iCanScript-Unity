@@ -160,7 +160,8 @@ namespace iCanScript.Internal.Editor {
                         // -- Connected port follow the producer. --
                         else if(producerPort != p) {
                             if(producerPort.PortSpec != PortSpecification.Default) {
-                                p.PortSpec= producerPort.PortSpec;                                        
+                                p.PortSpec= producerPort.PortSpec;
+                                isUpgraded= true;                                        
                             }
                             else {
                                 newPassNeeded= true;

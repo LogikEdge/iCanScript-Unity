@@ -732,17 +732,31 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
         void DrawDataPort(iCS_EditorObject port, Vector3 _center, Color _fillColor, bool isSelected) {
     		if(port.IsInputPort) {
-    			if(port.IsProgrammaticInstancePort) {
-    				DrawInReferencePort(_center, _fillColor, isSelected);
-    			} else {
-    				DrawInValuePort(_center, _fillColor, isSelected);
-    			}
+                switch(port.PortSpec) {
+                    case PortSpecification.PublicVariable:
+                    case PortSpecification.PrivateVariable:
+                    case PortSpecification.Constant: {
+        				DrawInPublicVariablePort(_center, _fillColor, isSelected);                        
+                        break;
+                    }
+                    default: {
+        				DrawInLocalVariablePort(_center, _fillColor, isSelected);
+                        break;                        
+                    }
+                }
     		} else {
-    			if(port.IsProgrammaticInstancePort) {
-    				DrawOutReferencePort(_center, _fillColor, isSelected);
-    			} else {
-    				DrawOutValuePort(_center, _fillColor, isSelected);
-    			}
+                switch(port.PortSpec) {
+                    case PortSpecification.PublicVariable:
+                    case PortSpecification.PrivateVariable:
+                    case PortSpecification.Constant: {
+        				DrawOutPublicVariablePort(_center, _fillColor, isSelected);
+                        break;
+                    }
+                    default: {
+        				DrawOutLocalVariablePort(_center, _fillColor, isSelected);
+                        break;                        
+                    }
+                }
     		}
         }
     	// ----------------------------------------------------------------------
@@ -763,10 +777,10 @@ namespace iCanScript.Internal.Editor {
     		GUI.DrawTexture(pos, portIcon);
         }
     	// ----------------------------------------------------------------------
-        void DrawInValuePort(Vector3 _center, Color _fillColor, bool isSelected) {
+        void DrawInLocalVariablePort(Vector3 _center, Color _fillColor, bool isSelected) {
     		Vector3 center= TranslateAndScale(_center);
-    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedInEndPortIcon(_fillColor) :
-    		                                 iCS_PortIcons.GetInEndPortIcon(_fillColor);
+    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedInLocalVariablePortIcon(_fillColor) :
+    		                                 iCS_PortIcons.GetInLocalVariablePortIcon(_fillColor);
     		Rect pos= new Rect(center.x-0.5f*portIcon.width,
     						   center.y-0.5f*portIcon.height,
     						   portIcon.width,
@@ -774,10 +788,10 @@ namespace iCanScript.Internal.Editor {
     		GUI.DrawTexture(pos, portIcon);
         }
     	// ----------------------------------------------------------------------
-        void DrawOutValuePort(Vector3 _center, Color _fillColor, bool isSelected) {
+        void DrawOutLocalVariablePort(Vector3 _center, Color _fillColor, bool isSelected) {
     		Vector3 center= TranslateAndScale(_center);
-    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutEndPortIcon(_fillColor) :
-    		                                 iCS_PortIcons.GetOutEndPortIcon(_fillColor);
+    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutLocalVariablePortIcon(_fillColor) :
+    		                                 iCS_PortIcons.GetOutLocalVariablePortIcon(_fillColor);
     		Rect pos= new Rect(center.x-0.5f*portIcon.width,
     						   center.y-0.5f*portIcon.height,
     						   portIcon.width,
@@ -785,10 +799,10 @@ namespace iCanScript.Internal.Editor {
     		GUI.DrawTexture(pos, portIcon);
         }
     	// ----------------------------------------------------------------------
-        void DrawInReferencePort(Vector3 _center, Color _fillColor, bool isSelected) {
+        void DrawInPublicVariablePort(Vector3 _center, Color _fillColor, bool isSelected) {
     		Vector3 center= TranslateAndScale(_center);
-    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedInRelayPortIcon(_fillColor) :
-    		                                 iCS_PortIcons.GetInRelayPortIcon(_fillColor);
+    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedInPublicVariablePortIcon(_fillColor) :
+    		                                 iCS_PortIcons.GetInPublicVariablePortIcon(_fillColor);
     		Rect pos= new Rect(center.x-0.5f*portIcon.width,
     						   center.y-0.5f*portIcon.height,
     						   portIcon.width,
@@ -796,10 +810,10 @@ namespace iCanScript.Internal.Editor {
     		GUI.DrawTexture(pos, portIcon);
         }
     	// ----------------------------------------------------------------------
-        void DrawOutReferencePort(Vector3 _center, Color _fillColor, bool isSelected) {
+        void DrawOutPublicVariablePort(Vector3 _center, Color _fillColor, bool isSelected) {
     		Vector3 center= TranslateAndScale(_center);
-    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutRelayPortIcon(_fillColor) :
-    		                                 iCS_PortIcons.GetOutRelayPortIcon(_fillColor);
+    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutPublicVariablePortIcon(_fillColor) :
+    		                                 iCS_PortIcons.GetOutPublicVariablePortIcon(_fillColor);
     		Rect pos= new Rect(center.x-0.5f*portIcon.width,
     						   center.y-0.5f*portIcon.height,
     						   portIcon.width,

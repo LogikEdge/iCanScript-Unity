@@ -344,7 +344,7 @@ namespace iCanScript.Internal.Engine {
             int linkLength= 0;
             for(iCS_EngineObject sourcePort= GetProducerPort(vsd, port); sourcePort != null; sourcePort= GetProducerPort(vsd, port)) {
                 port= sourcePort;
-                if(++linkLength > 1000) {
+                if(++linkLength > 100) {
                     Debug.LogWarning("iCanScript: Circular port connection detected on: "+GetParentNode(vsd, port).RawName+"."+port.RawName);
                     return null;                
                 }

@@ -130,8 +130,8 @@ namespace iCanScript.Internal.Editor {
         }
         // ---------------------------------------------------------------------------------
         static void BuildScaleIndependantTextures() {
-            BuildEndPortIcons(Color.red);
-            BuildRelayPortIcons(Color.red);
+            BuildLocalVariablePortIcons(Color.red);
+            BuildPublicVariablePortIcons(Color.red);
             BuildTransitionPortIcons();
             BuildControlPortIcons();
         }
@@ -143,7 +143,7 @@ namespace iCanScript.Internal.Editor {
             BuildUnfoldIcon();        
         }
         // ---------------------------------------------------------------------------------
-    	static void BuildEndPortIcons(Color typeColor) {
+    	static void BuildLocalVariablePortIcons(Color typeColor) {
     		Texture2D inPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight, TextureFormat.ARGB32, false);
     		Texture2D outPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight, TextureFormat.ARGB32, false);
     		float radius= 0.5f*(kPortIconHeight-3f);
@@ -173,12 +173,12 @@ namespace iCanScript.Internal.Editor {
     	}
 
         // ---------------------------------------------------------------------------------
-    	static void BuildRelayPortIcons(Color typeColor) {
+    	static void BuildPublicVariablePortIcons(Color typeColor) {
     		Texture2D inPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight, TextureFormat.ARGB32, false);
     		Texture2D outPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight, TextureFormat.ARGB32, false);
     		float len= kPortIconHeight-2f;
-            iCS_PortIcons.BuildInRelayPortTemplate (len, ref inPortTemplate);
-            iCS_PortIcons.BuildOutRelayPortTemplate(len, ref outPortTemplate);
+            iCS_PortIcons.BuildInPublicVariablePortTemplate (len, ref inPortTemplate);
+            iCS_PortIcons.BuildOutPublicVariablePortTemplate(len, ref outPortTemplate);
             Texture2D inPortIcon = iCS_PortIcons.BuildPortIcon(typeColor, inPortTemplate);
             Texture2D outPortIcon= iCS_PortIcons.BuildPortIcon(typeColor, outPortTemplate);
 
