@@ -10,6 +10,55 @@ namespace iCanScript.Internal.Editor {
     public static class GraphInfo {
 
         // ===================================================================
+		/// Returns the _Target_ port on the given node.
+		///
+		/// @param node The node to seach.
+		/// @return The Target port if found. _null_ otherwise.
+		///
+		public static iCS_EditorObject GetTargetPort(iCS_EditorObject node) {
+			return node.TargetPort;
+		}
+		
+        // ===================================================================
+		/// Returns the port that produces the data.
+		///
+		/// @param port One of the connected ports.
+		/// @return The port that produces the data.
+		///
+		public static iCS_EditorObject GetProducerPort(iCS_EditorObject port) {
+            var producerPort= port.FirstProducerPort;
+            // -- Follow the target/self port chain. --
+            while(producerPort.IsSelfPort) {
+                producerPort= GetTargetPort(producerPort.ParentNode);
+                producerPort= producerPort.FirstProducerPort;
+            }
+			// Follow the trigger/enable chain.
+            while(producerPort.IsTriggerPort && producerPort.ParentNode.IsKindOfPackage) {
+                var package= producerPort.ParentNode;
+                var nestedFunctions= VSStructure.GetListOfFunctions(package);
+                if(nestedFunctions.Count != 0) {
+                    // FIXME: Need to create a trigger variable.
+                    return producerPort;
+                }
+                var enables= ControlFlow.GetEnablePorts(package);
+                switch(enables.Length) {
+                    case 0: {
+                        // FIXME: Should remove enable to nothing.
+                        return producerPort;
+                    }
+                    case 1: {
+                        return GetProducerPort(enables[0]);
+                    }
+                    default: {
+                        // FIXME: Need to create a trigger variable.
+                        return producerPort;
+                    }
+                }
+            }
+            return producerPort;			
+		}
+		
+        // ===================================================================
         /// Builds a list of parent nodes.
         ///
         /// The list is sorted from the top most parent to the bottom most leaf.
@@ -72,6 +121,7 @@ namespace iCanScript.Internal.Editor {
         /// @param port The output port to be verified.
         /// @return _True_ if the only valid variable type for this port is
         ///         a type variable.
+        ///
         public static bool MustBeATypeVariable(iCS_EditorObject port) {
             var commonParent= GetCommonParent(port.EndConsumerPorts);
             commonParent= GetCommonParent(port, commonParent);
@@ -79,18 +129,42 @@ namespace iCanScript.Internal.Editor {
         }
 
         // ===================================================================
-        /// Determines if the given output port is connected to an otput port
-        /// of an event handler.
+        /// Determines if the given output port must be a parameter.
         ///
         /// @param port The output port to be verified.
-        /// @return _True_ if one of the connection finishes on an output
-        ///         port of an event handler. _False_ otherwise.
+        /// @return _True_ if the given port must be a parameter.
+        ///         _False_ otherwise.
         ///
-        public static bool IsConnectedToEventHandlerOutput(iCS_EditorObject port) {
-            // TODO: Complete IsConnected to function definition output port.
+        public static bool MustBeAParameter(iCS_EditorObject port) {
+            var consumerPorts= port.EndConsumerPorts;
+            foreach(var p in consumerPorts) {
+                if(p.IsFixDataPort && p.ParentNode.IsEventHandler) {
+                    return true;
+                }
+            }
             return false;
         }
 
+        // ===================================================================
+        /// Determines if the given output port can be a parameter.
+        ///
+        /// @param port The output port to be verified.
+        /// @return _True_ if the given port can be a parameter.
+        ///         _False_ otherwise.
+        ///
+        public static bool CanBeAParameter(iCS_EditorObject port) {
+            var consumerPorts= port.EndConsumerPorts;
+            foreach(var p in consumerPorts) {
+                var parentNode= p.ParentNode;
+                if(p.IsFixDataPort && parentNode.IsEventHandler) {
+                    return true;
+                }
+                if(parentNode.IsFunctionDefinition) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
     
 }

@@ -246,7 +246,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                     else if(vsObj.IsOutDataPort && vsObj.ParentNode == node) {
                         var portVariable= Context.GetCodeFor(vsObj);
                         if(portVariable != null) {
-                            var producerPort= CodeFlow.GetProducerPort(vsObj);
+                            var producerPort= GraphInfo.GetProducerPort(vsObj);
                             if(producerPort != null) {
                                 var consumerCode= new VariableReferenceDefinition(vsObj, this);
                                 var producerCode= new VariableReferenceDefinition(producerPort, this);

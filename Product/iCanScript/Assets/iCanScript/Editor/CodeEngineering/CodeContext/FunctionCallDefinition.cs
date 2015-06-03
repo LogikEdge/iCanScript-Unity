@@ -61,7 +61,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             foreach(var p in parameters) {
                 int idx= p.PortIndex;
                 if(p.IsInputPort) {
-                    var producerPort= CodeFlow.GetProducerPort(p);
+                    var producerPort= GraphInfo.GetProducerPort(p);
                     if(producerPort != null && producerPort != p) {
                         myParameters[idx]= new FunctionCallParameterDefinition(p, this, p.RuntimeType);
                     }
@@ -116,9 +116,9 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             }
             // -- Optimize target port from get fields/properties. --
             if(!IsStatic()) {
-                var targetPort= DataFlow.GetTargetPort(VSObject);
+                var targetPort= GraphInfo.GetTargetPort(VSObject);
                 if(targetPort != null) {
-                    var producerPort= CodeFlow.GetProducerPort(targetPort);
+                    var producerPort= GraphInfo.GetProducerPort(targetPort);
 					var producerCode= Context.GetCodeFor(producerPort.ParentNode);
                     if(producerCode is GetPropertyCallDefinition) {
                         if(producerPort.ConsumerPorts.Length == 1) {
@@ -417,7 +417,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 }
             }
             else {
-                var thisPort= DataFlow.GetTargetPort(node);
+                var thisPort= GraphInfo.GetTargetPort(node);
                 if(thisPort != null) {
 //					result.Append(GetExpressionFor(thisPort));
 //					result.Append(".");
@@ -427,7 +427,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                         result.Append(".");
                         return result.ToString();
                     }
-                    var producerPort= CodeFlow.GetProducerPort(thisPort);
+                    var producerPort= GraphInfo.GetProducerPort(thisPort);
 	                var producerType= Context.GetRuntimeTypeFor(producerPort);
 					var producerCode= Context.GetCodeFor(producerPort);
 					if(producerCode is FunctionDefinitionParameter) {

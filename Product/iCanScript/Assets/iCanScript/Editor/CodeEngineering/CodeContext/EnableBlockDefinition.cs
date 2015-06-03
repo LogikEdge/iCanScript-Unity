@@ -73,7 +73,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             }
             
             // -- Verify if we can optimize parameter ports. --
-            myEnableCode[0]= Context.GetCodeFor(CodeFlow.GetProducerPort(myEnablePorts[0]));
+            myEnableCode[0]= Context.GetCodeFor(GraphInfo.GetProducerPort(myEnablePorts[0]));
             if(myEnableCode[0] != null) {
                 myEnableCode[0]= OptimizeInputParameter(myEnableCode[0], myParent);
                 if(myEnableCode[0] != null) {
@@ -144,7 +144,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                     result.Append(myEnableCode[i].GenerateBody(0));
                 }
                 else {
-                    result.Append(GetNameFor(CodeFlow.GetProducerPort(myEnablePorts[i])));                    
+                    result.Append(GetNameFor(GraphInfo.GetProducerPort(myEnablePorts[i])));                    
                 }
                 if(i < len-1) {
                     result.Append(" || ");

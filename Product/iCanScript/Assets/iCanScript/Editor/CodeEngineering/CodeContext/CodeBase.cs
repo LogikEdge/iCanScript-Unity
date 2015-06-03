@@ -160,7 +160,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 Debug.LogWarning("iCanScript: Internal error: Invoking GetValueFor(...) without an input port.  Contact support.");
                 return null;
             }
-            var producerPort= CodeFlow.GetProducerPort(vsObj);
+            var producerPort= GraphInfo.GetProducerPort(vsObj);
             if(!producerPort.IsInputPort) {
                 Debug.LogWarning("iCanScript: Internal error: Invoking GetValueFor(...) on a port connected to an output port.  Contact support.");
                 return null;
@@ -190,7 +190,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 				Debug.LogWarning("iCanScript: Internal error: Trying to extract port expression from non-port object.  Contact support.");
 				return "";
 			}
-            var producerPort= CodeFlow.GetProducerPort(vsObj);
+            var producerPort= GraphInfo.GetProducerPort(vsObj);
 			// Return value if the port is not connected.
 			if(producerPort == vsObj) {
 				return GetValueFor(vsObj);					
@@ -1072,7 +1072,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         
     	// -------------------------------------------------------------------------
         public bool CanReplaceInputParameter(CodeBase code, CodeBase allowedParent, out iCS_EditorObject producerParent) {
-            var producerPort= CodeFlow.GetProducerPort(code.VSObject);
+            var producerPort= GraphInfo.GetProducerPort(code.VSObject);
             producerParent= producerPort.ParentNode;
             // Accept get field/property if we are the only consumer.
 			if(IsFieldOrPropertyGet(producerParent)) {
