@@ -33,6 +33,8 @@ namespace iCanScript.Internal.Editor {
         /// @return The first shared parent.
         ///
         public static iCS_EditorObject GetCommonParent(iCS_EditorObject vsObj1, iCS_EditorObject vsObj2) {
+            if(vsObj1 == null) return vsObj2;
+            if(vsObj2 == null) return vsObj1;
             var l1= BuildListOfParentNodes(vsObj1);
             var l2= BuildListOfParentNodes(vsObj2);
             l1= P.insertAt(vsObj1, l1.Length, l1);
@@ -52,6 +54,7 @@ namespace iCanScript.Internal.Editor {
         /// @return The first shared parent.
         ///
         public static iCS_EditorObject GetCommonParent(iCS_EditorObject[] vsObjects) {
+            if(vsObjects == null) return null;
             var len= vsObjects.Length;
             if(len == 0) return null;
             if(len == 1) return vsObjects[0];
@@ -60,6 +63,19 @@ namespace iCanScript.Internal.Editor {
                 commonParent= GetCommonParent(commonParent, vsObjects[i]);
             }
             return commonParent;
+        }
+
+        // ===================================================================
+        /// Determine if the given output port must be promoted to a type
+        /// variable.
+        ///
+        /// @param port The output port to be verified.
+        /// @return _True_ if the only valid variable type for this port is
+        ///         a type variable.
+        public static bool MustBeATypeVariable(iCS_EditorObject port) {
+            var commonParent= GetCommonParent(port.EndConsumerPorts);
+            commonParent= GetCommonParent(port, commonParent);
+            return commonParent.IsTypeDefinitionNode;
         }
 
         // ===================================================================
@@ -75,17 +91,6 @@ namespace iCanScript.Internal.Editor {
             return false;
         }
 
-        // ===================================================================
-        /// Determine if the given output port must be promoted to a type
-        /// variable.
-        ///
-        /// @param port The output port to be verified.
-        /// @return _True_ if the only valid variable type for this port is
-        ///         a type variable.
-        public static bool MustBeATypeVariable(iCS_EditorObject port) {
-            var consumers= port.EndConsumerPorts;
-            return false;
-        }
     }
     
 }

@@ -305,7 +305,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		var outputNode= outputPort.ParentNode;
 		if(inputNode == outputNode) return;
 		// outputPort is inside the node with the inputPort.
-		var commonParentNode= outputPort.GetCommonParent(inputPort);
+		var commonParentNode= GraphInfo.GetCommonParent(outputPort, inputPort);
 		if(inputNode == commonParentNode) {
 			// Rebuild moving down from the common parent towards the output port.
 			var newInputNode= outputPort.ParentNode;

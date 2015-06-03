@@ -300,7 +300,7 @@ namespace iCanScript.Internal.Editor {
     		var outputNode= outputPort.ParentNode;
     		if(inputNode == outputNode) return;
     		// outputPort is inside the node with the inputPort.
-    		var commonParentNode= outputPort.GetCommonParent(inputPort);
+    		var commonParentNode= GraphInfo.GetCommonParent(outputPort, inputPort);
     		if(inputNode == commonParentNode) {
     			// Rebuild moving down from the common parent towards the output port.
     			var newInputNode= outputPort.ParentNode;
@@ -395,7 +395,7 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
     	public void RebuildStateConnection(iCS_EditorObject fromStatePort, iCS_EditorObject toStatePort) {
             if(fromStatePort == null || toStatePort == null) return;
-    		var commonParent= fromStatePort.GetCommonParent(toStatePort);
+    		var commonParent= GraphInfo.GetCommonParent(fromStatePort, toStatePort);
     		if(commonParent == null) {
     			Debug.LogWarning("iCanScript: Unable to find common parent after relocating state !!!");
     			return;

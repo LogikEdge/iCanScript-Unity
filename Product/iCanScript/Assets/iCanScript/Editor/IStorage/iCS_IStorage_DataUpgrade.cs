@@ -234,8 +234,7 @@ namespace iCanScript.Internal.Editor {
                                 }
                             }
                             else if(p.IsOutDataPort) {
-                                var commonParent= p.GetCommonParent(p.EndConsumerPorts);
-                                if(commonParent.IsRootObject) {
+                                if(GraphInfo.MustBeATypeVariable(p)) {
                                     p.PortSpec= PortSpecification.PrivateVariable;
                                 }
                                 else {

@@ -424,36 +424,7 @@ namespace iCanScript.Internal.Editor {
         // Builds a list of parent nodes.  The list is sorted from the top most
         // parent to the bottom most leaf.
         public iCS_EditorObject[] BuildListOfParentNodes() {
-            var result= new List<iCS_EditorObject>();
-            for(var parent= ParentNode; parent != null; parent= parent.ParentNode) {
-                result.Add(parent);
-            }
-            return P.reverse(result).ToArray();
-        }
-        // ----------------------------------------------------------------------
-        // Return the lowest shared parent between two objects.
-        public iCS_EditorObject GetCommonParent(iCS_EditorObject theOther) {
-            var l1= BuildListOfParentNodes();
-            var l2= theOther.BuildListOfParentNodes();
-            l1= P.insertAt(this, l1.Length, l1);
-            l2= P.insertAt(theOther, l2.Length, l2);
-            iCS_EditorObject commonParent= null;
-            for(int i= 0; i < l1.Length && i < l2.Length; ++i) {
-                if(l1[i] != l2[i]) break;
-                commonParent= l1[i];
-            }
-            return commonParent;
-        }
-        // ----------------------------------------------------------------------
-        /// Returns the common parent with the list of VSObjects.
-        ///
-        /// @param vsObjects The list of visual script objects.
-        public iCS_EditorObject GetCommonParent(iCS_EditorObject[] vsObjects) {
-            var commonParent= this;
-            foreach(var o in vsObjects) {
-                commonParent= GetCommonParent(o);
-            }
-            return commonParent;
+            return GraphInfo.BuildListOfParentNodes(this);
         }
         // ----------------------------------------------------------------------
         public iCS_EditorObject GetParentStateChart() {

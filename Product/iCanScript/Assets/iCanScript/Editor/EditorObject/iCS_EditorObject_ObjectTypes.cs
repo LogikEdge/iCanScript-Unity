@@ -34,7 +34,8 @@ namespace iCanScript.Internal.Editor {
         public bool IsOnStateExitPackage    	{ get { return EngineObject.IsOnStateExitPackage; }}
         public bool IsFunctionDefinition        { get { return IsPackage && IsParentValid && Parent.IsBehaviour; }}
         public bool IsVariableDefinition        { get { return IsConstructor && IsParentValid && Parent.IsBehaviour; }}
-    
+        public bool IsTypeDefinitionNode        { get { return IsRootObject; }}
+        
         // General Ports
         public bool IsPort                      { get { return EngineObject.IsPort; }}
         public bool IsInputPort                 { get { return EngineObject.IsInputPort; }}
