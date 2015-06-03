@@ -379,7 +379,7 @@ namespace iCanScript.Internal.Editor {
     			p=> {
     			    if(p.IsDataOrControlPort) {
         				var outputPort= p.SegmentProducerPort;
-        				foreach(var inputPort in p.EndConsumerPorts) {
+        				foreach(var inputPort in p.SegmentEndConsumerPorts) {
         					RebuildDataConnection(outputPort, inputPort);
         				}			        
     			    }

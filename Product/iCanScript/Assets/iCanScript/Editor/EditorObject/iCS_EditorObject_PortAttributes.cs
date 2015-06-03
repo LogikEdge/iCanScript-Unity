@@ -81,10 +81,10 @@ namespace iCanScript.Internal.Editor {
     	}
     	// ----------------------------------------------------------------------
         /// Returns the list of consumers a producer ports has.
-    	public iCS_EditorObject[] EndConsumerPorts {
+    	public iCS_EditorObject[] SegmentEndConsumerPorts {
     		get {
     			var result= new List<iCS_EditorObject>();
-    			BuildListOfEndConsumerPorts(ref result);
+    			BuildListOfSegmentEndConsumerPorts(ref result);
                 // -- Remove our self from result. --
                 if(result.Count == 1 && result[0] == this) {
                     result.RemoveAt(0);
@@ -92,13 +92,13 @@ namespace iCanScript.Internal.Editor {
     			return result.ToArray();
     		}
     	}
-    	private void BuildListOfEndConsumerPorts(ref List<iCS_EditorObject> r) {
+    	private void BuildListOfSegmentEndConsumerPorts(ref List<iCS_EditorObject> r) {
     		var consumers= ConsumerPorts;
     		if(consumers.Length == 0) {
     			r.Add(this);
     		} else {
     			foreach(var p in consumers) {
-    				p.BuildListOfEndConsumerPorts(ref r);
+    				p.BuildListOfSegmentEndConsumerPorts(ref r);
     			}
     		}
     	}
@@ -108,7 +108,7 @@ namespace iCanScript.Internal.Editor {
         public bool IsTheOnlyConsumer {
             get {
                 var producerPort= SegmentProducerPort;
-                return producerPort.EndConsumerPorts.Length == 1;
+                return producerPort.SegmentEndConsumerPorts.Length == 1;
             }
         }
     	// ----------------------------------------------------------------------
@@ -116,7 +116,7 @@ namespace iCanScript.Internal.Editor {
     		get {
     			var result= new List<P.Tuple<iCS_EditorObject,iCS_EditorObject> >();
     			var source= SegmentProducerPort;
-    			foreach(var consumer in source.EndConsumerPorts) {
+    			foreach(var consumer in source.SegmentEndConsumerPorts) {
     				result.Add(new P.Tuple<iCS_EditorObject,iCS_EditorObject>(source, consumer));
     			}			        
     			return result.ToArray();

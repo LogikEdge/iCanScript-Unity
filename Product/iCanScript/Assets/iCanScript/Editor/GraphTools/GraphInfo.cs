@@ -59,6 +59,55 @@ namespace iCanScript.Internal.Editor {
 		}
 		
         // ===================================================================
+		/// Returns a list of all ports in the connection.
+		///
+		/// @param port One of the connected ports.
+		/// @return The list of all ports in the connection.
+		///
+		public static iCS_EditorObject[] GetAllPortsInConnection(iCS_EditorObject port) {
+			var allPorts= new List<iCS_EditorObject>();
+			// -- Follow the end consumer chain. --
+			var consumerPorts= new List<iCS_EditorObject>();
+			var nextConsumerPorts= new List<iCS_EditorObject>();
+			consumerPorts.Add(GetProducerPort(port));
+			do {
+				foreach(var p in consumerPorts) {
+					allPorts.Add(p);
+					// -- Bridge the Target/Self ports. --
+					if(p.IsTargetPort) {
+						var selfPort= p.ParentNode.SelfPort;
+						if(selfPort != null) {
+							nextConsumerPorts.Add(selfPort);
+						}
+					}
+					else {
+						nextConsumerPorts.AddRange(p.ConsumerPorts);
+					}
+				}				
+				consumerPorts= nextConsumerPorts;
+				nextConsumerPorts.Clear();
+			} while(consumerPorts.Count != 0);
+			return allPorts.ToArray();
+		}
+		
+        // ===================================================================
+		/// Returns a list of all end consumer ports.
+		///
+		/// @param port One of the connected ports.
+		/// @return The list of consumer end ports.
+		///
+		public static iCS_EditorObject[] GetEndConsumerPorts(iCS_EditorObject port) {
+			// -- Starting from the producer port ... --
+			var producerPort= GetProducerPort(port);
+			// -- Find all the end consumer port in the segment. --
+			var consumerPorts= producerPort.SegmentEndConsumerPorts;
+			var targetPorts= P.filter(p=> p.IsTargetPort, consumerPorts);
+			consumerPorts= P.filter(p=> !p.IsTargetPort, consumerPorts);
+			
+			return consumerPorts;
+		}
+		
+        // ===================================================================
         /// Builds a list of parent nodes.
         ///
         /// The list is sorted from the top most parent to the bottom most leaf.
@@ -123,7 +172,7 @@ namespace iCanScript.Internal.Editor {
         ///         a type variable.
         ///
         public static bool MustBeATypeVariable(iCS_EditorObject port) {
-            var commonParent= GetCommonParent(port.EndConsumerPorts);
+            var commonParent= GetCommonParent(port.SegmentEndConsumerPorts);
             commonParent= GetCommonParent(port, commonParent);
             return commonParent.IsTypeDefinitionNode;
         }
@@ -136,7 +185,7 @@ namespace iCanScript.Internal.Editor {
         ///         _False_ otherwise.
         ///
         public static bool MustBeAParameter(iCS_EditorObject port) {
-            var consumerPorts= port.EndConsumerPorts;
+            var consumerPorts= port.SegmentEndConsumerPorts;
             foreach(var p in consumerPorts) {
                 if(p.IsFixDataPort && p.ParentNode.IsEventHandler) {
                     return true;
@@ -153,7 +202,7 @@ namespace iCanScript.Internal.Editor {
         ///         _False_ otherwise.
         ///
         public static bool CanBeAParameter(iCS_EditorObject port) {
-            var consumerPorts= port.EndConsumerPorts;
+            var consumerPorts= port.SegmentEndConsumerPorts;
             foreach(var p in consumerPorts) {
                 var parentNode= p.ParentNode;
                 if(p.IsFixDataPort && parentNode.IsEventHandler) {

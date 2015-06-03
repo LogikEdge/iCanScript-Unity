@@ -49,7 +49,7 @@ namespace iCanScript.Internal.Editor {
                    // -- Verify for unnecessary OR function --
     			   var producerNode= producerPort.ParentNode;
     			   if(producerNode.IsFunction("Or", "iCS_Boolean", "")) {
-    				   if(producerPort.EndConsumerPorts.Length <= 1) {
+    				   if(producerPort.SegmentEndConsumerPorts.Length <= 1) {
     					   var message= "Consider using additional 'Enable(s)' ports instead of an OR function. => "+producerNode.FullName;
     					   ErrorController.AddWarning(serviceKey, message, visualScript, producerNode.InstanceId);
     					   ErrorController.AddWarning(serviceKey, message, visualScript, producerNode.InstanceId);				   	

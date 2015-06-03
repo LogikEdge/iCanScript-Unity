@@ -617,7 +617,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// @return The common base type for all consumers.
         ///
         public Type GetCommonBaseTypeForProducerPort(iCS_EditorObject producerPort) {
-            var consumers= producerPort.EndConsumerPorts;
+            var consumers= producerPort.SegmentEndConsumerPorts;
             var consumersLen= consumers.Length;
             if(consumersLen == 0) return typeof(void);
             var commonType= consumers[0].RuntimeType;
@@ -639,7 +639,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// @return The common base type for all consumers.
         ///
         public Type GetMostSpecializedTypeForProducerPort(iCS_EditorObject producerPort) {
-            var consumers= producerPort.EndConsumerPorts;
+            var consumers= producerPort.SegmentEndConsumerPorts;
             var consumersLen= consumers.Length;
             if(consumersLen == 0) return typeof(void);
             var specializedType= consumers[0].RuntimeType;
@@ -788,7 +788,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 var producerPort= port.ProducerPort;
                 if(producerPort != null && producerPort != port) return false;
                 // Don't generate public interface if already connected to a constructor.
-                var consumers= port.EndConsumerPorts;
+                var consumers= port.SegmentEndConsumerPorts;
                 foreach(var c in consumers) {
                     if(c.ParentNode.IsConstructor) {
                         return false;
@@ -1002,7 +1002,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         ///
         public iCS_EditorObject[] GetCodeConsumerPorts(iCS_EditorObject producerPort) {
             // TODO: GetCodeConsumerPorts needs to be completed.
-            return producerPort.EndConsumerPorts;
+            return producerPort.SegmentEndConsumerPorts;
         }
                 
         // =========================================================================

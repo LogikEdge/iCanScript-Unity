@@ -492,7 +492,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             // No return variable necessary
             var returnPort= GetReturnPort(node);
             if(returnPort == null) return "";
-            var consumerPorts= returnPort.EndConsumerPorts;
+            var consumerPorts= returnPort.SegmentEndConsumerPorts;
             if(consumerPorts.Length == 0) {
                 return "";
             }
