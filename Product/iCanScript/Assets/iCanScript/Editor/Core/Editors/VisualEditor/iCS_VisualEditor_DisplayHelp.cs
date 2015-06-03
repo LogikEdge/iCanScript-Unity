@@ -168,7 +168,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	iCS_EditorObject getConnectedPort(iCS_EditorObject edObj, Direction direction) {
 		iCS_EditorObject port= edObj;
 	    if (direction == Direction.Producer) {
-			port= edObj.FirstProducerPort;
+			port= edObj.SegmentProducerPort;
             var producerParent= port.ParentNode;
             if(producerParent != null) {
                 var producerGrandParent= producerParent.ParentNode;

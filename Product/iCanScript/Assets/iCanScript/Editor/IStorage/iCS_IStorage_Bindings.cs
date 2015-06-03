@@ -59,8 +59,8 @@ namespace iCanScript.Internal.Editor {
         bool IsPortDisconnected(iCS_EditorObject port) { return !IsPortConnected(port); }
         // ----------------------------------------------------------------------
         // Returns the last data port in the connection or NULL if none exist.
-        public iCS_EditorObject GetFirstProducerPort(iCS_EditorObject port) {
-            iCS_EngineObject engineObject= Storage.GetFirstProducerPort(port.EngineObject);
+        public iCS_EditorObject GetSegmentProducerPort(iCS_EditorObject port) {
+            iCS_EngineObject engineObject= Storage.GetSegmentProducerPort(port.EngineObject);
             return engineObject != null ? EditorObjects[engineObject.InstanceId] : null;
         }
     
@@ -378,7 +378,7 @@ namespace iCanScript.Internal.Editor {
     		node.ForEachChildPort(
     			p=> {
     			    if(p.IsDataOrControlPort) {
-        				var outputPort= p.FirstProducerPort;
+        				var outputPort= p.SegmentProducerPort;
         				foreach(var inputPort in p.EndConsumerPorts) {
         					RebuildDataConnection(outputPort, inputPort);
         				}			        
@@ -459,7 +459,7 @@ namespace iCanScript.Internal.Editor {
         // ----------------------------------------------------------------------
     	public iCS_EditorObject FindPortWithSourceEndPoint(iCS_EditorObject node, iCS_EditorObject srcEP) {
     		// Get all ports that match request (supports connection loops).
-    		var matchingPorts= node.BuildListOfChildPorts(p=> p.FirstProducerPort == srcEP);
+    		var matchingPorts= node.BuildListOfChildPorts(p=> p.SegmentProducerPort == srcEP);
     		if(matchingPorts.Length == 0) return null;
     		if(matchingPorts.Length == 1) return matchingPorts[0];
     		foreach(var p in matchingPorts) {

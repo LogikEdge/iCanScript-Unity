@@ -77,7 +77,7 @@ namespace iCanScript.Internal.Editor {
                     }
                 }
                 else if(vsObject.IsOutDataPort) {
-                    var producerPort= vsObject.FirstProducerPort;
+                    var producerPort= vsObject.SegmentProducerPort;
                     OutVariableType variableType= ConvertEnum(producerPort.PortSpec, OutVariableType.PublicVariable);
                     variableType= (OutVariableType)EditorGUILayout.EnumPopup("Variable Type", variableType);
                     producerPort.PortSpec= ConvertEnum(variableType, PortSpecification.Default);                

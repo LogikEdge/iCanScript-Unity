@@ -62,12 +62,13 @@ namespace iCanScript.Internal.Editor {
     	}
     	// ----------------------------------------------------------------------
         /// Returns the port that actually produces the data.
-    	public iCS_EditorObject FirstProducerPort {
+    	public iCS_EditorObject SegmentProducerPort {
     		get {
-    		    var engineObject= Storage.GetFirstProducerPort(EngineObject);
-                if(engineObject == null) return this;
-                var firstProducer= EditorObjects[engineObject.InstanceId];
-                return firstProducer ?? this;
+				var producerPort= this;
+				while(producerPort.ProducerPort != null) {
+					producerPort= producerPort.ProducerPort;
+				}
+				return producerPort;
     		}
     	}
     	// ----------------------------------------------------------------------
@@ -106,7 +107,7 @@ namespace iCanScript.Internal.Editor {
         /// producer port.
         public bool IsTheOnlyConsumer {
             get {
-                var producerPort= FirstProducerPort;
+                var producerPort= SegmentProducerPort;
                 return producerPort.EndConsumerPorts.Length == 1;
             }
         }
@@ -114,7 +115,7 @@ namespace iCanScript.Internal.Editor {
     	public P.Tuple<iCS_EditorObject,iCS_EditorObject>[] Connections {
     		get {
     			var result= new List<P.Tuple<iCS_EditorObject,iCS_EditorObject> >();
-    			var source= FirstProducerPort;
+    			var source= SegmentProducerPort;
     			foreach(var consumer in source.EndConsumerPorts) {
     				result.Add(new P.Tuple<iCS_EditorObject,iCS_EditorObject>(source, consumer));
     			}			        
@@ -159,7 +160,7 @@ namespace iCanScript.Internal.Editor {
     	public object PortValue {
     		get {
     			if(!IsDataOrControlPort) return null;
-    			var port= FirstProducerPort;
+    			var port= SegmentProducerPort;
                 // Get value from parent node.
                 return port.InitialPortValue;
     		}

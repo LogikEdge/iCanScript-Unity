@@ -44,7 +44,7 @@ namespace iCanScript.Internal.Editor {
     		   }
     	   }
     	   if(IsEnablePort) {
-    		   var producerPort= FirstProducerPort;
+    		   var producerPort= SegmentProducerPort;
     		   if(producerPort != this) {
                    // -- Verify for unnecessary OR function --
     			   var producerNode= producerPort.ParentNode;
@@ -64,7 +64,7 @@ namespace iCanScript.Internal.Editor {
                        parentNode.ForEachChildPort(
                            p=> {
                                if(p.IsInDataPort) {
-                                   var pp= p.FirstProducerPort;
+                                   var pp= p.SegmentProducerPort;
                                    if(pp.ParentNode == producerNode) {
                                        doesDataFlowExist= true;
                                    }
@@ -81,8 +81,8 @@ namespace iCanScript.Internal.Editor {
                        var producerNodeTargetPort= producerNode.TargetPort;
                        var parentNodeTargetPort  = parentNode.TargetPort;
                        if(producerNodeTargetPort != null && parentNodeTargetPort != null) {
-                           var targetProducerPort= parentNodeTargetPort.FirstProducerPort;
-                           if(producerNodeTargetPort.FirstProducerPort == targetProducerPort) {
+                           var targetProducerPort= parentNodeTargetPort.SegmentProducerPort;
+                           if(producerNodeTargetPort.SegmentProducerPort == targetProducerPort) {
                                var targetProducerNode= targetProducerPort.ParentNode;
                                var producerNodeSelfPort= producerNode.SelfPort;
                                var message= "Consider connecting the <b>Self</b> port of '<b>"+producerNode.DisplayName

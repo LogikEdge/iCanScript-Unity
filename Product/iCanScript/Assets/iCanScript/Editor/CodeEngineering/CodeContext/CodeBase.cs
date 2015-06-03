@@ -117,7 +117,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         ///
         public string GetNameFor(iCS_EditorObject vsObj) {
             if(vsObj.IsInputPort) {
-                var producerPort= vsObj.FirstProducerPort;
+                var producerPort= vsObj.SegmentProducerPort;
                 if(producerPort.IsInputPort) {
                     // Find the code base for the producer port.
                     var producerPortCode= myContext.GetCodeFor(producerPort);
@@ -954,7 +954,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         ///         port can be evaluated.
         ///
         public iCS_EditorObject[] GetInputPortCodeDependencies(iCS_EditorObject port) {
-            var producerPort= port.FirstProducerPort;
+            var producerPort= port.SegmentProducerPort;
             // This should not happen...
             if(producerPort == null) {
                 Debug.LogWarning("iCanScript: Unable to determine producer port.");
@@ -1118,7 +1118,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         public bool AreAllInputsConstant(iCS_EditorObject node) {
             var inputs= node.BuildListOfChildPorts(p=> p.IsInputPort);
             foreach(var p in inputs) {
-                if(p.FirstProducerPort.IsOutputPort) {
+                if(p.SegmentProducerPort.IsOutputPort) {
                     return false;
                 }
             }

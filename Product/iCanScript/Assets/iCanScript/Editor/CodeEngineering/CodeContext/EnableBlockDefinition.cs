@@ -61,7 +61,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             if(enableLen > 1) {
                 for(int i= 0; i < enableLen; ++i) {
                     var enable= myEnablePorts[i];
-                    if(enable.IsTheOnlyConsumer && !enable.FirstProducerPort.IsTriggerPort) {
+                    if(enable.IsTheOnlyConsumer && !enable.SegmentProducerPort.IsTriggerPort) {
                         if(i != 0) {
                             var t= myEnablePorts[0];
                             myEnablePorts[0]= enable;
@@ -87,7 +87,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 		bool AreAllProducersTriggers() {
 			bool areAllProducersTriggers= true;
 			foreach(var e in myEnablePorts) {
-                var producerPort= e.FirstProducerPort;
+                var producerPort= e.SegmentProducerPort;
                 if(!producerPort.IsTriggerPort) {
 					areAllProducersTriggers= false;
                 }	
@@ -100,7 +100,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 		bool AreAllInSameExecutionContext(out CodeBase code) {
 			code= null;
 			foreach(var e in myEnablePorts) {
-                var producerPort= e.FirstProducerPort;
+                var producerPort= e.SegmentProducerPort;
 				var producerParent= producerPort.ParentNode;
 				var function= GetFunction(producerParent);
 				if(function == null) return false;

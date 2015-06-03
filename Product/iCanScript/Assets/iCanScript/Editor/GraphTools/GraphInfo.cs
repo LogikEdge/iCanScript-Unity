@@ -26,11 +26,11 @@ namespace iCanScript.Internal.Editor {
 		/// @return The port that produces the data.
 		///
 		public static iCS_EditorObject GetProducerPort(iCS_EditorObject port) {
-            var producerPort= port.FirstProducerPort;
+            var producerPort= port.SegmentProducerPort;
             // -- Follow the target/self port chain. --
             while(producerPort.IsSelfPort) {
                 producerPort= GetTargetPort(producerPort.ParentNode);
-                producerPort= producerPort.FirstProducerPort;
+                producerPort= producerPort.SegmentProducerPort;
             }
 			// Follow the trigger/enable chain.
             while(producerPort.IsTriggerPort && producerPort.ParentNode.IsKindOfPackage) {

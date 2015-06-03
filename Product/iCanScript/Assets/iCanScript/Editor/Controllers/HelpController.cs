@@ -254,7 +254,7 @@ namespace iCanScript.Internal.Editor {
     					edObj= aConsumer.Parent;
     				}
     				else if (edObj.IsOutputPort) {
-    					edObj= edObj.FirstProducerPort.Parent;
+    					edObj= edObj.SegmentProducerPort.Parent;
     				}							
     			}
     			

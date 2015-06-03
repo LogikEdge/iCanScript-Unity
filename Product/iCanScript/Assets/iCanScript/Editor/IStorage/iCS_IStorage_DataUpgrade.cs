@@ -148,7 +148,7 @@ namespace iCanScript.Internal.Editor {
                         if(p.PortSpec != PortSpecification.Default) return;
                         // -- Setup spec for control ports. --
                         var parentNode= p.ParentNode;
-                        var producerPort= p.FirstProducerPort;
+                        var producerPort= p.SegmentProducerPort;
                         if(p.IsEnablePort) {
                             p.PortSpec= PortSpecification.Enable;
                             isUpgraded= true;
