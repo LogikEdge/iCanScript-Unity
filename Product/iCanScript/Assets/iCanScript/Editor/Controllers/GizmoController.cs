@@ -46,7 +46,7 @@ namespace iCanScript.Internal.Editor {
         // ---------------------------------------------------------------------------------
         /// In the scene view, draws the iCanScript logo on top of game objects that include
         /// a visual script.
-        [DrawGizmo(GizmoType.NotSelected | GizmoType.Selected)]
+        [DrawGizmo(GizmoType.NotInSelectionHierarchy | GizmoType.Selected)]
         public static void DrawGizmos(iCS_VisualScriptImp visualScript, GizmoType gizmoType) {
             var go= visualScript.gameObject;
             var p= go.transform.position;

@@ -9,15 +9,30 @@ namespace iCanScript.Internal.Editor {
         // ===================================================================
         // TYPES
         // -------------------------------------------------------------------
-        public enum VariableType {
-            Parameter            = PortSpecification.Parameter,
-            ReturnValue          = PortSpecification.ReturnValue,
-            PublicVariable       = PortSpecification.PublicVariable,
-            PrivateVariable      = PortSpecification.PrivateVariable,
-            Constant             = PortSpecification.Constant,
-            StaticPublicVariable = PortSpecification.StaticPublicVariable,
+        public enum InVariableType {
+            Parameter=             PortSpecification.Parameter,
+            PublicVariable=        PortSpecification.PublicVariable,
+            PrivateVariable=       PortSpecification.PrivateVariable,
+            StaticPublicVariable=  PortSpecification.StaticPublicVariable,
+            StaticPrivateVariable= PortSpecification.StaticPrivateVariable,
+            Constant=              PortSpecification.Constant
+        };
+        public enum InUnityObjectVariableType {
+            Parameter=             PortSpecification.Parameter,
+            PublicVariable=        PortSpecification.PublicVariable,
+            PrivateVariable=       PortSpecification.PrivateVariable,
+            StaticPublicVariable=  PortSpecification.StaticPublicVariable,
             StaticPrivateVariable= PortSpecification.StaticPrivateVariable
         };
+        public enum OutVariableType {
+            Parameter=             PortSpecification.Parameter,
+            ReturnValue=           PortSpecification.ReturnValue,
+            PublicVariable=        PortSpecification.PublicVariable,
+            PrivateVariable=       PortSpecification.PrivateVariable,
+            StaticPublicVariable=  PortSpecification.StaticPublicVariable,
+            StaticPrivateVariable= PortSpecification.StaticPrivateVariable            
+        };
+        
         
         // ===================================================================
         // BUILDER
@@ -40,13 +55,37 @@ namespace iCanScript.Internal.Editor {
         // EDITOR ENTRY POINT
         // -------------------------------------------------------------------
         protected override void OnPortSpecificGUI() {
-            // -- Edit the value of the port. --
-            EditPortValue();
+            // -- Port type selection. --
+            if(vsObject.IsFixDataPort) {
+                // -- Edit port variable type. --
+                EditorGUI.BeginDisabledGroup(true);
+                EditorGUILayout.EnumPopup("Variable Type", vsObject.PortSpec);
+                EditorGUI.EndDisabledGroup();
+            }
+            else {
+                // -- Edit port variable type. --
+                if(vsObject.IsInDataPort) {
+                    if(iCS_Types.IsA<UnityEngine.Object>(vsObject.RuntimeType)) {
+                        InUnityObjectVariableType variableType= ConvertEnum(vsObject.PortSpec, InUnityObjectVariableType.PublicVariable);
+                        variableType= (InUnityObjectVariableType)EditorGUILayout.EnumPopup("Variable Type", variableType);
+                        vsObject.PortSpec= ConvertEnum(variableType, PortSpecification.Default);                        
+                    }
+                    else {
+                        InVariableType variableType= ConvertEnum(vsObject.PortSpec, InVariableType.PublicVariable);
+                        variableType= (InVariableType)EditorGUILayout.EnumPopup("Variable Type", variableType);
+                        vsObject.PortSpec= ConvertEnum(variableType, PortSpecification.Default);
+                    }
+                }
+                else if(vsObject.IsOutDataPort) {
+                    var producerPort= vsObject.FirstProducerPort;
+                    OutVariableType variableType= ConvertEnum(producerPort.PortSpec, OutVariableType.PublicVariable);
+                    variableType= (OutVariableType)EditorGUILayout.EnumPopup("Variable Type", variableType);
+                    producerPort.PortSpec= ConvertEnum(variableType, PortSpecification.Default);                
+                }
             
-            // -- Edit port variable type. --
-            VariableType variableType= ConvertEnum(vsObject.PortSpec, VariableType.Parameter);
-            variableType= (VariableType)EditorGUILayout.EnumPopup("Variable Type", variableType);
-            vsObject.PortSpec= ConvertEnum(variableType, PortSpecification.Default);
+                // -- Edit the value of the port. --
+                EditPortValue();                
+            }
             
             // -- Show port value type. --
             EditPortValueType();

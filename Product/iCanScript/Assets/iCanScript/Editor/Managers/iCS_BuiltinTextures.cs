@@ -130,8 +130,8 @@ namespace iCanScript.Internal.Editor {
         }
         // ---------------------------------------------------------------------------------
         static void BuildScaleIndependantTextures() {
-            BuildEndPortIcons(Color.red);
-            BuildRelayPortIcons(Color.red);
+            BuildLocalVariablePortIcons(Color.red);
+            BuildPublicVariablePortIcons(Color.red);
             BuildTransitionPortIcons();
             BuildControlPortIcons();
         }
@@ -143,12 +143,12 @@ namespace iCanScript.Internal.Editor {
             BuildUnfoldIcon();        
         }
         // ---------------------------------------------------------------------------------
-    	static void BuildEndPortIcons(Color typeColor) {
+    	static void BuildLocalVariablePortIcons(Color typeColor) {
     		Texture2D inPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight, TextureFormat.ARGB32, false);
     		Texture2D outPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight, TextureFormat.ARGB32, false);
     		float radius= 0.5f*(kPortIconHeight-3f);
-            iCS_PortIcons.BuildInEndPortTemplateImp(radius, radius-2, ref inPortTemplate);
-            iCS_PortIcons.BuildOutEndPortTemplateImp(radius, radius-2, ref outPortTemplate);
+            iCS_PortIcons.BuildInLocalVariablePortTemplateImp(radius, radius-2, ref inPortTemplate);
+            iCS_PortIcons.BuildOutLocalVariablePortTemplateImp(radius, radius-2, ref outPortTemplate);
             Texture2D portInIcon= iCS_PortIcons.BuildPortIcon(typeColor, inPortTemplate);
             Texture2D portOutIcon= iCS_PortIcons.BuildPortIcon(typeColor, outPortTemplate);
 
@@ -173,12 +173,12 @@ namespace iCanScript.Internal.Editor {
     	}
 
         // ---------------------------------------------------------------------------------
-    	static void BuildRelayPortIcons(Color typeColor) {
+    	static void BuildPublicVariablePortIcons(Color typeColor) {
     		Texture2D inPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight, TextureFormat.ARGB32, false);
     		Texture2D outPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight, TextureFormat.ARGB32, false);
     		float len= kPortIconHeight-2f;
-            iCS_PortIcons.BuildInRelayPortTemplate (len, ref inPortTemplate);
-            iCS_PortIcons.BuildOutRelayPortTemplate(len, ref outPortTemplate);
+            iCS_PortIcons.BuildInPublicVariablePortTemplate (len, ref inPortTemplate);
+            iCS_PortIcons.BuildOutPublicVariablePortTemplate(len, ref outPortTemplate);
             Texture2D inPortIcon = iCS_PortIcons.BuildPortIcon(typeColor, inPortTemplate);
             Texture2D outPortIcon= iCS_PortIcons.BuildPortIcon(typeColor, outPortTemplate);
 
@@ -206,8 +206,8 @@ namespace iCanScript.Internal.Editor {
     		Texture2D inPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight, TextureFormat.ARGB32, false);
     		Texture2D outPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight, TextureFormat.ARGB32, false);
             float scale= 0.8f*kPortIconHeight/(iCS_EditorConfig.PortDiameter*1.4f);
-            iCS_PortIcons.BuildInTriggerPortTemplate(scale, ref inPortTemplate);
-            iCS_PortIcons.BuildOutTriggerPortTemplate(scale, ref outPortTemplate);
+            iCS_PortIcons.BuildEnablePortTemplate(scale, ref inPortTemplate);
+            iCS_PortIcons.BuildTriggerPortTemplate(scale, ref outPortTemplate);
             Texture2D portInIcon= iCS_PortIcons.BuildPortIcon(Prefs.BoolTypeColor, inPortTemplate);
             Texture2D portOutIcon= iCS_PortIcons.BuildPortIcon(Prefs.BoolTypeColor, outPortTemplate);
 

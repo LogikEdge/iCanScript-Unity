@@ -657,7 +657,7 @@ namespace iCanScript.Internal.Editor {
             kMessageNodeColor           = new Color(c(0x36), c(0x8a), c(0xff));
             kUserFunctionNodeColor      = new Color(c(0x80), c(0xff), c(0x80));
             kBackgroundColor            = new Color(c(41), c(41), c(41));
-            kSelectedBackgroundColor    = new Color(c(77), c(77), c(77));
+            kSelectedBackgroundColor    = Color.white;
             // Node cached colors
             c_NodeTitleColor         = LoadColor(kNodeTitleColorKey, kNodeTitleColor);
             c_NodeLabelColor         = LoadColor(kNodeLabelColorKey, kNodeLabelColor);

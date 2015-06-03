@@ -160,7 +160,8 @@ namespace iCanScript.Internal.Editor {
                         // -- Connected port follow the producer. --
                         else if(producerPort != p) {
                             if(producerPort.PortSpec != PortSpecification.Default) {
-                                p.PortSpec= producerPort.PortSpec;                                        
+                                p.PortSpec= producerPort.PortSpec;
+                                isUpgraded= true;                                        
                             }
                             else {
                                 newPassNeeded= true;
@@ -214,17 +215,49 @@ namespace iCanScript.Internal.Editor {
                             else {
                                 p.PortSpec= PortSpecification.LocalVariable;
                             }
-                            isUpgraded= true;                            
+                            isUpgraded= true;
                         }
                         // TODO: Needs to be verified...
                         else if(parentNode.IsKindOfFunction) {
-                            if(p.IsInDataPort && producerPort == p) {
-                                p.PortSpec= PortSpecification.Constant;
+                            if(p.IsInDataPort) {
+                                if(producerPort == p) {
+                                    var initialValue= p.InitialValue;
+                                    if(initialValue != null) {
+                                        p.PortSpec= PortSpecification.Constant;                                        
+                                    }
+                                    else {
+                                        p.PortSpec= PortSpecification.PublicVariable;
+                                    }
+                                }
+                                else {
+                                    p.PortSpec= PortSpecification.LocalVariable;
+                                }
                             }
-                            else {
-                                p.PortSpec= PortSpecification.LocalVariable;
+                            else if(p.IsOutDataPort) {
+                                var commonParent= p.GetCommonParent(p.EndConsumerPorts);
+                                if(commonParent.IsRootObject) {
+                                    p.PortSpec= PortSpecification.PrivateVariable;
+                                }
+                                else {
+                                    p.PortSpec= PortSpecification.LocalVariable;
+                                }
                             }
                             isUpgraded= true;
+                        }
+                        else if(parentNode.IsKindOfPackage) {
+                            if(p.IsInDataPort) {
+                                if(producerPort == p) {
+                                    var initialValue= p.InitialValue;
+                                    if(initialValue != null) {
+                                        p.PortSpec= PortSpecification.Constant;
+                                        isUpgraded= true;
+                                    }
+                                    else {
+                                        p.PortSpec= PortSpecification.PublicVariable;
+                                        isUpgraded= true;
+                                    }
+                                }
+                            }
                         }
                         else {
                             p.PortSpec= PortSpecification.LocalVariable;
