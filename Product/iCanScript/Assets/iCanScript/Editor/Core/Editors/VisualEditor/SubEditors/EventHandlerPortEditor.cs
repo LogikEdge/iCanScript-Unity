@@ -63,18 +63,18 @@ namespace iCanScript.Internal.Editor {
                     if(iCS_Types.IsA<UnityEngine.Object>(vsObject.RuntimeType)) {
                         InUnityObjectVariableType variableType= ConvertEnum(vsObject.PortSpec, InUnityObjectVariableType.PublicVariable);
                         variableType= (InUnityObjectVariableType)EditorGUILayout.EnumPopup("Variable Type", variableType);
-                        vsObject.PortSpec= ConvertEnum(variableType, PortSpecification.Default);                        
+                        SetPortSpec(ConvertEnum(variableType, PortSpecification.Default));
                     }
                     else {
                         InVariableType variableType= ConvertEnum(vsObject.PortSpec, InVariableType.PublicVariable);
                         variableType= (InVariableType)EditorGUILayout.EnumPopup("Variable Type", variableType);
-                        vsObject.PortSpec= ConvertEnum(variableType, PortSpecification.Default);
+                        SetPortSpec(ConvertEnum(variableType, PortSpecification.Default));
                     }
                 }
                 else if(vsObject.IsOutDataPort) {
                     OutVariableType variableType= ConvertEnum(vsObject.PortSpec, OutVariableType.PublicVariable);
                     variableType= (OutVariableType)EditorGUILayout.EnumPopup("Variable Type", variableType);
-                    vsObject.PortSpec= ConvertEnum(variableType, PortSpecification.Default);                
+                    SetPortSpec(ConvertEnum(variableType, PortSpecification.Default));                
                 }
             
                 // -- Edit the value of the port. --

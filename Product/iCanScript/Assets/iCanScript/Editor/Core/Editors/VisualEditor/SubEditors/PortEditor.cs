@@ -94,6 +94,15 @@ namespace iCanScript.Internal.Editor {
         protected void EditPortValue() {
             iCS_GuiUtilities.OnInspectorDataPortGUI("Initial Value", vsObject, 0, foldoutDB);
         }
+
+		// ===================================================================
+        /// Sets the port specififcation.
+		///
+		/// @param portSpec The new port specification.
+		///
+        protected void SetPortSpec(PortSpecification portSpec) {
+			GraphEditor.SetPortSpec(vsObject, portSpec);
+        }
     }
     
 }

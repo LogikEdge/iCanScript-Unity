@@ -64,7 +64,7 @@ namespace iCanScript.Internal.Editor {
 		/// @param port One of the connected ports.
 		/// @return The list of all ports in the connection.
 		///
-		public static iCS_EditorObject[] GetAllPortsInConnection(iCS_EditorObject port) {
+		public static iCS_EditorObject[] GetAllConnectedPorts(iCS_EditorObject port) {
 			var allPorts= new List<iCS_EditorObject>();
 			// -- Follow the end consumer chain. --
 			var consumerPorts= new List<iCS_EditorObject>();
@@ -84,7 +84,8 @@ namespace iCanScript.Internal.Editor {
 						nextConsumerPorts.AddRange(p.ConsumerPorts);
 					}
 				}				
-				consumerPorts= nextConsumerPorts;
+				consumerPorts.Clear();
+				consumerPorts.AddRange(nextConsumerPorts);
 				nextConsumerPorts.Clear();
 			} while(consumerPorts.Count != 0);
 			return allPorts.ToArray();
@@ -172,7 +173,7 @@ namespace iCanScript.Internal.Editor {
         ///         a type variable.
         ///
         public static bool MustBeATypeVariable(iCS_EditorObject port) {
-            var commonParent= GetCommonParent(port.SegmentEndConsumerPorts);
+            var commonParent= GetCommonParent(GetAllConnectedPorts(port));
             commonParent= GetCommonParent(port, commonParent);
             return commonParent.IsTypeDefinitionNode;
         }
