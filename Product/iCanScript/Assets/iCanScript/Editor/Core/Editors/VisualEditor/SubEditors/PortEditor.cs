@@ -71,6 +71,10 @@ namespace iCanScript.Internal.Editor {
 //            else {
 //                OnPortSpecificGUI();                
 //            }
+
+            // -- Edit the value of the port. --
+            EditPortValue();
+
             var variableType= ConvertEnum(vsObject.PortSpec, GraphInfo.GetAllowedPortSpecification(vsObject));
             variableType= EditorGUILayout.EnumPopup("Variable Type", variableType);
             SetPortSpec(ConvertEnum(variableType, PortSpecification.Default));                        
