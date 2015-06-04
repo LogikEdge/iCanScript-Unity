@@ -231,6 +231,7 @@ namespace iCanScript.Internal.Editor {
 										}
                                     }
                                     else {
+										Debug.Log(p.FullName);
                                         p.PortSpec= PortSpecification.PublicVariable;
                                     }
                                 }
