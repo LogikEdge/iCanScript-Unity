@@ -19,7 +19,7 @@ namespace iCanScript.Internal.Editor {
            if(IsKindOfFunction) {
                var runtimeType= RuntimeType;
                var memberInfo= runtimeType != null ? LibraryController.LibraryDatabase.GetLibraryType(runtimeType) : null;
-               if(memberInfo == null && !IStorage.IsLocalType(this)) {
+               if(memberInfo == null && !GraphInfo.IsLocalType(this)) {
                    var message= "Unable to find the runtime code for "+FullName;
                    ErrorController.AddError(serviceKey, message, visualScript, InstanceId);
     			   return false;

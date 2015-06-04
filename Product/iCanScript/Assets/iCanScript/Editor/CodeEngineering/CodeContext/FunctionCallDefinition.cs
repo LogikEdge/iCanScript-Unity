@@ -411,7 +411,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         protected string FunctionCallPrefix(iCS_EditorObject node) {
             var result= new StringBuilder(32);
             if(IsStatic()) {
-                if(!VSObject.IStorage.IsLocalType(VSObject)) {
+                if(!GraphInfo.IsLocalType(VSObject)) {
                     result.Append(ToTypeName(node.RuntimeType));
                     result.Append(".");
                 }

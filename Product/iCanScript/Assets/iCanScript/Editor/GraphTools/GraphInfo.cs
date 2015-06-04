@@ -98,6 +98,7 @@ namespace iCanScript.Internal.Editor {
 		/// @return The list of consumer end ports.
 		///
 		public static iCS_EditorObject[] GetEndConsumerPorts(iCS_EditorObject port) {
+            // TODO: GetEndConsumerPorts(..) to be completed.
 			// -- Starting from the producer port ... --
 			var producerPort= GetProducerPort(port);
 			// -- Find all the end consumer port in the segment. --
@@ -163,6 +164,26 @@ namespace iCanScript.Internal.Editor {
             }
             return commonParent;
         }
+
+        // ----------------------------------------------------------------------
+    	/// Determines if the vsObject refers to an element of the given type.
+    	///
+    	/// @param ourType The type defined by this visual script.
+    	/// @param baseType The type this visual script derives from.
+    	/// @param vsObj The object on which the search occurs.
+    	///
+    	public static bool IsLocalType(iCS_EditorObject vsObj) {
+    		// First determine if the type is included inside the GameObject.
+            var iStorage= vsObj.IStorage;
+            var baseType= CodeGenerationUtility.GetBaseType(iStorage);
+    		if(vsObj.IsIncludedInType(baseType)) return true;
+    		var typeNode= vsObj.ParentTypeNode;
+    		if(typeNode == null) return false;
+    		if(vsObj.Namespace == CodeGenerationUtility.GetNamespace(iStorage)) {
+    			return vsObj.TypeName == typeNode.CodeName;
+    		}
+    		return false;
+    	}
 
         // ===================================================================
         /// Determine if the given output port must be promoted to a type

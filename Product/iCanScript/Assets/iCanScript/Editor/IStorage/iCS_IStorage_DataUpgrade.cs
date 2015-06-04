@@ -148,7 +148,7 @@ namespace iCanScript.Internal.Editor {
                         if(p.PortSpec != PortSpecification.Default) return;
                         // -- Setup spec for control ports. --
                         var parentNode= p.ParentNode;
-                        var producerPort= p.SegmentProducerPort;
+                        var producerPort= GraphInfo.GetProducerPort(p);
                         if(p.IsEnablePort) {
                             p.PortSpec= PortSpecification.Enable;
                             isUpgraded= true;
@@ -160,8 +160,7 @@ namespace iCanScript.Internal.Editor {
                         // -- Connected port follow the producer. --
                         else if(producerPort != p) {
                             if(producerPort.PortSpec != PortSpecification.Default) {
-                                p.PortSpec= producerPort.PortSpec;
-                                isUpgraded= true;                                        
+                                Debug.Log("iCanScript: Problem upgrading variable specification for ports.  Contact support. "+p.FullName);
                             }
                             else {
                                 newPassNeeded= true;
@@ -169,105 +168,73 @@ namespace iCanScript.Internal.Editor {
                         }
                         else if(parentNode.IsFunctionDefinition) {
                             if(p.IsInDataPort) {
-                                if(producerPort == p) {
-                                    p.PortSpec= PortSpecification.Parameter;
-                                }
-                                else {
-                                    if(producerPort.PortSpec != PortSpecification.Default) {
-                                        p.PortSpec= producerPort.PortSpec;                                        
-                                    }
-                                    else {
-                                        newPassNeeded= true;
-                                    }
-                                }
+                                GraphEditor.SetPortSpec(p, PortSpecification.Parameter);
+                                isUpgraded= true;
                             }
-                            if(p.IsOutDataPort) {
-                                if(p.ConsumerPorts.Length == 0) {
-                                    p.PortSpec= PortSpecification.Parameter;
-                                }
-                                else {
-                                    if(producerPort.PortSpec != PortSpecification.Default) {
-                                        p.PortSpec= producerPort.PortSpec;                                        
-                                    }
-                                    else {
-                                        newPassNeeded= true;
-                                    }                                    
-                                }
-                            }
-                            isUpgraded= true;
                         }
                         else if(parentNode.IsEventHandler) {
                             if(p.IsFixDataPort) {
-                                p.PortSpec= PortSpecification.Parameter;
+                                GraphEditor.SetPortSpec(p, PortSpecification.Parameter);
                             }
                             else {
-                                p.PortSpec= PortSpecification.PublicVariable;
+                                GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable);
                             }
                             isUpgraded= true;
                         }
                         else if(parentNode.IsVariableDefinition) {
                             if(p.IsOutDataPort) {
-                                p.PortSpec= PortSpecification.PublicVariable;
+                                GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable);
                             }
-                            else if(p.IsInDataPort && producerPort == p) {
-                                p.PortSpec= PortSpecification.Constant;
-                            }
-                            else {
-                                p.PortSpec= PortSpecification.LocalVariable;
+                            else if(p.IsInDataPort) {
+                                GraphEditor.SetPortSpec(p, PortSpecification.Constant);
                             }
                             isUpgraded= true;
                         }
                         // TODO: Needs to be verified...
                         else if(parentNode.IsKindOfFunction) {
                             if(p.IsInDataPort) {
-                                if(producerPort == p) {
-                                    var initialValue= p.InitialValue;
-                                    if(initialValue != null) {
-										if(initialValue is OwnerTag) {
-	                                        p.PortSpec= PortSpecification.Owner;									
-										}
-										else {
-	                                        p.PortSpec= PortSpecification.Constant;											
-										}
-                                    }
-                                    else {
-                                        var runtimeType= p.RuntimeType;
-                                        if(runtimeType == typeof(GameObject) ||
-                                           runtimeType == typeof(Transform)) {
-   	                                        p.PortSpec= PortSpecification.Owner;									
-                                            p.InitialValue= OwnerTag.instance;
-                                        }
-                                        else {
-                                            p.PortSpec= PortSpecification.PublicVariable;                                            
-                                        }
-                                    }
+                                var initialValue= p.InitialValue;
+                                if(initialValue != null) {
+									if(initialValue is OwnerTag) {
+                                        GraphEditor.SetPortSpec(p, PortSpecification.Owner);
+									}
+									else {
+                                        GraphEditor.SetPortSpec(p, PortSpecification.Constant);
+									}
                                 }
                                 else {
-                                    p.PortSpec= PortSpecification.LocalVariable;
+                                    var runtimeType= p.RuntimeType;
+                                    if(runtimeType == typeof(GameObject) ||
+                                       runtimeType == typeof(Transform) ||
+                                       GraphInfo.IsLocalType(p)) {
+                                        GraphEditor.SetPortSpec(p, PortSpecification.Owner);
+                                        p.InitialValue= OwnerTag.instance;
+                                    }
+                                    else {
+                                        GraphEditor.SetPortSpec(p, PortSpecification.Constant); 
+                                    }
                                 }
                             }
                             else if(p.IsOutDataPort) {
                                 if(GraphInfo.MustBeATypeVariable(p)) {
-                                    p.PortSpec= PortSpecification.PrivateVariable;
+                                    GraphEditor.SetPortSpec(p, PortSpecification.PrivateVariable);
                                 }
                                 else {
-                                    p.PortSpec= PortSpecification.LocalVariable;
+                                    GraphEditor.SetPortSpec(p, PortSpecification.LocalVariable);
                                 }
                             }
                             isUpgraded= true;
                         }
                         else if(parentNode.IsKindOfPackage) {
                             if(p.IsInDataPort) {
-                                if(producerPort == p) {
-                                    var initialValue= p.InitialValue;
-                                    if(initialValue != null) {
-                                        p.PortSpec= PortSpecification.Constant;
-                                        isUpgraded= true;
-                                    }
-                                    else {
-                                        p.PortSpec= PortSpecification.PublicVariable;
-                                        isUpgraded= true;
-                                    }
+                                var initialValue= p.InitialValue;
+                                if(initialValue != null) {
+                                    GraphEditor.SetPortSpec(p, PortSpecification.Constant);
+                                    isUpgraded= true;
+                                }
+                                else {
+                                    GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable);
+                                    isUpgraded= true;
                                 }
                             }
                         }
