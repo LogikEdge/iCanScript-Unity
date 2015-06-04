@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Internal.Engine;
 using iCanScript.Nodes;
-using iCanScript.Variables;
 using iCanScript.SimplePhysic;
 using iCanScript.Conversions;
 using iCanScript.TimeUtility;
