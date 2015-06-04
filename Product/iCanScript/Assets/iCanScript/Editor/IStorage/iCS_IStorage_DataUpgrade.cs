@@ -149,16 +149,8 @@ namespace iCanScript.Internal.Editor {
                         // -- Setup spec for control ports. --
                         var parentNode= p.ParentNode;
                         var producerPort= GraphInfo.GetProducerPort(p);
-                        if(p.IsEnablePort) {
-                            p.PortSpec= PortSpecification.Enable;
-                            isUpgraded= true;
-                        }
-                        else if(p.IsTriggerPort) {
-                            p.PortSpec= PortSpecification.Trigger;
-                            isUpgraded= true;
-                        }
                         // -- Connected port follow the producer. --
-                        else if(producerPort != p) {
+                        if(producerPort != p) {
                             if(producerPort.PortSpec != PortSpecification.Default) {
                                 Debug.Log("iCanScript: Problem upgrading variable specification for ports.  Contact support. "+p.FullName);
                             }
@@ -167,7 +159,7 @@ namespace iCanScript.Internal.Editor {
                             }                                    
                         }
                         else if(parentNode.IsFunctionDefinition) {
-                            if(p.IsInDataPort) {
+                            if(p.IsInDataOrControlPort) {
                                 GraphEditor.SetPortSpec(p, PortSpecification.Parameter);
                                 isUpgraded= true;
                             }
@@ -182,17 +174,17 @@ namespace iCanScript.Internal.Editor {
                             isUpgraded= true;
                         }
                         else if(parentNode.IsVariableDefinition) {
-                            if(p.IsOutDataPort) {
+                            if(p.IsOutDataOrControlPort) {
                                 GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable);
                             }
-                            else if(p.IsInDataPort) {
+                            else if(p.IsInDataOrControlPort) {
                                 GraphEditor.SetPortSpec(p, PortSpecification.Constant);
                             }
                             isUpgraded= true;
                         }
                         // TODO: Needs to be verified...
                         else if(parentNode.IsKindOfFunction) {
-                            if(p.IsInDataPort) {
+                            if(p.IsInDataOrControlPort) {
                                 var initialValue= p.InitialValue;
                                 if(initialValue != null) {
 									if(initialValue is OwnerTag) {
@@ -215,7 +207,7 @@ namespace iCanScript.Internal.Editor {
                                     }
                                 }
                             }
-                            else if(p.IsOutDataPort) {
+                            else if(p.IsOutDataOrControlPort) {
                                 if(GraphInfo.MustBeATypeVariable(p)) {
                                     GraphEditor.SetPortSpec(p, PortSpecification.PrivateVariable);
                                 }
@@ -226,7 +218,7 @@ namespace iCanScript.Internal.Editor {
                             isUpgraded= true;
                         }
                         else if(parentNode.IsKindOfPackage) {
-                            if(p.IsInDataPort) {
+                            if(p.IsInDataOrControlPort) {
                                 var initialValue= p.InitialValue;
                                 if(initialValue != null) {
                                     GraphEditor.SetPortSpec(p, PortSpecification.Constant);
@@ -239,7 +231,7 @@ namespace iCanScript.Internal.Editor {
                             }
                         }
                         else {
-                            p.PortSpec= PortSpecification.LocalVariable;
+                            GraphEditor.SetPortSpec(p, PortSpecification.LocalVariable);
                             isUpgraded= true;
                         }
                     }

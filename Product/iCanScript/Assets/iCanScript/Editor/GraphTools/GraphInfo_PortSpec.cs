@@ -47,7 +47,7 @@ namespace iCanScript.Internal.Editor {
             StaticPublicVariable=  PortSpecification.StaticPublicVariable,
             StaticPrivateVariable= PortSpecification.StaticPrivateVariable            
         };
-		
+        
         // ===================================================================
 		/// Returns the allowed types of variable the given port can support.
 		///
@@ -55,14 +55,15 @@ namespace iCanScript.Internal.Editor {
 		/// @return The filtered port specification.
 		///
 		public static Enum GetAllowedPortSpecification(iCS_EditorObject port) {
-			if(MustBeATypeVariable(port)) {
+            var producerPort= GetProducerPort(port);
+			if(MustBeATypeVariable(producerPort)) {
 				return TypeVariables.PublicVariable;
 			}
-			if(MustBeAParameter(port)) {
+			if(MustBeAParameter(producerPort)) {
 				return ParameterVariable.Parameter;
 			}
-            if(port.IsInDataPort) {
-				var runtimeType= port.RuntimeType;
+            if(producerPort.IsInDataOrControlPort) {
+				var runtimeType= producerPort.RuntimeType;
                 if(iCS_Types.IsA<UnityEngine.Object>(runtimeType)) {
 					if(runtimeType == typeof(GameObject) ||
 					   runtimeType == typeof(Transform)) {
@@ -77,7 +78,7 @@ namespace iCanScript.Internal.Editor {
                     return InVariableType.PublicVariable;
                 }
             }
-            else if(port.IsOutDataPort) {
+            else if(producerPort.IsOutDataOrControlPort) {
                 return OutVariableType.PublicVariable;
             }
 			
