@@ -224,15 +224,22 @@ namespace iCanScript.Internal.Editor {
                                     var initialValue= p.InitialValue;
                                     if(initialValue != null) {
 										if(initialValue is OwnerTag) {
-	                                        p.PortSpec= PortSpecification.Owner;											
+	                                        p.PortSpec= PortSpecification.Owner;									
 										}
 										else {
 	                                        p.PortSpec= PortSpecification.Constant;											
 										}
                                     }
                                     else {
-										Debug.Log(p.FullName);
-                                        p.PortSpec= PortSpecification.PublicVariable;
+                                        var runtimeType= p.RuntimeType;
+                                        if(runtimeType == typeof(GameObject) ||
+                                           runtimeType == typeof(Transform)) {
+   	                                        p.PortSpec= PortSpecification.Owner;									
+                                            p.InitialValue= OwnerTag.instance;
+                                        }
+                                        else {
+                                            p.PortSpec= PortSpecification.PublicVariable;                                            
+                                        }
                                     }
                                 }
                                 else {
