@@ -7,7 +7,7 @@ namespace iCanScript.Internal.Editor {
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     /// This class provides information about the iCanScript graph.
-    public static class GraphInfo {
+    public static partial class GraphInfo {
 
         // ===================================================================
 		/// Returns the _Target_ port on the given node.
@@ -215,6 +215,7 @@ namespace iCanScript.Internal.Editor {
             }
             return false;
         }
+
     }
     
 }

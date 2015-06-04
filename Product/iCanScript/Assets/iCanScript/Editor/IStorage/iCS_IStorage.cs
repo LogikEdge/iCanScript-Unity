@@ -330,6 +330,7 @@ namespace iCanScript.Internal.Editor {
     					if(obj.ProducerPort == null) {
     						if(IsLocalType(obj)) {
     							obj.InitialValue= OwnerTag.instance;
+								obj.PortSpec= PortSpecification.Owner;
     						}
                             else {
                                 var baseType= CodeGenerationUtility.GetBaseType(this);

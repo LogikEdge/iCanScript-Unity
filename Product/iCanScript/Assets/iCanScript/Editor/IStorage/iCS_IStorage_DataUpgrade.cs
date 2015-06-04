@@ -223,7 +223,12 @@ namespace iCanScript.Internal.Editor {
                                 if(producerPort == p) {
                                     var initialValue= p.InitialValue;
                                     if(initialValue != null) {
-                                        p.PortSpec= PortSpecification.Constant;                                        
+										if(initialValue is OwnerTag) {
+	                                        p.PortSpec= PortSpecification.Owner;											
+										}
+										else {
+	                                        p.PortSpec= PortSpecification.Constant;											
+										}
                                     }
                                     else {
                                         p.PortSpec= PortSpecification.PublicVariable;
