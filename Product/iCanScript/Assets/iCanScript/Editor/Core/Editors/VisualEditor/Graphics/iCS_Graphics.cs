@@ -737,6 +737,7 @@ namespace iCanScript.Internal.Editor {
         				DrawConstantPort(_center, _fillColor, isSelected);                        
                         break;
                     }
+					case PortSpecification.Owner:
                     case PortSpecification.PublicVariable: {
         				DrawInPublicVariablePort(_center, _fillColor, isSelected);                        
                         break;

@@ -156,8 +156,8 @@ namespace iCanScript.Internal.Engine {
         }
         // ----------------------------------------------------------------------
         // Returns the endport source of a connection.
-        public iCS_EngineObject GetFirstProducerPort(iCS_EngineObject port) {
-            return iCS_VisualScriptData.GetFirstProducerPort(this, port);
+        public iCS_EngineObject GetSegmentProducerPort(iCS_EngineObject port) {
+            return iCS_VisualScriptData.GetSegmentProducerPort(this, port);
         }
         // ----------------------------------------------------------------------
         // Returns the list of consumer ports.

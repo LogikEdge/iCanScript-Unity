@@ -59,18 +59,26 @@ namespace iCanScript.Internal.Editor {
             EditName("Port Name");
             
             // -- Edit porttype & value if not sourced by other port. --
-            if(vsObject.IsInDataPort && vsObject.ProducerPort != null) {
-                // -- Edit port variable type. --
-                EditorGUI.BeginDisabledGroup(true);
-                EditorGUILayout.EnumPopup("Variable Type", vsObject.PortSpec);
-                EditorGUI.EndDisabledGroup();
-                
-                // -- Show port value type. --
-                EditPortValueType();
-            }
-            else {
-                OnPortSpecificGUI();                
-            }
+//            if(vsObject.IsInDataPort && vsObject.ProducerPort != null) {
+//                // -- Edit port variable type. --
+//                EditorGUI.BeginDisabledGroup(true);
+//                EditorGUILayout.EnumPopup("Variable Type", vsObject.PortSpec);
+//                EditorGUI.EndDisabledGroup();
+//                
+//                // -- Show port value type. --
+//                EditPortValueType();
+//            }
+//            else {
+//                OnPortSpecificGUI();                
+//            }
+
+            // -- Edit the value of the port. --
+            EditPortValue();
+
+            var variableType= ConvertEnum(vsObject.PortSpec, GraphInfo.GetAllowedPortSpecification(vsObject));
+            variableType= EditorGUILayout.EnumPopup("Variable Type", variableType);
+            SetPortSpec(ConvertEnum(variableType, PortSpecification.Default));                        
+			
             
             // -- Edit port description. --
             EditDescription();        
@@ -93,6 +101,15 @@ namespace iCanScript.Internal.Editor {
         /// Edit the port value.
         protected void EditPortValue() {
             iCS_GuiUtilities.OnInspectorDataPortGUI("Initial Value", vsObject, 0, foldoutDB);
+        }
+
+		// ===================================================================
+        /// Sets the port specififcation.
+		///
+		/// @param portSpec The new port specification.
+		///
+        protected void SetPortSpec(PortSpecification portSpec) {
+			GraphEditor.SetPortSpec(vsObject, portSpec);
         }
     }
     

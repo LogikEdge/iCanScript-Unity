@@ -27,7 +27,7 @@ namespace iCanScript.Internal.Editor {
     	public const float NodeShadowSize= 5.0f;
 	
         // ----------------------------------------------------------------------
-        public const  float   PortRadius        = 5.55f;
+        public const  float   PortRadius        = 7.05f;
         public const  float   PortDiameter      = 2.0f * PortRadius;
         public const  float   SelectedPortFactor= 1.5f;
         public static Vector2 PortSize;

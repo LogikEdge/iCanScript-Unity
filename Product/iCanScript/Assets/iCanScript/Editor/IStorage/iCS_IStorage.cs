@@ -325,23 +325,6 @@ namespace iCanScript.Internal.Editor {
                 
                     // Keep a copy of the final position.
                     obj.AnimationTargetRect= obj.GlobalRect;
-    				// Reassign all non-connected "target" ports to script Owner
-    				if(obj.IsTargetPort) {
-    					if(obj.ProducerPort == null) {
-    						if(IsLocalType(obj)) {
-    							obj.InitialValue= OwnerTag.instance;
-    						}
-                            else {
-                                var baseType= CodeGenerationUtility.GetBaseType(this);
-                                if(iCS_Types.IsA<Component>(baseType) || iCS_Types.IsA<GameObject>(baseType)) {
-                                    var objType= obj.RuntimeType;
-                                    if(iCS_Types.IsA<Transform>(objType) || iCS_Types.IsA<GameObject>(objType)) {
-                                        obj.InitialValue= OwnerTag.instance;
-                                    }
-                                }
-                            }
-    					}
-    				}
                     // Cleanup disconnected or dangling ports.
                     if(CleanupDeadPorts) {
     					if(obj.IsPort) {
@@ -427,26 +410,6 @@ namespace iCanScript.Internal.Editor {
             return modified;
         }
 
-        // ----------------------------------------------------------------------
-    	/// Determines if the vsObject refers to an element of the given type.
-    	///
-    	/// @param ourType The type defined by this visual script.
-    	/// @param baseType The type this visual script derives from.
-    	/// @param vsObj The object on which the search occurs.
-    	///
-    	public bool IsLocalType(iCS_EditorObject vsObj) {
-    		// First determine if the type is included inside the GameObject.
-            var baseType= CodeGenerationUtility.GetBaseType(this);
-    		if(vsObj.IsIncludedInType(baseType)) return true;
-    		var typeNode= vsObj.ParentTypeNode;
-    		if(typeNode == null) return false;
-    		if(vsObj.Namespace == CodeGenerationUtility.GetNamespace(this)) {
-    			return vsObj.TypeName == typeNode.CodeName;
-    		}
-    		return false;
-    	}
-
-    
         // ======================================================================
         // Editor Object Creation/Destruction
         // ----------------------------------------------------------------------

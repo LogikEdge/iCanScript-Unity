@@ -20,6 +20,7 @@ V2.0.20 is a bug fix release.
 
 - **<span style="color: red">\[FIXED\] </span>** Resolve invalid casting to the same value type in the generated code.
 - **<span style="color: blue">\[IMPROVED\] </span>** Improve contrast of the selected node.
+- **<span style="color: blue">\[IMPROVED\] </span>** Increase port size to improve variable type visibility.
 
 * * *
 

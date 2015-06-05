@@ -66,7 +66,7 @@ namespace iCanScript.Internal.Editor {
 		///                     unsuccessful.
 		///
         protected R ConvertEnum<R,T>(T value, R defaultValue) {
-            var allowedValues= Enum.GetValues(typeof(R));
+            var allowedValues= Enum.GetValues(defaultValue.GetType());
             foreach(var v in allowedValues) {
                 if((int)Convert.ChangeType(v, typeof(int)) == (int)Convert.ChangeType(value, typeof(int))) {
                     return (R)v;

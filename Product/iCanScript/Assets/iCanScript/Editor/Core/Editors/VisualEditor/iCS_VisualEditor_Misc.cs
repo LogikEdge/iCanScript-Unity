@@ -305,7 +305,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		var outputNode= outputPort.ParentNode;
 		if(inputNode == outputNode) return;
 		// outputPort is inside the node with the inputPort.
-		var commonParentNode= outputPort.GetCommonParent(inputPort);
+		var commonParentNode= GraphInfo.GetCommonParent(outputPort, inputPort);
 		if(inputNode == commonParentNode) {
 			// Rebuild moving down from the common parent towards the output port.
 			var newInputNode= outputPort.ParentNode;
@@ -464,7 +464,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
     // ----------------------------------------------------------------------
     iCS_EditorObject RemoveConnection(iCS_EditorObject inPort) {
-        iCS_EditorObject sourcePort= IStorage.GetFirstProducerPort(inPort);
+        iCS_EditorObject sourcePort= IStorage.GetSegmentProducerPort(inPort);
         // Tear down previous connection.
         iCS_EditorObject tmpPort= inPort.ProducerPort;
         List<iCS_EditorObject> toDestroy= new List<iCS_EditorObject>();

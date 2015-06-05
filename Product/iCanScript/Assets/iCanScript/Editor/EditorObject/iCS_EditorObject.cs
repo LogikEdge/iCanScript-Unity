@@ -99,10 +99,7 @@ namespace iCanScript.Internal.Editor {
         /// Returns the port type of this object.
         public PortSpecification PortSpec {
             set { EngineObject.PortSpec= value; }
-            get {
-                var producerPort= ProducerPort;
-                return producerPort == null ? EngineObject.PortSpec : producerPort.PortSpec;
-            }
+            get { return EngineObject.PortSpec; }
         }
         // ----------------------------------------------------------------------
         /// Returns the node type of this object.

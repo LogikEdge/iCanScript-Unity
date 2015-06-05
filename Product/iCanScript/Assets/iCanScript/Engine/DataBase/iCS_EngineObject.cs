@@ -16,6 +16,7 @@ namespace iCanScript.Internal.Engine {
         StaticPublicVariable= 30, StaticPrivateVariable,
         Constant= 40,
         Enable= 50, Trigger,
+		Owner= 60,
         Default= 1000
     };
     [Serializable]

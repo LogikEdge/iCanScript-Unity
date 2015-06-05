@@ -62,12 +62,13 @@ namespace iCanScript.Internal.Editor {
     	}
     	// ----------------------------------------------------------------------
         /// Returns the port that actually produces the data.
-    	public iCS_EditorObject FirstProducerPort {
+    	public iCS_EditorObject SegmentProducerPort {
     		get {
-    		    var engineObject= Storage.GetFirstProducerPort(EngineObject);
-                if(engineObject == null) return this;
-                var firstProducer= EditorObjects[engineObject.InstanceId];
-                return firstProducer ?? this;
+				var producerPort= this;
+				while(producerPort.ProducerPort != null) {
+					producerPort= producerPort.ProducerPort;
+				}
+				return producerPort;
     		}
     	}
     	// ----------------------------------------------------------------------
@@ -80,10 +81,10 @@ namespace iCanScript.Internal.Editor {
     	}
     	// ----------------------------------------------------------------------
         /// Returns the list of consumers a producer ports has.
-    	public iCS_EditorObject[] EndConsumerPorts {
+    	public iCS_EditorObject[] SegmentEndConsumerPorts {
     		get {
     			var result= new List<iCS_EditorObject>();
-    			BuildListOfEndConsumerPorts(ref result);
+    			BuildListOfSegmentEndConsumerPorts(ref result);
                 // -- Remove our self from result. --
                 if(result.Count == 1 && result[0] == this) {
                     result.RemoveAt(0);
@@ -91,13 +92,13 @@ namespace iCanScript.Internal.Editor {
     			return result.ToArray();
     		}
     	}
-    	private void BuildListOfEndConsumerPorts(ref List<iCS_EditorObject> r) {
+    	private void BuildListOfSegmentEndConsumerPorts(ref List<iCS_EditorObject> r) {
     		var consumers= ConsumerPorts;
     		if(consumers.Length == 0) {
     			r.Add(this);
     		} else {
     			foreach(var p in consumers) {
-    				p.BuildListOfEndConsumerPorts(ref r);
+    				p.BuildListOfSegmentEndConsumerPorts(ref r);
     			}
     		}
     	}
@@ -106,16 +107,16 @@ namespace iCanScript.Internal.Editor {
         /// producer port.
         public bool IsTheOnlyConsumer {
             get {
-                var producerPort= FirstProducerPort;
-                return producerPort.EndConsumerPorts.Length == 1;
+                var producerPort= SegmentProducerPort;
+                return producerPort.SegmentEndConsumerPorts.Length == 1;
             }
         }
     	// ----------------------------------------------------------------------
     	public P.Tuple<iCS_EditorObject,iCS_EditorObject>[] Connections {
     		get {
     			var result= new List<P.Tuple<iCS_EditorObject,iCS_EditorObject> >();
-    			var source= FirstProducerPort;
-    			foreach(var consumer in source.EndConsumerPorts) {
+    			var source= SegmentProducerPort;
+    			foreach(var consumer in source.SegmentEndConsumerPorts) {
     				result.Add(new P.Tuple<iCS_EditorObject,iCS_EditorObject>(source, consumer));
     			}			        
     			return result.ToArray();
@@ -159,7 +160,7 @@ namespace iCanScript.Internal.Editor {
     	public object PortValue {
     		get {
     			if(!IsDataOrControlPort) return null;
-    			var port= FirstProducerPort;
+    			var port= SegmentProducerPort;
                 // Get value from parent node.
                 return port.InitialPortValue;
     		}
