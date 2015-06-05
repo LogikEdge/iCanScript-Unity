@@ -29,8 +29,10 @@ namespace iCanScript.Internal.Editor {
             var producerPort= port.SegmentProducerPort;
             // -- Follow the target/self port chain. --
             while(producerPort.IsSelfPort) {
-                producerPort= GetTargetPort(producerPort.ParentNode);
-                producerPort= producerPort.SegmentProducerPort;
+                var targetPort= GetTargetPort(producerPort.ParentNode);
+                if(targetPort != null) {
+                    producerPort= targetPort.SegmentProducerPort;                    
+                }
             }
 			// Follow the trigger/enable chain.
             while(producerPort.IsTriggerPort && producerPort.ParentNode.IsKindOfPackage) {
