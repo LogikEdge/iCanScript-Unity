@@ -27,13 +27,36 @@ namespace iCanScript.Internal.Editor {
             StaticPrivateVariable= PortSpecification.StaticPrivateVariable,
             Constant=              PortSpecification.Constant
         };
+        public enum InFunctionDefinitionVariableType {
+            Parameter=             PortSpecification.Parameter,
+            PublicVariable=        PortSpecification.PublicVariable,
+            PrivateVariable=       PortSpecification.PrivateVariable,
+            StaticPublicVariable=  PortSpecification.StaticPublicVariable,
+            StaticPrivateVariable= PortSpecification.StaticPrivateVariable,
+            Constant=              PortSpecification.Constant
+        };
         public enum InUnityObjectVariableType {
             PublicVariable=        PortSpecification.PublicVariable,
             PrivateVariable=       PortSpecification.PrivateVariable,
             StaticPublicVariable=  PortSpecification.StaticPublicVariable,
             StaticPrivateVariable= PortSpecification.StaticPrivateVariable
         };
+        public enum InFunctionDefinitionUnityObjectVariableType {
+            Parameter=             PortSpecification.Parameter,
+            PublicVariable=        PortSpecification.PublicVariable,
+            PrivateVariable=       PortSpecification.PrivateVariable,
+            StaticPublicVariable=  PortSpecification.StaticPublicVariable,
+            StaticPrivateVariable= PortSpecification.StaticPrivateVariable
+        };
         public enum InOwnerAndUnityObjectVariableType {
+			Owner=				   PortSpecification.Owner,
+            PublicVariable=        PortSpecification.PublicVariable,
+            PrivateVariable=       PortSpecification.PrivateVariable,
+            StaticPublicVariable=  PortSpecification.StaticPublicVariable,
+            StaticPrivateVariable= PortSpecification.StaticPrivateVariable
+        };
+        public enum InFunctionDefinitionOwnerAndUnityObjectVariableType {
+            Parameter=             PortSpecification.Parameter,
 			Owner=				   PortSpecification.Owner,
             PublicVariable=        PortSpecification.PublicVariable,
             PrivateVariable=       PortSpecification.PrivateVariable,
@@ -63,19 +86,34 @@ namespace iCanScript.Internal.Editor {
 				return ParameterVariable.Parameter;
 			}
             if(producerPort.IsInDataOrControlPort) {
+                var isFunctionDefinition= producerPort.ParentNode.IsFunctionDefinition;
 				var runtimeType= producerPort.RuntimeType;
                 if(iCS_Types.IsA<UnityEngine.Object>(runtimeType)) {
 					if(runtimeType == typeof(GameObject) ||
 					   runtimeType == typeof(Transform)) {
-	                  	return InOwnerAndUnityObjectVariableType.PublicVariable;
-					   	
+                        if(isFunctionDefinition) {
+    	                  	return InFunctionDefinitionOwnerAndUnityObjectVariableType.PublicVariable;
+                        }
+                        else {
+    	                  	return InOwnerAndUnityObjectVariableType.PublicVariable;
+                        }
 					}
 					else {
-	                    return InUnityObjectVariableType.PublicVariable;						
+                        if(isFunctionDefinition) {
+    	                    return InFunctionDefinitionUnityObjectVariableType.PublicVariable;
+                        }
+                        else {
+    	                    return InUnityObjectVariableType.PublicVariable;
+                        }
 					}
                 }
                 else {
-                    return InVariableType.PublicVariable;
+                    if(isFunctionDefinition) {
+                        return InFunctionDefinitionVariableType.PublicVariable;
+                    }
+                    else {
+                        return InVariableType.PublicVariable;
+                    }
                 }
             }
             else if(producerPort.IsOutDataOrControlPort) {
