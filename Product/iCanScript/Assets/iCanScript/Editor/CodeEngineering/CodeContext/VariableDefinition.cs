@@ -94,12 +94,23 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             }
             string variableName;
             if(Parent is ClassDefinition) {
-                if(myAccessSpecifier == AccessSpecifier.Public) {
-                    variableName= Parent.GetPublicFieldName(myVSObject);
+                var port= PortVariable;
+                if(port.IsPublic) {
+                    if(port.IsStatic) {
+                        variableName= Parent.GetPublicStaticFieldName(myVSObject);
+                    }
+                    else {
+                        variableName= Parent.GetPublicFieldName(myVSObject);
+                    }
                 }
                 else {
-                    variableName= Parent.GetPrivateFieldName(myVSObject);
-                }                
+                    if(port.IsStatic) {
+                        variableName= Parent.GetPrivateStaticFieldName(myVSObject);
+                    }
+                    else {
+                        variableName= Parent.GetPrivateFieldName(myVSObject);
+                    }
+                }
             }
             else {
                 // FIXME: should be going to common parent.
@@ -118,10 +129,10 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 			string indent= ToIndent(indentSize);
             StringBuilder result= new StringBuilder(indent);
             if(myParent is ClassDefinition) {
-                result.Append(ToAccessString(accessType));
-                result.Append(" ");
-                result.Append(ToScopeString(scopeType));
-                result.Append(" ");                
+                var port= PortVariable;
+                var portSpec= port.PortSpec;
+                result.Append(ToAccessString(portSpec));
+                result.Append(ToScopeString(portSpec));
             }
 			result.Append(ToTypeName(variableType));
 			result.Append(" ");
@@ -134,6 +145,13 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 			return result.ToString();
 		}
 
+        // -------------------------------------------------------------------
+        /// Returns the port associated with the variable.
+        iCS_EditorObject PortVariable {
+            get {
+                return VSObject.IsConstructor ? VSObject.ReturnPort : VSObject;
+            }
+        }
     }
 
 }

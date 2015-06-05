@@ -218,15 +218,8 @@ namespace iCanScript.Internal.Editor {
                         }
                         else if(parentNode.IsKindOfPackage) {
                             if(p.IsInDataOrControlPort) {
-                                var initialValue= p.InitialValue;
-                                if(initialValue != null) {
-                                    GraphEditor.SetPortSpec(p, PortSpecification.Constant);
-                                    isUpgraded= true;
-                                }
-                                else {
-                                    GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable);
-                                    isUpgraded= true;
-                                }
+                                GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable);
+                                isUpgraded= true;
                             }
                         }
                         else {

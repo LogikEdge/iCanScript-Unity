@@ -37,6 +37,29 @@ namespace iCanScript.Internal.Editor {
     		get { return EngineObject.SourceId; }
     		set { EngineObject.SourceId= value; }
     	}
+    	// ======================================================================
+        // Variable type information queries.
+        public bool IsOwner {
+            get { return PortSpec == PortSpecification.Owner; }
+        }
+        public bool IsPublic {
+            get {
+                return PortSpec == PortSpecification.PublicVariable
+                    || PortSpec == PortSpecification.StaticPublicVariable;
+            }
+        }
+        public bool IsPrivate {
+            get {
+                return PortSpec == PortSpecification.PrivateVariable
+                    || PortSpec == PortSpecification.StaticPrivateVariable;
+            }
+        }
+        public bool IsStatic {
+            get {
+                return PortSpec == PortSpecification.StaticPublicVariable
+                    || PortSpec == PortSpecification.StaticPrivateVariable;
+            }            
+        }
     	// ----------------------------------------------------------------------
         public iCS_EditorObject ProducerPort {
     		get { return ProducerPortId != -1 ? myIStorage[ProducerPortId] : null; }

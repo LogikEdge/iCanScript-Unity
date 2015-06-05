@@ -133,6 +133,7 @@ namespace iCanScript.Internal.Editor {
         }
         // ----------------------------------------------------------------------
         string GetPortValueAsString(iCS_EditorObject port) {
+            // -- Special case for "Owner". --
             object portValue= port.PortValue;
             return (portValue != null) ? GetValueAsString(portValue) : null;
         }

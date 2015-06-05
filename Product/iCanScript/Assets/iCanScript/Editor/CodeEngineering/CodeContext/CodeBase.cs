@@ -271,6 +271,43 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 			}
             return ""; 
         }
+    	// -------------------------------------------------------------------------
+        /// Converts the given port specification to its string representation.
+        ///
+        /// @param portSpec The port specification to be converted.
+        /// @return The string representation of the acces type.
+        ///
+        public static string ToAccessString(PortSpecification portSpec) {
+            switch(portSpec) {
+                case PortSpecification.StaticPublicVariable:
+                case PortSpecification.PublicVariable: {
+                    return "public ";                    
+                }
+                case PortSpecification.StaticPrivateVariable:
+                case PortSpecification.PrivateVariable: {
+                    return "private ";                    
+                }
+            }
+            return "";
+        }
+        // -------------------------------------------------------------------
+        /// Converts the given port specification to its string representation.
+        ///
+        /// @param portSpec The port specification to be converted.
+        /// @return The string representation of the scope type.
+        ///
+        public static string ToScopeString(PortSpecification portSpec) {
+			switch(portSpec) {
+                case PortSpecification.StaticPrivateVariable:
+                case PortSpecification.StaticPublicVariable: {
+                    return "static ";
+                }
+                case PortSpecification.Constant: {
+                    return "const ";
+                }
+			}
+            return ""; 
+        }
         
         // -------------------------------------------------------------------
         /// Converts the given Type to its string representation.

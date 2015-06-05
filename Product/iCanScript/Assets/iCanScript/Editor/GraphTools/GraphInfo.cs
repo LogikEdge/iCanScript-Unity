@@ -95,24 +95,6 @@ namespace iCanScript.Internal.Editor {
 		}
 		
         // ===================================================================
-		/// Returns a list of all end consumer ports.
-		///
-		/// @param port One of the connected ports.
-		/// @return The list of consumer end ports.
-		///
-		public static iCS_EditorObject[] GetEndConsumerPorts(iCS_EditorObject port) {
-            // TODO: GetEndConsumerPorts(..) to be completed.
-			// -- Starting from the producer port ... --
-			var producerPort= GetProducerPort(port);
-			// -- Find all the end consumer port in the segment. --
-			var consumerPorts= producerPort.SegmentEndConsumerPorts;
-			var targetPorts= P.filter(p=> p.IsTargetPort, consumerPorts);
-			consumerPorts= P.filter(p=> !p.IsTargetPort, consumerPorts);
-			
-			return consumerPorts;
-		}
-		
-        // ===================================================================
         /// Builds a list of parent nodes.
         ///
         /// The list is sorted from the top most parent to the bottom most leaf.
