@@ -765,6 +765,7 @@ namespace iCanScript.Internal.Editor {
                 }
     		} else {
                 switch(port.PortSpec) {
+					case PortSpecification.Owner:
                     case PortSpecification.PublicVariable: {
         				DrawOutPublicVariablePort(_center, _fillColor, isSelected);
                         break;

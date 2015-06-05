@@ -137,36 +137,21 @@ namespace iCanScript.Internal.Editor {
             );
             // -- Convert to new port specification --
             bool isUpgraded= false;
-            bool newPassNeeded= true;
-            while(newPassNeeded) {
-                newPassNeeded= false;
-                ForEach(
-                    p=> {
-                        if(!p.IsPort) return;
-                        // -- Abort if conversion already took place --
-                        if(p.PortSpec != PortSpecification.Default) return;
-                        // -- Setup spec for control ports. --
-                        var parentNode= p.ParentNode;
-                        var producerPort= GraphInfo.GetProducerPort(p);
-                        // -- Connected port follow the producer. --
-                        if(producerPort != p) {
-                            if(producerPort.PortSpec != PortSpecification.Default) {
-                                Debug.Log("iCanScript: Problem upgrading variable specification for ports.  Contact support. "+p.FullName);
-                            }
-                            else {
-                                newPassNeeded= true;
-                            }                                    
-                        }
-                        else {
-                            // -- Default the port spec. --
-                            GraphEditor.SetDefaultPortSpec(p);
-                            if(p.PortSpec != PortSpecification.Default) {
-                                isUpgraded= true;
-                            }                            
-                        }
-                    }
-                );        
-            }
+            ForEach(
+                p=> {
+                    if(!p.IsPort) return;
+                    // -- Abort if conversion already took place --
+                    if(p.PortSpec != PortSpecification.Default) return;
+                    // -- Setup spec for control ports. --
+                    var parentNode= p.ParentNode;
+                    var producerPort= GraphInfo.GetProducerPort(p);
+                    // -- Default the port spec. --
+                    GraphEditor.SetDefaultPortSpec(p);
+                    if(p.PortSpec != PortSpecification.Default) {
+                        isUpgraded= true;
+                    }                            
+                }
+            );        
             return isUpgraded;
         }
     }
