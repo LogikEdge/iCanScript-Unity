@@ -940,7 +940,7 @@ namespace iCanScript.Internal.Editor {
             // -- Create target port. --
     		iCS_EditorObject port= null;
             port= CreateTargetPort(id);
-            port.InitialValue= OwnerTag.instance;
+            port.PortSpec= PortSpecification.Owner;
             // -- Create parameter ports --
 			var parameterTypes= libraryEventHandler.parameterTypes;
 			var parameterNames= libraryEventHandler.parameterNames;

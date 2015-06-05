@@ -80,7 +80,7 @@ namespace iCanScript.Internal.Editor {
                 var value= (bool)initialValue;
                 return value == true;
             }  
-            return false;          
+            return false;
         }
     	// -------------------------------------------------------------------------
         /// Determines if the enable port is always _false_.

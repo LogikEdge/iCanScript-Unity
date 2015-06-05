@@ -186,12 +186,7 @@ namespace iCanScript.Internal.Editor {
                             if(p.IsInDataOrControlPort) {
                                 var initialValue= p.InitialValue;
                                 if(initialValue != null) {
-									if(initialValue is OwnerTag) {
-                                        GraphEditor.SetPortSpec(p, PortSpecification.Owner);
-									}
-									else {
-                                        GraphEditor.SetPortSpec(p, PortSpecification.Constant);
-									}
+                                    GraphEditor.SetPortSpec(p, PortSpecification.Constant);
                                 }
                                 else {
                                     var runtimeType= p.RuntimeType;
@@ -199,7 +194,7 @@ namespace iCanScript.Internal.Editor {
                                        runtimeType == typeof(Transform) ||
                                        GraphInfo.IsLocalType(p)) {
                                         GraphEditor.SetPortSpec(p, PortSpecification.Owner);
-                                        p.InitialValue= OwnerTag.instance;
+                                        p.InitialValue= null;
                                     }
                                     else {
                                         GraphEditor.SetPortSpec(p, PortSpecification.Constant); 

@@ -446,7 +446,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 						result.Append(producerPortName);
 						result.Append(".");
 					}
-					else if(producerPort.InitialValue is OwnerTag) {
+					else if(producerPort.IsOwner) {
 						if(producerType == typeof(Transform)) {
 							result.Append("transform.");
 						}
