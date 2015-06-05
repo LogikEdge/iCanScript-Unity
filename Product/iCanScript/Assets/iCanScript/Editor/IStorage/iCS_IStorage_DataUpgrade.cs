@@ -157,76 +157,17 @@ namespace iCanScript.Internal.Editor {
                                 newPassNeeded= true;
                             }                                    
                         }
-                        else if(parentNode.IsFunctionDefinition) {
-                            if(p.IsInDataOrControlPort) {
-                                GraphEditor.SetPortSpec(p, PortSpecification.Parameter);
-                                isUpgraded= true;
-                            }
-                        }
-                        else if(parentNode.IsEventHandler) {
-                            if(p.IsFixDataPort) {
-                                GraphEditor.SetPortSpec(p, PortSpecification.Parameter);
-                            }
-                            else {
-                                GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable);
-                            }
-                            isUpgraded= true;
-                        }
-                        else if(parentNode.IsVariableDefinition) {
-                            if(p.IsOutDataOrControlPort) {
-                                GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable);
-                            }
-                            else if(p.IsInDataOrControlPort) {
-                                GraphEditor.SetPortSpec(p, PortSpecification.Constant);
-                            }
-                            isUpgraded= true;
-                        }
-                        // TODO: Needs to be verified...
-                        else if(parentNode.IsKindOfFunction) {
-                            if(p.IsInDataOrControlPort) {
-                                var initialValue= p.InitialValue;
-                                if(initialValue != null) {
-                                    GraphEditor.SetPortSpec(p, PortSpecification.Constant);
-                                }
-                                else {
-                                    var runtimeType= p.RuntimeType;
-                                    if(runtimeType == typeof(GameObject) ||
-                                       runtimeType == typeof(Transform) ||
-                                       GraphInfo.IsLocalType(p)) {
-                                        GraphEditor.SetPortSpec(p, PortSpecification.Owner);
-                                        p.InitialValue= null;
-                                    }
-                                    else {
-                                        GraphEditor.SetPortSpec(p, PortSpecification.Constant); 
-                                    }
-                                }
-                            }
-                            else if(p.IsOutDataOrControlPort) {
-                                if(GraphInfo.MustBeATypeVariable(p)) {
-                                    GraphEditor.SetPortSpec(p, PortSpecification.PrivateVariable);
-                                }
-                                else {
-                                    GraphEditor.SetPortSpec(p, PortSpecification.LocalVariable);
-                                }
-                            }
-                            isUpgraded= true;
-                        }
-                        else if(parentNode.IsKindOfPackage) {
-                            if(p.IsInDataOrControlPort) {
-                                GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable);
-                                isUpgraded= true;
-                            }
-                        }
                         else {
-                            GraphEditor.SetPortSpec(p, PortSpecification.LocalVariable);
-                            isUpgraded= true;
+                            // -- Default the port spec. --
+                            GraphEditor.SetDefaultPortSpec(p);
+                            if(p.PortSpec != PortSpecification.Default) {
+                                isUpgraded= true;
+                            }                            
                         }
                     }
                 );        
             }
             return isUpgraded;
         }
-
     }
-
 }

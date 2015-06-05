@@ -279,6 +279,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         ///
         public static string ToAccessString(PortSpecification portSpec) {
             switch(portSpec) {
+                case PortSpecification.Constant:
                 case PortSpecification.StaticPublicVariable:
                 case PortSpecification.PublicVariable: {
                     return "public ";                    
