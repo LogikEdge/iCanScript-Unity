@@ -16,7 +16,7 @@ namespace iCanScript.Internal.Editor {
                     GraphEditor.RefreshPortSpec(producerPort);
                 }
                 else {
-                    GraphEditor.SetDefaultPortSpec(producerPort);
+                    GraphEditor.SetDefaultPortSpec(obj);
                 }
             }
         }
