@@ -8,10 +8,13 @@ namespace iCanScript.Internal.Editor {
         // ======================================================================
         // Port Connectivity
         // ----------------------------------------------------------------------
-        public void SetSource(iCS_EditorObject obj, iCS_EditorObject src) {
-            int id= src == null ? -1 : src.InstanceId;
+        public void SetSource(iCS_EditorObject obj, iCS_EditorObject producerPort) {
+            int id= producerPort == null ? -1 : producerPort.InstanceId;
             if(id != obj.ProducerPortId) {
                 obj.ProducerPortId= id; 
+                if(id != -1) {
+                    GraphEditor.RefreshPortSpec(producerPort);
+                }
             }
         }
         // ----------------------------------------------------------------------

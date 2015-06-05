@@ -9,6 +9,7 @@ namespace iCanScript.Internal.Editor {
 		// ===================================================================
         /// Sets the port specififcation.
 		///
+		/// @param vsObject An object that is part of the connection.
 		/// @param portSpec The new port specification.
 		///
         public static void SetPortSpec(iCS_EditorObject vsObject, PortSpecification portSpec) {
@@ -23,6 +24,15 @@ namespace iCanScript.Internal.Editor {
 			}
         }
 
+		// ===================================================================
+        /// Refreshes the port specififcation of a connection.
+		///
+		/// @param vsObject An object that is part of the connection.
+		///
+        public static void RefreshPortSpec(iCS_EditorObject vsObject) {
+            var producerPort= GraphInfo.GetProducerPort(vsObject);
+            SetPortSpec(producerPort, producerPort.PortSpec);
+        }
 	}
 	
 }
