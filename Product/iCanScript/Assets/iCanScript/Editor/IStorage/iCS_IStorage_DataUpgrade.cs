@@ -146,9 +146,9 @@ namespace iCanScript.Internal.Editor {
                     GraphEditor.SetDefaultPortSpec(p);
                     if(p.PortSpec != PortSpecification.Default) {
                         isUpgraded= true;
-                    }                            
+                    }
                 }
-            );        
+            );
             return isUpgraded;
         }
     }
