@@ -208,8 +208,8 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             var indent= ToIndent(indentSize);
             var result= new StringBuilder(1024);
             // Fields
-            var publicFields= P.filter(f=> f.myAccessSpecifier == AccessSpecifier.Public, myFields);
-            var privateFields= P.filter(f=> f.myAccessSpecifier != AccessSpecifier.Public, myFields);
+            var publicFields= P.filter(f=> f.IsPublic, myFields);
+            var privateFields= P.filter(f=> !f.IsPublic, myFields);
             if(publicFields.Count != 0) {
                 result.Append(GenerateCodeBanner(indent, "PUBLIC FIELDS"));
                 foreach(var f in publicFields) {

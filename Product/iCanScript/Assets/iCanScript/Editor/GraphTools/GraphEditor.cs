@@ -83,7 +83,7 @@ namespace iCanScript.Internal.Editor {
                             p.InitialValue= null;
                         }
                         else {
-                            GraphEditor.SetPortSpec(p, PortSpecification.Constant); 
+                            GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable); 
                         }
                     }
                 }
@@ -96,9 +96,23 @@ namespace iCanScript.Internal.Editor {
                     }
                 }
             }
+            else if(parentNode.IsInstanceNode) {
+                if(p.IsInDataOrControlPort) {
+                    var runtimeType= p.RuntimeType;
+                    if(runtimeType == typeof(GameObject) ||
+                       runtimeType == typeof(Transform) ||
+                       GraphInfo.IsLocalType(p)) {
+                        GraphEditor.SetPortSpec(p, PortSpecification.Owner);
+                        p.InitialValue= null;
+                    }
+                    else {
+                        GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable); 
+                    }
+                }
+            }
             else if(parentNode.IsKindOfPackage) {
                 if(p.IsInDataOrControlPort) {
-                    GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable);
+                    GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable); 
                 }
             }
             else {
