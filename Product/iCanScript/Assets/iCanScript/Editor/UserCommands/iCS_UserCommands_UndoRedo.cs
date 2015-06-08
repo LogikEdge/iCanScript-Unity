@@ -1,9 +1,6 @@
-//
-// File: iCS_UserCommands_UndoRedo
-//
-//#define DEBUG
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
 
 namespace iCanScript.Internal.Editor {
@@ -12,12 +9,7 @@ namespace iCanScript.Internal.Editor {
         // ======================================================================
         // Undo/Redo is a condition detected by the storage.  It simulates
         // a User Command.
-    	// ----------------------------------------------------------------------
-        // OK
-        public static void UndoRedo(iCS_IStorage iStorage) {
-    #if DEBUG
-            Debug.Log("iCanScript: Undo/Redo. Undo Group => "+Undo.GetCurrentGroup());
-    #endif
+        static void ReloadEditorData(iCS_IStorage iStorage, Action reloadAction) {
             var animationStarts= new Rect[iStorage.EditorObjects.Count];
             iStorage.ForEach(obj=> { animationStarts[obj.InstanceId]= obj.AnimationTargetRect;});
     		var previousScrollPosition= iStorage.ScrollPosition;
@@ -27,7 +19,7 @@ namespace iCanScript.Internal.Editor {
                     // Keep a copy of the animation start Rect.
                     // Rebuild editor data.
                     try {
-                        iStorage.GenerateEditorData();
+                        reloadAction();
                     }
                     catch(System.Exception e) {
                         Debug.LogWarning("iCanScript: Problem found regenerating data: "+e.Message);
@@ -62,6 +54,19 @@ namespace iCanScript.Internal.Editor {
             EditorUtility.SetDirty(iStorage.iCSMonoBehaviour);
     		// Annouce that an undo occured.
     		SystemEvents.AnnouceVisualScriptUndo(iStorage);
+        }
+
+        // ======================================================================
+        // Undo/Redo is a condition detected by the storage.  It simulates
+        // a User Command.
+        public static void UndoRedo(iCS_IStorage iStorage) {
+            ReloadEditorData(iStorage, iStorage.GenerateEditorData);
+        }
+
+        // ======================================================================
+        // Initialize the editor data.
+        public static void InitEditorData(iCS_IStorage iStorage) {
+            ReloadEditorData(iStorage, iStorage.InitEditorData);
         }
     }
 

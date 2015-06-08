@@ -23,25 +23,47 @@ namespace iCanScript.Internal.Editor {
         // Import
         // ---------------------------------------------------------------------------------
         public static bool Import(iCS_VisualScriptData storage, string path) {
-            // Open JSON file.
+            // -- Open JSON file. --
             string jsonText= File.ReadAllText(path);
             if(string.IsNullOrEmpty(jsonText)) {
                 Debug.LogWarning("iCanScript: No text to import from => "+path);
                 return false;
             }
-            // Decode JSON string.
+            // -- Decode JSON string. --
             JObject root= JSON.JSON.GetRootObject(jsonText);
             if(root.isNull) {
                 Debug.LogWarning("iCanScript: Import failure: JSON file corrupted.");
                 return false;
             }
+            // -- Extract version information. --
+            var cache= new iCS_VisualScriptData();
+            JNumber majorVersion = root.GetValueFor("Storage.MajorVersion") as JNumber;
+            JNumber minorVersion = root.GetValueFor("Storage.MinorVersion") as JNumber;
+            JNumber bugFixVersion= root.GetValueFor("Storage.BugFixVersion") as JNumber;
+            cache.MajorVersion = (int)majorVersion.value;
+            cache.MinorVersion = (int)minorVersion.value;
+            cache.BugFixVersion= (int)bugFixVersion.value;
+            // -- Extract visual script attributes. --
+            JBool isEditorScript     = root.GetValueFor("Storage.IsEditorScript") as JBool;
+            JString csharpFileName   = root.GetValueFor("Storage.CSharpFileName") as JString;
+            JBool baseTypeOverride   = root.GetValueFor("Storage.BaseTypeOverride") as JBool;
+            JString baseType         = root.GetValueFor("Storage.BaseType") as JString;
+            JBool namespaceOverride  = root.GetValueFor("Storage.NamespaceOverride") as JBool;
+            JString namespaceName    = root.GetValueFor("Storage.Namespace") as JString;
+            JString sourceFileGUID   = root.GetValueFor("Storage.SourceFileGUID") as JString;
+            cache.IsEditorScript   = isEditorScript.value;
+            cache.CSharpFileName   = csharpFileName.value;
+            cache.BaseTypeOverride = baseTypeOverride.value;
+            cache.BaseType         = baseType.value;
+            cache.NamespaceOverride= namespaceOverride.value;
+            cache.Namespace        = namespaceName.value;
+            cache.SourceFileGUID   = sourceFileGUID.value;
+            // -- Extract engine objects. --
             JArray engineObjects= root.GetValueFor("Storage.EngineObjects") as JArray;
             if(engineObjects == null) {
                 Debug.LogWarning("iCanScript: Import failure: Unable to locate engine array.");
                 return false;
             }
-            // Initialize storage using JSON data.
-            var cache= new iCS_VisualScriptData();
             cache.EngineObjects.Capacity= engineObjects.value.Length;
             foreach(var eobj in engineObjects.value) {
                 var newObj= ReadEngineObject(eobj as JObject);
