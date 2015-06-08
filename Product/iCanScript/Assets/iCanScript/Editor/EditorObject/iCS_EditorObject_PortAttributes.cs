@@ -40,26 +40,48 @@ namespace iCanScript.Internal.Editor {
     	// ======================================================================
         // Variable type information queries.
         public bool IsOwner {
-            get { return PortSpec == PortSpecification.Owner; }
-        }
-        public bool IsPublic {
             get {
-                return PortSpec == PortSpecification.PublicVariable
-                    || PortSpec == PortSpecification.StaticPublicVariable;
+                if(!IsDataPort) return false;
+                return PortSpec == PortSpecification.Owner;
             }
         }
-        public bool IsPrivate {
+        public bool IsConstant {
             get {
-                return PortSpec == PortSpecification.PrivateVariable
-                    || PortSpec == PortSpecification.StaticPrivateVariable;
+                if(!IsDataPort) return false;
+                return PortSpec == PortSpecification.Constant;
             }
         }
-        public bool IsStatic {
+        public bool IsPublicVariable {
             get {
-                return PortSpec == PortSpecification.StaticPublicVariable
-                    || PortSpec == PortSpecification.StaticPrivateVariable;
-            }            
+                if(!IsDataPort) return false;
+                return PortSpec == PortSpecification.PublicVariable;
+            }
         }
+        public bool IsStaticPublicVariable {
+            get {
+                if(!IsDataPort) return false;
+                return PortSpec == PortSpecification.StaticPublicVariable;
+            }
+        }
+        public bool IsPrivateVariable {
+            get {
+                if(!IsDataPort) return false;
+                return PortSpec == PortSpecification.PrivateVariable;
+            }
+        }
+        public bool IsStaticPrivateVariable {
+            get {
+                if(!IsDataPort) return false;
+                return PortSpec == PortSpecification.StaticPrivateVariable;
+            }
+        }
+        public bool IsTypeVariable {
+            get {
+                return IsConstant || IsPublicVariable || IsPrivateVariable
+                    || IsStaticPublicVariable || IsStaticPrivateVariable;
+            }
+        }
+        
     	// ----------------------------------------------------------------------
         public iCS_EditorObject ProducerPort {
     		get { return ProducerPortId != -1 ? myIStorage[ProducerPortId] : null; }

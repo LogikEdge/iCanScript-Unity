@@ -843,26 +843,26 @@ namespace iCanScript.Internal.Editor {
         }
     	// ----------------------------------------------------------------------
         void DrawInStaticPublicVariablePort(Vector3 _center, Color _fillColor, bool isSelected) {
-    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedInPublicVariablePortIcon(_fillColor) :
-    		                                 iCS_PortIcons.GetInPublicVariablePortIcon(_fillColor);
+    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedInStaticPublicVariablePortIcon(_fillColor) :
+    		                                 iCS_PortIcons.GetInStaticPublicVariablePortIcon(_fillColor);
             DrawSymetricalPort(_center, portIcon);
         }
     	// ----------------------------------------------------------------------
         void DrawOutStaticPublicVariablePort(Vector3 _center, Color _fillColor, bool isSelected) {
-    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutPublicVariablePortIcon(_fillColor) :
-    		                                 iCS_PortIcons.GetOutPublicVariablePortIcon(_fillColor);
+    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutStaticPublicVariablePortIcon(_fillColor) :
+    		                                 iCS_PortIcons.GetOutStaticPublicVariablePortIcon(_fillColor);
             DrawSymetricalPort(_center, portIcon);
         }
     	// ----------------------------------------------------------------------
         void DrawInStaticPrivateVariablePort(Vector3 _center, Color _fillColor, bool isSelected) {
-    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedInPrivateVariablePortIcon(_fillColor) :
-    		                                 iCS_PortIcons.GetInPrivateVariablePortIcon(_fillColor);
+    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedInStaticPrivateVariablePortIcon(_fillColor) :
+    		                                 iCS_PortIcons.GetInStaticPrivateVariablePortIcon(_fillColor);
             DrawSymetricalPort(_center, portIcon);
         }
     	// ----------------------------------------------------------------------
         void DrawOutStaticPrivateVariablePort(Vector3 _center, Color _fillColor, bool isSelected) {
-    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutPrivateVariablePortIcon(_fillColor) :
-    		                                 iCS_PortIcons.GetOutPrivateVariablePortIcon(_fillColor);
+    		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutStaticPrivateVariablePortIcon(_fillColor) :
+    		                                 iCS_PortIcons.GetOutStaticPrivateVariablePortIcon(_fillColor);
             DrawSymetricalPort(_center, portIcon);
         }
     	// ----------------------------------------------------------------------

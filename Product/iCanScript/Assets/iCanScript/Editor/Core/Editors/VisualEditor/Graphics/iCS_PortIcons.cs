@@ -32,6 +32,16 @@ namespace iCanScript.Internal.Editor {
     	static Texture2D	mySelectedInPrivateVariablePortTemplate     = null;
     	static Texture2D	mySelectedOutPrivateVariablePortTemplate    = null;
         
+    	static Texture2D	myInStaticPublicVariablePortTemplate  	      = null;
+    	static Texture2D	myOutStaticPublicVariablePortTemplate  	      = null;
+    	static Texture2D	mySelectedInStaticPublicVariablePortTemplate  = null;
+    	static Texture2D	mySelectedOutStaticPublicVariablePortTemplate = null;
+        
+    	static Texture2D	myInStaticPrivateVariablePortTemplate  	      = null;
+    	static Texture2D	myOutStaticPrivateVariablePortTemplate  	  = null;
+    	static Texture2D	mySelectedInStaticPrivateVariablePortTemplate = null;
+    	static Texture2D	mySelectedOutStaticPrivateVariablePortTemplate= null;
+        
     	static Texture2D	myInParameterPortTemplate  	                = null;
     	static Texture2D	myOutParameterPortTemplate  	            = null;
     	static Texture2D	mySelectedInParameterPortTemplate           = null;
@@ -77,6 +87,16 @@ namespace iCanScript.Internal.Editor {
     	static Dictionary<Color,Texture2D>	myOutPrivateVariablePortIcons            = null;
     	static Dictionary<Color,Texture2D>	mySelectedInPrivateVariablePortIcons     = null;
     	static Dictionary<Color,Texture2D>	mySelectedOutPrivateVariablePortIcons    = null;
+
+    	static Dictionary<Color,Texture2D>	myInStaticPublicVariablePortIcons          = null;
+    	static Dictionary<Color,Texture2D>	myOutStaticPublicVariablePortIcons         = null;
+    	static Dictionary<Color,Texture2D>	mySelectedInStaticPublicVariablePortIcons  = null;
+    	static Dictionary<Color,Texture2D>	mySelectedOutStaticPublicVariablePortIcons = null;
+
+    	static Dictionary<Color,Texture2D>	myInStaticPrivateVariablePortIcons         = null;
+    	static Dictionary<Color,Texture2D>	myOutStaticPrivateVariablePortIcons        = null;
+    	static Dictionary<Color,Texture2D>	mySelectedInStaticPrivateVariablePortIcons = null;
+    	static Dictionary<Color,Texture2D>	mySelectedOutStaticPrivateVariablePortIcons= null;
 
     	static Dictionary<Color,Texture2D>	myInParameterPortIcons                   = null;
     	static Dictionary<Color,Texture2D>	myOutParameterPortIcons                  = null;
@@ -155,6 +175,10 @@ namespace iCanScript.Internal.Editor {
     		BuildOutPublicVariablePortTemplate(len, ref myOutPublicVariablePortTemplate);
     		BuildInPublicVariablePortTemplate(selectedLen, ref mySelectedInPublicVariablePortTemplate);
     		BuildOutPublicVariablePortTemplate(selectedLen, ref mySelectedOutPublicVariablePortTemplate);
+    		BuildInStaticPublicVariablePortTemplate(len, ref myInStaticPublicVariablePortTemplate);
+    		BuildOutStaticPublicVariablePortTemplate(len, ref myOutStaticPublicVariablePortTemplate);
+    		BuildInStaticPublicVariablePortTemplate(selectedLen, ref mySelectedInStaticPublicVariablePortTemplate);
+    		BuildOutStaticPublicVariablePortTemplate(selectedLen, ref mySelectedOutStaticPublicVariablePortTemplate);
     	}
     	// ----------------------------------------------------------------------
     	static void BuildPrivateVariablePortTemplates(float scale) {
@@ -164,6 +188,10 @@ namespace iCanScript.Internal.Editor {
     		BuildOutPrivateVariablePortTemplate(len, ref myOutPrivateVariablePortTemplate);
     		BuildInPrivateVariablePortTemplate(selectedLen, ref mySelectedInPrivateVariablePortTemplate);
     		BuildOutPrivateVariablePortTemplate(selectedLen, ref mySelectedOutPrivateVariablePortTemplate);
+    		BuildInStaticPrivateVariablePortTemplate(len, ref myInStaticPrivateVariablePortTemplate);
+    		BuildOutStaticPrivateVariablePortTemplate(len, ref myOutStaticPrivateVariablePortTemplate);
+    		BuildInStaticPrivateVariablePortTemplate(selectedLen, ref mySelectedInStaticPrivateVariablePortTemplate);
+    		BuildOutStaticPrivateVariablePortTemplate(selectedLen, ref mySelectedOutStaticPrivateVariablePortTemplate);
     	}
     	// ----------------------------------------------------------------------
     	static void BuildParameterPortTemplates(float scale) {
@@ -207,47 +235,71 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
     	public static void BuildInPublicVariablePortTemplate(float len, ref Texture2D template) {
     		// Create texture.
+            BuildInPublicVariablePortTemplateCommon(len, ref template);
+    		template.Apply();
+    	}
+    	// ----------------------------------------------------------------------
+    	public static void BuildInStaticPublicVariablePortTemplate(float len, ref Texture2D template) {
+    		// Create texture.
+            BuildInPublicVariablePortTemplateCommon(len, ref template);
     		int lenInt= (int)(len+1f);
-    		int borderSize= myScale > 1.5 ? 3 : (myScale > 1.25f ? 2 : (myScale > 0.75 ? 1 : 0));
-            // Remove previous template.
-            if(template != null) Texture2D.DestroyImmediate(template);
-    		template= new Texture2D(lenInt, lenInt);
-    		for(int x= 0; x < lenInt; ++x) {
-    			for(int y= 0; y < lenInt; ++y) {
-    				if(x <= borderSize || y <= borderSize || x >= lenInt-1-borderSize || y >= lenInt-1-borderSize) {
-    					template.SetPixel(x,y,Color.black);
-    				} else  if(x <= borderSize+1 || x >= lenInt-borderSize-2 || y <= borderSize+1 || y >= lenInt-borderSize-2) {
-    					template.SetPixel(x,y,Color.red);
-    				} else {
-    					template.SetPixel(x,y,Color.black);					
-    				}
-    			}
-    		}
-    		template.hideFlags= HideFlags.DontSave;
+            BuildSquareOutline(ref template, lenInt, Color.green);
     		template.Apply();
     	}
     	// ----------------------------------------------------------------------
     	public static void BuildOutPublicVariablePortTemplate(float len, ref Texture2D template) {
     		// Create texture.
+            BuildOutPublicVariablePortTemplateCommon(len, ref template);
+    		template.Apply();
+    	}
+    	// ----------------------------------------------------------------------
+    	public static void BuildOutStaticPublicVariablePortTemplate(float len, ref Texture2D template) {
+    		// Create texture.
+            BuildOutPublicVariablePortTemplateCommon(len, ref template);
     		int lenInt= (int)(len+1f);
-    		int borderSize= myScale > 1.5 ? 4 : (myScale > 1.25f ? 3 : (myScale > 0.9f ? 2 : (myScale > 0.5 ? 1 : 0)));
-            // Remove previous template.
-            if(template != null) Texture2D.DestroyImmediate(template);
-    		template= new Texture2D(lenInt, lenInt);
-    		for(int x= 0; x < lenInt; ++x) {
-    			for(int y= 0; y < lenInt; ++y) {
-    				if(x <= borderSize || y <= borderSize || x >= lenInt-1-borderSize || y >= lenInt-1-borderSize) {
-    					template.SetPixel(x,y,Color.black);
-    				} else {
-    					template.SetPixel(x,y,Color.red);					
-    				}
-    			}
-    		}
-    		template.hideFlags= HideFlags.DontSave;
+            BuildSquareOutline(ref template, lenInt, Color.green);
     		template.Apply();
     	}
     	// ----------------------------------------------------------------------
     	public static void BuildInPrivateVariablePortTemplate(float len, ref Texture2D template) {
+    		// Create texture.
+            BuildInPrivateVariablePortTemplateCommon(len, ref template);
+    		template.Apply();
+    	}
+    	// ----------------------------------------------------------------------
+    	public static void BuildInStaticPrivateVariablePortTemplate(float len, ref Texture2D template) {
+    		// Create texture.
+            BuildInPrivateVariablePortTemplateCommon(len, ref template);
+    		int lenInt= (int)(len+1f);
+            BuildSquareOutline(ref template, lenInt, Color.green);
+    		template.Apply();
+    	}
+    	// ----------------------------------------------------------------------
+    	public static void BuildOutPrivateVariablePortTemplate(float len, ref Texture2D template) {
+    		// Create texture.
+            BuildOutPrivateVariablePortTemplateCommon(len, ref template);
+    		template.Apply();
+    	}
+    	// ----------------------------------------------------------------------
+    	public static void BuildOutStaticPrivateVariablePortTemplate(float len, ref Texture2D template) {
+    		// Create texture.
+            BuildOutPrivateVariablePortTemplateCommon(len, ref template);
+    		int lenInt= (int)(len+1f);
+            BuildSquareOutline(ref template, lenInt, Color.green);
+    		template.Apply();
+    	}
+
+    	// ----------------------------------------------------------------------
+        static void BuildSquareOutline(ref Texture2D template, int len, Color color) {
+            int maxX= len-1;
+            int maxY= len-1;
+            iCS_TextureUtil.DrawLine(ref template, Vector2.zero, new Vector2(0, maxY), color);
+            iCS_TextureUtil.DrawLine(ref template, Vector2.zero, new Vector2(maxX, 0), color);
+            iCS_TextureUtil.DrawLine(ref template, new Vector2(maxX, maxY), new Vector2(maxX, 0), color);
+            iCS_TextureUtil.DrawLine(ref template, new Vector2(maxX, maxY), new Vector2(0, maxY), color);            
+        }
+    	// ----------------------------------------------------------------------
+    	public static void BuildInPublicVariablePortTemplateCommon(float len, ref Texture2D template) {
     		// Create texture.
     		int lenInt= (int)(len+1f);
     		int borderSize= myScale > 1.5 ? 3 : (myScale > 1.25f ? 2 : (myScale > 0.75 ? 1 : 0));
@@ -265,12 +317,10 @@ namespace iCanScript.Internal.Editor {
     				}
     			}
     		}
-            iCS_TextureUtil.DrawLine(ref template, new Vector2(borderSize+1,borderSize+1), new Vector2(lenInt-borderSize-2,lenInt-borderSize-2), Color.red);
     		template.hideFlags= HideFlags.DontSave;
-    		template.Apply();
     	}
     	// ----------------------------------------------------------------------
-    	public static void BuildOutPrivateVariablePortTemplate(float len, ref Texture2D template) {
+    	public static void BuildOutPublicVariablePortTemplateCommon(float len, ref Texture2D template) {
     		// Create texture.
     		int lenInt= (int)(len+1f);
     		int borderSize= myScale > 1.5 ? 4 : (myScale > 1.25f ? 3 : (myScale > 0.9f ? 2 : (myScale > 0.5 ? 1 : 0)));
@@ -286,9 +336,28 @@ namespace iCanScript.Internal.Editor {
     				}
     			}
     		}
-            iCS_TextureUtil.DrawLine(ref template, new Vector2(borderSize+1,borderSize+1), new Vector2(lenInt-borderSize-2,lenInt-borderSize-2), Color.black);
     		template.hideFlags= HideFlags.DontSave;
+    	}
+    	// ----------------------------------------------------------------------
+    	public static void BuildInPrivateVariablePortTemplateCommon(float len, ref Texture2D template) {
+    		// -- Create base type variable texture. --
+            BuildInPublicVariablePortTemplateCommon(len, ref template);
+            // -- Add Private varibale indication line. --
+    		int lenInt= (int)(len+1f);
+    		int borderSize= myScale > 1.5 ? 4 : (myScale > 1.25f ? 3 : (myScale > 0.9f ? 2 : (myScale > 0.5 ? 1 : 0)));
+            iCS_TextureUtil.DrawLine(ref template, new Vector2(borderSize+1,borderSize+1), new Vector2(lenInt-borderSize-2,lenInt-borderSize-2), Color.red);
     		template.Apply();
+    	}
+    	// ----------------------------------------------------------------------
+    	public static void BuildOutPrivateVariablePortTemplateCommon(float len, ref Texture2D template) {
+    		// -- Create base type variable texture. --
+            BuildOutPublicVariablePortTemplateCommon(len, ref template);
+            // -- Add Private varibale indication line. --
+    		int lenInt= (int)(len+1f);
+    		int borderSize= myScale > 1.5 ? 4 : (myScale > 1.25f ? 3 : (myScale > 0.9f ? 2 : (myScale > 0.5 ? 1 : 0)));
+            float lineWidth= myScale < 0.75f ? 1f : 1.5f*myScale;
+            iCS_TextureUtil.DrawLine(ref template, new Vector2(borderSize+1,borderSize+1), new Vector2(lenInt-borderSize-2,lenInt-borderSize-2), Color.black, lineWidth);
+    		template.hideFlags= HideFlags.DontSave;
     	}
     	// ----------------------------------------------------------------------
     	static void BuildLocalVariablePortTemplates(float scale) {
@@ -368,6 +437,12 @@ namespace iCanScript.Internal.Editor {
             var center= new Vector2(cx,cy);
             iCS_TextureUtil.Fill(ref template, Color.black);
             iCS_TextureUtil.DrawCircle(ref template, innerRadius, center, Color.red, 1f+0.25f*myScale);
+            int maxX= widthInt-1;
+            int maxY= heightInt-1;
+            iCS_TextureUtil.DrawLine(ref template, Vector2.zero, new Vector2(0, maxY), Color.green);
+            iCS_TextureUtil.DrawLine(ref template, Vector2.zero, new Vector2(maxX, 0), Color.green);
+            iCS_TextureUtil.DrawLine(ref template, new Vector2(maxX, maxY), new Vector2(maxX, 0), Color.green);
+            iCS_TextureUtil.DrawLine(ref template, new Vector2(maxX, maxY), new Vector2(0, maxY), Color.green);
     		// -- Finalize texture. --
     		template.hideFlags= HideFlags.DontSave;
     		template.Apply();
@@ -580,6 +655,29 @@ namespace iCanScript.Internal.Editor {
     	}
 
     	// ----------------------------------------------------------------------
+    	// Returns a texture representing a public variable.
+    	public static Texture2D GetInStaticPublicVariablePortIcon(Color typeColor) {
+    		return GetPortIcon(typeColor, ref myInStaticPublicVariablePortIcons, ref myInStaticPublicVariablePortTemplate);
+    	}
+    	// ----------------------------------------------------------------------
+    	// Returns a texture representing a public variable.
+    	public static Texture2D GetOutStaticPublicVariablePortIcon(Color typeColor) {
+    		return GetPortIcon(typeColor, ref myOutStaticPublicVariablePortIcons, ref myOutStaticPublicVariablePortTemplate);
+    	}
+    	// ----------------------------------------------------------------------
+    	// Returns a texture representing a selected public variable.
+    	public static Texture2D GetSelectedInStaticPublicVariablePortIcon(Color typeColor) {
+    		return GetPortIcon(typeColor,
+    			               ref mySelectedInStaticPublicVariablePortIcons, ref mySelectedInStaticPublicVariablePortTemplate);
+    	}
+    	// ----------------------------------------------------------------------
+    	// Returns a texture representing a selected public variable.
+    	public static Texture2D GetSelectedOutStaticPublicVariablePortIcon(Color typeColor) {
+    		return GetPortIcon(typeColor,
+    			               ref mySelectedOutStaticPublicVariablePortIcons, ref mySelectedOutStaticPublicVariablePortTemplate);
+    	}
+
+    	// ----------------------------------------------------------------------
     	// Returns a texture representing a private variable.
     	public static Texture2D GetInPrivateVariablePortIcon(Color typeColor) {
     		return GetPortIcon(typeColor, ref myInPrivateVariablePortIcons, ref myInPrivateVariablePortTemplate);
@@ -600,6 +698,29 @@ namespace iCanScript.Internal.Editor {
     	public static Texture2D GetSelectedOutPrivateVariablePortIcon(Color typeColor) {
     		return GetPortIcon(typeColor,
     			               ref mySelectedOutPrivateVariablePortIcons, ref mySelectedOutPrivateVariablePortTemplate);
+    	}
+
+    	// ----------------------------------------------------------------------
+    	// Returns a texture representing a private variable.
+    	public static Texture2D GetInStaticPrivateVariablePortIcon(Color typeColor) {
+    		return GetPortIcon(typeColor, ref myInStaticPrivateVariablePortIcons, ref myInStaticPrivateVariablePortTemplate);
+    	}
+    	// ----------------------------------------------------------------------
+    	// Returns a texture representing a private variable.
+    	public static Texture2D GetOutStaticPrivateVariablePortIcon(Color typeColor) {
+    		return GetPortIcon(typeColor, ref myOutStaticPrivateVariablePortIcons, ref myOutStaticPrivateVariablePortTemplate);
+    	}
+    	// ----------------------------------------------------------------------
+    	// Returns a texture representing a selected private variable.
+    	public static Texture2D GetSelectedInStaticPrivateVariablePortIcon(Color typeColor) {
+    		return GetPortIcon(typeColor,
+    			               ref mySelectedInStaticPrivateVariablePortIcons, ref mySelectedInStaticPrivateVariablePortTemplate);
+    	}
+    	// ----------------------------------------------------------------------
+    	// Returns a texture representing a selected private variable.
+    	public static Texture2D GetSelectedOutStaticPrivateVariablePortIcon(Color typeColor) {
+    		return GetPortIcon(typeColor,
+    			               ref mySelectedOutStaticPrivateVariablePortIcons, ref mySelectedOutStaticPrivateVariablePortTemplate);
     	}
 
     	// ----------------------------------------------------------------------
@@ -739,26 +860,31 @@ namespace iCanScript.Internal.Editor {
     			    return existingIcon;
     		    }
     		}
-    		Texture2D icon= BuildPortIcon(typeColor, iconTemplate);
+    		Texture2D icon= BuildPortIcon(typeColor, Color.gray, iconTemplate);
     		iconSet[typeColor]= icon;
     		return icon;
     	}
     	// ----------------------------------------------------------------------
         public static Texture2D BuildPortIcon(Color typeColor, Texture2D iconTemplate) {
+            return BuildPortIcon(typeColor, Color.gray, iconTemplate);
+        }
+    
+    	// ----------------------------------------------------------------------
+        public static Texture2D BuildPortIcon(Color typeColor, Color borderColor, Texture2D iconTemplate) {
     		int width= iconTemplate.width;
     		int height= iconTemplate.height;
     		Texture2D icon= new Texture2D(width, height);
     		for(int x= 0; x < width; ++x) {
     			for(int y= 0; y < height; ++y) {
     				Color pixel= iconTemplate.GetPixel(x,y);
-    				if(pixel.r == 0) {
+    				if(pixel.r == 0 && pixel.g == 0) {
     					icon.SetPixel(x,y, pixel);
     				} else {
     					// Anti-Aliasing fill.
     					Color c;
-    					c.r= pixel.r*typeColor.r;
-    					c.g= pixel.r*typeColor.g;
-    					c.b= pixel.r*typeColor.b;
+    					c.r= pixel.r*typeColor.r + pixel.g*borderColor.r;
+    					c.g= pixel.r*typeColor.g + pixel.g*borderColor.g;
+    					c.b= pixel.r*typeColor.b + pixel.g*borderColor.b;
     					c.a= pixel.a;
     					icon.SetPixel(x,y, c);
     				}
@@ -791,6 +917,16 @@ namespace iCanScript.Internal.Editor {
     		FlushCachedIcons(ref myOutPrivateVariablePortIcons);
     		FlushCachedIcons(ref mySelectedInPrivateVariablePortIcons);
     		FlushCachedIcons(ref mySelectedOutPrivateVariablePortIcons);
+
+    		FlushCachedIcons(ref myInStaticPublicVariablePortIcons);
+    		FlushCachedIcons(ref myOutStaticPublicVariablePortIcons);
+    		FlushCachedIcons(ref mySelectedInStaticPublicVariablePortIcons);
+    		FlushCachedIcons(ref mySelectedOutStaticPublicVariablePortIcons);
+
+    		FlushCachedIcons(ref myInStaticPrivateVariablePortIcons);
+    		FlushCachedIcons(ref myOutStaticPrivateVariablePortIcons);
+    		FlushCachedIcons(ref mySelectedInStaticPrivateVariablePortIcons);
+    		FlushCachedIcons(ref mySelectedOutStaticPrivateVariablePortIcons);
 
     		FlushCachedIcons(ref myInParameterPortIcons);
     		FlushCachedIcons(ref myOutParameterPortIcons);

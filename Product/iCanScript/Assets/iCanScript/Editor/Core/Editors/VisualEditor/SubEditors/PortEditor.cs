@@ -58,20 +58,6 @@ namespace iCanScript.Internal.Editor {
             // -- Display port name. --
             EditName("Port Name");
             
-            // -- Edit porttype & value if not sourced by other port. --
-//            if(vsObject.IsInDataPort && vsObject.ProducerPort != null) {
-//                // -- Edit port variable type. --
-//                EditorGUI.BeginDisabledGroup(true);
-//                EditorGUILayout.EnumPopup("Variable Type", vsObject.PortSpec);
-//                EditorGUI.EndDisabledGroup();
-//                
-//                // -- Show port value type. --
-//                EditPortValueType();
-//            }
-//            else {
-//                OnPortSpecificGUI();                
-//            }
-
             // -- Edit the value of the port. --
             EditPortValue();
 
@@ -79,7 +65,6 @@ namespace iCanScript.Internal.Editor {
             variableType= EditorGUILayout.EnumPopup("Variable Type", variableType);
             SetPortSpec(ConvertEnum(variableType, PortSpecification.Default));                        
 			
-            
             // -- Edit port description. --
             EditDescription();        
     	}
