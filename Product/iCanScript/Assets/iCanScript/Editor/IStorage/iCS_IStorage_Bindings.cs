@@ -8,10 +8,16 @@ namespace iCanScript.Internal.Editor {
         // ======================================================================
         // Port Connectivity
         // ----------------------------------------------------------------------
-        public void SetSource(iCS_EditorObject obj, iCS_EditorObject src) {
-            int id= src == null ? -1 : src.InstanceId;
+        public void SetSource(iCS_EditorObject obj, iCS_EditorObject producerPort) {
+            int id= producerPort == null ? -1 : producerPort.InstanceId;
             if(id != obj.ProducerPortId) {
                 obj.ProducerPortId= id; 
+                if(id != -1) {
+                    GraphEditor.RefreshPortSpec(producerPort);
+                }
+                else {
+                    GraphEditor.SetDefaultPortSpec(obj);
+                }
             }
         }
         // ----------------------------------------------------------------------
@@ -59,8 +65,8 @@ namespace iCanScript.Internal.Editor {
         bool IsPortDisconnected(iCS_EditorObject port) { return !IsPortConnected(port); }
         // ----------------------------------------------------------------------
         // Returns the last data port in the connection or NULL if none exist.
-        public iCS_EditorObject GetFirstProducerPort(iCS_EditorObject port) {
-            iCS_EngineObject engineObject= Storage.GetFirstProducerPort(port.EngineObject);
+        public iCS_EditorObject GetSegmentProducerPort(iCS_EditorObject port) {
+            iCS_EngineObject engineObject= Storage.GetSegmentProducerPort(port.EngineObject);
             return engineObject != null ? EditorObjects[engineObject.InstanceId] : null;
         }
     
@@ -300,7 +306,7 @@ namespace iCanScript.Internal.Editor {
     		var outputNode= outputPort.ParentNode;
     		if(inputNode == outputNode) return;
     		// outputPort is inside the node with the inputPort.
-    		var commonParentNode= outputPort.GetCommonParent(inputPort);
+    		var commonParentNode= GraphInfo.GetCommonParent(outputPort, inputPort);
     		if(inputNode == commonParentNode) {
     			// Rebuild moving down from the common parent towards the output port.
     			var newInputNode= outputPort.ParentNode;
@@ -378,8 +384,8 @@ namespace iCanScript.Internal.Editor {
     		node.ForEachChildPort(
     			p=> {
     			    if(p.IsDataOrControlPort) {
-        				var outputPort= p.FirstProducerPort;
-        				foreach(var inputPort in p.EndConsumerPorts) {
+        				var outputPort= p.SegmentProducerPort;
+        				foreach(var inputPort in p.SegmentEndConsumerPorts) {
         					RebuildDataConnection(outputPort, inputPort);
         				}			        
     			    }
@@ -395,7 +401,7 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
     	public void RebuildStateConnection(iCS_EditorObject fromStatePort, iCS_EditorObject toStatePort) {
             if(fromStatePort == null || toStatePort == null) return;
-    		var commonParent= fromStatePort.GetCommonParent(toStatePort);
+    		var commonParent= GraphInfo.GetCommonParent(fromStatePort, toStatePort);
     		if(commonParent == null) {
     			Debug.LogWarning("iCanScript: Unable to find common parent after relocating state !!!");
     			return;
@@ -459,7 +465,7 @@ namespace iCanScript.Internal.Editor {
         // ----------------------------------------------------------------------
     	public iCS_EditorObject FindPortWithSourceEndPoint(iCS_EditorObject node, iCS_EditorObject srcEP) {
     		// Get all ports that match request (supports connection loops).
-    		var matchingPorts= node.BuildListOfChildPorts(p=> p.FirstProducerPort == srcEP);
+    		var matchingPorts= node.BuildListOfChildPorts(p=> p.SegmentProducerPort == srcEP);
     		if(matchingPorts.Length == 0) return null;
     		if(matchingPorts.Length == 1) return matchingPorts[0];
     		foreach(var p in matchingPorts) {

@@ -20,7 +20,6 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
         string GetValueAsString(object value) {
             if(value == null) return null;
-    		if(value is OwnerTag) return "Owner";
             if(value is bool) return ((bool)value) ? "true" : "false";
             if(value is float) return ((float)value).ToString();
             if(value is int) return ((int)value).ToString();
@@ -133,6 +132,9 @@ namespace iCanScript.Internal.Editor {
         }
         // ----------------------------------------------------------------------
         string GetPortValueAsString(iCS_EditorObject port) {
+            // -- Special case for "Owner". --
+            if(port.IsOwner && port.IsInputPort) return "Owner";
+            // -- Convert the initial value to its string representation. --
             object portValue= port.PortValue;
             return (portValue != null) ? GetValueAsString(portValue) : null;
         }
@@ -152,6 +154,7 @@ namespace iCanScript.Internal.Editor {
                 var distance= Vector2.Distance(portCenter, sourceCenter);
                 if(distance < 200.0f) return false;
             }
+            if(port.IsOwner) return true;
             object portValue= port.PortValue;
             if(portValue == null) return false;
             if(!Application.isPlaying) return true;

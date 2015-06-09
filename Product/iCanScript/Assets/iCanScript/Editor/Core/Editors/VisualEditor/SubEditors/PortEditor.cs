@@ -33,7 +33,7 @@ namespace iCanScript.Internal.Editor {
 			if(parent.IsEventHandler) {
 				return EventHandlerPortEditor.Create(port, screenPosition);
 			}
-			if(parent.IsPublicFunction) {
+			if(parent.IsFunctionDefinition) {
 				return FunctionDefinitionPortEditor.Create(port, screenPosition);
 			}
             if(parent.IsPackage) {
@@ -55,14 +55,17 @@ namespace iCanScript.Internal.Editor {
         // -------------------------------------------------------------------
         /// Port specific information.
     	public void OnGUI() {
-            // Display port name.
+            // -- Display port name. --
             EditName("Port Name");
             
-            var newPortSpec= EditorGUILayout.EnumPopup("Port Spec", vsObject.PortSpec);
-            vsObject.PortSpec= ConvertEnum(newPortSpec, PortSpecification.Default);
-            
-            OnPortSpecificGUI();
-            
+            // -- Edit the value of the port. --
+            EditPortValue();
+
+            var variableType= ConvertEnum(vsObject.PortSpec, GraphInfo.GetAllowedPortSpecification(vsObject));
+            variableType= EditorGUILayout.EnumPopup("Variable Type", variableType);
+            SetPortSpec(ConvertEnum(variableType, PortSpecification.Default));                        
+			
+            // -- Edit port description. --
             EditDescription();        
     	}
         
@@ -83,6 +86,15 @@ namespace iCanScript.Internal.Editor {
         /// Edit the port value.
         protected void EditPortValue() {
             iCS_GuiUtilities.OnInspectorDataPortGUI("Initial Value", vsObject, 0, foldoutDB);
+        }
+
+		// ===================================================================
+        /// Sets the port specififcation.
+		///
+		/// @param portSpec The new port specification.
+		///
+        protected void SetPortSpec(PortSpecification portSpec) {
+			GraphEditor.SetPortSpec(vsObject, portSpec);
         }
     }
     

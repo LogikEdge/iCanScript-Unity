@@ -27,7 +27,9 @@ namespace iCanScript.Internal.Editor {
         protected void EditName(string label) {
             string name= vsObject.DisplayName;
             if(string.IsNullOrEmpty(name)) name= EmptyStr;
-            if(vsObject.IsNameEditable) {
+            // -- Allow to edit Target port when it is a type variable. --
+            bool allowEdit= vsObject.IsTargetPort && vsObject.IsTypeVariable;
+            if(allowEdit || vsObject.IsNameEditable) {
                 GUI.changed= false;
                 var newName= EditorGUILayout.TextField(label, vsObject.DisplayName);
                 if(GUI.changed) {
@@ -66,10 +68,10 @@ namespace iCanScript.Internal.Editor {
 		///                     unsuccessful.
 		///
         protected R ConvertEnum<R,T>(T value, R defaultValue) {
-            var allowedValues= Enum.GetValues(typeof(R));
+            var allowedValues= Enum.GetValues(defaultValue.GetType());
             foreach(var v in allowedValues) {
                 if((int)Convert.ChangeType(v, typeof(int)) == (int)Convert.ChangeType(value, typeof(int))) {
-                    return (R)Convert.ChangeType(value, typeof(R));
+                    return (R)v;
                 }
             }
             return defaultValue;

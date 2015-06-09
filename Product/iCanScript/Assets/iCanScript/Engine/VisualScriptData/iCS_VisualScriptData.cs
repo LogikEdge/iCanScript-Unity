@@ -184,8 +184,8 @@ namespace iCanScript.Internal.Engine {
         }
         // ----------------------------------------------------------------------
         // Returns the endport source of a connection.
-        public iCS_EngineObject GetFirstProducerPort(iCS_EngineObject port) {
-            return GetFirstProducerPort(this, port);
+        public iCS_EngineObject GetSegmentProducerPort(iCS_EngineObject port) {
+            return GetSegmentProducerPort(this, port);
         }
         // ----------------------------------------------------------------------
         public bool IsEndPort(iCS_EngineObject port) {
@@ -339,12 +339,12 @@ namespace iCanScript.Internal.Engine {
         }
         // ----------------------------------------------------------------------
         // Returns the endport source of a connection.
-        public static iCS_EngineObject GetFirstProducerPort(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
+        public static iCS_EngineObject GetSegmentProducerPort(iCS_IVisualScriptData vsd, iCS_EngineObject port) {
             if(port == null || port.InstanceId == -1) return null;
             int linkLength= 0;
             for(iCS_EngineObject sourcePort= GetProducerPort(vsd, port); sourcePort != null; sourcePort= GetProducerPort(vsd, port)) {
                 port= sourcePort;
-                if(++linkLength > 1000) {
+                if(++linkLength > 100) {
                     Debug.LogWarning("iCanScript: Circular port connection detected on: "+GetParentNode(vsd, port).RawName+"."+port.RawName);
                     return null;                
                 }

@@ -32,9 +32,10 @@ namespace iCanScript.Internal.Editor {
         public bool IsOnStateEntryPackage   	{ get { return EngineObject.IsOnStateEntryPackage; }}
         public bool IsOnStateUpdatePackage  	{ get { return EngineObject.IsOnStateUpdatePackage; }}
         public bool IsOnStateExitPackage    	{ get { return EngineObject.IsOnStateExitPackage; }}
-        public bool IsPublicFunction            { get { return IsPackage && IsParentValid && Parent.IsBehaviour; }}
-        public bool IsPublicVariable            { get { return IsConstructor && IsParentValid && Parent.IsBehaviour; }}
-    
+        public bool IsFunctionDefinition        { get { return IsPackage && IsParentValid && Parent.IsBehaviour; }}
+        public bool IsVariableDefinition        { get { return IsConstructor && IsParentValid && Parent.IsBehaviour; }}
+        public bool IsTypeDefinitionNode        { get { return IsRootObject; }}
+        
         // General Ports
         public bool IsPort                      { get { return EngineObject.IsPort; }}
         public bool IsInputPort                 { get { return EngineObject.IsInputPort; }}
@@ -97,6 +98,24 @@ namespace iCanScript.Internal.Editor {
     	public bool IsTargetOrSelfPort			{ get { return IsTargetPort || IsSelfPort; }}
     	public bool IsTargetPort			    { get { return EngineObject.IsTargetPort; }}
     	public bool IsSelfPort			        { get { return EngineObject.IsSelfPort; }}
+        // Variable Queries
+        public bool IsStatic {
+            get {
+                return IsStaticPrivateVariable || IsStaticPublicVariable;
+            }
+        }
+        public bool IsPublic {
+            get {
+                return IsPublicVariable || IsStaticPublicVariable;
+            }
+        }
+        public bool IsPrivate {
+            get {
+                return IsPrivateVariable || IsStaticPrivateVariable;
+            }
+        }
+        
+        // -------------------------------------------------------------------
         // Special Cases
         public bool IsProgrammaticInstancePort  {
             get {

@@ -117,7 +117,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         ///
         public string GetNameFor(iCS_EditorObject vsObj) {
             if(vsObj.IsInputPort) {
-                var producerPort= vsObj.FirstProducerPort;
+                var producerPort= vsObj.SegmentProducerPort;
                 if(producerPort.IsInputPort) {
                     // Find the code base for the producer port.
                     var producerPortCode= myContext.GetCodeFor(producerPort);
@@ -160,14 +160,14 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 Debug.LogWarning("iCanScript: Internal error: Invoking GetValueFor(...) without an input port.  Contact support.");
                 return null;
             }
-            var producerPort= CodeFlow.GetProducerPort(vsObj);
+            var producerPort= GraphInfo.GetProducerPort(vsObj);
             if(!producerPort.IsInputPort) {
                 Debug.LogWarning("iCanScript: Internal error: Invoking GetValueFor(...) on a port connected to an output port.  Contact support.");
                 return null;
             }
 			// Special case for 'OwnerTag'.
 			var initialValue= producerPort.InitialValue;
-			if(initialValue is OwnerTag) {
+			if(vsObj.IsOwner) {
 				var producerType= producerPort.RuntimeType;
 				if(producerType == typeof(Transform)) {
 					return "transform";
@@ -190,7 +190,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 				Debug.LogWarning("iCanScript: Internal error: Trying to extract port expression from non-port object.  Contact support.");
 				return "";
 			}
-            var producerPort= CodeFlow.GetProducerPort(vsObj);
+            var producerPort= GraphInfo.GetProducerPort(vsObj);
 			// Return value if the port is not connected.
 			if(producerPort == vsObj) {
 				return GetValueFor(vsObj);					
@@ -268,6 +268,44 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 case ScopeSpecifier.Abstract:  return "abstract";
                 case ScopeSpecifier.Override:  return "override";
                 case ScopeSpecifier.Const:     return "const";
+			}
+            return ""; 
+        }
+    	// -------------------------------------------------------------------------
+        /// Converts the given port specification to its string representation.
+        ///
+        /// @param portSpec The port specification to be converted.
+        /// @return The string representation of the acces type.
+        ///
+        public static string ToAccessString(PortSpecification portSpec) {
+            switch(portSpec) {
+                case PortSpecification.Constant:
+                case PortSpecification.StaticPublicVariable:
+                case PortSpecification.PublicVariable: {
+                    return "public ";                    
+                }
+                case PortSpecification.StaticPrivateVariable:
+                case PortSpecification.PrivateVariable: {
+                    return "private ";                    
+                }
+            }
+            return "";
+        }
+        // -------------------------------------------------------------------
+        /// Converts the given port specification to its string representation.
+        ///
+        /// @param portSpec The port specification to be converted.
+        /// @return The string representation of the scope type.
+        ///
+        public static string ToScopeString(PortSpecification portSpec) {
+			switch(portSpec) {
+                case PortSpecification.StaticPrivateVariable:
+                case PortSpecification.StaticPublicVariable: {
+                    return "static ";
+                }
+                case PortSpecification.Constant: {
+                    return "const ";
+                }
 			}
             return ""; 
         }
@@ -549,11 +587,40 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// @param vsObj The visual script object of the cod efragment
         ///
         public bool DoesNameAlreadyExist(string name) {
+            if(IsLanguageKeyword(name)) return true;
             if(myLocalNames.ContainsValue(name)) return true;
             if(myParent == null) return false;
             return myParent.DoesNameAlreadyExist(name);
         }
 
+        // -----------------------------------------------------------------------
+        /// Determine if the given name is a languaged keyword.
+        public bool IsLanguageKeyword(string name) {
+            foreach(var k in ourCSharpKeywords) {
+                if(name == k) return true;
+            }
+            return false;
+        }
+        static string[] ourCSharpKeywords= new string[]{
+            "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char",
+            "Char", "checked", "class", "const", "continue", "decimal", "default",
+            "delegate", "do", "double", "else", "enum", "event", "explicit", "extern",
+            "false", "finally", "fixed", "float", "for", "foreach", "goto", "if",
+            "implicit", "in", "int", "interface", "internal", "is", "lock", "long",
+            "namespace", "new", "null", "object", "Object", "operator", "out", "override",
+            "params", "private", "protected", "public", "readonly", "ref", "return",
+            "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string", "String",
+            "struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong",
+            "unchecked", "unsafe", "ushort", "using", "virtual", "void", "volatile", "while"
+        };
+        
+        // -----------------------------------------------------------------------
+        /// Returns true if code base is an operator functional call.
+        public bool IsOperatorFunctionCall() {
+            if(!(this is FunctionCallDefinition)) return false;
+            return VSObject.CodeName.StartsWith("op_");
+        }
+        
         // =========================================================================
         // COMMON GENERATION UTILITIES
         // -------------------------------------------------------------------
@@ -564,6 +631,9 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// @return The format code fragment of the allocator.
         ///
         public string GenerateAllocatorFragment(Type type, string[] paramValues) {
+			if(iCS_Types.IsPrimitive(type) || type == typeof(String)) {
+				return paramValues[0] ?? "";
+			}
             var result= new StringBuilder(" new ");
             result.Append(ToTypeName(type));
             result.Append("(");
@@ -585,7 +655,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// @return The common base type for all consumers.
         ///
         public Type GetCommonBaseTypeForProducerPort(iCS_EditorObject producerPort) {
-            var consumers= producerPort.EndConsumerPorts;
+            var consumers= producerPort.SegmentEndConsumerPorts;
             var consumersLen= consumers.Length;
             if(consumersLen == 0) return typeof(void);
             var commonType= consumers[0].RuntimeType;
@@ -607,7 +677,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// @return The common base type for all consumers.
         ///
         public Type GetMostSpecializedTypeForProducerPort(iCS_EditorObject producerPort) {
-            var consumers= producerPort.EndConsumerPorts;
+            var consumers= producerPort.SegmentEndConsumerPorts;
             var consumersLen= consumers.Length;
             if(consumersLen == 0) return typeof(void);
             var specializedType= consumers[0].RuntimeType;
@@ -756,7 +826,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 var producerPort= port.ProducerPort;
                 if(producerPort != null && producerPort != port) return false;
                 // Don't generate public interface if already connected to a constructor.
-                var consumers= port.EndConsumerPorts;
+                var consumers= port.SegmentEndConsumerPorts;
                 foreach(var c in consumers) {
                     if(c.ParentNode.IsConstructor) {
                         return false;
@@ -922,7 +992,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         ///         port can be evaluated.
         ///
         public iCS_EditorObject[] GetInputPortCodeDependencies(iCS_EditorObject port) {
-            var producerPort= port.FirstProducerPort;
+            var producerPort= port.SegmentProducerPort;
             // This should not happen...
             if(producerPort == null) {
                 Debug.LogWarning("iCanScript: Unable to determine producer port.");
@@ -970,7 +1040,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         ///
         public iCS_EditorObject[] GetCodeConsumerPorts(iCS_EditorObject producerPort) {
             // TODO: GetCodeConsumerPorts needs to be completed.
-            return producerPort.EndConsumerPorts;
+            return producerPort.SegmentEndConsumerPorts;
         }
                 
         // =========================================================================
@@ -1040,7 +1110,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         
     	// -------------------------------------------------------------------------
         public bool CanReplaceInputParameter(CodeBase code, CodeBase allowedParent, out iCS_EditorObject producerParent) {
-            var producerPort= CodeFlow.GetProducerPort(code.VSObject);
+            var producerPort= GraphInfo.GetProducerPort(code.VSObject);
             producerParent= producerPort.ParentNode;
             // Accept get field/property if we are the only consumer.
 			if(IsFieldOrPropertyGet(producerParent)) {
@@ -1086,7 +1156,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         public bool AreAllInputsConstant(iCS_EditorObject node) {
             var inputs= node.BuildListOfChildPorts(p=> p.IsInputPort);
             foreach(var p in inputs) {
-                if(p.FirstProducerPort.IsOutputPort) {
+                if(p.SegmentProducerPort.IsOutputPort) {
                     return false;
                 }
             }

@@ -1,10 +1,38 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
+using iCanScript.Internal.Engine;
 
 namespace iCanScript.Internal.Editor {
 
 	public class FunctionCallPortEditor : PortEditor {
+        // ===================================================================
+        // TYPES
+        // -------------------------------------------------------------------
+        public enum InVariableType {
+            LocalVariable        = PortSpecification.LocalVariable,
+            PublicVariable       = PortSpecification.PublicVariable,
+            PrivateVariable      = PortSpecification.PrivateVariable,
+            StaticPublicVariable = PortSpecification.StaticPublicVariable,
+            StaticPrivateVariable= PortSpecification.StaticPrivateVariable,
+            Constant             = PortSpecification.Constant
+        };
+        public enum InUnityObjectVariableType {
+            PublicVariable=        PortSpecification.PublicVariable,
+            PrivateVariable=       PortSpecification.PrivateVariable,
+            StaticPublicVariable=  PortSpecification.StaticPublicVariable,
+            StaticPrivateVariable= PortSpecification.StaticPrivateVariable
+        };
+        public enum OutVariableType {
+            LocalVariable        = PortSpecification.LocalVariable,
+            PublicVariable       = PortSpecification.PublicVariable,
+            PrivateVariable      = PortSpecification.PrivateVariable,
+            StaticPublicVariable = PortSpecification.StaticPublicVariable,
+            StaticPrivateVariable= PortSpecification.StaticPrivateVariable
+        };
+        
+        
         // ===================================================================
         // BUILDER
         // -------------------------------------------------------------------
@@ -26,10 +54,29 @@ namespace iCanScript.Internal.Editor {
         // EDITOR ENTRY POINT
         // -------------------------------------------------------------------
         protected override void OnPortSpecificGUI() {
-            // Edit the value of the port.
+            // -- Edit the value of the port. --
             EditPortValue();
+
+            // -- Edit port variable type. --
+            if(vsObject.IsInDataPort) {
+                if(iCS_Types.IsA<UnityEngine.Object>(vsObject.RuntimeType)) {
+                    InUnityObjectVariableType variableType= ConvertEnum(vsObject.PortSpec, InUnityObjectVariableType.PublicVariable);
+                    variableType= (InUnityObjectVariableType)EditorGUILayout.EnumPopup("Variable Type", variableType);
+                    SetPortSpec(ConvertEnum(variableType, PortSpecification.Default)); 
+                }
+                else {
+                    InVariableType variableType= ConvertEnum(vsObject.PortSpec, InVariableType.PublicVariable);
+                    variableType= (InVariableType)EditorGUILayout.EnumPopup("Variable Type", variableType);
+                    SetPortSpec(ConvertEnum(variableType, PortSpecification.Default));
+                }
+            }
+            else if(vsObject.IsOutDataPort) {
+                OutVariableType variableType= ConvertEnum(vsObject.PortSpec, OutVariableType.LocalVariable);
+                variableType= (OutVariableType)EditorGUILayout.EnumPopup("Variable Type", variableType);
+                SetPortSpec(ConvertEnum(variableType, PortSpecification.Default)); 
+            }
             
-            // Show port value type.
+            // -- Show port value type. --
             EditPortValueType();
         }
                 

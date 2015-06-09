@@ -51,6 +51,13 @@ namespace iCanScript.Internal.Editor {
     //			SynchronizeAfterUndoRedo();
     //        }        
         }
+        // ======================================================================
+        /// Initialize the editor data from the engine data.
+        public void InitEditorData() {
+            PerformEngineDataUpgrade();
+            GenerateEditorData();
+            PerformEditorDataUpgrade();
+        }
         // ----------------------------------------------------------------------
         public void SynchronizeAfterUndoRedo() {
             iCS_UserCommands.UndoRedo(this);

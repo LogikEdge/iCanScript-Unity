@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Internal.Engine;
 using iCanScript.Nodes;
-using iCanScript.Variables;
 using iCanScript.SimplePhysic;
 using iCanScript.Conversions;
 using iCanScript.TimeUtility;
@@ -50,6 +49,9 @@ namespace iCanScript.Internal.Editor {
             // -- Upgrade each version --
     		if(storageVersion.IsOlderThen(2,0,17)) {
                 isUpgraded |= V2_0_17_EditorUpgrade();
+            }
+    		if(storageVersion.IsOlderThen(2,0,20)) {
+                isUpgraded |= V2_0_20_EditorUpgrade();
             }
 
             // -- Warn the user that an upgrade toke place --
@@ -123,63 +125,31 @@ namespace iCanScript.Internal.Editor {
             return isUpgraded;
         }
         // ----------------------------------------------------------------------
-        /// Performs the editor data upgrade for v2.0.18.
-        bool V2_0_18_EditorUpgrade() {
-            bool isUpgraded= false;
+        /// Upgrade port specification in preparation for user configurable
+        /// port specification.
+        bool V2_0_20_EditorUpgrade() {
+            // -- Erase any stored port specification, --
+            ForEach(
+                p=> {
+                    if(!p.IsPort) return;
+                    p.PortSpec= PortSpecification.Default;
+                }
+            );
             // -- Convert to new port specification --
+            bool isUpgraded= false;
             ForEach(
                 p=> {
                     if(!p.IsPort) return;
                     // -- Abort if conversion already took place --
                     if(p.PortSpec != PortSpecification.Default) return;
-                    // -- Initial setup of the port specification --
-                    var parentNode= p.ParentNode;
-                    if(p.IsEnablePort) {
-                        p.PortSpec= PortSpecification.Enable;
+                    // -- Default the port spec. --
+                    GraphEditor.SetDefaultPortSpec(p);
+                    if(p.PortSpec != PortSpecification.Default) {
                         isUpgraded= true;
-                    }
-                    else if(p.IsTriggerPort) {
-                        p.PortSpec= PortSpecification.Trigger;
-                        isUpgraded= true;
-                    }
-                    else if(p.IsTargetPort) {
-                        p.PortSpec= PortSpecification.Target;
-                        isUpgraded= true;
-                    }
-                    else if(p.IsSelfPort) {
-                        p.PortSpec= PortSpecification.Self;
-                        isUpgraded= true;
-                    }
-                    else if(p.IsReturnPort) {
-                        p.PortSpec= PortSpecification.Return;
-                        isUpgraded= true;
-                    }
-                    else if(parentNode.IsKindOfFunction) {
-                        p.PortSpec= PortSpecification.Parameter;
-                        isUpgraded= true;
-                    }
-                    else if(parentNode.IsEventHandler) {
-                        if(p.IsFixDataPort) {
-                            p.PortSpec= PortSpecification.Parameter;
-                            isUpgraded= true;
-                        }
-                        else {
-                            p.PortSpec= PortSpecification.PublicVariable;
-                            isUpgraded= true;
-                        }
-                    }
-                    else if(parentNode.IsPublicFunction) {
-                        p.PortSpec= PortSpecification.Parameter;
-                        isUpgraded= true;
-                    }
-                    else {
-                    
                     }
                 }
-            );        
+            );
             return isUpgraded;
         }
-
     }
-
 }

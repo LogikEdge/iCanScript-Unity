@@ -223,13 +223,7 @@ namespace iCanScript.Internal.Editor {
             if(multiSelectedObjects.Length == 1) {
                 return multiSelectedObjects;
             }
-            var commonParent= multiSelectedObjects[0];
-            for(int i= 0; i < multiSelectedObjects.Length-1; ++i) {
-                var sharedParent= multiSelectedObjects[i].GetCommonParent(multiSelectedObjects[i+1]);
-                if(sharedParent != commonParent) {
-                    commonParent= commonParent.GetCommonParent(sharedParent);
-                }
-            }
+            var commonParent= GraphInfo.GetCommonParent(multiSelectedObjects);
             // Special case for when the common parent is one of the selected objects.
             List<iCS_EditorObject> valid= new List<iCS_EditorObject>();
             foreach(var obj in multiSelectedObjects) {

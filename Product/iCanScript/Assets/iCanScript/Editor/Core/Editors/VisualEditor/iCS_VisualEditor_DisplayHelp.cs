@@ -168,7 +168,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	iCS_EditorObject getConnectedPort(iCS_EditorObject edObj, Direction direction) {
 		iCS_EditorObject port= edObj;
 	    if (direction == Direction.Producer) {
-			port= edObj.FirstProducerPort;
+			port= edObj.SegmentProducerPort;
             var producerParent= port.ParentNode;
             if(producerParent != null) {
                 var producerGrandParent= producerParent.ParentNode;
@@ -180,7 +180,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
 		}
 		else if(direction == Direction.Consumer) {
-            var consumerPorts= edObj.EndConsumerPorts;
+            var consumerPorts= edObj.SegmentEndConsumerPorts;
 			port= consumerPorts.Length != 0 ? consumerPorts[0] : port;
 			if(port.ParentNode.ParentNode.IsInstanceNode) {
 				port= port.ProducerPort;

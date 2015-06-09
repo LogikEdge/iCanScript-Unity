@@ -1,6 +1,6 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.19
+Version: v2.0.20
 CSS: Github.css
 
 
@@ -10,17 +10,45 @@ CSS: Github.css
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
 
+## iCanScript v2.0.20 ##
+
+_June 8, 2015_
+
+V2.0.20 add the ability to define the generated code variable specification associated with the ports.
+
+With V2.0.20, the user can create public or private ports as well as determine if the port is static (class scope) or not (instance scope).  Support for Constant, Parameters, and Local Variables is also provided. 
+
+**<span style="color: red">\[WARNING\]:</span>**  V2.0.20 requires Unity V5.0.2 or later.  Please upgrade Unity before using this version of iCanScript.
+
+### List of Changes
+
+- **<span style="color: green">\[NEW\] </span>** Added support for selecting the type of variable to be generated in the port dialog editor:
+	- Constant;
+	- Public & Private Variables;
+	- Static Public & Private Variables;
+	- Local Variables;
+	- Function Definition Parameters.
+- **<span style="color: green">\[NEW\] </span>** New port visuals to easily indentify the variable type associated with the port. 
+- **<span style="color: blue">\[IMPROVED\] </span>** Improve contrast of the selected node.
+- **<span style="color: blue">\[IMPROVED\] </span>** Increase port size to improve variable type visibility.
+- **<span style="color: red">\[FIXED\] </span>** Remove unneeded casts in the generated code.
+- **<span style="color: red">\[FIXED\] </span>** Visual script data upgrade in now perform on import.
+
+* * *
+
 ## iCanScript v2.0.19 ##
 
 _May 28, 2015_
 
-V2.0.19 is another minor bug fix and code generation optimization release.
-
+V2.0.19 adds the support for C# primitive variables _**Bool**_, _**Int**_, _**Float**_, and _**String**_.
 
 ### List of Changes
 
+- **<span style="color: green">\[NEW\] </span>** Added support for the creation and usage of C# primitive types: _bool_, _int_, _float_, _string_.  The C# primitive types are located in namespace _**CSharp.Primitives**_.
+	- **IMPORTANT:** The variables in namespace _**iCanScript.Variables**_ should be replaced by their C# equivalent.  The iCanScript variables are now obsoleted and will be removed in a future release.
 - **<span style="color: blue">\[IMPROVED\] </span>** Partial conversion of the API that changed between Unity 5.0.1 and 5.0.2.
 	- **NOTE:** To remain compatible with Unity 5.0.1, not all of the API changes have been applied.
+- **<span style="color: blue">\[IMPROVED\] </span>** Avoid generating variable and function names that collide with C# reserved keywords.
 - **<span style="color: red">\[FIXED\] </span>** Null exception when generating comments for a function parameter that has no description field.
 
 * * *

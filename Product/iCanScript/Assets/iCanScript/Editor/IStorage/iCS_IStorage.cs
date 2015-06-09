@@ -189,9 +189,7 @@ namespace iCanScript.Internal.Editor {
             iCSMonoBehaviour= monoBehaviour;
             // Rebuild the editor information if the MonoBehaviour has changed.
             if(oldMonoBehaviour != monoBehaviour) {
-    			PerformEngineDataUpgrade();
-                GenerateEditorData();
-                PerformEditorDataUpgrade();
+                InitEditorData();
                 // Reset display root if no navigation history present
                 if(!NavigationHistory.HasBackwardHistory && EditorObjects.Count > 0) {
                     DisplayRoot= EditorObjects[0];
@@ -325,23 +323,6 @@ namespace iCanScript.Internal.Editor {
                 
                     // Keep a copy of the final position.
                     obj.AnimationTargetRect= obj.GlobalRect;
-    				// Reassign all non-connected "target" ports to script Owner
-    				if(obj.IsTargetPort) {
-    					if(obj.ProducerPort == null) {
-    						if(IsLocalType(obj)) {
-    							obj.InitialValue= OwnerTag.instance;
-    						}
-                            else {
-                                var baseType= CodeGenerationUtility.GetBaseType(this);
-                                if(iCS_Types.IsA<Component>(baseType) || iCS_Types.IsA<GameObject>(baseType)) {
-                                    var objType= obj.RuntimeType;
-                                    if(iCS_Types.IsA<Transform>(objType) || iCS_Types.IsA<GameObject>(objType)) {
-                                        obj.InitialValue= OwnerTag.instance;
-                                    }
-                                }
-                            }
-    					}
-    				}
                     // Cleanup disconnected or dangling ports.
                     if(CleanupDeadPorts) {
     					if(obj.IsPort) {
@@ -383,7 +364,7 @@ namespace iCanScript.Internal.Editor {
     	                        }
     						}
                             // -- Convert any dynamic ports on public functions to proposed ports --
-                            if(obj.IsDynamicDataPort && obj.ParentNode.IsPublicFunction) {
+                            if(obj.IsDynamicDataPort && obj.ParentNode.IsFunctionDefinition) {
                                 obj.ObjectType= obj.IsInDynamicDataPort ?
                                     VSObjectType.InProposedDataPort :
                                     VSObjectType.OutProposedDataPort;
@@ -427,26 +408,6 @@ namespace iCanScript.Internal.Editor {
             return modified;
         }
 
-        // ----------------------------------------------------------------------
-    	/// Determines if the vsObject refers to an element of the given type.
-    	///
-    	/// @param ourType The type defined by this visual script.
-    	/// @param baseType The type this visual script derives from.
-    	/// @param vsObj The object on which the search occurs.
-    	///
-    	public bool IsLocalType(iCS_EditorObject vsObj) {
-    		// First determine if the type is included inside the GameObject.
-            var baseType= CodeGenerationUtility.GetBaseType(this);
-    		if(vsObj.IsIncludedInType(baseType)) return true;
-    		var typeNode= vsObj.ParentTypeNode;
-    		if(typeNode == null) return false;
-    		if(vsObj.Namespace == CodeGenerationUtility.GetNamespace(this)) {
-    			return vsObj.TypeName == typeNode.CodeName;
-    		}
-    		return false;
-    	}
-
-    
         // ======================================================================
         // Editor Object Creation/Destruction
         // ----------------------------------------------------------------------
@@ -977,7 +938,7 @@ namespace iCanScript.Internal.Editor {
             // -- Create target port. --
     		iCS_EditorObject port= null;
             port= CreateTargetPort(id);
-            port.InitialValue= OwnerTag.instance;
+            port.PortSpec= PortSpecification.Owner;
             // -- Create parameter ports --
 			var parameterTypes= libraryEventHandler.parameterTypes;
 			var parameterNames= libraryEventHandler.parameterNames;

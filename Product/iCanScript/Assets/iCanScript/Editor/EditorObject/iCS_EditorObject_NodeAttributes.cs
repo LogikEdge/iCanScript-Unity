@@ -96,6 +96,25 @@ namespace iCanScript.Internal.Editor {
                 return result;
             }
         }
+    	// -------------------------------------------------------------------------
+        /// Returns the return port of a node.
+        ///
+        /// @return The _'return'_ port if found. _'null'_ otherwise.
+        ///
+        public iCS_EditorObject ReturnPort {
+            get {
+                iCS_EditorObject result= null;
+                ForEachChildPort(
+                    p=> {
+                        if(p.PortIndex == (int)iCS_PortIndex.Return) {
+                            result= p;
+                        }
+                    }
+                );
+                return result;
+            }
+        }
+    
     
         // =======================================================================
         // Proxy Node

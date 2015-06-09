@@ -98,8 +98,8 @@ namespace iCanScript.Internal.Editor {
         // ----------------------------------------------------------------------
         /// Returns the port type of this object.
         public PortSpecification PortSpec {
-            get { return EngineObject.PortSpec; }
             set { EngineObject.PortSpec= value; }
+            get { return EngineObject.PortSpec; }
         }
         // ----------------------------------------------------------------------
         /// Returns the node type of this object.
@@ -113,6 +113,20 @@ namespace iCanScript.Internal.Editor {
     		get {
                 if(c_RuntimeType == null) {
                     c_RuntimeType= EngineObject.RuntimeType;
+					// -- Convert language primitive types. --
+					if(c_RuntimeType == typeof(CSharp.Primitives.Int)) {
+						c_RuntimeType= typeof(int);
+					}
+					if(c_RuntimeType == typeof(CSharp.Primitives.Float)) {
+						c_RuntimeType= typeof(float);
+					}
+					if(c_RuntimeType == typeof(CSharp.Primitives.Bool)) {
+						c_RuntimeType= typeof(bool);
+					}
+					if(c_RuntimeType == typeof(CSharp.Primitives.String)) {
+						c_RuntimeType= typeof(String);
+					}
+                    c_RuntimeType= iCS_Types.RemoveRefOrPointer(c_RuntimeType);
                 }
                 return c_RuntimeType;
             }
@@ -181,11 +195,16 @@ namespace iCanScript.Internal.Editor {
                         if(IsDataPort && IsProgrammaticInstancePort) {
                             if(ParentNode.IsConstructor) {
                                 // Use the name of the variable for constructor output.
-                                var scheme= NameUtility.NamingScheme.LOWER_CAMEL_CASE;
-                                c_CodeName= NameUtility.ToCodeName(scheme, ParentNode.CodeName);
+                                c_CodeName= NameUtility.ToLowerCamelCase(ParentNode.CodeName);
                             }
                             else {
+                                // -- Accept a variable name for Target ports. --
                                 c_CodeName= "this";
+                                if(IsTargetPort && IsTypeVariable) {
+                                    if(!String.IsNullOrEmpty(name)) {
+                                        c_CodeName= NameUtility.ToLowerCamelCase(name);                                        
+                                    }
+                                }
                             }
                         }
                         else if(IsTriggerPort) {
@@ -268,11 +287,19 @@ namespace iCanScript.Internal.Editor {
             get {
                 if(c_DisplayName == null) {
                     if(IsDataPort && IsProgrammaticInstancePort) {
-                        if(IsOutputPort || ParentNode.IsEventHandler || ParentNode.IsPublicFunction) {
+                        if(IsOutputPort || ParentNode.IsEventHandler || ParentNode.IsFunctionDefinition) {
                             c_DisplayName= "Self";
                         }
                         else {
                             c_DisplayName= "Target";
+                            var rawName= EngineObject.RawName;
+                            if(IsTypeVariable) {
+                                if(!string.IsNullOrEmpty(rawName)) {
+                                    if(!(string.Compare(rawName, "this", true) == 0 || string.Compare(rawName, "target", true) == 0)){
+                                        c_DisplayName+= "/"+rawName;
+                                    }
+                                }
+                            }
                         }
                     }
                     else if(IsInstanceNode) {
@@ -367,7 +394,7 @@ namespace iCanScript.Internal.Editor {
                     if(IsConstructor) {
                         c_NodeSubTitle= BuildIsASubTitle("Self", RuntimeType);
                     }
-                    else if(IsEventHandler || IsPublicFunction) {
+                    else if(IsEventHandler || IsFunctionDefinition) {
                         c_NodeSubTitle= "Self is a "+NameUtility.ToDisplayName(EditorObjects[0].DisplayName);                    
                     }
                     else if(IsKindOfFunction || IsInstanceNode) {

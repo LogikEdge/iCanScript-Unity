@@ -51,7 +51,12 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 			parameters= P.filter(p=> p.IsInDataPort && p.ProducerPort == null, parameters);
             myParameters= new FunctionDefinitionParameter[parameters.Length];
             foreach(var p in parameters) {
-                myParameters[p.PortIndex]= new FunctionDefinitionParameter(p, this);
+				if(p.PortIndex >= parameters.Length) {
+					Debug.LogWarning("iCanScript: Internal error: Port index out of range: "+p.PortIndex);
+				}
+				else {
+	                myParameters[p.PortIndex]= new FunctionDefinitionParameter(p, this);
+				}
             }
         }
         
@@ -241,7 +246,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                     else if(vsObj.IsOutDataPort && vsObj.ParentNode == node) {
                         var portVariable= Context.GetCodeFor(vsObj);
                         if(portVariable != null) {
-                            var producerPort= CodeFlow.GetProducerPort(vsObj);
+                            var producerPort= GraphInfo.GetProducerPort(vsObj);
                             if(producerPort != null) {
                                 var consumerCode= new VariableReferenceDefinition(vsObj, this);
                                 var producerCode= new VariableReferenceDefinition(producerPort, this);

@@ -19,7 +19,7 @@ namespace iCanScript.Internal.Editor {
            if(IsKindOfFunction) {
                var runtimeType= RuntimeType;
                var memberInfo= runtimeType != null ? LibraryController.LibraryDatabase.GetLibraryType(runtimeType) : null;
-               if(memberInfo == null && !IStorage.IsLocalType(this)) {
+               if(memberInfo == null && !GraphInfo.IsLocalType(this)) {
                    var message= "Unable to find the runtime code for "+FullName;
                    ErrorController.AddError(serviceKey, message, visualScript, InstanceId);
     			   return false;
@@ -29,7 +29,7 @@ namespace iCanScript.Internal.Editor {
     		   if(ProducerPort == null || ProducerPort == this) {
     			   var parentNode= ParentNode;
     			   if(parentNode.IsKindOfFunction) {
-    				   if(!(InitialValue is OwnerTag)) {
+    				   if(!IsOwner && !IsTypeVariable) {
     					   var message= "<color=red><b>Value</b></color> for <b>Target</b> port is not valid for node: <b>"+FullName+"</b>";
     					   ErrorController.AddError(serviceKey, message, visualScript, InstanceId);
     					   return false;				   	
@@ -44,12 +44,12 @@ namespace iCanScript.Internal.Editor {
     		   }
     	   }
     	   if(IsEnablePort) {
-    		   var producerPort= FirstProducerPort;
+    		   var producerPort= SegmentProducerPort;
     		   if(producerPort != this) {
                    // -- Verify for unnecessary OR function --
     			   var producerNode= producerPort.ParentNode;
     			   if(producerNode.IsFunction("Or", "iCS_Boolean", "")) {
-    				   if(producerPort.EndConsumerPorts.Length <= 1) {
+    				   if(producerPort.SegmentEndConsumerPorts.Length <= 1) {
     					   var message= "Consider using additional 'Enable(s)' ports instead of an OR function. => "+producerNode.FullName;
     					   ErrorController.AddWarning(serviceKey, message, visualScript, producerNode.InstanceId);
     					   ErrorController.AddWarning(serviceKey, message, visualScript, producerNode.InstanceId);				   	
@@ -64,7 +64,7 @@ namespace iCanScript.Internal.Editor {
                        parentNode.ForEachChildPort(
                            p=> {
                                if(p.IsInDataPort) {
-                                   var pp= p.FirstProducerPort;
+                                   var pp= p.SegmentProducerPort;
                                    if(pp.ParentNode == producerNode) {
                                        doesDataFlowExist= true;
                                    }
@@ -81,8 +81,8 @@ namespace iCanScript.Internal.Editor {
                        var producerNodeTargetPort= producerNode.TargetPort;
                        var parentNodeTargetPort  = parentNode.TargetPort;
                        if(producerNodeTargetPort != null && parentNodeTargetPort != null) {
-                           var targetProducerPort= parentNodeTargetPort.FirstProducerPort;
-                           if(producerNodeTargetPort.FirstProducerPort == targetProducerPort) {
+                           var targetProducerPort= parentNodeTargetPort.SegmentProducerPort;
+                           if(producerNodeTargetPort.SegmentProducerPort == targetProducerPort) {
                                var targetProducerNode= targetProducerPort.ParentNode;
                                var producerNodeSelfPort= producerNode.SelfPort;
                                var message= "Consider connecting the <b>Self</b> port of '<b>"+producerNode.DisplayName

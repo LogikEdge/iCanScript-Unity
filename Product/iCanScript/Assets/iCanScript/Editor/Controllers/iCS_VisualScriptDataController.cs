@@ -69,7 +69,7 @@ namespace iCanScript.Internal.Editor {
                 ImmediateSaveWithUndo();
                 myIStorage= null;
                 myIsPlaying= Application.isPlaying;
-                return;                
+                return;
             }
     		// Verify for storage change.
             bool isPlaying= Application.isPlaying;

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
@@ -60,7 +61,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             foreach(var p in parameters) {
                 int idx= p.PortIndex;
                 if(p.IsInputPort) {
-                    var producerPort= CodeFlow.GetProducerPort(p);
+                    var producerPort= GraphInfo.GetProducerPort(p);
                     if(producerPort != null && producerPort != p) {
                         myParameters[idx]= new FunctionCallParameterDefinition(p, this, p.RuntimeType);
                     }
@@ -115,9 +116,9 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             }
             // -- Optimize target port from get fields/properties. --
             if(!IsStatic()) {
-                var targetPort= DataFlow.GetTargetPort(VSObject);
+                var targetPort= GraphInfo.GetTargetPort(VSObject);
                 if(targetPort != null) {
-                    var producerPort= CodeFlow.GetProducerPort(targetPort);
+                    var producerPort= GraphInfo.GetProducerPort(targetPort);
 					var producerCode= Context.GetCodeFor(producerPort.ParentNode);
                     if(producerCode is GetPropertyCallDefinition) {
                         if(producerPort.ConsumerPorts.Length == 1) {
@@ -212,9 +213,8 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             // Ajust back the indentation.
             var result= new StringBuilder(128);
             // Simplified situation for property get.
-            bool isSpecial= false;
             bool isOperator= false;
-            var functionName= FunctionName(out isSpecial, out isOperator);                
+            var functionName= FunctionName(out isOperator);                
             // Determine parameters information.
             var parameters= GetParameters(VSObject);
             var pLen= parameters.Length;
@@ -223,16 +223,28 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 int idx= p.PortIndex;
                 paramStrings[idx]= myParameters[idx].GenerateBody(indentSize);
             }
-            // Generate function call.
-            if(isSpecial == false) {
-                result.Append(FunctionCallPrefix(VSObject));
-            }
             // Declare function call.
             if(isOperator) {
-                result.Append(GenerateOperator(indentSize, functionName, paramStrings));
+				// -- The first parameter is the instance if not static. --
+                int paramOffset= 0;
+				if(!IsStatic()) {
+					var variable= FunctionCallPrefix(VSObject);
+					var variableLen= variable.Length;
+					if(variableLen != 0) {
+                        paramOffset= -1;
+						var len= paramStrings.Length;
+						Array.Resize(ref paramStrings, len+1);
+						for(int i= len-1; i >= 0; --i) {
+							paramStrings[i+1]= paramStrings[i]; 
+						}
+			        	paramStrings[0]= variable.Substring(0, variableLen-1);
+					}
+				}
+	            result.Append(GenerateOperator(indentSize, functionName, paramStrings, paramOffset));
             }
             else {
-                result.Append(GenerateFunctionCall(indentSize, functionName, paramStrings));                    
+	        	result.Append(FunctionCallPrefix(VSObject));
+				result.Append(GenerateFunctionCall(indentSize, functionName, paramStrings));                    
             }
             result.Append(GenerateReturnTypeCastFragment(VSObject));            
             return result.ToString();
@@ -253,17 +265,17 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         // -------------------------------------------------------------------
         /// Returns the method name from the member information.
         ///
-        /// @param isSpecialName Output _true_ if name is special method.
+        /// @param isUnaryOperator _true_ if this is a unary operator.
+		/// @param isOperator _true_ if this is an operator.
         /// @return The method name.
         ///
-        string FunctionName(out bool isSpecial, out bool isOperator) {
+        string FunctionName(out bool isOperator) {
             if(VSObject.IsConstructor) {
-                isSpecial= true;
                 isOperator= false;
                 return ToTypeName(VSObject.RuntimeType);
             }
             var functionName= VSObject.CodeName;
-            isSpecial= isOperator= functionName.StartsWith("op_");
+            isOperator= functionName.StartsWith("op_");
             return functionName;
         }
         
@@ -291,30 +303,45 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         }
 
     	// -------------------------------------------------------------------------
-        public string GenerateOperator(int indentSize, string functionName, string[] paramValues) {
+        public string GenerateOperator(int indentSize, string functionName, string[] paramValues, int paramOffset) {
             StringBuilder result= new StringBuilder();
             var symbol= OperatorNameToSymbol(functionName);
             var len= paramValues.Length;
             switch(len) {
                 case 1: {
                     result.Append(symbol);
+                    var isParamAnOperator= false;
+                    if(paramOffset >= 0) {
+                       isParamAnOperator= myParameters[paramOffset].IsOperatorFunctionCall();
+                       if(isParamAnOperator) result.Append("(");                        
+                    }
                     result.Append(paramValues[0]);
+                    if(isParamAnOperator) result.Append(")");
                     break;
                 }
                 case 2: {
+                    var isParamAnOperator= false;
+                    if(paramOffset >= 0) {
+                        isParamAnOperator= myParameters[paramOffset].IsOperatorFunctionCall();
+                        if(isParamAnOperator) result.Append("(");
+                    }
                     result.Append(paramValues[0]);
+                    if(isParamAnOperator) result.Append(")");
                     result.Append(" ");
                     result.Append(symbol);
                     result.Append(" ");
+                    isParamAnOperator= myParameters[1+paramOffset].IsOperatorFunctionCall();
+                    if(isParamAnOperator) result.Append("(");
                     result.Append(paramValues[1]);
+                    if(isParamAnOperator) result.Append(")");
                     break;
                 }
                 default: {
                     Debug.LogWarning("iCanScript: Unknown trinary operator=> "+symbol);
                     break;
                 }
-            }
-            return result.ToString();
+            }				
+			return result.ToString();
         }
 
     	// -------------------------------------------------------------------------
@@ -334,6 +361,8 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 			if(operatorName == "op_GreaterThanOrEqual")	return ">=";
 			if(operatorName == "op_LessThanOrEqual")    return "<=";
             if(operatorName == "op_LogicalNot")         return "!";
+            if(operatorName == "op_LogicalOr")          return "||";
+            if(operatorName == "op_LogicalAnd")         return "&&";
             if(operatorName == "op_BitwiseOr")          return "|";
             if(operatorName == "op_BitwiseAnd")         return "&";
             if(operatorName == "op_ExclusiveOr")        return "^";
@@ -341,6 +370,12 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             if(operatorName == "op_BitwiseAndAssign")   return "&=";
             if(operatorName == "op_ExclusiveOrAssign")  return "^=";
             if(operatorName == "op_Assignment")         return "=";
+            if(operatorName == "op_Increment")          return "++";
+            if(operatorName == "op_Decrement")          return "--";
+            if(operatorName == "op_LeftShift")          return "<<";
+            if(operatorName == "op_RightShift")         return ">>";
+            if(operatorName == "op_LeftShiftAssign")    return "<<=";
+            if(operatorName == "op_RightShiftAssign")   return ">>=";
             
             Debug.LogWarning("iCanScript: Unknown operator=> "+operatorName);
             return operatorName;
@@ -376,13 +411,13 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         protected string FunctionCallPrefix(iCS_EditorObject node) {
             var result= new StringBuilder(32);
             if(IsStatic()) {
-                if(!VSObject.IStorage.IsLocalType(VSObject)) {
+                if(!GraphInfo.IsLocalType(VSObject)) {
                     result.Append(ToTypeName(node.RuntimeType));
                     result.Append(".");
                 }
             }
             else {
-                var thisPort= DataFlow.GetTargetPort(node);
+                var thisPort= GraphInfo.GetTargetPort(node);
                 if(thisPort != null) {
 //					result.Append(GetExpressionFor(thisPort));
 //					result.Append(".");
@@ -392,7 +427,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                         result.Append(".");
                         return result.ToString();
                     }
-                    var producerPort= CodeFlow.GetProducerPort(thisPort);
+                    var producerPort= GraphInfo.GetProducerPort(thisPort);
 	                var producerType= Context.GetRuntimeTypeFor(producerPort);
 					var producerCode= Context.GetCodeFor(producerPort);
 					if(producerCode is FunctionDefinitionParameter) {
@@ -411,7 +446,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 						result.Append(producerPortName);
 						result.Append(".");
 					}
-					else if(producerPort.InitialValue is OwnerTag) {
+					else if(producerPort.IsOwner) {
 						if(producerType == typeof(Transform)) {
 							result.Append("transform.");
 						}
@@ -457,7 +492,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             // No return variable necessary
             var returnPort= GetReturnPort(node);
             if(returnPort == null) return "";
-            var consumerPorts= returnPort.EndConsumerPorts;
+            var consumerPorts= returnPort.SegmentEndConsumerPorts;
             if(consumerPorts.Length == 0) {
                 return "";
             }
