@@ -14,7 +14,7 @@ namespace iCanScript.Internal.Editor {
         // Toolbar Constants
         // -----------------------------------------------------------------------
         const float kSliderSize= 60f;
-        
+		
         // -----------------------------------------------------------------------
     	void Toolbar() {
     		// No toolbar if editor snapshot without background requested.

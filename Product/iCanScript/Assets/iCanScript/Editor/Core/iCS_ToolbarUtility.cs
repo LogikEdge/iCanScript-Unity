@@ -226,7 +226,8 @@ namespace iCanScript.Internal.Editor {
         public static int Popup(ref Rect toolbarRect, float width, string label, int index, string[] options, float leftMargin, float rightMargin, bool isRightJustified= false) {
     		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
             if(r.width < 1f) return index;
-            return EditorGUI.Popup(r, label, index, options, EditorStyles.toolbarDropDown);
+            var idx= EditorGUI.Popup(r, label, index, options, EditorStyles.toolbarDropDown);
+			return idx;
         }
     	// ----------------------------------------------------------------------
         public static int Popup(ref Rect toolbarRect, float width, GUIContent content, int index, GUIContent[] options, float leftMargin, float rightMargin, bool isRightJustified= false) {
