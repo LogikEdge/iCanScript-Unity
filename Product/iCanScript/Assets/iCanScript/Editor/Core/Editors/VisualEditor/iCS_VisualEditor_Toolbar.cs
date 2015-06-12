@@ -65,13 +65,17 @@ namespace iCanScript.Internal.Editor {
                 CenterAtWithScale(pivot, newScale);
     		}
             
-            // -- User Preferences --
+            // -- Global Settings --
             if(iCS_ToolbarUtility.Button(ref r, 100, true, "Global Settings", 0, spacer, true)) {
                 var editor= EditorWindow.CreateInstance<GlobalSettingsEditor>();
                 editor.ShowUtility();
             }
-            // -- Visual Script Config --
-            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Visual Script Config", 0, spacer, true)) {
+            // -- Project Settings --
+            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Project Settings", 0, spacer, true)) {
+                VisualScriptSettingsEditor.Init(IStorage);
+            }
+            // -- Visual Script Settings --
+            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Visual Script Settings", 0, spacer, true)) {
                 VisualScriptSettingsEditor.Init(IStorage);
             }
             
