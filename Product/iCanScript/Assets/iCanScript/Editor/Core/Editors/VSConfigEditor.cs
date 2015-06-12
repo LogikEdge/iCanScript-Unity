@@ -10,7 +10,7 @@ using TimedAction= iCanScript.Internal.Prelude.TimerService.TimedAction;
 namespace iCanScript.Internal.Editor {
     using Prefs= PreferencesController;
 
-    public class VSConfigEditor : ConfigEditorBase {
+    public class VisualScriptSettingsEditor : ConfigEditorBase {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ namespace iCanScript.Internal.Editor {
         // INITIALIZATION
         // ---------------------------------------------------------------------------------
         public static void Init(iCS_IStorage iStorage) {
-            var editor= EditorWindow.CreateInstance<VSConfigEditor>();
+            var editor= EditorWindow.CreateInstance<VisualScriptSettingsEditor>();
             editor.ShowUtility();
             editor.iStorage= iStorage;
         }
@@ -31,7 +31,7 @@ namespace iCanScript.Internal.Editor {
         // INTERFACES TO BE PROVIDED
         // ---------------------------------------------------------------------------------
         protected override string   GetTitle() {
-            return "Visual Script Configuration";
+            return "Visual Script Settings";
         }
         protected override string[] GetMainSelectionGridStrings() {
             return vsConfigOptionStrings;
