@@ -67,6 +67,30 @@ namespace iCanScript.Internal.Editor {
                     GraphEditor.SetPortSpec(p, PortSpecification.Constant);
                 }
             }
+            else if(parentNode.IsConstructor) {
+                if(p.IsInDataOrControlPort) {
+                    GraphEditor.SetPortSpec(p, PortSpecification.Constant);
+                }
+                else if(p.IsOutDataOrControlPort) {
+                    // -- Determine if this is a local variable of not. --
+                    bool isLocal= false;
+                    parentNode.ForEachChildPort(
+                        cp=> {
+                            if(cp.IsInDataOrControlPort) {
+                                if(cp.ProducerPort != null) {
+                                    isLocal= true;
+                                }
+                            }
+                        }
+                    );
+                    if(isLocal) {
+                        GraphEditor.SetPortSpec(p, PortSpecification.LocalVariable);
+                    }
+                    else {
+                        GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable);
+                    }
+                }
+            }
             // TODO: Needs to be verified...
             else if(parentNode.IsKindOfFunction) {
                 if(p.IsInDataOrControlPort) {
@@ -76,14 +100,15 @@ namespace iCanScript.Internal.Editor {
                     }
                     else {
                         var runtimeType= p.RuntimeType;
-                        if(runtimeType == typeof(GameObject) ||
-                           runtimeType == typeof(Transform) ||
-                           GraphInfo.IsLocalType(p)) {
+                        if(p.IsTargetPort
+                           && (runtimeType == typeof(GameObject)
+                           || runtimeType == typeof(Transform)
+                           || GraphInfo.IsLocalType(p))) {
                             GraphEditor.SetPortSpec(p, PortSpecification.Owner);
                             p.InitialValue= null;
                         }
                         else {
-                            GraphEditor.SetPortSpec(p, PortSpecification.Constant); 
+                            GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable); 
                         }
                     }
                 }
@@ -96,9 +121,24 @@ namespace iCanScript.Internal.Editor {
                     }
                 }
             }
+            else if(parentNode.IsInstanceNode) {
+                if(p.IsInDataOrControlPort) {
+                    var runtimeType= p.RuntimeType;
+                    if(p.IsTargetPort
+                       && (runtimeType == typeof(GameObject)
+                       || runtimeType == typeof(Transform)
+                       || GraphInfo.IsLocalType(p))) {
+                        GraphEditor.SetPortSpec(p, PortSpecification.Owner);
+                        p.InitialValue= null;
+                    }
+                    else {
+                        GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable); 
+                    }
+                }
+            }
             else if(parentNode.IsKindOfPackage) {
                 if(p.IsInDataOrControlPort) {
-                    GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable);
+                    GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable); 
                 }
             }
             else {

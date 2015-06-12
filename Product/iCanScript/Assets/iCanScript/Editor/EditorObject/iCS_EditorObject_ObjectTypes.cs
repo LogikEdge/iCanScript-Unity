@@ -98,6 +98,24 @@ namespace iCanScript.Internal.Editor {
     	public bool IsTargetOrSelfPort			{ get { return IsTargetPort || IsSelfPort; }}
     	public bool IsTargetPort			    { get { return EngineObject.IsTargetPort; }}
     	public bool IsSelfPort			        { get { return EngineObject.IsSelfPort; }}
+        // Variable Queries
+        public bool IsStatic {
+            get {
+                return IsStaticPrivateVariable || IsStaticPublicVariable;
+            }
+        }
+        public bool IsPublic {
+            get {
+                return IsPublicVariable || IsStaticPublicVariable;
+            }
+        }
+        public bool IsPrivate {
+            get {
+                return IsPrivateVariable || IsStaticPrivateVariable;
+            }
+        }
+        
+        // -------------------------------------------------------------------
         // Special Cases
         public bool IsProgrammaticInstancePort  {
             get {

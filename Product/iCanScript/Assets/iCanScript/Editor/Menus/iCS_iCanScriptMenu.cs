@@ -93,8 +93,9 @@ namespace iCanScript.Internal.Editor {
             // Attempt to reload and relayout if the selection is visible in the visual editor.
             var visualEditor= iCS_EditorController.FindVisualEditor();
             if(visualEditor == null) return;
-            if(visualEditor.IStorage.iCSMonoBehaviour != monoBehaviour) return;
-            visualEditor.SendEvent(EditorGUIUtility.CommandEvent("ReloadStorage"));
+            var iStorage= visualEditor.IStorage;
+            if(iStorage.iCSMonoBehaviour != monoBehaviour) return;
+            iCS_UserCommands.InitEditorData(iStorage);
         }
         [MenuItem("iCanScript/Import...",true,301)]
         public static bool ValidateImportStorage() {

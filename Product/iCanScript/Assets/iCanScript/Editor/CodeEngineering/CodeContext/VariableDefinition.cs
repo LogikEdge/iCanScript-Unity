@@ -10,9 +10,17 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
+        // TODO: Remove access & scope specifiers.
         public AccessSpecifier  myAccessSpecifier = AccessSpecifier.Private;
         public ScopeSpecifier   myScopeSpecifier  = ScopeSpecifier.NonStatic;
 		public Type				myRuntimeType     = null;
+        
+        // ===================================================================
+        // PROPERTIES
+        // -------------------------------------------------------------------
+        public bool IsPublic  { get { return PortVariable.IsPublic; }}
+        public bool IsPrivate { get { return PortVariable.IsPrivate; }}
+        public bool IsStatic  { get { return PortVariable.IsStatic; }}
         
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
@@ -94,9 +102,8 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             }
             string variableName;
             if(Parent is ClassDefinition) {
-                var port= PortVariable;
-                if(port.IsPublic) {
-                    if(port.IsStatic) {
+                if(IsPublic) {
+                    if(IsStatic) {
                         variableName= Parent.GetPublicStaticFieldName(myVSObject);
                     }
                     else {
@@ -104,7 +111,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                     }
                 }
                 else {
-                    if(port.IsStatic) {
+                    if(IsStatic) {
                         variableName= Parent.GetPrivateStaticFieldName(myVSObject);
                     }
                     else {

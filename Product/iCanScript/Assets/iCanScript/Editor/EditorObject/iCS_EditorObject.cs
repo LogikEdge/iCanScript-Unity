@@ -195,11 +195,16 @@ namespace iCanScript.Internal.Editor {
                         if(IsDataPort && IsProgrammaticInstancePort) {
                             if(ParentNode.IsConstructor) {
                                 // Use the name of the variable for constructor output.
-                                var scheme= NameUtility.NamingScheme.LOWER_CAMEL_CASE;
-                                c_CodeName= NameUtility.ToCodeName(scheme, ParentNode.CodeName);
+                                c_CodeName= NameUtility.ToLowerCamelCase(ParentNode.CodeName);
                             }
                             else {
+                                // -- Accept a variable name for Target ports. --
                                 c_CodeName= "this";
+                                if(IsTargetPort && IsTypeVariable) {
+                                    if(!String.IsNullOrEmpty(name)) {
+                                        c_CodeName= NameUtility.ToLowerCamelCase(name);                                        
+                                    }
+                                }
                             }
                         }
                         else if(IsTriggerPort) {
@@ -287,6 +292,14 @@ namespace iCanScript.Internal.Editor {
                         }
                         else {
                             c_DisplayName= "Target";
+                            var rawName= EngineObject.RawName;
+                            if(IsTypeVariable) {
+                                if(!string.IsNullOrEmpty(rawName)) {
+                                    if(!(string.Compare(rawName, "this", true) == 0 || string.Compare(rawName, "target", true) == 0)){
+                                        c_DisplayName+= "/"+rawName;
+                                    }
+                                }
+                            }
                         }
                     }
                     else if(IsInstanceNode) {

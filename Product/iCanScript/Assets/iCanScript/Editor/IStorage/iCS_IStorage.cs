@@ -189,9 +189,7 @@ namespace iCanScript.Internal.Editor {
             iCSMonoBehaviour= monoBehaviour;
             // Rebuild the editor information if the MonoBehaviour has changed.
             if(oldMonoBehaviour != monoBehaviour) {
-    			PerformEngineDataUpgrade();
-                GenerateEditorData();
-                PerformEditorDataUpgrade();
+                InitEditorData();
                 // Reset display root if no navigation history present
                 if(!NavigationHistory.HasBackwardHistory && EditorObjects.Count > 0) {
                     DisplayRoot= EditorObjects[0];

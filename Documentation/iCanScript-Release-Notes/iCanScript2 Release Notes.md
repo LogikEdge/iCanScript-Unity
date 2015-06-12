@@ -12,15 +12,27 @@ CSS: Github.css
 
 ## iCanScript v2.0.20 ##
 
-_May 28, 2015_
+_June 8, 2015_
 
-V2.0.20 is a bug fix release.
+V2.0.20 add the ability to define the generated code variable specification associated with the ports.
+
+With V2.0.20, the user can create public or private ports as well as determine if the port is static (class scope) or not (instance scope).  Support for Constant, Parameters, and Local Variables is also provided. 
+
+**<span style="color: red">\[WARNING\]:</span>**  V2.0.20 requires Unity V5.0.2 or later.  Please upgrade Unity before using this version of iCanScript.
 
 ### List of Changes
 
-- **<span style="color: red">\[FIXED\] </span>** Resolve invalid casting to the same value type in the generated code.
+- **<span style="color: green">\[NEW\] </span>** Added support for selecting the type of variable to be generated in the port dialog editor:
+	- Constant;
+	- Public & Private Variables;
+	- Static Public & Private Variables;
+	- Local Variables;
+	- Function Definition Parameters.
+- **<span style="color: green">\[NEW\] </span>** New port visuals to easily indentify the variable type associated with the port. 
 - **<span style="color: blue">\[IMPROVED\] </span>** Improve contrast of the selected node.
 - **<span style="color: blue">\[IMPROVED\] </span>** Increase port size to improve variable type visibility.
+- **<span style="color: red">\[FIXED\] </span>** Remove unneeded casts in the generated code.
+- **<span style="color: red">\[FIXED\] </span>** Visual script data upgrade in now perform on import.
 
 * * *
 

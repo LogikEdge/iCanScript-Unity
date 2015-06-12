@@ -29,7 +29,7 @@ namespace iCanScript.Internal.Editor {
     		   if(ProducerPort == null || ProducerPort == this) {
     			   var parentNode= ParentNode;
     			   if(parentNode.IsKindOfFunction) {
-    				   if(!IsOwner) {
+    				   if(!IsOwner && !IsTypeVariable) {
     					   var message= "<color=red><b>Value</b></color> for <b>Target</b> port is not valid for node: <b>"+FullName+"</b>";
     					   ErrorController.AddError(serviceKey, message, visualScript, InstanceId);
     					   return false;				   	

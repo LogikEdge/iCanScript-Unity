@@ -1,4 +1,4 @@
-#define TEST_UPGRADE
+//#define TEST_UPGRADE
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
@@ -142,16 +142,13 @@ namespace iCanScript.Internal.Editor {
                     if(!p.IsPort) return;
                     // -- Abort if conversion already took place --
                     if(p.PortSpec != PortSpecification.Default) return;
-                    // -- Setup spec for control ports. --
-                    var parentNode= p.ParentNode;
-                    var producerPort= GraphInfo.GetProducerPort(p);
                     // -- Default the port spec. --
                     GraphEditor.SetDefaultPortSpec(p);
                     if(p.PortSpec != PortSpecification.Default) {
                         isUpgraded= true;
-                    }                            
+                    }
                 }
-            );        
+            );
             return isUpgraded;
         }
     }

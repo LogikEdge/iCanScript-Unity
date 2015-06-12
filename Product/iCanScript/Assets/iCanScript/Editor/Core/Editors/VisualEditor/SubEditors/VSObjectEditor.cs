@@ -27,7 +27,9 @@ namespace iCanScript.Internal.Editor {
         protected void EditName(string label) {
             string name= vsObject.DisplayName;
             if(string.IsNullOrEmpty(name)) name= EmptyStr;
-            if(vsObject.IsNameEditable) {
+            // -- Allow to edit Target port when it is a type variable. --
+            bool allowEdit= vsObject.IsTargetPort && vsObject.IsTypeVariable;
+            if(allowEdit || vsObject.IsNameEditable) {
                 GUI.changed= false;
                 var newName= EditorGUILayout.TextField(label, vsObject.DisplayName);
                 if(GUI.changed) {
