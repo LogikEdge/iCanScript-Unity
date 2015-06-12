@@ -10,7 +10,7 @@ using TimedAction= iCanScript.Internal.Prelude.TimerService.TimedAction;
 namespace iCanScript.Internal.Editor {
     using Prefs= PreferencesController;
 
-    public class PreferencesEditor : ConfigEditorBase {
+    public class GlobalSettingsEditor : ConfigEditorBase {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ namespace iCanScript.Internal.Editor {
         // INTERFACES TO BE PROVIDED
         // ---------------------------------------------------------------------------------
         protected override string   GetTitle() {
-            return "iCanScript Global Preferences";
+            return "iCanScript Global Setting";
         }
         protected override string[] GetMainSelectionGridStrings() {
             return myOptionStrings;

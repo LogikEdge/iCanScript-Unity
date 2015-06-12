@@ -1,4 +1,4 @@
-//#define DEBUG
+//#define DEBUG_INFO
 
 using UnityEditor;
 using UnityEngine;
@@ -34,7 +34,7 @@ namespace iCanScript.Internal.Editor {
     	public static void PeriodicUpdateVerification() {
     		// Return if software update watch is disabled.
     		if(!Prefs.SoftwareUpdateWatchEnabled) {
-#if DEBUG
+#if DEBUG_INFO
     			Debug.Log("iCanScript: Software Update disabled.");
 #endif
     			return;
@@ -44,7 +44,7 @@ namespace iCanScript.Internal.Editor {
     		DateTime now= DateTime.Now;
     		DateTime nextWatchDate= Prefs.SoftwareUpdateLastWatchDate;
     		if(now.CompareTo(nextWatchDate) <= 0 && nextWatchDate.CompareTo(DateTime.Now) <= 0) {
-#if DEBUG
+#if DEBUG_INFO
     			Debug.Log("iCanScript: Software update last watch date not initialized. Initializing...");
 #endif
     			Prefs.SoftwareUpdateLastWatchDate= now;
@@ -52,7 +52,7 @@ namespace iCanScript.Internal.Editor {
     		// Return if we already verified within the prescribed interval;
     		nextWatchDate= AddInterval(nextWatchDate);
     		if(nextWatchDate.CompareTo(now) >= 0) {
-#if DEBUG
+#if DEBUG_INFO
     			Debug.Log("iCanScript: Software Update does not need to be verified before: "+nextWatchDate);
 #else
     //			return;
@@ -69,7 +69,7 @@ namespace iCanScript.Internal.Editor {
     		Prefs.SoftwareUpdateLastWatchDate= AddInterval(now);
     		// Return if the user wants to skip this version.
     		if(Prefs.SoftwareUpdateSkippedVersion == serverVersion.ToString()) {
-#if DEBUG
+#if DEBUG_INFO
     			Debug.Log("iCanScript: User requested to skipped software update for: "+serverVersion);
 #endif
     			return;
@@ -77,12 +77,12 @@ namespace iCanScript.Internal.Editor {
     		// Determine if we are up-to-date.
     		Maybe<bool> isUpToDate= IsUpToDate(serverVersion);
     		if(isUpToDate.isNothing) {
-#if DEBUG
+#if DEBUG_INFO
     			Debug.Log("iCanScript: Unable to contact version server.");
 #endif
     			return;
     		}
-#if DEBUG
+#if DEBUG_INFO
     		Debug.Log("iCanScript: Latest version is: "+serverVersion+" up to date: "+isUpToDate.Value);
 #endif
     		if(!isUpToDate.Value) {
@@ -136,7 +136,7 @@ namespace iCanScript.Internal.Editor {
             if(!String.IsNullOrEmpty(download.error)) {
                 return null;
             }
-#if DEBUG
+#if DEBUG_INFO
             Debug.Log(download.text);
 #endif
             JNumber jMajor = null;
@@ -153,7 +153,7 @@ namespace iCanScript.Internal.Editor {
     				if(jDownloadUrl != null) {
     					downloadUrl= jDownloadUrl.value;
     				}
-#if DEBUG
+#if DEBUG_INFO
     				else {
     					Debug.Log("iCanScript: Unable to determine the download URL");
     					Debug.Log("iCanScript: JSON root object is: "+rootObject.Encode());
@@ -161,7 +161,7 @@ namespace iCanScript.Internal.Editor {
 #endif					
     			}
             }
-#if DEBUG
+#if DEBUG_INFO
             catch(System.Exception e) {
     			Debug.LogWarning("iCanScript: JSON exception: "+e.Message);
             }

@@ -66,8 +66,8 @@ namespace iCanScript.Internal.Editor {
     		}
             
             // -- User Preferences --
-            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Global Preferences", 0, spacer, true)) {
-                var editor= EditorWindow.CreateInstance<PreferencesEditor>();
+            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Global Settings", 0, spacer, true)) {
+                var editor= EditorWindow.CreateInstance<GlobalSettingsEditor>();
                 editor.ShowUtility();
             }
             // -- Visual Script Config --

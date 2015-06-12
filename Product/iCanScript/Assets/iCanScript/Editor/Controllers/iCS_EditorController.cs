@@ -92,8 +92,8 @@ namespace iCanScript.Internal.Editor {
         public static LibraryEditor FindLibraryEditor() {
             return FindWindow(typeof(LibraryEditor)) as LibraryEditor;
         }    
-        public static PreferencesEditor FindPreferencesEditor() {
-            return FindWindow(typeof(PreferencesEditor)) as PreferencesEditor;
+        public static GlobalSettingsEditor FindGlobalSettingsEditor() {
+            return FindWindow(typeof(GlobalSettingsEditor)) as GlobalSettingsEditor;
         }
         // ======================================================================
     	public static void RepaintVisualEditor() {
@@ -114,8 +114,8 @@ namespace iCanScript.Internal.Editor {
     			editor.Repaint();			
     		}
         }
-    	public static void RepaintPreferencesEditor() {
-    		var editor= FindPreferencesEditor();
+    	public static void RepaintGlobalSettingsEditor() {
+    		var editor= FindGlobalSettingsEditor();
     		if(editor != null) {
     			editor.Repaint();			
     		}

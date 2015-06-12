@@ -15,7 +15,7 @@ namespace iCanScript.Internal.Editor {
     	// iCanScript Graph editor.
     	[MenuItem("iCanScript/Preferences...",false,50)]
     	public static void MenuPreferences() {
-            var editor= EditorWindow.CreateInstance<iCS_PreferencesEditorWindow>();
+            var editor= EditorWindow.CreateInstance<iCS_GlobalSettingsEditorWindow>();
             editor.ShowUtility();
     	}
         // ======================================================================
