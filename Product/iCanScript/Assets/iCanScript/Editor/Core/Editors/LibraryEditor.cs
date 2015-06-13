@@ -20,7 +20,6 @@ namespace iCanScript.Internal.Editor {
     	LibraryDisplayController    myController;
         DSScrollView                myMainView;
         Rect                        myScrollViewArea;
-//    	Rect                        mySelectedAreaCache    = new Rect(0,0,0,0);
 
         // =================================================================================
         // PROPERTIES
@@ -68,6 +67,13 @@ namespace iCanScript.Internal.Editor {
         /// Assure a minimum size for the library window.
         public new void OnEnable() {
     		base.OnEnable();
+            
+            // -- Set window title --
+            Texture2D iCanScriptLogo= null;
+            TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo);
+            titleContent= new GUIContent("Library", iCanScriptLogo);
+        
+            // -- Set minimum size for window --
     		minSize= new Vector2(270f, 270f);
         }
 

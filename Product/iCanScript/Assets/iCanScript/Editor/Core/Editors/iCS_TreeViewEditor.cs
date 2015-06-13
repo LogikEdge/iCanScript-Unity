@@ -28,6 +28,14 @@ public class iCS_TreeViewEditor : iCS_EditorBase {
         myLastFocusId= -1;
         myUndoRedoId= -1;
     }
+    public new void OnEnable() {
+        base.OnEnable();
+        
+        // -- Set window title --
+        Texture2D iCanScriptLogo= null;
+        TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo);
+        titleContent= new GUIContent("Tree View", iCanScriptLogo);
+    }
     public new void OnDisable() {
         base.OnDisable();
         Init();

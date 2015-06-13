@@ -3,7 +3,6 @@
 namespace CSharp.Primitives {
     
     public struct Bool {
-//        public static bool op_Ctor()                                 { return default(bool); }
         public Bool(bool value)                       				{}
 
         public bool op_Assignment(bool value)						{ return false;}
@@ -24,7 +23,6 @@ namespace CSharp.Primitives {
     }
 
     public struct Int {
-//        public static int  op_Ctor()                                    { return default(int); }
         public Int(int value)                           				{}
                                                                         
         public int op_Assignment(int value)     						{ return 0;}
@@ -65,7 +63,6 @@ namespace CSharp.Primitives {
     }
     public struct Float {
 		public Float(float value)											{}
-//        public static float op_Ctor()                                       { return default(float); }
                                                                         
         public float op_Assignment(float value)    							{ return 0;}
         public static float op_UnaryNegation(float a)                       { return -a; }

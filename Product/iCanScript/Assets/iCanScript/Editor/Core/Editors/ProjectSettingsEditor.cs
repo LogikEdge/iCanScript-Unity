@@ -8,7 +8,6 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
-        iCS_IStorage	iStorage= null;
     	string[] myOptionStrings= new string[]{
     	};
     	
@@ -18,7 +17,6 @@ namespace iCanScript.Internal.Editor {
         public static void Init(iCS_IStorage iStorage) {
             var editor= EditorWindow.CreateInstance<ProjectSettingsEditor>();
             editor.ShowUtility();
-            editor.iStorage= iStorage;
         }
 
         // =================================================================================

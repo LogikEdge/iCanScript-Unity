@@ -32,7 +32,9 @@ namespace iCanScript.Internal.Editor {
             }
             var self= NodeEditor.CreateInstance<NodeEditor>();
             self.vsObject= node;
-            self.title= "Node Editor";
+            Texture2D iCanScriptLogo= null;
+            TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo);
+            self.titleContent= new GUIContent("Node Editor", iCanScriptLogo);
             self.ShowUtility();
             return self;
         }

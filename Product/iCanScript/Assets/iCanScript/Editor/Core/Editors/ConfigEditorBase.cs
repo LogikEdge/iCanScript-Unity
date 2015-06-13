@@ -45,7 +45,9 @@ namespace iCanScript.Internal.Editor {
         // ---------------------------------------------------------------------------------
         public new void OnEnable() {
             base.OnEnable();
-            title= GetTitle();
+            Texture2D iCanScriptLogo= null;
+            TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo);
+            titleContent= new GUIContent(GetTitle(), iCanScriptLogo);
             optionStrings= GetMainSelectionGridStrings();
             minSize= new Vector2(500f, 400f);
             maxSize= new Vector2(500f, 400f);

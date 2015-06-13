@@ -25,7 +25,9 @@ namespace iCanScript.Internal.Editor {
             if(node == null) return null;
             var self= FunctionDefinitionEditor.CreateInstance<FunctionDefinitionEditor>();
             self.vsObject= node;
-            self.title= "Function Definition Editor";
+            Texture2D iCanScriptLogo= null;
+            TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo);
+            self.titleContent= new GUIContent("Function Definition Editor", iCanScriptLogo);
             self.ShowUtility();
             return self;
         }

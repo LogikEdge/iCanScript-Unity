@@ -18,6 +18,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	public new void OnEnable() {        
         base.OnEnable();
         
+        // -- Set window title --
+        Texture2D iCanScriptLogo= null;
+        TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo);
+        titleContent= new GUIContent("Visual Editor", iCanScriptLogo);
+        
 		// Tell Unity we want to be informed of move drag events
 		wantsMouseMove= true;
 

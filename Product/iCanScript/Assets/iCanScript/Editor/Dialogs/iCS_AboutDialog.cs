@@ -16,7 +16,9 @@ namespace iCanScript.Internal.Editor {
         // Initialization/Teardown
         // ----------------------------------------------------------------------
         public void OnEnable() {
-            title= "About iCanScript";
+            Texture2D iCanScriptLogo= null;
+            TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo);
+            titleContent= new GUIContent("About iCanScript", iCanScriptLogo);
         }
         public void OnDisable() {
         }

@@ -26,7 +26,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2015-05-09 14:17:11 +0000</string>
+	<string>2015-06-13 03:56:09 +0000</string>
 	<key>Modifier</key>
 	<string>Michel Launier</string>
 	<key>NotesVisible</key>
@@ -468,6 +468,11 @@
 					<string>ShapedGraphic</string>
 					<key>ID</key>
 					<integer>1</integer>
+					<key>Link</key>
+					<dict>
+						<key>url</key>
+						<string>file://localhost/Users/Reinual/Desktop/Design%20-%20Code%20Generation%20Overview-Types.itmz</string>
+					</dict>
 					<key>Magnets</key>
 					<array>
 						<string>{0, 1}</string>
