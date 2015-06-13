@@ -27,6 +27,7 @@ namespace iCanScript.Internal.Editor {
             editor.ShowUtility();
             editor.iStorage= iStorage;
         }
+
         // =================================================================================
         // INTERFACES TO BE PROVIDED
         // ---------------------------------------------------------------------------------

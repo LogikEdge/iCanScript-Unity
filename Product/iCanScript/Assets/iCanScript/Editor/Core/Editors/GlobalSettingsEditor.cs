@@ -14,6 +14,7 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
+        iCS_IStorage    iStorage= null;
     	string[] myOptionStrings= new string[]{
     	    "Display Options",
     	    "Canvas",
@@ -23,6 +24,15 @@ namespace iCanScript.Internal.Editor {
     	    "Code Generation"
     	};
     	
+        // =================================================================================
+        // INITIALIZATION
+        // ---------------------------------------------------------------------------------
+        public static void Init(iCS_IStorage iStorage) {
+            var editor= EditorWindow.CreateInstance<GlobalSettingsEditor>();
+            editor.ShowUtility();
+            editor.iStorage= iStorage;
+        }
+
         // =================================================================================
         // INTERFACES TO BE PROVIDED
         // ---------------------------------------------------------------------------------

@@ -67,12 +67,11 @@ namespace iCanScript.Internal.Editor {
             
             // -- Global Settings --
             if(iCS_ToolbarUtility.Button(ref r, 100, true, "Global Settings", 0, spacer, true)) {
-                var editor= EditorWindow.CreateInstance<GlobalSettingsEditor>();
-                editor.ShowUtility();
+                GlobalSettingsEditor.Init(IStorage);
             }
             // -- Project Settings --
             if(iCS_ToolbarUtility.Button(ref r, 100, true, "Project Settings", 0, spacer, true)) {
-                VisualScriptSettingsEditor.Init(IStorage);
+                ProjectSettingsEditor.Init(IStorage);
             }
             // -- Visual Script Settings --
             if(iCS_ToolbarUtility.Button(ref r, 100, true, "Visual Script Settings", 0, spacer, true)) {
