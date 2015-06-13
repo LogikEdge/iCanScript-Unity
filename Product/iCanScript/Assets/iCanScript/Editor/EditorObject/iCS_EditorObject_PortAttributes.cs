@@ -202,22 +202,28 @@ namespace iCanScript.Internal.Editor {
     	}
     	// ----------------------------------------------------------------------
         // Fetches the runtime value if it exists, otherwise returns the initial value
-    	public object PortValue {
+    	public object Value {
     		get {
-    			if(!IsDataOrControlPort) return null;
-    			var port= SegmentProducerPort;
-                // Get value from parent node.
-                return port.InitialPortValue;
+    			if(IsDataOrControlPort) {
+        			var port= SegmentProducerPort;
+                    // Get value from parent node.
+                    return port.InitialPortValue;    			    
+    			}
+                return InitialValue;
     		}
     		set {
-    			InitialPortValue= value;
-    			RuntimePortValue= value;
+    			if(IsDataOrControlPort) {
+        			InitialPortValue= value;
+                    RuntimePortValue= value;
+                    return;
+                }
+                InitialValue= value;
     		}
     	}
     	// ----------------------------------------------------------------------
     	public object RuntimePortValue {
     		get {
-                return PortValue;
+                return Value;
     		}
     		set {
                 // TODO: Implement runtime value change for iCS2.

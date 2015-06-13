@@ -403,6 +403,9 @@ namespace iCanScript.Internal.Editor {
                     else if(IsKindOfPackage) {
                         c_NodeSubTitle= "Node is a Package";
                     }
+                    else if(IsInlineCode) {
+                        c_NodeSubTitle= BuildIsASubTitle("Node", RuntimeType);
+                    }
                     else {
                         c_NodeSubTitle= null;
                     }

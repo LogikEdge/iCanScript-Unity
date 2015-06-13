@@ -1226,7 +1226,7 @@ namespace iCanScript.Internal.Editor {
     		obj.ForEachChildPort(
                 p=> {
         			if(p.IsEnablePort && (isPlaying || p.ProducerPort == null)) {
-                        var portValue= p.PortValue;
+                        var portValue= p.Value;
         				if(portValue != null && (bool)(portValue) == false) {
         					isEnabled= false;
         				}				

@@ -85,18 +85,23 @@ namespace iCanScript.Internal.Editor {
             obj.Description= description;
             CloseTransaction(iStorage, "Change description for "+obj.DisplayName, TransactionType.Field);
         }
-        // ----------------------------------------------------------------------
-    	public static void ChangePortValue(iCS_EditorObject port, object newValue) {
-    		if(port == null) return;
-    		var iStorage= port.IStorage;
+        // ======================================================================
+        /// Change the value of the visual script object.
+        ///
+        /// @param vsObject The visual script to change.
+        /// @param newValue The new value to set.
+        ///
+    	public static void ChangeValue(iCS_EditorObject vsObject, object newValue) {
+    		if(vsObject == null) return;
+    		var iStorage= vsObject.IStorage;
             OpenTransaction(iStorage);
     		try {
-    			port.PortValue= newValue;
+    			vsObject.Value= newValue;
     		}
     		catch(System.Exception) {
     			CancelTransaction(iStorage);
     		}
-            iCS_UserCommands.CloseTransaction(iStorage, "Change port value => "+port.DisplayName, TransactionType.Field);
+            iCS_UserCommands.CloseTransaction(iStorage, "Change value => "+vsObject.DisplayName, TransactionType.Field);
             iCS_EditorController.RepaintEditorsWithValues();
     	}
         // ----------------------------------------------------------------------
