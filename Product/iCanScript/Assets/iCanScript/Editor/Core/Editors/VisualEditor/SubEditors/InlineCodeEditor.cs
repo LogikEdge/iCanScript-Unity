@@ -41,7 +41,6 @@ namespace iCanScript.Internal.Editor {
             // -- Edit inline code --
             string code= vsObject.InitialValue as string;
             if(string.IsNullOrEmpty(code)) code= EmptyStr;
-            Debug.Log("Code: "+code);
             GUI.changed= false;
             EditorGUILayout.LabelField("Inline Code");
             var newCode= EditorGUILayout.TextArea(code, GUILayout.Height(CodeEditorHeight(code)));
@@ -64,7 +63,6 @@ namespace iCanScript.Internal.Editor {
             for(int i= 0; i < codeLen; ++i) {
                 if(code[i] == '\n') ++nbOfLines;
             }
-            Debug.Log("# lines: "+nbOfLines);
             return nbOfLines * lineHeight;
         }
         
