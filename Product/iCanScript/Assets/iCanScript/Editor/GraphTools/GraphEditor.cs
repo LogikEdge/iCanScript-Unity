@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using iCanScript.Internal.Engine;
 
@@ -21,9 +22,40 @@ namespace iCanScript.Internal.Editor {
                 else {
     				p.PortSpec= portSpec;
                 }
+                AdjustPortIndexes(p.ParentNode);
 			}
         }
 
+		// ===================================================================
+        /// Adjust the port index of the given node.
+        ///
+        /// @param node The node that needs to reorganize the port indexes.
+        ///
+        public static void AdjustPortIndexes(iCS_EditorObject node) {
+            // -- Assure continuous port index for data ports. --
+            var dataPorts= node.BuildListOfChildPorts(p=> p.IsDataPort && !p.IsTargetOrSelfPort && !p.IsReturnPort);
+            Array.Sort(dataPorts,
+                (x,y)=> {
+                    if(x.PortSpec == PortSpecification.Parameter &&
+                       y.PortSpec != PortSpecification.Parameter) return -1;
+                    if(x.PortSpec != PortSpecification.Parameter &&
+                       y.PortSpec == PortSpecification.Parameter) return 1;
+                    return y.PortIndex - x.PortIndex;
+                    
+                }
+            );
+            for(int i= 0; i < dataPorts.Length; ++i) {
+                dataPorts[i].PortIndex= i;
+            }
+            
+            // -- Assure continuous port index for enable ports. --
+            var enablePorts= node.BuildListOfChildPorts(p=> p.IsEnablePort);
+            Array.Sort(enablePorts, (x,y)=> y.PortIndex - x.PortIndex);
+            for(int i= 0; i < enablePorts.Length; ++i) {
+                enablePorts[i].PortIndex= i + (int)iCS_PortIndex.EnablesStart;
+            }
+        }
+        
 		// ===================================================================
         /// Refreshes the port specififcation of a connection.
 		///

@@ -53,6 +53,9 @@ namespace iCanScript.Internal.Editor {
     		if(storageVersion.IsOlderThen(2,0,20)) {
                 isUpgraded |= V2_0_20_EditorUpgrade();
             }
+    		if(storageVersion.IsOlderThen(2,0,21)) {
+                isUpgraded |= V2_0_21_EditorUpgrade();
+            }
 
             // -- Warn the user that an upgrade toke place --
             if(isUpgraded) {
@@ -147,6 +150,21 @@ namespace iCanScript.Internal.Editor {
                     if(p.PortSpec != PortSpecification.Default) {
                         isUpgraded= true;
                     }
+                }
+            );
+            return isUpgraded;
+        }
+
+        // ======================================================================
+        /// Fix invalid parameter indexes for function definition.
+        bool V2_0_21_EditorUpgrade() {
+            // -- Test and fix parameter indexes --
+            bool isUpgraded= false;
+            ForEach(
+                n=> {
+                    if(!n.IsFunctionDefinition) return;
+                    GraphEditor.AdjustPortIndexes(n);
+                    isUpgraded= true;
                 }
             );
             return isUpgraded;

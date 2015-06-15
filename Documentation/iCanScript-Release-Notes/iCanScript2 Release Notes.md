@@ -1,6 +1,6 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.20
+Version: v2.0.21
 CSS: Github.css
 
 #  iCanScript Release Notes [Back to top]
@@ -8,6 +8,25 @@ CSS: Github.css
 <!-- PDF: <<[front-matter/pdf.md] -->
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
+
+## iCanScript v2.0.21 ##
+
+_June 15, 2015_
+
+V2.0.21 add the ability to define node that can inject your own source code into the generated code.
+
+**<span style="color: red">\[WARNING\]:</span>**  V2.0.20 requires Unity V5.0.2 or later.  Please upgrade Unity before using this version of iCanScript.
+
+### List of Changes
+
+- **<span style="color: green">\[NEW\] </span>** A new node type _**Inline Code***_ has been added.
+	- The _**Inline Code**_ node can be used to injecting your own source code into the generated code.
+	- The _**Inline Code**_ can be added to your graph from the contextual menu.
+- **<span style="color: red">\[FIXED\] </span>** Invalid code generated when a trigger port is added to a package.
+- **<span style="color: red">\[FIXED\] </span>** Fix parameter index errors when generating source code.
+
+
+* * *
 
 ## iCanScript v2.0.20 ##
 
