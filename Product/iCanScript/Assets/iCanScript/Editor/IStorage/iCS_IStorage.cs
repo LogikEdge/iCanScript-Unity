@@ -443,9 +443,6 @@ namespace iCanScript.Internal.Editor {
             srcObj.ForEachChild(
                 child=> Copy(child, srcStorage, newObj, destStorage, globalPos+child.LocalAnchorPosition, xlat)
             );
-    		if(newObj.IsInDataOrControlPort) {
-    			LoadInitialPortValueFromArchive(this[id]);
-    		}
             return newObj;
         }
         void ReconnectCopy(iCS_EditorObject srcObj, iCS_IStorage srcStorage, iCS_IStorage destStorage, List<Prelude.Tuple<int,int>> xlat) {
@@ -568,7 +565,7 @@ namespace iCanScript.Internal.Editor {
     				if(initialValue == null || initialValue.GetType() != parameterType) {
     					initialValue= iCS_Types.DefaultValue(parameterType);
     				}
-                    port.InitialPortValue= initialValue;
+                    port.Value= initialValue;
                 }
             }		
     	}
@@ -949,7 +946,7 @@ namespace iCanScript.Internal.Editor {
                 if(paramType != typeof(void)) {
                     VSObjectType portType= VSObjectType.InFixDataPort;
                     port= CreatePort(paramName, id, paramType, portType, (int)iCS_PortIndex.ParametersStart+parameterIdx);
-                    port.InitialPortValue= iCS_Types.DefaultValue(paramType);
+                    port.Value= iCS_Types.DefaultValue(paramType);
                 }
             }
             return instance;

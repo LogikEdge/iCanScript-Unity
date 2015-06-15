@@ -55,9 +55,9 @@ namespace iCanScript.Internal.Engine {
 
         // Port specific attributes ---------------------------------------------
         public PortSpecification     PortSpec           = PortSpecification.Default;
-        public int                   SourceId           = -1;    // Proxy original node id
+        public int                   SourceId           = -1;
         public int                   PortIndex          = -1;
-    	public string				 InitialValueArchive= null;  // Proxy original visual script tag
+    	public string				 InitialValueArchive= null;
 
         // State specific attributes ---------------------------------------------
         public bool                  IsEntryState= false;

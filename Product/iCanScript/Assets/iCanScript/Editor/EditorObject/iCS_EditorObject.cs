@@ -530,11 +530,8 @@ namespace iCanScript.Internal.Editor {
     		AddEditorObject(id, editorObject);
             editorObject.LocalSize= toClone.LocalSize;
             RunOnCreated(editorObject);
-            if(editorObject.IsInDataOrControlPort && toClone.ProducerPortId == -1) {
-                editorObject.InitialValue= toClone.IStorage.GetInitialPortValueFromArchive(toClone);
-                editorObject.IStorage.StoreInitialPortValueInArchive(editorObject);
-            }
-    		return editorObject;
+            editorObject.Value= toClone.Value;
+            return editorObject;
         }
 
         // ----------------------------------------------------------------------

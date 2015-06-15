@@ -12,9 +12,9 @@ namespace iCanScript.Internal.Editor {
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     public partial class iCS_EditorObject {
         // ======================================================================
-        // Fields
+        // Cache
         // ----------------------------------------------------------------------
-    	public object	InitialValue= null;
+    	public object	c_Value= null;
 
         // ======================================================================
     	// Port source related attributes.
@@ -178,26 +178,29 @@ namespace iCanScript.Internal.Editor {
         // ======================================================================
     	// Port value attributes.
     	// ----------------------------------------------------------------------
-        public string InitialValueArchive {
-    		get { return EngineObject.InitialValueArchive; }
+        public object ValueArchive {
+    		get {
+                var engineObject= EngineObject;
+        		if(iCS_Strings.IsEmpty(engineObject.InitialValueArchive)) {
+        			return null;
+        		}
+        		iCS_Coder coder= new iCS_Coder(engineObject.InitialValueArchive);
+                try {
+            		return coder.DecodeObjectForKey("InitialValue", Storage);
+                }
+                catch  {
+                    return null;
+                }
+            }
     		set {
                 var engineObject= EngineObject;
-    			if(engineObject.InitialValueArchive == value) return;
-    			engineObject.InitialValueArchive= value;
-    		}
-    	}
-    	// ----------------------------------------------------------------------
-    	public object InitialPortValue {
-    		get {
-    			if(!IsInDataOrControlPort) return null;
-    			if(ProducerPortId != -1) return null;
-    			return InitialValue;			
-    		}
-    		set {
-    			if(!IsInDataOrControlPort) return;
-    			if(ProducerPortId != -1) return;
-    			InitialValue= value;
-    	        myIStorage.StoreInitialPortValueInArchive(this);			
+                if(value == null) {
+                    engineObject.InitialValueArchive= null;
+                    return;
+                }
+        		iCS_Coder coder= new iCS_Coder();
+        		coder.EncodeObject("InitialValue", value, Storage);
+        		engineObject.InitialValueArchive= coder.Archive;     
     		}
     	}
     	// ----------------------------------------------------------------------
@@ -205,28 +208,29 @@ namespace iCanScript.Internal.Editor {
     	public object Value {
     		get {
     			if(IsDataOrControlPort) {
-        			var port= SegmentProducerPort;
-                    // Get value from parent node.
-                    return port.InitialPortValue;    			    
+                    // -- Get value from first producer port. --
+        			var port= GraphInfo.GetProducerPort(this);
+                    if(port != this) {
+                        return port.Value;    			    
+                    }
     			}
-                return InitialValue;
-    		}
-    		set {
-    			if(IsDataOrControlPort) {
-        			InitialPortValue= value;
-                    RuntimePortValue= value;
-                    return;
+                if(c_Value == null) {
+                    c_Value= ValueArchive;
                 }
-                InitialValue= value;
-    		}
-    	}
-    	// ----------------------------------------------------------------------
-    	public object RuntimePortValue {
-    		get {
-                return Value;
+                return c_Value;
     		}
     		set {
-                // TODO: Implement runtime value change for iCS2.
+                if(c_Value == value) return;
+    			if(IsDataOrControlPort) {
+                    // -- Set value on first producer port. --
+        			var port= GraphInfo.GetProducerPort(this);
+                    if(port != this) {
+            			port.Value= value;
+                        return;                       
+                    }
+                }
+                ValueArchive= value;
+                c_Value= value;
     		}
     	}
     }

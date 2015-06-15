@@ -98,6 +98,7 @@ namespace iCanScript.Internal.Editor {
                 case VSObjectType.StaticField:       FunctionMenu(selectedObject, storage); break;
                 case VSObjectType.NonStaticProperty: FunctionMenu(selectedObject, storage); break;
                 case VSObjectType.StaticProperty:    FunctionMenu(selectedObject, storage); break;
+                case VSObjectType.InlineCode:        FunctionMenu(selectedObject, storage); break;
                 case VSObjectType.OnStateEntry:      OnStatePackageMenu(selectedObject); break;
                 case VSObjectType.OnStateUpdate:     OnStatePackageMenu(selectedObject); break;
                 case VSObjectType.OnStateExit:       OnStatePackageMenu(selectedObject); break;

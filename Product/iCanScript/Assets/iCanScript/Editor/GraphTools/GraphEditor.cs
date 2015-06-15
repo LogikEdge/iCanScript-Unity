@@ -94,7 +94,7 @@ namespace iCanScript.Internal.Editor {
             // TODO: Needs to be verified...
             else if(parentNode.IsKindOfFunction) {
                 if(p.IsInDataOrControlPort) {
-                    var initialValue= p.InitialValue;
+                    var initialValue= p.Value;
                     if(initialValue != null) {
                         GraphEditor.SetPortSpec(p, PortSpecification.Constant);
                     }
@@ -105,7 +105,7 @@ namespace iCanScript.Internal.Editor {
                            || runtimeType == typeof(Transform)
                            || GraphInfo.IsLocalType(p))) {
                             GraphEditor.SetPortSpec(p, PortSpecification.Owner);
-                            p.InitialValue= null;
+                            p.Value= null;
                         }
                         else {
                             GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable); 
@@ -129,7 +129,7 @@ namespace iCanScript.Internal.Editor {
                        || runtimeType == typeof(Transform)
                        || GraphInfo.IsLocalType(p))) {
                         GraphEditor.SetPortSpec(p, PortSpecification.Owner);
-                        p.InitialValue= null;
+                        p.Value= null;
                     }
                     else {
                         GraphEditor.SetPortSpec(p, PortSpecification.PublicVariable); 

@@ -39,7 +39,7 @@ namespace iCanScript.Internal.Editor {
         /// Edit node specific information.
     	protected override void OnNodeSpecificGUI() {
             // -- Edit inline code --
-            string code= vsObject.InitialValue as string;
+            string code= vsObject.Value as string;
             if(string.IsNullOrEmpty(code)) code= EmptyStr;
             GUI.changed= false;
             EditorGUILayout.LabelField("Inline Code");

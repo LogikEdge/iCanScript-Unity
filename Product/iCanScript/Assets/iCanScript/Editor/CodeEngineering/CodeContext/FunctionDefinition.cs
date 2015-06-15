@@ -235,6 +235,9 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                     else if(vsObj.IsConstructor && !AreAllInputsConstant(vsObj)) {
                         code.Add(new ConstructorDefinition(vsObj, this));
                     }
+                    else if(vsObj.IsInlineCode) {
+                        code.Add(new InlineCodeDefinition(vsObj, this));
+                    }
                     else if(vsObj.IsTriggerPort) {
                         if(ShouldGenerateTriggerCode(vsObj)) {
 							var triggerSet     = new TriggerSetDefinition(vsObj, this);
