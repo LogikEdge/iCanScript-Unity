@@ -166,7 +166,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 return null;
             }
 			// Special case for 'OwnerTag'.
-			var initialValue= producerPort.c_Value;
+			var initialValue= producerPort.Value;
 			if(vsObj.IsOwner) {
 				var producerType= producerPort.RuntimeType;
 				if(producerType == typeof(Transform)) {
