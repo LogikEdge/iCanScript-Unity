@@ -16,6 +16,7 @@ namespace iCanScript.Internal.Editor {
         public bool IsBehaviour                 { get { return EngineObject.IsBehaviour; }}
         public bool IsPackage                   { get { return EngineObject.IsPackage; }}
         public bool IsEventHandler              { get { return EngineObject.IsEventHandler; }}
+        public bool IsInlineCode                { get { return EngineObject.IsInlineCode; }}
         public bool IsMux                       { get { return EngineObject.IsMux; }}
         public bool IsConstructor               { get { return EngineObject.IsConstructor; }}
         public bool IsNonStaticFunction         { get { return EngineObject.IsNonStaticFunction; }}

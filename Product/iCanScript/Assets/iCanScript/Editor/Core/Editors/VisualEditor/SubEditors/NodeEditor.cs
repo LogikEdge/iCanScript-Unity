@@ -30,6 +30,9 @@ namespace iCanScript.Internal.Editor {
             if(node.IsInstanceNode) {
                 return PropertyEditor.Create(node, screenPosition);
             }
+            if(node.IsInlineCode) {
+                return InlineCodeEditor.Create(node, screenPosition);                
+            }
             var self= NodeEditor.CreateInstance<NodeEditor>();
             self.vsObject= node;
             Texture2D iCanScriptLogo= null;

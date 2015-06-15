@@ -133,10 +133,10 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                     }
                     // Return value if we are the producer port and client desires the value.
                     if(producerPort == vsObj) {
-                        return ToValueString(producerPort.InitialValue);
+                        return ToValueString(producerPort.c_Value);
                     }
                     if(!IsPublicClassInterface(producerPort) && !(producerPort.IsInProposedDataPort && producerPort.ParentNode.IsEventHandler) && !producerPort.IsFixDataPort) {
-                        return ToValueString(producerPort.InitialValue);
+                        return ToValueString(producerPort.c_Value);
                     }                    
                 }
                 vsObj= producerPort;
@@ -166,7 +166,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                 return null;
             }
 			// Special case for 'OwnerTag'.
-			var initialValue= producerPort.InitialValue;
+			var initialValue= producerPort.c_Value;
 			if(vsObj.IsOwner) {
 				var producerType= producerPort.RuntimeType;
 				if(producerType == typeof(Transform)) {

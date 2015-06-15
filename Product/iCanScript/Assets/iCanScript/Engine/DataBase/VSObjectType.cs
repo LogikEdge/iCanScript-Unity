@@ -10,7 +10,7 @@ namespace iCanScript.Internal.Engine {
         NodeStart= 0,
     
         // Structural nodes
-        Behaviour= 0, Package, StateChart, State, Mux,
+        Behaviour= 0, Package, StateChart, State, Mux, InlineCode,
 
         // Function nodes
         Constructor=100,
@@ -71,6 +71,7 @@ namespace iCanScript.Internal.Engine {
         public static bool IsBehaviour            (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.Behaviour; }
         public static bool IsStateChart           (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.StateChart; }
         public static bool IsState                (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.State; }
+        public static bool IsInlineCode           (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.InlineCode; }
         public static bool IsPackage              (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.Package ||
     																			  IsOnStatePackage(obj) ||
     																			  IsTransitionPackage(obj); }

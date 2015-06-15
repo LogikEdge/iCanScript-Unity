@@ -55,9 +55,9 @@ namespace iCanScript.Internal.Engine {
 
         // Port specific attributes ---------------------------------------------
         public PortSpecification     PortSpec           = PortSpecification.Default;
-        public int                   SourceId           = -1;    // Proxy original node id
+        public int                   SourceId           = -1;
         public int                   PortIndex          = -1;
-    	public string				 InitialValueArchive= null;  // Proxy original visual script tag
+    	public string				 InitialValueArchive= null;
 
         // State specific attributes ---------------------------------------------
         public bool                  IsEntryState= false;
@@ -225,6 +225,7 @@ namespace iCanScript.Internal.Engine {
         public bool IsNode                     { get { return iCS_ObjectType.IsNode(this); }}
     	public bool IsKindOfState   	       { get { return iCS_ObjectType.IsKindOfState(this); }}
         public bool IsBehaviour                { get { return iCS_ObjectType.IsBehaviour(this); }}
+        public bool IsInlineCode               { get { return iCS_ObjectType.IsInlineCode(this); }}
         public bool IsStateChart               { get { return iCS_ObjectType.IsStateChart(this); }}
         public bool IsState                    { get { return iCS_ObjectType.IsState(this); }}
         public bool IsPackage                  { get { return iCS_ObjectType.IsPackage(this); }}

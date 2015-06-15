@@ -141,16 +141,6 @@ namespace iCanScript.Internal.Editor {
     	    }
     		iCS_EditorObject.RebuildFromEngineObjects(this);
 		
-            // Re-initialize internal values.
-            if(EditorObjects.Count > 0 && IsValid(EditorObjects[0])) {
-                ForEach(obj=> {
-    				// Initialize initial port values.
-    				if(obj.IsInDataOrControlPort) {
-    					LoadInitialPortValueFromArchive(obj);
-    				}
-                });            
-            }
-        
             // Re-initialize multi-selection list.
             var selectedObject= SelectedObject;
             SelectedObject= selectedObject;

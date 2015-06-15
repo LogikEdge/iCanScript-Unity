@@ -3,7 +3,6 @@ Author: Michel Launier
 Version: v2.0.20
 CSS: Github.css
 
-
 #  iCanScript Release Notes [Back to top]
 
 <!-- PDF: <<[front-matter/pdf.md] -->
