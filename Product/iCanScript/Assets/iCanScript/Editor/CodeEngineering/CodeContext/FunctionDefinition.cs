@@ -409,8 +409,13 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
                     result.Append("/// @param ");
                     var paramName= NameUtility.ToFunctionParameterName(p.VSObject.CodeName);
                     result.Append(paramName);
+                    var description= p.VSObject.Description;
+                    if(string.IsNullOrEmpty(description)) {
+                        result.Append("\n");
+                        continue;
+                    }
                     result.Append(' ');
-                    var splitParamDescription= SplitDescription(p.VSObject.Description);
+                    var splitParamDescription= SplitDescription(description);
                     if(splitParamDescription != null && splitParamDescription.Length > 0) {
                         result.Append(splitParamDescription[0]);
                         result.Append("\n");
