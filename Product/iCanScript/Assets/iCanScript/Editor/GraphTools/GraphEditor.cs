@@ -40,7 +40,7 @@ namespace iCanScript.Internal.Editor {
                        y.PortSpec != PortSpecification.Parameter) return -1;
                     if(x.PortSpec != PortSpecification.Parameter &&
                        y.PortSpec == PortSpecification.Parameter) return 1;
-                    return y.PortIndex - x.PortIndex;
+                    return x.PortIndex - y.PortIndex;
                     
                 }
             );
@@ -50,7 +50,7 @@ namespace iCanScript.Internal.Editor {
             
             // -- Assure continuous port index for enable ports. --
             var enablePorts= node.BuildListOfChildPorts(p=> p.IsEnablePort);
-            Array.Sort(enablePorts, (x,y)=> y.PortIndex - x.PortIndex);
+            Array.Sort(enablePorts, (x,y)=> x.PortIndex - y.PortIndex);
             for(int i= 0; i < enablePorts.Length; ++i) {
                 enablePorts[i].PortIndex= i + (int)iCS_PortIndex.EnablesStart;
             }
