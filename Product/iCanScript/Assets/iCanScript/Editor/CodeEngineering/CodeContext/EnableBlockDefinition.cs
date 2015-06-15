@@ -56,8 +56,22 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
 				}
 			}
             
-            // -- Determine best enable order for code optimization. --
+            // -- Determine if enable producers where optimized out. --
             var enableLen= myEnablePorts.Length;
+            bool hasProducer= false;
+            for(int i= 0; i < enableLen; ++i) {
+                var enable= myEnablePorts[i];
+                var producerPort= GraphInfo.GetProducerPort(enable);
+                if(FindCodeBase(producerPort) != null) {
+                    hasProducer= true;
+                    break;
+                }
+            }
+            if(!hasProducer) {
+				(Parent as ExecutionBlockDefinition).Replace(this, myExecutionList);                
+            }
+            
+            // -- Determine best enable order for code optimization. --
             if(enableLen > 1) {
                 for(int i= 0; i < enableLen; ++i) {
                     var enable= myEnablePorts[i];
