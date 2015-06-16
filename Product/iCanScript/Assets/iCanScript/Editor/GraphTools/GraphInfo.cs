@@ -153,8 +153,6 @@ namespace iCanScript.Internal.Editor {
         // ----------------------------------------------------------------------
     	/// Determines if the vsObject refers to an element of the given type.
     	///
-    	/// @param ourType The type defined by this visual script.
-    	/// @param baseType The type this visual script derives from.
     	/// @param vsObj The object on which the search occurs.
     	///
     	public static bool IsLocalType(iCS_EditorObject vsObj) {

@@ -62,7 +62,7 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
             for(int i= 0; i < enableLen; ++i) {
                 var enable= myEnablePorts[i];
                 var producerPort= GraphInfo.GetProducerPort(enable);
-                if(FindCodeBase(producerPort) != null) {
+                if(FindCodeBase(producerPort) != null || producerPort.ParentNode.IsConstructor) {
                     hasProducer= true;
                     break;
                 }
