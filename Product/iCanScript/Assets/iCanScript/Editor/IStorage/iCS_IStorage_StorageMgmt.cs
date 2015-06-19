@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Internal.Engine;
-using iCanScript.Internal.Editor.CodeEngineering;
+using iCanScript.Internal.Editor.CodeGeneration;
 using P= iCanScript.Internal.Prelude;
 
 namespace iCanScript.Internal.Editor {
