@@ -2,6 +2,11 @@
 
 namespace CSharp.Primitives {
     
+    public struct Object {
+        public static bool op_Equality(System.Object a, System.Object b)          { return a == b; }
+        public static bool op_Inequality(System.Object a, System.Object b)        { return a != b; }
+    }
+
     public struct Bool {
         public Bool(bool value)                       				{}
 

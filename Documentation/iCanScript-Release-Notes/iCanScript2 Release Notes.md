@@ -22,6 +22,7 @@ V2.0.21 add the ability to define node that can inject your own source code into
 - **<span style="color: green">\[NEW\] </span>** A new node type _**Inline Code***_ has been added.
 	- The _**Inline Code**_ node can be used to injecting your own source code into the generated code.
 	- The _**Inline Code**_ can be added to your graph from the contextual menu.
+- **<span style="color: green">\[NEW\] </span>** Operator _Is Equal_ (==) and _Is Not Equal_ (!=) as been added for generic _Object_ type in the _CSharp.Primitives.Object_ type in the _Library_.
 - **<span style="color: red">\[FIXED\] </span>** The _Owner_ port type is allowed on the _Target_ port of a function.
 - **<span style="color: red">\[FIXED\] </span>** Invalid code generated when a trigger port is added to a package.
 - **<span style="color: red">\[FIXED\] </span>** Fix parameter index errors when generating source code.

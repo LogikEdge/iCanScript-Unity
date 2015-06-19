@@ -364,7 +364,9 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         /// @return The string representation of the value.
         ///
         public string ToValueString(System.Object obj) {
-            if(obj == null) return "null";
+            if(obj == null) {
+                return "null";
+            }
             var objType= obj.GetType();
             if(obj is bool) {
                 return ((bool)obj) ? "true" : "false";

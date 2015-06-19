@@ -195,6 +195,7 @@ namespace iCanScript.Internal.Editor {
     		set {
                 var engineObject= EngineObject;
                 if(value == null) {
+                    Debug.Log("Setting value to NULL: "+FullName);
                     engineObject.InitialValueArchive= null;
                     return;
                 }

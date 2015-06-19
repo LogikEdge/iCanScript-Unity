@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Text;
 using System.Collections;
 
 namespace iCanScript.Internal.Editor.CodeEngineering {
@@ -34,6 +35,16 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         // ===================================================================
         // CODE GENERATION FUNCTIONS
         // -------------------------------------------------------------------
+        /// Generate the function call header code.
+        ///
+        /// @param indentSize The indentation needed for the class definition.
+        /// @return The formatted header code for the function call.
+        ///
+//        public override string GenerateHeader(int identSize) {
+//            return ToIndent(identSize);
+//        }
+
+        // -------------------------------------------------------------------
         /// Generate the function call code.
         ///
         /// @param indentSize The indentation needed for the class definition.
@@ -42,14 +53,57 @@ namespace iCanScript.Internal.Editor.CodeEngineering {
         public override string GenerateBody(int indentSize) {
             var code= VSObject.Value;
             if(code == null) return "";
-            return code as string;
-//            var result= new StringBuilder(128);
-//            result.Append(FunctionCallPrefix(VSObject));
-//            result.Append(ToFieldOrPropertyName());
-//            result.Append(GenerateReturnTypeCastFragment(VSObject));
-//            return result.ToString();
+            var ident= ToIndent(indentSize);
+            return ReformatUserCode(code as string, ident);
         }
 
+        // ===================================================================
+        /// Generate the global scope trailer code.
+        ///
+        /// @param indentSize The indentation needed for the class definition.
+        /// @return The formatted trailer code for the global scope.
+        ///
+        public override string GenerateTrailer(int identSize) {
+            return "\n";
+        }
+
+
+        // ===================================================================
+        /// Reformats the user supplied code to make it similar to the
+        /// visual script generated code.
+        ///
+        /// @param code The user supplied code string.
+        /// @return The reformatted code string.
+        ///
+        string ReformatUserCode(string code, string ident) {
+            // -- Split the user code into lines. --
+            var lines= TextUtility.SplitIntoLines(code);
+            // -- Remove trailing blank lines and white characters. --
+            TextUtility.TrimEnd(ref lines);
+            var nbOfLines= lines.Length;
+            if(nbOfLines == 0) return "";
+            // -- Assure that the code ends properly. --
+            var lastLine= lines[nbOfLines-1];
+            var lastChar= lastLine[lastLine.Length-1];
+            if(lastChar != ';' && lastChar != '}') {
+                lastLine+= ";";
+            }
+            lines[nbOfLines-1]= lastLine;
+            // -- Remove starting white spaces. --
+            int maxWhiteSpacesToRemove= 1000;
+            for(int i= 0; i < nbOfLines; ++i) {
+                lines[i]= TextUtility.TrimStartingWhiteSpaces(lines[i], ref maxWhiteSpacesToRemove);
+            }
+            
+            // -- Fold back the lines into code. --
+            var result= new StringBuilder(128);
+            for(int i= 0; i < nbOfLines; ++i) {
+                result.Append(ident);
+                result.Append(lines[i]);
+                result.Append("\n");
+            }
+            return result.ToString();
+        }
     }
 
 }
