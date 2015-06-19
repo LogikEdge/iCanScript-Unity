@@ -52,6 +52,23 @@ namespace iCanScript.Internal {
             return false;
         }
 
+		// =================================================================================
+		/// Combines an array of string inserting a seperator between each string.
+		///
+		/// @param list The array of string to combine.
+		/// @param seperator The seperator to insert between each string.
+		/// @return The combined string.
+		///
+		public static string CombineWith(string[] list, string seperator) {
+			var len= list.Length;
+			if(list == null || len == 0) return "";
+			var result= new StringBuilder(list[0], 128);
+			for(int i= 1; i < len; ++i) {
+				result.Append(seperator);
+				result.Append(list[i]);
+			}
+			return result.ToString();
+		}
     }
 
 }
