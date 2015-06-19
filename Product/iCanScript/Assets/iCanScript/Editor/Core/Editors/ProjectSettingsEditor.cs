@@ -8,7 +8,7 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
-		ProjectInfo	myProject      = new ProjectInfo("");
+		ProjectInfo	myProject      = new ProjectInfo();
     	string[]    myOptionStrings= new string[]{
 			"General"
     	};
@@ -54,6 +54,7 @@ namespace iCanScript.Internal.Editor {
 
             // -- Reset button --
             if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Reset Namespaces")) {
+				GUI.FocusControl("");			// Remove keyboard focus.
 				myProject.ResetNamespaces();
             }
 

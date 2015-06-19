@@ -38,7 +38,8 @@ namespace iCanScript.Internal.Editor {
 		// ========================================================================
 		// Creation/Destruction
 		// ------------------------------------------------------------------------
-		public ProjectInfo(string projectName) {
+		public ProjectInfo(string projectName= null) {
+			if(projectName == null) projectName= "MyProject";
 			UpdateProjectName(projectName);
 		}
 
