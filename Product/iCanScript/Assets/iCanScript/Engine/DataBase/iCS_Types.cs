@@ -1,4 +1,4 @@
-//#define DEBUG
+//#define SHOW_DEBUG
 using UnityEngine;
 using System;
 using System.Reflection;
@@ -363,7 +363,7 @@ namespace iCanScript.Internal {
             foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
                 var newType= assembly.GetType(typeName);
                 if(newType != null) {
-#if DEBUG
+#if SHOW_DEBUG
                     // Don't give warning for known conversions.
                     var newAssemblyName= newType.Assembly.FullName.Split(new char[]{','})[0];
                     if(assemblyName != "iCanScriptEngine" && newAssemblyName != "iCanScriptEngine") {
@@ -375,7 +375,7 @@ namespace iCanScript.Internal {
                     return newType;
                 }
             }
-#if DEBUG
+#if SHOW_DEBUG
             Debug.LogWarning("iCanScript: Unable to locate type: "+typeName+" from assembly: "+assemblyName);
 #endif
             return null;        

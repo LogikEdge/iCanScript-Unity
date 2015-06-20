@@ -41,7 +41,9 @@ namespace iCanScript.Internal.Editor {
             if(port == null) return null;
             var self= EventHandlerPortEditor.CreateInstance<EventHandlerPortEditor>();
             self.vsObject= port;
-            self.title= "Event Handler Port Editor";
+            Texture2D iCanScriptLogo= null;
+            TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo);
+            self.titleContent= new GUIContent("Event Handler Port Editor", iCanScriptLogo);
             self.ShowUtility();
             return self;
         }

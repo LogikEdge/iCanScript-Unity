@@ -126,6 +126,9 @@ namespace iCanScript.Internal.Editor {
 					if(c_RuntimeType == typeof(CSharp.Primitives.String)) {
 						c_RuntimeType= typeof(String);
 					}
+					if(c_RuntimeType == typeof(CSharp.Primitives.Object)) {
+						c_RuntimeType= typeof(System.Object);
+					}
                     c_RuntimeType= iCS_Types.RemoveRefOrPointer(c_RuntimeType);
                 }
                 return c_RuntimeType;
@@ -403,6 +406,9 @@ namespace iCanScript.Internal.Editor {
                     else if(IsKindOfPackage) {
                         c_NodeSubTitle= "Node is a Package";
                     }
+                    else if(IsInlineCode) {
+                        c_NodeSubTitle= BuildIsASubTitle("Node", RuntimeType);
+                    }
                     else {
                         c_NodeSubTitle= null;
                     }
@@ -527,11 +533,8 @@ namespace iCanScript.Internal.Editor {
     		AddEditorObject(id, editorObject);
             editorObject.LocalSize= toClone.LocalSize;
             RunOnCreated(editorObject);
-            if(editorObject.IsInDataOrControlPort && toClone.ProducerPortId == -1) {
-                editorObject.InitialValue= toClone.IStorage.GetInitialPortValueFromArchive(toClone);
-                editorObject.IStorage.StoreInitialPortValueInArchive(editorObject);
-            }
-    		return editorObject;
+            editorObject.Value= toClone.Value;
+            return editorObject;
         }
 
         // ----------------------------------------------------------------------

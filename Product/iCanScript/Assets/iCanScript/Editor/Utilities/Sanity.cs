@@ -16,28 +16,28 @@ namespace iCanScript.Internal.Editor {
         public static string ValidateEngineBaseType() {
             // -- Return previous message if nothing changed --
             var baseTypeName= Prefs.EngineBaseType;
-            if(baseTypeName == c_codeGenerationBaseTypeName) {
-                return c_codeGenerationBaseTypeMessage;
+            if(baseTypeName == c_CodeGenerationBaseTypeName) {
+                return c_CodeGenerationBaseTypeMessage;
             }
-            c_codeGenerationBaseTypeName= baseTypeName;
+            c_CodeGenerationBaseTypeName= baseTypeName;
             // -- Accept no base type --
             if(string.IsNullOrEmpty(baseTypeName)) {
-                c_codeGenerationBaseTypeMessage= null;
+                c_CodeGenerationBaseTypeMessage= null;
                 return null;
             }
             // -- Attempt to find the base type inside the application --
             if(iCS_Types.GetTypeFromTypeString(baseTypeName) != null) {
-                c_codeGenerationBaseTypeMessage= null;
+                c_CodeGenerationBaseTypeMessage= null;
                 return null;
             }
             // -- Base type not found; generate error message --
-            c_codeGenerationBaseTypeMessage=
+            c_CodeGenerationBaseTypeMessage=
                 "Unable to locate the <b>Engine Base Type</b> <color=red><b>"+baseTypeName+
                 "</b></color> configured in the <b>Global Preferences</b>";
-            return c_codeGenerationBaseTypeMessage;
+            return c_CodeGenerationBaseTypeMessage;
         }
-        private static string c_codeGenerationBaseTypeName    = null;
-        private static string c_codeGenerationBaseTypeMessage= null;
+        private static string c_CodeGenerationBaseTypeName    = null;
+        private static string c_CodeGenerationBaseTypeMessage= null;
 
         // -------------------------------------------------------------------------
         /// Validates the default type defined in the uSer Preferences.

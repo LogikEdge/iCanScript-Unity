@@ -1,14 +1,35 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.20
+Version: v2.0.21
 CSS: Github.css
-
 
 #  iCanScript Release Notes [Back to top]
 
 <!-- PDF: <<[front-matter/pdf.md] -->
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
+
+## iCanScript v2.0.21 ##
+
+_June 20, 2015_
+
+V2.0.21 now allows to configure the function access and scope specification.  In addition, it includes the ability for the user to define an _**Inline**_ code node to inject textual code inside the generated code.
+
+**<span style="color: red">\[WARNING\]:</span>**  V2.0.20 requires Unity V5.1.0 or later.  Please upgrade Unity before using this version of iCanScript.
+
+### List of Changes
+
+- **<span style="color: green">\[NEW\] </span>** The function access _(public, private, protected)_ and scope _(static, virtual, override, new)_ specifications can now be configured using _Function Definition Editor_.
+- **<span style="color: green">\[NEW\] </span>** A new node type _**Inline Code***_ has been added.
+	- The _**Inline Code**_ node can be used to injecting your own source code into the generated code.
+	- The _**Inline Code**_ can be added to your graph from the contextual menu.
+- **<span style="color: green">\[NEW\] </span>** Operator _Is Equal_ (==) and _Is Not Equal_ (!=) as been added for generic _Object_ type in the _CSharp.Primitives.Object_ type in the _Library_.
+- **<span style="color: red">\[FIXED\] </span>** The _Owner_ port type is allowed on the _Target_ port of a function.
+- **<span style="color: red">\[FIXED\] </span>** Invalid code generated when a trigger port is added to a package.
+- **<span style="color: red">\[FIXED\] </span>** Fix parameter index errors when generating source code.
+
+
+* * *
 
 ## iCanScript v2.0.20 ##
 

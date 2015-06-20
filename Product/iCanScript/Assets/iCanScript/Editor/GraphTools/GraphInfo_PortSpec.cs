@@ -27,6 +27,13 @@ namespace iCanScript.Internal.Editor {
             StaticPrivateVariable= PortSpecification.StaticPrivateVariable,
             Constant=              PortSpecification.Constant
         };
+        public enum InTypeVariableWithOwner {
+            Owner=                 PortSpecification.Owner,
+            PublicVariable=        PortSpecification.PublicVariable,
+            PrivateVariable=       PortSpecification.PrivateVariable,
+            StaticPublicVariable=  PortSpecification.StaticPublicVariable,
+            StaticPrivateVariable= PortSpecification.StaticPrivateVariable
+        };
         public enum InFunctionDefinitionVariableType {
             Parameter=             PortSpecification.Parameter,
             PublicVariable=        PortSpecification.PublicVariable,
@@ -70,6 +77,9 @@ namespace iCanScript.Internal.Editor {
             StaticPublicVariable=  PortSpecification.StaticPublicVariable,
             StaticPrivateVariable= PortSpecification.StaticPrivateVariable            
         };
+        public enum FredVariableType {
+            LocalVariable=         PortSpecification.LocalVariable,
+        };
         
         // ===================================================================
 		/// Returns the allowed types of variable the given port can support.
@@ -94,26 +104,26 @@ namespace iCanScript.Internal.Editor {
                         if(isFunctionDefinition) {
     	                  	return InFunctionDefinitionOwnerAndUnityObjectVariableType.PublicVariable;
                         }
-                        else {
-    	                  	return InOwnerAndUnityObjectVariableType.PublicVariable;
-                        }
+	                  	return InOwnerAndUnityObjectVariableType.PublicVariable;
 					}
 					else {
                         if(isFunctionDefinition) {
     	                    return InFunctionDefinitionUnityObjectVariableType.PublicVariable;
                         }
-                        else {
-    	                    return InUnityObjectVariableType.PublicVariable;
+                        if(GraphInfo.IsLocalType(producerPort)) {
+            				return InOwnerAndUnityObjectVariableType.Owner;                                
                         }
+	                    return InUnityObjectVariableType.PublicVariable;
 					}
                 }
                 else {
                     if(isFunctionDefinition) {
                         return InFunctionDefinitionVariableType.PublicVariable;
                     }
-                    else {
-                        return InVariableType.PublicVariable;
+                    if(GraphInfo.IsLocalType(producerPort)) {
+        				return InTypeVariableWithOwner.Owner;                           
                     }
+                    return InVariableType.PublicVariable;
                 }
             }
             else if(producerPort.IsOutDataOrControlPort) {

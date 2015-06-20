@@ -1,7 +1,7 @@
 //
 // File: iCS_UserCommands_Create
 //
-//#define DEBUG
+//#define SHOW_DEBUG
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -17,9 +17,9 @@ namespace iCanScript.Internal.Editor {
         // Object creation
     	// ----------------------------------------------------------------------
         public static iCS_EditorObject CreatePackage(iCS_EditorObject parent, Vector2 globalPos, string name, VSObjectType objectType= VSObjectType.Package, Type runtimeType= null) {
-    #if DEBUG
+#if SHOW_DEBUG
             Debug.Log("iCanScript: CreatePackage => "+name);
-    #endif
+#endif
             var iStorage= parent.IStorage;
             OpenTransaction(iStorage);
             iCS_EditorObject package= null;
@@ -38,12 +38,39 @@ namespace iCanScript.Internal.Editor {
     		SystemEvents.AnnounceVisualScriptElementAdded(package);
             return package;
         }
+
+        // ======================================================================
+        /// Creates an inline code node.
+        ///
+        /// @param parent The parent node in which to create the inline code.
+        /// @param globalPosition The layout position where to new node should be created.
+        /// @param name The name of the node to create.
+        ///
+        public static iCS_EditorObject CreateInlineCode(iCS_EditorObject parent, Vector2 globalPos, string name) {
+            var iStorage= parent.IStorage;
+            OpenTransaction(iStorage);
+            iCS_EditorObject package= null;
+            try {
+                package= _CreatePackage(parent, globalPos, name, VSObjectType.InlineCode, typeof(InlineCode));            
+            }
+            catch(System.Exception) {
+                CancelTransaction(iStorage);
+                return null;
+            }
+            if(package == null) {
+                CancelTransaction(iStorage);
+                return null;
+            }
+            CloseTransaction(iStorage, "Create "+name);
+    		SystemEvents.AnnounceVisualScriptElementAdded(package);
+            return package;
+        }
     	// ----------------------------------------------------------------------
         // OK
         public static iCS_EditorObject CreateStateChart(iCS_EditorObject parent, Vector2 globalPos, string name) {
-    #if DEBUG
+#if SHOW_DEBUG
             Debug.Log("iCanScript: Create State Chart => "+name);
-    #endif
+#endif
             if(parent == null) return null;
             if(!IsCreationAllowed()) return null;
             var iStorage= parent.IStorage;
@@ -79,9 +106,9 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
         // OK
         public static iCS_EditorObject CreateState(iCS_EditorObject parent, Vector2 globalPos, string name) {
-    #if DEBUG
+#if SHOW_DEBUG
             Debug.Log("iCanScript: Create State => "+name);
-    #endif
+#endif
             if(parent == null) return null;
             if(!IsCreationAllowed()) return null;
             var iStorage= parent.IStorage;
@@ -119,7 +146,7 @@ namespace iCanScript.Internal.Editor {
         /// @return The create Unity event handler node. _null_ on error.
         ///
         public static iCS_EditorObject CreateEventHandler(iCS_EditorObject parent, Vector2 globalPos, LibraryEventHandler libraryEventHandler) {
-#if DEBUG
+#if SHOW_DEBUG
             Debug.Log("iCanScript: Create Unity EVent Handler => "+libraryEventHandler.displayString);
 #endif
             if(parent == null) return null;
@@ -231,9 +258,9 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
         // OK
         public static iCS_EditorObject CreateFunctionCallNode(iCS_EditorObject parent, Vector2 globalPos, LibraryObject libraryObject) {
-    #if DEBUG
+#if SHOW_DEBUG
             Debug.Log("iCanScript: Create Function => "+libraryObject.displayString);
-    #endif
+#endif
             if(parent == null || libraryObject == null) return null;
             if(!IsCreationAllowed()) return null;
     		var iStorage= parent.IStorage;
@@ -265,9 +292,9 @@ namespace iCanScript.Internal.Editor {
 
     	// ----------------------------------------------------------------------
         public static iCS_EditorObject CreateTransition(iCS_EditorObject fromStatePort, iCS_EditorObject toState, Vector2 toStatePortPos) {
-    #if DEBUG
+#if SHOW_DEBUG
             Debug.Log("iCanScript: Create Transition Package");
-    #endif
+#endif
             if(fromStatePort == null || toState == null) return null;
             if(!IsCreationAllowed()) return null;
             var iStorage= toState.IStorage;
@@ -405,9 +432,9 @@ namespace iCanScript.Internal.Editor {
             if(instanceType == null) return null;
             if(!IsCreationAllowed()) return null;
             instanceType= iCS_Types.RemoveRefOrPointer(instanceType);
-    #if DEBUG
+#if SHOW_DEBUG
             Debug.Log("iCanScript: Create Object Instance => "+instanceType.Name);
-    #endif
+#endif
             if(parent == null) return null;
             var iStorage= parent.IStorage;
             var name= instanceType.Name;
@@ -516,9 +543,9 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
         // OK
         public static iCS_EditorObject CreateGameObject(GameObject go, iCS_EditorObject parent, Vector2 globalPos) {
-    #if DEBUG
+#if SHOW_DEBUG
             Debug.Log("iCanScript: Create Game Object => "+go.name);
-    #endif
+#endif
             if(parent == null) return null;
             if(!IsCreationAllowed()) return null;
             var iStorage= parent.IStorage;
@@ -532,7 +559,7 @@ namespace iCanScript.Internal.Editor {
                         instance= iStorage.CreatePackage(parent.InstanceId, go.name, VSObjectType.Package, go.GetType());
                         var thisPort= iStorage.PropertiesWizardGetInputThisPort(instance);
                         if(thisPort != null) {
-                            thisPort.PortValue= go;
+                            thisPort.Value= go;
                         }
                         instance.SetInitialPosition(globalPos);
                         iStorage.ForcedRelayoutOfTree();
@@ -557,9 +584,9 @@ namespace iCanScript.Internal.Editor {
         // Utilities
     	// ----------------------------------------------------------------------
         private static iCS_EditorObject _CreatePackage(iCS_EditorObject parent, Vector2 globalPos, string name, VSObjectType objectType= VSObjectType.Package, Type runtimeType= null) {
-    #if DEBUG
+#if SHOW_DEBUG
             Debug.Log("iCanScript: CreatePackage => "+name);
-    #endif
+#endif
             if(parent == null) return null;
             if(!IsCreationAllowed()) return null;
             var iStorage= parent.IStorage;
@@ -573,6 +600,7 @@ namespace iCanScript.Internal.Editor {
                         package.SetInitialPosition(globalPos);
                         iStorage.ForcedRelayoutOfTree();
                         iStorage.ReduceCollisionOffset();
+                        iStorage.SelectedObject= package;
                     }
                 );            
             }

@@ -44,7 +44,9 @@ namespace iCanScript.Internal.Editor {
             if(port == null) return null;
             var self= PackagePortEditor.CreateInstance<PackagePortEditor>();
             self.vsObject= port;
-            self.title= "Package Port Editor";
+            Texture2D iCanScriptLogo= null;
+            TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo);
+            self.titleContent= new GUIContent("Package Port Editor", iCanScriptLogo);
             self.ShowUtility();
             return self;
         }

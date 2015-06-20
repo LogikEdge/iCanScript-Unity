@@ -21,14 +21,19 @@ namespace iCanScript.Internal.Engine {
     };
     [Serializable]
     public enum NodeSpecification {
-        Type= 200,
-        VariableReference= 210, StaticVariableReference,
-        Constructor= 220, StaticConstructor,
-        PublicFunction= 230, ProtectedFunction, PrivateFunction,
-        StaticPublicFunction= 240, StaticPrivateFunction,
-        FunctionCall= 250,
-        EventHandler= 260,
-        StateChart= 270, State,
+        Class= 200, Struct, Enum, Interface,
+        Constructor= 300, StaticConstructor,
+        PublicFunction= 400, PublicStaticFunction,
+        PublicVirtualFunction, PublicOverrideFunction,  
+        PublicNewFunction, PublicNewStaticFunction,
+        PrivateFunction= 420, PrivateStaticFunction,
+        ProtectedFunction= 440,
+        ProtectedVirtualFunction, ProtectedOverrideFunction,
+        ProtectedNewFunction, ProtectedNewStaticFunction,
+        FunctionCall= 600,
+        EventHandler= 700,
+        Package= 800,
+        StateChart= 900, State,
         Default= 1000
     };
 
@@ -55,9 +60,9 @@ namespace iCanScript.Internal.Engine {
 
         // Port specific attributes ---------------------------------------------
         public PortSpecification     PortSpec           = PortSpecification.Default;
-        public int                   SourceId           = -1;    // Proxy original node id
+        public int                   SourceId           = -1;
         public int                   PortIndex          = -1;
-    	public string				 InitialValueArchive= null;  // Proxy original visual script tag
+    	public string				 InitialValueArchive= null;
 
         // State specific attributes ---------------------------------------------
         public bool                  IsEntryState= false;
@@ -225,6 +230,7 @@ namespace iCanScript.Internal.Engine {
         public bool IsNode                     { get { return iCS_ObjectType.IsNode(this); }}
     	public bool IsKindOfState   	       { get { return iCS_ObjectType.IsKindOfState(this); }}
         public bool IsBehaviour                { get { return iCS_ObjectType.IsBehaviour(this); }}
+        public bool IsInlineCode               { get { return iCS_ObjectType.IsInlineCode(this); }}
         public bool IsStateChart               { get { return iCS_ObjectType.IsStateChart(this); }}
         public bool IsState                    { get { return iCS_ObjectType.IsState(this); }}
         public bool IsPackage                  { get { return iCS_ObjectType.IsPackage(this); }}

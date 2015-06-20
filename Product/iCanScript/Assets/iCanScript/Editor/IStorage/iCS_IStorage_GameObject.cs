@@ -41,7 +41,7 @@ namespace iCanScript.Internal.Editor {
             foreach(var pi in neededPorts) {
                 if(!DoesPortExist(node, pi.Name, pi.ValueType, pi.PortType)) {
             	    var port= CreatePort(pi.Name, node.InstanceId, pi.ValueType, pi.PortType);
-                    port.PortValue= pi.InitialValue;            
+                    port.Value= pi.InitialValue;            
                     changed= true;
                 }
             }

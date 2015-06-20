@@ -472,7 +472,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.DisplayName, newPortParent.InstanceId, DragFixPort.RuntimeType, newPortType);
                             newPort.PortSpec= DragFixPort.PortSpec;
                             newPort.LocalAnchorFromGlobalPosition= dragPortPos;
-                            newPort.PortValue= DragFixPort.PortValue;
+                            newPort.Value= DragFixPort.Value;
                             iCS_EditorObject providerPort= null;
                             iCS_EditorObject consumerPort= null;
 							if(fixPortIsBindingTo) {

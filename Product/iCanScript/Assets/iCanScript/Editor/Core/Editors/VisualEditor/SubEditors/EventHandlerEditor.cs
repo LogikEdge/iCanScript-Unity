@@ -18,7 +18,9 @@ namespace iCanScript.Internal.Editor {
             if(node == null) return null;
             var self= EventHandlerEditor.CreateInstance<EventHandlerEditor>();
             self.vsObject= node;
-            self.title= "Event Handler Editor";
+            Texture2D iCanScriptLogo= null;
+            TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo);
+            self.titleContent= new GUIContent("Event Handler Editor", iCanScriptLogo);
             self.ShowUtility();
             return self;
         }

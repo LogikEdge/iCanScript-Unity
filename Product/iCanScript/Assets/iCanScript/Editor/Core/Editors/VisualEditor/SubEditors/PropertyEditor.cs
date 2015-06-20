@@ -25,7 +25,9 @@ namespace iCanScript.Internal.Editor {
     		// Get existing open window or if none, make a new one:
     		var self = PropertyEditor.CreateInstance<PropertyEditor>();
             self.vsObject= node;
-            self.title= "Property Editor";
+            Texture2D iCanScriptLogo= null;
+            TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo);
+            self.titleContent= new GUIContent("Property Editor", iCanScriptLogo);
             self.ShowUtility();
             return self;
     	}

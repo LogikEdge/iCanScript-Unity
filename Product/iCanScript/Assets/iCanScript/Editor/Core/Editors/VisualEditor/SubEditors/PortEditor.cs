@@ -45,7 +45,9 @@ namespace iCanScript.Internal.Editor {
             // Create a generic port editor.
             var self= PortEditor.CreateInstance<PortEditor>();
             self.vsObject= port;
-            self.title= "Port Editor";
+            Texture2D iCanScriptLogo= null;
+            TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo);
+            self.titleContent= new GUIContent("Port Editor", iCanScriptLogo);
             self.ShowUtility();
             return self;
         }

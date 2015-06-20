@@ -443,9 +443,6 @@ namespace iCanScript.Internal.Editor {
             srcObj.ForEachChild(
                 child=> Copy(child, srcStorage, newObj, destStorage, globalPos+child.LocalAnchorPosition, xlat)
             );
-    		if(newObj.IsInDataOrControlPort) {
-    			LoadInitialPortValueFromArchive(this[id]);
-    		}
             return newObj;
         }
         void ReconnectCopy(iCS_EditorObject srcObj, iCS_IStorage srcStorage, iCS_IStorage destStorage, List<Prelude.Tuple<int,int>> xlat) {
@@ -566,9 +563,12 @@ namespace iCanScript.Internal.Editor {
                     var port= CreatePort(p.Name, nodeId, parameterType, portType, (int)iCS_PortIndex.ParametersStart+idx);
     				object initialValue= p.DefaultValue;
     				if(initialValue == null || initialValue.GetType() != parameterType) {
+                        Debug.Log("Setting a default value for: "+port.FullName);
     					initialValue= iCS_Types.DefaultValue(parameterType);
+                        Debug.Log("Default is null? "+(initialValue == null));
+                        Debug.Log("Type is: "+parameterType);
     				}
-                    port.InitialPortValue= initialValue;
+                    port.Value= initialValue;
                 }
             }		
     	}
@@ -949,7 +949,7 @@ namespace iCanScript.Internal.Editor {
                 if(paramType != typeof(void)) {
                     VSObjectType portType= VSObjectType.InFixDataPort;
                     port= CreatePort(paramName, id, paramType, portType, (int)iCS_PortIndex.ParametersStart+parameterIdx);
-                    port.InitialPortValue= iCS_Types.DefaultValue(paramType);
+                    port.Value= iCS_Types.DefaultValue(paramType);
                 }
             }
             return instance;

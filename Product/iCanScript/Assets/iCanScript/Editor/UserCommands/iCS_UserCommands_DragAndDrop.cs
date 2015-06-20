@@ -74,7 +74,7 @@ namespace iCanScript.Internal.Editor {
             var iStorage= port.IStorage;
             OpenTransaction(iStorage);
             try {
-                port.PortValue= value;            
+                port.Value= value;            
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);

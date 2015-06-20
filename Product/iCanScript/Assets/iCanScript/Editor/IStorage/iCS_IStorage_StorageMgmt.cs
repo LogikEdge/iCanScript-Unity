@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using iCanScript.Internal.Engine;
-using iCanScript.Internal.Editor.CodeEngineering;
+using iCanScript.Internal.Editor.CodeGeneration;
 using P= iCanScript.Internal.Prelude;
 
 namespace iCanScript.Internal.Editor {
@@ -141,16 +141,6 @@ namespace iCanScript.Internal.Editor {
     	    }
     		iCS_EditorObject.RebuildFromEngineObjects(this);
 		
-            // Re-initialize internal values.
-            if(EditorObjects.Count > 0 && IsValid(EditorObjects[0])) {
-                ForEach(obj=> {
-    				// Initialize initial port values.
-    				if(obj.IsInDataOrControlPort) {
-    					LoadInitialPortValueFromArchive(obj);
-    				}
-                });            
-            }
-        
             // Re-initialize multi-selection list.
             var selectedObject= SelectedObject;
             SelectedObject= selectedObject;

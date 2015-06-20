@@ -52,22 +52,6 @@ namespace iCanScript.Internal.Editor {
                 ShowNotification(new GUIContent(message));
                 return;
             }
-        
-            // Install iCanScript icon in tab title area.
-            // (must hack since Unity does not provide a direct way of adding editor title images).
-            var propertyInfo= GetType().GetProperty("cachedTitleContent", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            if(propertyInfo != null) {
-                var methodInfo= propertyInfo.GetGetMethod(true);
-                if(methodInfo != null) {
-                    var r= methodInfo.Invoke(this, null) as GUIContent;
-                    if(r.image == null) {
-                        Texture2D iCanScriptLogo= null;
-                        if(TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo)) {
-                            r.image= iCanScriptLogo;
-                        }
-                    }
-                }
-            }
         }
     
         // =================================================================================

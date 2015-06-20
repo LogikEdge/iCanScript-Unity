@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Internal.Engine;
 
 namespace iCanScript.Internal.Editor {
 
@@ -10,7 +11,19 @@ namespace iCanScript.Internal.Editor {
         // TYPES
         // -------------------------------------------------------------------
         public enum FunctionType {
-            Public, Private, PublicAndStatic, PrivateAndStatic
+            Public            = NodeSpecification.PublicFunction,
+            PublicStatic      = NodeSpecification.PublicStaticFunction,
+            PublicVirtual     = NodeSpecification.PublicVirtualFunction,
+            PublicOverride    = NodeSpecification.PublicOverrideFunction,
+            PublicNew         = NodeSpecification.PublicNewFunction,
+            PublicNewStatic   = NodeSpecification.PublicNewStaticFunction,
+            Private           = NodeSpecification.PrivateFunction,
+            PrivateStatic     = NodeSpecification.PrivateStaticFunction,
+            Protected         = NodeSpecification.ProtectedFunction,
+            ProtectedVirtual  = NodeSpecification.ProtectedVirtualFunction,
+            ProtectedOverride = NodeSpecification.ProtectedOverrideFunction,
+            ProtectedNew      = NodeSpecification.ProtectedNewFunction,
+            ProtectedNewStatic= NodeSpecification.ProtectedNewStaticFunction
         };
         
         // ===================================================================
@@ -25,7 +38,9 @@ namespace iCanScript.Internal.Editor {
             if(node == null) return null;
             var self= FunctionDefinitionEditor.CreateInstance<FunctionDefinitionEditor>();
             self.vsObject= node;
-            self.title= "Function Definition Editor";
+            Texture2D iCanScriptLogo= null;
+            TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo);
+            self.titleContent= new GUIContent("Function Definition Editor", iCanScriptLogo);
             self.ShowUtility();
             return self;
         }
@@ -35,9 +50,20 @@ namespace iCanScript.Internal.Editor {
         // -------------------------------------------------------------------
         /// Edit node specific information.
     	protected override void OnNodeSpecificGUI() {
-            EditorGUILayout.EnumPopup("Function Type", FunctionType.Public);
+            var variableType= ConvertEnum(vsObject.NodeSpec, FunctionType.Public) as System.Enum;
+            variableType= EditorGUILayout.EnumPopup("Function Type", variableType);
+            SetNodeSpec(ConvertEnum(variableType, NodeSpecification.PublicFunction));                        
     	}
         
+		// ===================================================================
+        /// Sets the node specififcation.
+		///
+		/// @param nodeSpec The new node specification.
+		///
+        protected void SetNodeSpec(NodeSpecification nodeSpec) {
+			iCS_UserCommands.ChangeNodeSpec(vsObject, nodeSpec);
+        }
+
     }
     
 }

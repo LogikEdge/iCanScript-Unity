@@ -14,7 +14,7 @@ namespace iCanScript.Internal.Editor {
             var existingTriggerPort= GetTriggerPort(EditorObjects[parentId]);
             if(existingTriggerPort != null) return existingTriggerPort;
             iCS_EditorObject port= CreatePort(iCS_Strings.TriggerPort, parentId, typeof(bool), VSObjectType.TriggerPort, (int)iCS_PortIndex.Trigger);
-            port.InitialPortValue= true;
+            port.Value= true;
             return port;
         }
         // -------------------------------------------------------------------------
@@ -31,7 +31,7 @@ namespace iCanScript.Internal.Editor {
         // ----------------------------------------------------------------------
         public iCS_EditorObject CreateEnablePort(int parentId) {
             iCS_EditorObject port= CreatePort(iCS_Strings.EnablePort, parentId, typeof(bool), VSObjectType.EnablePort, (int)GetNextAvailableEnablePortIndex(EditorObjects[parentId]));
-            port.InitialPortValue= true;
+            port.Value= true;
             return port;
         }
         // -------------------------------------------------------------------------

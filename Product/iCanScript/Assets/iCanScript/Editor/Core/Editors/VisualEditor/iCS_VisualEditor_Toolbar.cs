@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
-using iCanScript.Internal.Editor.CodeEngineering;
+using iCanScript.Internal.Editor.CodeGeneration;
 
 /*
     TODO: Should show runId in header bar.
@@ -14,7 +14,7 @@ namespace iCanScript.Internal.Editor {
         // Toolbar Constants
         // -----------------------------------------------------------------------
         const float kSliderSize= 60f;
-        
+		
         // -----------------------------------------------------------------------
     	void Toolbar() {
     		// No toolbar if editor snapshot without background requested.
@@ -65,14 +65,17 @@ namespace iCanScript.Internal.Editor {
                 CenterAtWithScale(pivot, newScale);
     		}
             
-            // -- User Preferences --
-            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Global Preferences", 0, spacer, true)) {
-                var editor= EditorWindow.CreateInstance<PreferencesEditor>();
-                editor.ShowUtility();
+            // -- Global Settings --
+            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Global Settings", 0, spacer, true)) {
+                GlobalSettingsEditor.Init(IStorage);
             }
-            // -- Visual Script Config --
-            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Visual Script Config", 0, spacer, true)) {
-                VSConfigEditor.Init(IStorage);
+            // -- Project Settings --
+            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Project Settings", 0, spacer, true)) {
+                ProjectSettingsEditor.Init(IStorage);
+            }
+            // -- Visual Script Settings --
+            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Visual Script Settings", 0, spacer, true)) {
+                VisualScriptSettingsEditor.Init(IStorage);
             }
             
     		// -- Show Display Root Node. --

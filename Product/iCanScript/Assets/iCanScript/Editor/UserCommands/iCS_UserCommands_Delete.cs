@@ -1,7 +1,7 @@
 //
 // File: iCS_UserCommands_Delete
 //
-//#define DEBUG
+//#define SHOW_SHOW_DEBUG
 using UnityEngine;
 using System.Collections;
 using P=iCanScript.Internal.Prelude;
@@ -13,9 +13,9 @@ namespace iCanScript.Internal.Editor {
         // Object destruction.
     	// ----------------------------------------------------------------------
         public static bool DeleteObject(iCS_EditorObject obj) {
-    #if DEBUG
+#if SHOW_DEBUG
     		Debug.Log("iCanScript: Deleting => "+obj.DisplayName);
-    #endif
+#endif
             if(obj == null) return false;
             if(!IsDeletionAllowed()) return false;
             if(!obj.CanBeDeleted()) {
@@ -65,9 +65,9 @@ namespace iCanScript.Internal.Editor {
     	}
     	// ----------------------------------------------------------------------
         public static bool DeleteMultiSelectedObjects(iCS_IStorage iStorage) {
-    #if DEBUG
+#if SHOW_DEBUG
     		Debug.Log("iCanScript: Multi-Select Delete");
-    #endif
+#endif
             if(iStorage == null) return false;
             if(!IsDeletionAllowed()) return false;
             var selectedObjects= iStorage.GetMultiSelectedObjects();

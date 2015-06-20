@@ -46,7 +46,9 @@ namespace iCanScript.Internal.Editor {
             if(port == null) return null;
             var self= FunctionDefinitionPortEditor.CreateInstance<FunctionDefinitionPortEditor>();
             self.vsObject= port;
-            self.title= "Function Definition Port Editor";
+            Texture2D iCanScriptLogo= null;
+            TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo);
+            self.titleContent= new GUIContent("Function Definition Port Editor", iCanScriptLogo);
             self.ShowUtility();
             return self;
         }

@@ -34,6 +34,7 @@ namespace iCanScript.Internal.Editor {
         const string ClearNavigationHistoryStr     = "Back to Full View";
         const string DeleteStr                     = "- Delete";
         const string PackageStr                    = "+ Create a Package";
+        const string InlineCodeStr                 = "+ Create Inline Code";
         const string StateChartStr                 = "+ Create a State Chart";
         const string StateStr                      = "+ Create a State";
         const string EntryStateStr                 = "+ Create an Entry State";
@@ -97,6 +98,7 @@ namespace iCanScript.Internal.Editor {
                 case VSObjectType.StaticField:       FunctionMenu(selectedObject, storage); break;
                 case VSObjectType.NonStaticProperty: FunctionMenu(selectedObject, storage); break;
                 case VSObjectType.StaticProperty:    FunctionMenu(selectedObject, storage); break;
+                case VSObjectType.InlineCode:        FunctionMenu(selectedObject, storage); break;
                 case VSObjectType.OnStateEntry:      OnStatePackageMenu(selectedObject); break;
                 case VSObjectType.OnStateUpdate:     OnStatePackageMenu(selectedObject); break;
                 case VSObjectType.OnStateExit:       OnStatePackageMenu(selectedObject); break;
@@ -156,10 +158,11 @@ namespace iCanScript.Internal.Editor {
             int idx;
             if(!selectedObject.IsIconizedInLayout && !selectedObject.IsFoldedInLayout) {
                 // Base menu items
-                idx= GrowMenuBy(ref menu, 3);
+                idx= GrowMenuBy(ref menu, 4);
                 menu[idx]= new iCS_MenuContext(PackageStr);
                 menu[idx+1]= new iCS_MenuContext(StateChartStr);
-                menu[idx+2]= new iCS_MenuContext(SeparatorStr);
+                menu[idx+2]= new iCS_MenuContext(InlineCodeStr);
+                menu[idx+3]= new iCS_MenuContext(SeparatorStr);
             }
             if(!selectedObject.IsFunctionDefinition && !selectedObject.IsEventHandler) {
                 idx= GrowMenuBy(ref menu, 2);
@@ -508,6 +511,7 @@ namespace iCanScript.Internal.Editor {
                 case SetAsDisplayRootStr:       iCS_UserCommands.SetAsDisplayRoot(targetObject); break;
                 case ClearNavigationHistoryStr: iCS_UserCommands.ResetDisplayRoot(iStorage); break;
                 case PackageStr:                iCS_UserCommands.CreatePackage(targetObject, globalPos, null); break;
+                case InlineCodeStr:             iCS_UserCommands.CreateInlineCode(targetObject, globalPos, "InlineCode"); break;
                 case StateChartStr:             iCS_UserCommands.CreateStateChart(targetObject, globalPos, null); break;
                 case StateStr:                  iCS_UserCommands.CreateState(targetObject, globalPos, null);  break;
                 case SetAsEntryStr:             iCS_UserCommands.SetAsStateEntry(targetObject); break;

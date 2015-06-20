@@ -135,7 +135,7 @@ namespace iCanScript.Internal.Editor {
             // -- Special case for "Owner". --
             if(port.IsOwner && port.IsInputPort) return "Owner";
             // -- Convert the initial value to its string representation. --
-            object portValue= port.PortValue;
+            object portValue= port.Value;
             return (portValue != null) ? GetValueAsString(portValue) : null;
         }
         // ----------------------------------------------------------------------
@@ -155,7 +155,7 @@ namespace iCanScript.Internal.Editor {
                 if(distance < 200.0f) return false;
             }
             if(port.IsOwner) return true;
-            object portValue= port.PortValue;
+            object portValue= port.Value;
             if(portValue == null) return false;
             if(!Application.isPlaying) return true;
             return false;

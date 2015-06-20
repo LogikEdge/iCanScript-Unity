@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Collections;
-using iCanScript.Internal.Editor.CodeEngineering;
+using iCanScript.Internal.Editor.CodeGeneration;
 
 namespace iCanScript.Internal.Editor {
     using Prefs= PreferencesController;

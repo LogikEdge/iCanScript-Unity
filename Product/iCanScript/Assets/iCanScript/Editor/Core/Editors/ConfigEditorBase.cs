@@ -17,8 +17,8 @@ namespace iCanScript.Internal.Editor {
         protected const float kMargin      = 10.0f;
         protected const float kTitleHeight = 40.0f;
         protected const float kColumn1Width= 120.0f;
-        protected const float kColumn2Width= 180.0f;
-        protected const float kColumn3Width= 180.0f;
+        protected const float kColumn2Width= 155.0f;
+        protected const float kColumn3Width= 205.0f;
         protected const float kColumn1X    = 0;
         protected const float kColumn2X    = kColumn1X+kColumn1Width;
         protected const float kColumn3X    = kColumn2X+kColumn2Width;
@@ -45,7 +45,9 @@ namespace iCanScript.Internal.Editor {
         // ---------------------------------------------------------------------------------
         public new void OnEnable() {
             base.OnEnable();
-            title= GetTitle();
+            Texture2D iCanScriptLogo= null;
+            TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo);
+            titleContent= new GUIContent(GetTitle(), iCanScriptLogo);
             optionStrings= GetMainSelectionGridStrings();
             minSize= new Vector2(500f, 400f);
             maxSize= new Vector2(500f, 400f);

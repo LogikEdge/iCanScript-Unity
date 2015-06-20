@@ -1,4 +1,4 @@
 namespace iCanScript.Internal.Editor {
-    public sealed class iCS_PreferencesEditorWindow : PreferencesEditor {}    
+    public sealed class iCS_GlobalSettingsEditorWindow : GlobalSettingsEditor {}    
 }
 

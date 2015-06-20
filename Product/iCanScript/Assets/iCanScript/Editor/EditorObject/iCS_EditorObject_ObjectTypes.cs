@@ -16,6 +16,7 @@ namespace iCanScript.Internal.Editor {
         public bool IsBehaviour                 { get { return EngineObject.IsBehaviour; }}
         public bool IsPackage                   { get { return EngineObject.IsPackage; }}
         public bool IsEventHandler              { get { return EngineObject.IsEventHandler; }}
+        public bool IsInlineCode                { get { return EngineObject.IsInlineCode; }}
         public bool IsMux                       { get { return EngineObject.IsMux; }}
         public bool IsConstructor               { get { return EngineObject.IsConstructor; }}
         public bool IsNonStaticFunction         { get { return EngineObject.IsNonStaticFunction; }}
@@ -98,23 +99,8 @@ namespace iCanScript.Internal.Editor {
     	public bool IsTargetOrSelfPort			{ get { return IsTargetPort || IsSelfPort; }}
     	public bool IsTargetPort			    { get { return EngineObject.IsTargetPort; }}
     	public bool IsSelfPort			        { get { return EngineObject.IsSelfPort; }}
-        // Variable Queries
-        public bool IsStatic {
-            get {
-                return IsStaticPrivateVariable || IsStaticPublicVariable;
-            }
-        }
-        public bool IsPublic {
-            get {
-                return IsPublicVariable || IsStaticPublicVariable;
-            }
-        }
-        public bool IsPrivate {
-            get {
-                return IsPrivateVariable || IsStaticPrivateVariable;
-            }
-        }
-        
+
+
         // -------------------------------------------------------------------
         // Special Cases
         public bool IsProgrammaticInstancePort  {

@@ -75,7 +75,7 @@ namespace iCanScript.Internal.Editor {
         public static bool IsEnableAlwaysTrue(iCS_EditorObject enablePort) {
             var producerPort= GraphInfo.GetProducerPort(enablePort);
             if(producerPort.IsInputPort) {
-                var initialValue= producerPort.InitialValue;
+                var initialValue= producerPort.Value;
                 if(initialValue is UndefinedTag) return false;
                 var value= (bool)initialValue;
                 return value == true;
@@ -91,7 +91,7 @@ namespace iCanScript.Internal.Editor {
         public static bool IsEnableAlwaysFalse(iCS_EditorObject enablePort) {
             var producerPort= GraphInfo.GetProducerPort(enablePort);
             if(producerPort.IsInputPort) {
-                var initialValue= producerPort.InitialValue;
+                var initialValue= producerPort.Value;
                 if(initialValue is UndefinedTag || initialValue == null) return false;
                 var value= (bool)initialValue;
                 return value == false;
