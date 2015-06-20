@@ -50,9 +50,20 @@ namespace iCanScript.Internal.Editor {
         // -------------------------------------------------------------------
         /// Edit node specific information.
     	protected override void OnNodeSpecificGUI() {
-            EditorGUILayout.EnumPopup("Function Type", FunctionType.Public);
+            var variableType= ConvertEnum(vsObject.NodeSpec, FunctionType.Public) as System.Enum;
+            variableType= EditorGUILayout.EnumPopup("Function Type", variableType);
+            SetNodeSpec(ConvertEnum(variableType, NodeSpecification.PublicFunction));                        
     	}
         
+		// ===================================================================
+        /// Sets the node specififcation.
+		///
+		/// @param nodeSpec The new node specification.
+		///
+        protected void SetNodeSpec(NodeSpecification nodeSpec) {
+			vsObject.NodeSpec= nodeSpec;
+        }
+
     }
     
 }
