@@ -309,6 +309,34 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
 			}
             return ""; 
         }
+    	// -------------------------------------------------------------------------
+        /// Converts the given visual object specification to its access string
+        /// representation.
+        ///
+        /// @param vsObject The visual script to be converted.
+        /// @return The string representation of the acces type.
+        ///
+        public static string ToAccessString(iCS_EditorObject vsObject) {
+            if(vsObject.IsPublic)    return "public ";
+            if(vsObject.IsPrivate)   return "private ";
+            if(vsObject.IsProtected) return "protected ";
+            return "";
+        }
+        // -------------------------------------------------------------------
+        /// Converts the given visual script specification to its scope string
+        /// representation.
+        ///
+        /// @param vsObject The visual script to be converted.
+        /// @return The string representation of the scope type.
+        ///
+        public static string ToScopeString(iCS_EditorObject vsObject) {
+            if(vsObject.IsStatic)           return "static ";
+            if(vsObject.IsConstant)         return "const ";
+            if(vsObject.IsVirtualFunction)  return "virtual ";
+            if(vsObject.IsOverrideFunction) return "override ";
+            if(vsObject.IsNewFunction)      return "new ";
+            return "";
+        }
         
         // -------------------------------------------------------------------
         /// Converts the given Type to its string representation.

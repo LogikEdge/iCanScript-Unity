@@ -14,14 +14,14 @@ namespace iCanScript.Internal.Editor {
             Public            = NodeSpecification.PublicFunction,
             PublicStatic      = NodeSpecification.PublicStaticFunction,
             PublicVirtual     = NodeSpecification.PublicVirtualFunction,
-            PublicOverride    = NodeSpecification.PublicVirtualFunction,
+            PublicOverride    = NodeSpecification.PublicOverrideFunction,
             PublicNew         = NodeSpecification.PublicNewFunction,
             PublicNewStatic   = NodeSpecification.PublicNewStaticFunction,
             Private           = NodeSpecification.PrivateFunction,
             PrivateStatic     = NodeSpecification.PrivateStaticFunction,
             Protected         = NodeSpecification.ProtectedFunction,
             ProtectedVirtual  = NodeSpecification.ProtectedVirtualFunction,
-            ProtectedOverride = NodeSpecification.ProtectedVirtualFunction,
+            ProtectedOverride = NodeSpecification.ProtectedOverrideFunction,
             ProtectedNew      = NodeSpecification.ProtectedNewFunction,
             ProtectedNewStatic= NodeSpecification.ProtectedNewStaticFunction
         };
@@ -61,7 +61,7 @@ namespace iCanScript.Internal.Editor {
 		/// @param nodeSpec The new node specification.
 		///
         protected void SetNodeSpec(NodeSpecification nodeSpec) {
-			vsObject.NodeSpec= nodeSpec;
+			iCS_UserCommands.ChangeNodeSpec(vsObject, nodeSpec);
         }
 
     }

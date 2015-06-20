@@ -27,7 +27,6 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
         /// @return The formatted body code for the if-statement.
         ///
         public override string GenerateBody(int indentSize) {
-            Debug.Log(VSObject.ValueArchive);
             return ToValueString(VSObject.Value);
         }
     

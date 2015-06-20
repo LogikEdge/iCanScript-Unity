@@ -19,6 +19,7 @@ V2.0.21 add the ability to define node that can inject your own source code into
 
 ### List of Changes
 
+- **<span style="color: green">\[NEW\] </span>** The function access _(public, private, protected)_ and scope _(static, virtual, override, new)_ specifications can now be configured using _Function Definition Editor_.
 - **<span style="color: green">\[NEW\] </span>** A new node type _**Inline Code***_ has been added.
 	- The _**Inline Code**_ node can be used to injecting your own source code into the generated code.
 	- The _**Inline Code**_ can be added to your graph from the contextual menu.

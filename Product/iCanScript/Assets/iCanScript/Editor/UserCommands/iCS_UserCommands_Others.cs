@@ -4,6 +4,7 @@
 //#define DEBUG
 using UnityEngine;
 using System.Collections;
+using iCanScript.Internal.Engine;
 
 namespace iCanScript.Internal.Editor {
     using Prefs= PreferencesController;
@@ -103,6 +104,24 @@ namespace iCanScript.Internal.Editor {
     		}
             iCS_UserCommands.CloseTransaction(iStorage, "Change value => "+vsObject.DisplayName, TransactionType.Field);
             iCS_EditorController.RepaintEditorsWithValues();
+    	}
+        // ======================================================================
+        /// Change the node specification of the visual script object.
+        ///
+        /// @param vsObject The visual script to change.
+        /// @param nodeSpec The new node specification.
+        ///
+    	public static void ChangeNodeSpec(iCS_EditorObject vsObject, NodeSpecification nodeSpec) {
+    		if(vsObject == null) return;
+    		var iStorage= vsObject.IStorage;
+            OpenTransaction(iStorage);
+    		try {
+    			vsObject.NodeSpec= nodeSpec;
+    		}
+    		catch(System.Exception) {
+    			CancelTransaction(iStorage);
+    		}
+            iCS_UserCommands.CloseTransaction(iStorage, "Change Node Specification => "+vsObject.DisplayName, TransactionType.Field);
     	}
         // ----------------------------------------------------------------------
         public static void AutoLayoutPort(iCS_EditorObject port) {

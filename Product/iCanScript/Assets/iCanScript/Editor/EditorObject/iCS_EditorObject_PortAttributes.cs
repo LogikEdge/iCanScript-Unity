@@ -37,51 +37,6 @@ namespace iCanScript.Internal.Editor {
     		get { return EngineObject.SourceId; }
     		set { EngineObject.SourceId= value; }
     	}
-    	// ======================================================================
-        // Variable type information queries.
-        public bool IsOwner {
-            get {
-                if(!IsDataPort) return false;
-                return PortSpec == PortSpecification.Owner;
-            }
-        }
-        public bool IsConstant {
-            get {
-                if(!IsDataPort) return false;
-                return PortSpec == PortSpecification.Constant;
-            }
-        }
-        public bool IsPublicVariable {
-            get {
-                if(!IsDataPort) return false;
-                return PortSpec == PortSpecification.PublicVariable;
-            }
-        }
-        public bool IsStaticPublicVariable {
-            get {
-                if(!IsDataPort) return false;
-                return PortSpec == PortSpecification.StaticPublicVariable;
-            }
-        }
-        public bool IsPrivateVariable {
-            get {
-                if(!IsDataPort) return false;
-                return PortSpec == PortSpecification.PrivateVariable;
-            }
-        }
-        public bool IsStaticPrivateVariable {
-            get {
-                if(!IsDataPort) return false;
-                return PortSpec == PortSpecification.StaticPrivateVariable;
-            }
-        }
-        public bool IsTypeVariable {
-            get {
-                return IsConstant || IsPublicVariable || IsPrivateVariable
-                    || IsStaticPublicVariable || IsStaticPrivateVariable;
-            }
-        }
-        
     	// ----------------------------------------------------------------------
         public iCS_EditorObject ProducerPort {
     		get { return ProducerPortId != -1 ? myIStorage[ProducerPortId] : null; }

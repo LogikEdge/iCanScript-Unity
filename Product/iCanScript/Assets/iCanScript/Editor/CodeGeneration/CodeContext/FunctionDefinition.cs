@@ -167,11 +167,9 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
             }
             // Add Access & Scope specifiers.
             result.Append(indent);
-            result.Append(ToAccessString(myAccessSpecifier));
-            result.Append(" ");
-            result.Append(ToScopeString(myScopeSpecifier));
+            result.Append(ToAccessString(VSObject));
+            result.Append(ToScopeString(VSObject));
             // Add return type
-            result.Append(" ");
             var returnPort= GetReturnPort(VSObject);
             if(returnPort == null) {
                 result.Append("void");
