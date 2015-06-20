@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+using iCanScript.Internal.Engine;
 
 namespace iCanScript.Internal.Editor {
 
@@ -10,7 +11,19 @@ namespace iCanScript.Internal.Editor {
         // TYPES
         // -------------------------------------------------------------------
         public enum FunctionType {
-            Public, Private, PublicAndStatic, PrivateAndStatic
+            Public            = NodeSpecification.PublicFunction,
+            PublicStatic      = NodeSpecification.PublicStaticFunction,
+            PublicVirtual     = NodeSpecification.PublicVirtualFunction,
+            PublicOverride    = NodeSpecification.PublicVirtualFunction,
+            PublicNew         = NodeSpecification.PublicNewFunction,
+            PublicNewStatic   = NodeSpecification.PublicNewStaticFunction,
+            Private           = NodeSpecification.PrivateFunction,
+            PrivateStatic     = NodeSpecification.PrivateStaticFunction,
+            Protected         = NodeSpecification.ProtectedFunction,
+            ProtectedVirtual  = NodeSpecification.ProtectedVirtualFunction,
+            ProtectedOverride = NodeSpecification.ProtectedVirtualFunction,
+            ProtectedNew      = NodeSpecification.ProtectedNewFunction,
+            ProtectedNewStatic= NodeSpecification.ProtectedNewStaticFunction
         };
         
         // ===================================================================
