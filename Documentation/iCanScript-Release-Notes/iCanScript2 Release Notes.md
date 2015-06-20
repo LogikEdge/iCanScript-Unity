@@ -11,9 +11,9 @@ CSS: Github.css
 
 ## iCanScript v2.0.21 ##
 
-_June 15, 2015_
+_June 20, 2015_
 
-V2.0.21 add the ability to define node that can inject your own source code into the generated code.
+V2.0.21 now allows to configure the function access and scope specification.  In addition, it includes the ability for the user to define an _**Inline**_ code node to inject textual code inside the generated code.
 
 **<span style="color: red">\[WARNING\]:</span>**  V2.0.20 requires Unity V5.1.0 or later.  Please upgrade Unity before using this version of iCanScript.
 
