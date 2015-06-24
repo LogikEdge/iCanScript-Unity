@@ -47,6 +47,7 @@ namespace iCanScript.Internal.Editor {
         /// Loads the active project from the user preferences.
         public static void LoadProjectFromPreferences() {
             // TODO:
+            GetProject();
         }
 
         // =================================================================================
@@ -73,6 +74,10 @@ namespace iCanScript.Internal.Editor {
         /// Ask the user to create or select an exist project.
         public static void GetProject() {
             // TODO:
+            var projects= FileUtils.GetFilesWithExtension("icsproject");
+            foreach(var p in projects) {
+                Debug.Log(p);
+            }
         }
     }
 

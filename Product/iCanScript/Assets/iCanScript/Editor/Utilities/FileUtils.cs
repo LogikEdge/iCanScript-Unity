@@ -8,6 +8,23 @@ namespace iCanScript.Internal.Editor {
     
     public static class FileUtils {
 
+        // ======================================================================
+        // PROPERTIES
+        // ----------------------------------------------------------------------
+        public static string SystemAssetPath {
+            get { return Application.dataPath; }
+        }
+        
+        // ======================================================================
+        /// Finds all files with a given extension.
+        ///
+        /// @param extension The extension to search for.
+        /// @return The list of files matching the request.
+        ///
+        public static string[] GetFilesWithExtension(string extension) {
+            return Directory.GetFiles(SystemAssetPath, "*."+extension, SearchOption.AllDirectories);
+        }
+        
         // ----------------------------------------------------------------------
         // Create a subfolder under the project Assets folder (if it does not exist)
         public static void CreateAssetFolder(string folderPath) {
