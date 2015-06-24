@@ -114,5 +114,15 @@ namespace iCanScript.Internal.Editor {
 		public void BuildFolders() {
 			
 		}
+
+		// ========================================================================
+        /// Serialize the content of the project information.
+        ///
+        /// @return A string with the serialized project.
+        ///
+        public string Serialize() {
+            // TODO:
+            return "";
+        }
     }
 }
