@@ -75,7 +75,7 @@ namespace iCanScript.Internal.Editor {
         /// Ask the user to create or select an exist project.
         public static void GetProject() {
             // TODO:
-            CreateProject();
+            CreateProject("iCanScript-Examples.ProjectTest");
             var projects= FileUtils.GetFilesWithExtension("icsproject");
             foreach(var p in projects) {
                 Debug.Log(p);
@@ -84,19 +84,13 @@ namespace iCanScript.Internal.Editor {
 
         // =================================================================================
         /// Creates a project file.
-        public static ProjectInfo CreateProject() {
-            // TODO:
-            var projectName= "iCanScript-Examples.ProjectTest";
-            // -- Create a new project with the given name. --
-            ProjectInfo project= new ProjectInfo();
-            project.ProjectName= projectName;
-            // -- Create the project folders (if not existing). --
-			var projectPath= project.ProjectName.Replace('.', '/'); 
-            FileUtils.CreateAssetFolder(projectPath);
-            // -- Save the project information. --
-            var fileName= Path.GetFileName(projectPath)+".icsproject";
-            var filePath= projectPath+"/"+fileName;
-            TextFileUtils.WriteFile(filePath, project.Serialize());
+        ///
+        /// @param projectName The name of the project.
+        /// @return The newly created project info.
+        ///
+        public static ProjectInfo CreateProject(string projectName) {
+            var project= new ProjectInfo(projectName);
+            project.Save();
             return project;
         }
     }

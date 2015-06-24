@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.IO;
 using System.Text;
 using System.Collections;
 
@@ -106,13 +107,23 @@ namespace iCanScript.Internal.Editor {
 		// ========================================================================
 		/// Save and Update the project information.
 		public void Save() {
-			Debug.Log("Saving the project: "+myProjectName);
+            // -- Create the project folders (if not existing). --
+			var projectPath= myProjectName.Replace('.', '/'); 
+            FileUtils.CreateAssetFolder(projectPath);
+            FileUtils.CreateAssetFolder(projectPath+"/Visual Scripts");
+            FileUtils.CreateAssetFolder(projectPath+"/Generated Code");
+            FileUtils.CreateAssetFolder(projectPath+"/Editor/Visual Scripts");
+            FileUtils.CreateAssetFolder(projectPath+"/Editor/Generated Code");
+            // -- Save the project information. --
+            var fileName= Path.GetFileName(projectPath)+".icsproject";
+            var filePath= projectPath+"/"+fileName;
+            TextFileUtils.WriteFile(filePath, Serialize());
 		}
 		
 		// ========================================================================
 		/// Build folder structure for project.
 		public void BuildFolders() {
-			
+		    // TODO:
 		}
 
 		// ========================================================================
