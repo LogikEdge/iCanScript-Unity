@@ -19,10 +19,15 @@ namespace iCanScript.Internal.Editor {
         /// Finds all files with a given extension.
         ///
         /// @param extension The extension to search for.
+        /// @param relativePath The folder path relative to the Asset folder.
         /// @return The list of files matching the request.
         ///
-        public static string[] GetFilesWithExtension(string extension) {
-            return Directory.GetFiles(SystemAssetPath, "*."+extension, SearchOption.AllDirectories);
+        public static string[] GetFilesWithExtension(string extension, string relativePath= null) {
+            var path= SystemAssetPath;
+            if(!String.IsNullOrEmpty(relativePath)) {
+                path+= "/"+relativePath;
+            }
+            return Directory.GetFiles(path, "*."+extension, SearchOption.AllDirectories);
         }
         
         // ----------------------------------------------------------------------
