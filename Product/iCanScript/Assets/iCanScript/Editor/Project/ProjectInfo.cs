@@ -121,7 +121,7 @@ namespace iCanScript.Internal.Editor {
             // -- Save the project information. --
             var fileName= Path.GetFileName(projectPath)+".icsproject";
             var filePath= projectPath+"/"+fileName;
-            TextFileUtils.WriteFile(filePath, Serialize());
+            JSONFile.PrettyWrite(filePath, this);
 		}
 		
 		// ========================================================================
@@ -130,14 +130,5 @@ namespace iCanScript.Internal.Editor {
 		    // TODO:
 		}
 
-		// ========================================================================
-        /// Serialize the content of the project information.
-        ///
-        /// @return A string with the serialized project.
-        ///
-        public string Serialize() {
-            var jsonRoot= JObject.Build(this);
-            return JSONPrettyPrint.Print(jsonRoot.Encode(), 80);
-        }
     }
 }
