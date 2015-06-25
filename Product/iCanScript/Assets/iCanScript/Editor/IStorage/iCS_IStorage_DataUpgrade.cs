@@ -22,10 +22,10 @@ namespace iCanScript.Internal.Editor {
         
             // PRE-PROCESSING ====================================================
             // Use this are to perform pre-processing data conversion.
-    		iCS_Version softwareVersion= iCS_Version.Current;
+    		Version softwareVersion= Version.Current;
 
     		// Extract the version of the storage.
-    		iCS_Version storageVersion= new iCS_Version(EngineStorage.MajorVersion, EngineStorage.MinorVersion, EngineStorage.BugFixVersion);
+    		Version storageVersion= new Version(EngineStorage.MajorVersion, EngineStorage.MinorVersion, EngineStorage.BugFixVersion);
     		if(softwareVersion.IsEqual(storageVersion)) { return; }
 		
             // -- Warn the user that an upgrade toke place --
@@ -40,10 +40,10 @@ namespace iCanScript.Internal.Editor {
         
             // PRE-PROCESSING ====================================================
             // Use this are to perform pre-processing data conversion.
-    		iCS_Version softwareVersion= iCS_Version.Current;
+    		Version softwareVersion= Version.Current;
 
     		// Extract the version of the storage.
-    		iCS_Version storageVersion= new iCS_Version(EngineStorage.MajorVersion, EngineStorage.MinorVersion, EngineStorage.BugFixVersion);
+    		Version storageVersion= new Version(EngineStorage.MajorVersion, EngineStorage.MinorVersion, EngineStorage.BugFixVersion);
     		if(softwareVersion.IsEqual(storageVersion)) { return; }
 		
             // -- Upgrade each version --
@@ -77,7 +77,7 @@ namespace iCanScript.Internal.Editor {
         ///
         /// @param softwareVersion The current version identifier.
         ///
-    	void ShowUpgradeDialog(iCS_Version softwareVersion) {
+    	void ShowUpgradeDialog(Version softwareVersion) {
     		EditorUtility.DisplayDialog("iCanScript Data Upgrade Required", "Your visual scripts were created with an earlier version of iCanScript.\n\nAn upgrade to v"+softwareVersion.ToString()+" will be performed in memory.\nPlease save your scenes to complete the upgrade.", "Ok");
     	}
         // ----------------------------------------------------------------------

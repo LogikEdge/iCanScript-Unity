@@ -8,13 +8,22 @@ namespace iCanScript.Internal.Editor {
     
     public static class TextFileUtils {
         // =================================================================================
-        // ---------------------------------------------------------------------------------
+        /// Determines if the given file exists.
+        ///
+        /// @param fileName The file path to verify.  Can be Absolute or Asset relative.
+        /// @return _true_ if file exists. _false_ otherwise.
+        ///
     	public static bool Exists(string fileName) {
     		string systemPath= FileUtils.ToSystemPath(fileName);
     		return File.Exists(systemPath);
     	}
-        // ---------------------------------------------------------------------------------
-    	// Reads and return the text content of the file at the given path.
+
+        // =================================================================================
+    	/// Reads and return the text content of the file at the given path.
+        ///
+        /// @param fileName The file path to verify.  Can be Absolute or Asset relative.
+        /// @return The content of the file.
+        ///
         public static string ReadFile(string fileName) {
     		string systemPath= FileUtils.ToSystemPath(fileName);
     
@@ -35,8 +44,13 @@ namespace iCanScript.Internal.Editor {
                 return null;
             }
         }
-        // ---------------------------------------------------------------------------------
+
+        // =================================================================================
     	/// Writes the given text into the file at the given path.
+        ///
+        /// @param fileName The file path to verify.  Can be Absolute or Asset relative.
+        /// @param fileData A string representing the file data.
+        ///
         public static bool WriteFile(string fileName, string fileData) {
     		var systemPath= FileUtils.ToSystemPath(fileName);
     
@@ -56,8 +70,12 @@ namespace iCanScript.Internal.Editor {
                 return false;
             }
         }
-        // ---------------------------------------------------------------------------------
+
+        // =================================================================================
     	/// Deletes the given text file.
+        ///
+        /// @param fileName The file path to verify.  Can be Absolute or Asset relative.
+        ///
         public static bool DeleteFile(string fileName) {
     		var systemPath= FileUtils.ToSystemPath(fileName);    
             try {

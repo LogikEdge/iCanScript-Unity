@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Collections;
+using iCanScript.Internal.JSON;
 
 namespace iCanScript.Internal.Editor {
 	using CodeParsing;
@@ -16,9 +17,10 @@ namespace iCanScript.Internal.Editor {
 		// ========================================================================
 		// Fields
 		// ------------------------------------------------------------------------
-		string myProjectName    = null;
-		string myNamespace      = null;
-		string myEditorNamespace= null;
+        public string   myVersion        = null;
+		public string   myProjectName    = null;
+		public string   myNamespace      = null;
+		public string   myEditorNamespace= null;
 		
 		// ========================================================================
 		// Properties
@@ -114,6 +116,8 @@ namespace iCanScript.Internal.Editor {
             FileUtils.CreateAssetFolder(projectPath+"/Generated Code");
             FileUtils.CreateAssetFolder(projectPath+"/Editor/Visual Scripts");
             FileUtils.CreateAssetFolder(projectPath+"/Editor/Generated Code");
+            // -- Update version information. --
+            myVersion= Version.Current.ToString();
             // -- Save the project information. --
             var fileName= Path.GetFileName(projectPath)+".icsproject";
             var filePath= projectPath+"/"+fileName;
@@ -132,8 +136,8 @@ namespace iCanScript.Internal.Editor {
         /// @return A string with the serialized project.
         ///
         public string Serialize() {
-            // TODO:
-            return "";
+            var jsonRoot= JObject.Build(this);
+            return JSONPrettyPrint.Print(jsonRoot.Encode(), 80);
         }
     }
 }
