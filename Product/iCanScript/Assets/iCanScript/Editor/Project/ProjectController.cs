@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.IO;
 using System.Collections;
+using iCanScript.Internal.JSON;
 
 namespace iCanScript.Internal.Editor {
     
