@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
+using System;
 using System.IO;
 using System.Collections;
 using iCanScript.Internal.JSON;
 
 namespace iCanScript.Internal.Editor {
-    
+    using Prefs= PreferencesController;
+	
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     /// This class creates an active project singleton.
     ///
@@ -16,7 +18,8 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
-        static ProjectInfo  myProject= null;
+		static string		myProjectPath= null;
+        static ProjectInfo  myProject    = null;
         
         // =================================================================================
         // Properties
@@ -42,14 +45,18 @@ namespace iCanScript.Internal.Editor {
         }
         public static void Start() {}
         public static void Shutdown() {
-            SaveProjectToPreferences();
+            Prefs.ActiveProjectPath= myProjectPath;
         }
         
         // =================================================================================
         /// Loads the active project from the user preferences.
         public static void LoadProjectFromPreferences() {
-            // TODO:
-            GetProject();
+			myProjectPath= Prefs.ActiveProjectPath;
+			if(String.IsNullOrEmpty(myProjectPath)) {
+//				CreateProject();
+				return;
+			}
+            LoadProject(myProjectPath);
         }
 
         // =================================================================================
@@ -99,6 +106,7 @@ namespace iCanScript.Internal.Editor {
         ///
         public static ProjectInfo CreateProject(string projectName) {
             var project= new ProjectInfo(projectName);
+			var projectPath= projectName.Replace('.', '/');
             project.Save();
             return project;
         }

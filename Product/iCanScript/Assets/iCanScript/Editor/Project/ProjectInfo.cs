@@ -47,7 +47,38 @@ namespace iCanScript.Internal.Editor {
 		}
 
 		// ========================================================================
+		/// Extracts the absolute project folder path.
+		public string GetProjectFolder() {
+			var projectPath= myProjectName.Replace('.', '/');
+			return Folder.AssetToAbsolutePath(projectPath);
+		}
+		
+		// ========================================================================
+		/// Extracts the project file name from the project name.
+		public string GetFileName() {
+			var projectPath= myProjectName.Replace('.', '/');
+			return Path.GetFileName(projectPath)+".icsproject";
+		}
+		
+		// ========================================================================
+		/// Extracts the engine namespace from the project name.
+		public string GetNamespace() {
+			var splitName= SplitProjectName(myProjectName);
+			return iCS_TextUtility.CombineWith(splitName, ".");
+		}
+		
+		// ========================================================================
+		/// Extracts the editor namespace from the project name.
+		public string GetEditorNamespace() {
+			return GetNamespace()+".Editor";
+		}
+		
+		// ========================================================================
 		/// Parse project name.
+		///
+		/// @param projectName The full name of the project.
+		/// @return An array of the project name constituents.
+		///
 		static string[] SplitProjectName(string projectName) {
 			// -- Convert file path to namespace format. --
 			projectName= projectName.Replace('/', '.'); 
@@ -110,7 +141,7 @@ namespace iCanScript.Internal.Editor {
 		/// Save and Update the project information.
 		public void Save() {
             // -- Create the project folders (if not existing). --
-			var projectPath= myProjectName.Replace('.', '/'); 
+			var projectPath= GetProjectFolder();
             FileUtils.CreateAssetFolder(projectPath);
             FileUtils.CreateAssetFolder(projectPath+"/Visual Scripts");
             FileUtils.CreateAssetFolder(projectPath+"/Generated Code");
@@ -119,7 +150,7 @@ namespace iCanScript.Internal.Editor {
             // -- Update version information. --
             myVersion= Version.Current.ToString();
             // -- Save the project information. --
-            var fileName= Path.GetFileName(projectPath)+".icsproject";
+            var fileName= GetFileName();
             var filePath= Folder.AssetToAbsolutePath(projectPath+"/"+fileName);
             JSONFile.PrettyWrite(filePath, this);
 		}
