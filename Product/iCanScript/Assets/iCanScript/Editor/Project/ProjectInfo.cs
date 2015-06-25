@@ -120,9 +120,18 @@ namespace iCanScript.Internal.Editor {
             myVersion= Version.Current.ToString();
             // -- Save the project information. --
             var fileName= Path.GetFileName(projectPath)+".icsproject";
-            var filePath= projectPath+"/"+fileName;
+            var filePath= Folder.AssetToAbsolutePath(projectPath+"/"+fileName);
             JSONFile.PrettyWrite(filePath, this);
 		}
 		
+		// ========================================================================
+		/// Creates a new Project info from the given JSON root object.
+        ///
+        /// @param jsonRoot The JSON root object from which to extract the project
+        ///                 information.
+        ///
+        public static ProjectInfo Create(JObject jsonRoot) {
+            return null;
+        }
     }
 }

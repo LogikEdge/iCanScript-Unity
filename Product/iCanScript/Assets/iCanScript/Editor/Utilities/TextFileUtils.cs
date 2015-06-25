@@ -10,7 +10,7 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         /// Determines if the given file exists.
         ///
-        /// @param fileName The file path to verify.  Can be Absolute or Asset relative.
+        /// @param fileName The path of the file to verify.
         /// @return _true_ if file exists. _false_ otherwise.
         ///
     	public static bool Exists(string fileName) {
@@ -21,12 +21,21 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
     	/// Reads and return the text content of the file at the given path.
         ///
-        /// @param fileName The file path to verify.  Can be Absolute or Asset relative.
+        /// @param fileName The file path inside the Asset folder.
         /// @return The content of the file.
         ///
-        public static string ReadFile(string fileName) {
+        public static string ReadAssetFile(string fileName) {
     		string systemPath= FileUtils.ToSystemPath(fileName);
-    
+            return ReadFile(systemPath);
+        }
+
+        // =================================================================================
+    	/// Reads and return the text content of the file at the given path.
+        ///
+        /// @param systemPath The absolute path of the file to read.
+        /// @return The content of the file.
+        ///
+        public static string ReadFile(string systemPath) {
             if(!File.Exists(systemPath)) {
                 return null;
             }
@@ -48,12 +57,21 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
     	/// Writes the given text into the file at the given path.
         ///
-        /// @param fileName The file path to verify.  Can be Absolute or Asset relative.
+        /// @param fileName The file path inside the Asset folder.
         /// @param fileData A string representing the file data.
         ///
-        public static bool WriteFile(string fileName, string fileData) {
+        public static bool WriteAssetFile(string fileName, string fileData) {
     		var systemPath= FileUtils.ToSystemPath(fileName);
-    
+            return WriteFile(systemPath, fileData);
+        }
+
+        // =================================================================================
+    	/// Writes the given text into the file at the given path.
+        ///
+        /// @param systemPath The absolute path of the file to write.
+        /// @param fileData A string representing the file data.
+        ///
+        public static bool WriteFile(string systemPath, string fileData) {
             StreamWriter sw= null;
             try {
                 sw= File.CreateText(systemPath);

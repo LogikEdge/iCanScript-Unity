@@ -62,12 +62,21 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         /// Save the project file to disk.
         public static void SaveProject() {
-            // TODO:
+            myProject.Save();
         }
 
         // =================================================================================
         /// Load the project file from disk.
-        public static void LoadProject() {
+        ///
+        /// @param projectPath The absolute path of the project file.
+        /// @info The active project set to the newly loaded project.
+        /// 
+        public static void LoadProject(string projectPath) {
+            var jsonRoot= JSONFile.Read(projectPath);
+            if(jsonRoot == null || jsonRoot.isNull) {
+                Debug.LogError("iCanScript: Unable to load project at=> "+projectPath);
+                return;
+            }
             // TODO:
         }
 
@@ -75,10 +84,9 @@ namespace iCanScript.Internal.Editor {
         /// Ask the user to create or select an exist project.
         public static void GetProject() {
             // TODO:
-            CreateProject("iCanScript-Examples.ProjectTest");
+            myProject= CreateProject("iCanScript-Examples.ProjectTest");
             var projects= FileUtils.GetFilesWithExtension("icsproject");
             foreach(var p in projects) {
-                Debug.Log(p);
             }
         }
 
