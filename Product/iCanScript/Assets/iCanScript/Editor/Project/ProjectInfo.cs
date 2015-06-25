@@ -124,11 +124,5 @@ namespace iCanScript.Internal.Editor {
             JSONFile.PrettyWrite(filePath, this);
 		}
 		
-		// ========================================================================
-		/// Build folder structure for project.
-		public void BuildFolders() {
-		    // TODO:
-		}
-
     }
 }
