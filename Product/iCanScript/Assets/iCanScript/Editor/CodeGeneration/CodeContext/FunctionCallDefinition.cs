@@ -242,6 +242,17 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
 				}
 	            result.Append(GenerateOperator(indentSize, functionName, paramStrings, paramOffset));
             }
+            // Special case for array subscript operator.
+            else if(functionName == "get_Item" || functionName == "set_Item") {
+                result.Append(paramStrings[0]);
+                result.Append("[");
+                result.Append(paramStrings[1]);
+                result.Append("]");
+                if(functionName == "set_Item") {
+                    result.Append("= ");
+                    result.Append(paramStrings[2]);
+                }
+            }
             else {
 	        	result.Append(FunctionCallPrefix(VSObject));
 				result.Append(GenerateFunctionCall(indentSize, functionName, paramStrings));                    

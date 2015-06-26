@@ -5,7 +5,7 @@ using iCanScript.Internal.Engine;
 
 namespace iCanScript.Internal.Editor {
     
-    public class iCS_Version {
+    public class Version {
         // ======================================================================
         // Fields
         // ----------------------------------------------------------------------
@@ -13,8 +13,8 @@ namespace iCanScript.Internal.Editor {
     	public int MinorVersion;
     	public int BugFixVersion;
 	
-    	public static iCS_Version Current=
-    		new iCS_Version(iCS_Config.MajorVersion,
+    	public static Version Current=
+    		new Version(iCS_Config.MajorVersion,
     					    iCS_Config.MinorVersion,
     						iCS_Config.BugFixVersion);
 	
@@ -22,7 +22,7 @@ namespace iCanScript.Internal.Editor {
         // ======================================================================
         // Initialization
         // ----------------------------------------------------------------------
-    	public iCS_Version(int major, int minor, int bugFix) {
+    	public Version(int major, int minor, int bugFix) {
     		MajorVersion = major;
     		MinorVersion = minor;
     		BugFixVersion= bugFix;
@@ -31,7 +31,7 @@ namespace iCanScript.Internal.Editor {
         // ======================================================================
         // Comparaisons
         // ----------------------------------------------------------------------
-    	public bool IsEqual(iCS_Version other) {
+    	public bool IsEqual(Version other) {
     		return IsEqual(other.MajorVersion, other.MinorVersion, other.BugFixVersion);
     	}
     	public bool IsEqual(int major, int minor, int bugFix) {
@@ -41,7 +41,7 @@ namespace iCanScript.Internal.Editor {
     	}
 							
         // ----------------------------------------------------------------------
-    	public bool IsNewerThen(iCS_Version other) {
+    	public bool IsNewerThen(Version other) {
     		return IsNewerThen(other.MajorVersion, other.MinorVersion, other.BugFixVersion);		
     	}
     	public bool IsNewerThen(int major, int minor, int bugFix) {
@@ -53,7 +53,7 @@ namespace iCanScript.Internal.Editor {
     	}
 
         // ----------------------------------------------------------------------
-    	public bool IsNewerOrEqualTo(iCS_Version other) {
+    	public bool IsNewerOrEqualTo(Version other) {
     		return IsNewerOrEqualTo(other.MajorVersion, other.MinorVersion, other.BugFixVersion);
     	}
     	public bool IsNewerOrEqualTo(int major, int minor, int bugFix) {
@@ -65,7 +65,7 @@ namespace iCanScript.Internal.Editor {
     	}
 	
         // ----------------------------------------------------------------------
-    	public bool IsOlderThen(iCS_Version other) {
+    	public bool IsOlderThen(Version other) {
     		return IsOlderThen(other.MajorVersion, other.MinorVersion, other.BugFixVersion);
     	}
     	public bool IsOlderThen(int major, int minor, int bugFix) {
@@ -76,7 +76,7 @@ namespace iCanScript.Internal.Editor {
     		return BugFixVersion < bugFix;
     	}
         // ----------------------------------------------------------------------
-    	public bool IsOlderOrEqualTo(iCS_Version other) {
+    	public bool IsOlderOrEqualTo(Version other) {
     		return IsOlderOrEqualTo(other.MajorVersion, other.MinorVersion, other.BugFixVersion);
     	}
     	public bool IsOlderOrEqualTo(int major, int minor, int bugFix) {
@@ -96,7 +96,7 @@ namespace iCanScript.Internal.Editor {
     	}
         // ----------------------------------------------------------------------
     	// Deserializes a version string.
-    	public static iCS_Version FromString(string versionStr) {
+    	public static Version FromString(string versionStr) {
     		int major = 0;
     		int minor = 0;
     		int bugFix= 0;
@@ -115,7 +115,7 @@ namespace iCanScript.Internal.Editor {
     				}
     			}
     		}
-    		return new iCS_Version(major, minor, bugFix);
+    		return new Version(major, minor, bugFix);
     	}
     }
 

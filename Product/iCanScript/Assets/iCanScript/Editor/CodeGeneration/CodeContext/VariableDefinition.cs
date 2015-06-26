@@ -85,16 +85,21 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
             }
     		// Generate variable from constructor.
             else if(VSObject.IsConstructor) {
-                var nbOfParams= GetNbOfParameters(myVSObject);
-                var initValues= new string[nbOfParams];
-                myVSObject.ForEachChildPort(
-                    p=> {
-                        if(p.PortIndex < (int)iCS_PortIndex.ParametersEnd) {
-                            initValues[p.PortIndex]= GetValueFor(p);
+                if(!iCS_Types.IsA<UnityEngine.Object>(myRuntimeType)) {
+                    var nbOfParams= GetNbOfParameters(myVSObject);
+                    var initValues= new string[nbOfParams];
+                    myVSObject.ForEachChildPort(
+                        p=> {
+                            if(p.PortIndex < (int)iCS_PortIndex.ParametersEnd) {
+                                initValues[p.PortIndex]= GetValueFor(p);
+                            }
                         }
-                    }
-                );
-                initializer= GenerateAllocatorFragment(myRuntimeType, initValues);
+                    );
+                    initializer= GenerateAllocatorFragment(myRuntimeType, initValues);                    
+                }
+                else {
+                    initializer= "default("+ToTypeName(myRuntimeType)+")";
+                }
             }
             else {
                 Debug.LogWarning("iCanScript: Unreconized variable type");

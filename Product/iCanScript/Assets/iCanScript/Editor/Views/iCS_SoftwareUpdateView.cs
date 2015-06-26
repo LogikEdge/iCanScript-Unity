@@ -6,7 +6,7 @@ namespace iCanScript.Internal.Editor {
     
     public static class iCS_SoftwareUpdateView {
         // ---------------------------------------------------------------------------------
-    	public static int ShowNewVersionDialog(iCS_Version currentVersion, iCS_Version latestVersion) {
+    	public static int ShowNewVersionDialog(Version currentVersion, Version latestVersion) {
             return EditorUtility.DisplayDialogComplex("A new version of iCanScript is available!",
                                                       "iCanScript "+latestVersion+" is available for download.\n"+
                                                       "Would you like to download it?",

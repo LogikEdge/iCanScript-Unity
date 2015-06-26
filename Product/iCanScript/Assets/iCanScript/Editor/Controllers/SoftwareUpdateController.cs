@@ -60,7 +60,7 @@ namespace iCanScript.Internal.Editor {
     		}
     		// Get the last revision from the server.
     		string downloadUrl= null;
-    		iCS_Version serverVersion= GetLatestReleaseId(out downloadUrl);
+    		Version serverVersion= GetLatestReleaseId(out downloadUrl);
     		if(serverVersion == null) {
     			Debug.Log("iCanScript: Unable to contact version server. Software update verification postponed.");
     			return;
@@ -97,7 +97,7 @@ namespace iCanScript.Internal.Editor {
     	public static void ManualUpdateVerification() {
     		// Check if we have the most up-to-date software
     		string downloadUrl= null;
-    		iCS_Version latestVersion= GetLatestReleaseId(out downloadUrl);
+    		Version latestVersion= GetLatestReleaseId(out downloadUrl);
     		// Tell the user we can't contact the server and abort.
     		if(latestVersion == null || downloadUrl == null) {
     			iCS_SoftwareUpdateView.ShowServerUnavailableDialog();
@@ -110,7 +110,7 @@ namespace iCanScript.Internal.Editor {
     			return;
     		}
     		// Tell the user a new version exists and ask him/her to download it.
-    		var selection= iCS_SoftwareUpdateView.ShowNewVersionDialog(iCS_Version.Current, latestVersion);
+    		var selection= iCS_SoftwareUpdateView.ShowNewVersionDialog(Version.Current, latestVersion);
     		switch(selection) {
     			case 0:	// Download
     				Application.OpenURL(downloadUrl);
@@ -129,7 +129,7 @@ namespace iCanScript.Internal.Editor {
     	// Software Update Verification Support Functions.
         // ---------------------------------------------------------------------------------
         // Returns the version string of the latest available release.
-        static iCS_Version GetLatestReleaseId(out string downloadUrl, float waitTime= 2f) {
+        static Version GetLatestReleaseId(out string downloadUrl, float waitTime= 2f) {
     		downloadUrl= null;
     		var url= URL_VersionFile;
             var download = iCS_WebUtils.WebRequest(url, waitTime);
@@ -169,13 +169,13 @@ namespace iCanScript.Internal.Editor {
             catch(System.Exception) {}
 #endif        	
     		if(jMajor == null || jMinor == null || jBugFix == null) return null;
-    		return new iCS_Version((int)jMajor.value, (int)jMinor.value, (int)jBugFix.value);
+    		return new Version((int)jMajor.value, (int)jMinor.value, (int)jBugFix.value);
         }
     
         // ----------------------------------------------------------------------
         // Returns true if the current version is equal or younger then the
     	// version returned by the server.
-        static Maybe<bool> IsUpToDate(iCS_Version serverVersion) {
+        static Maybe<bool> IsUpToDate(Version serverVersion) {
             if(serverVersion == null) {
                 return new Nothing<bool>();
             }

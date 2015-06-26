@@ -563,10 +563,7 @@ namespace iCanScript.Internal.Editor {
                     var port= CreatePort(p.Name, nodeId, parameterType, portType, (int)iCS_PortIndex.ParametersStart+idx);
     				object initialValue= p.DefaultValue;
     				if(initialValue == null || initialValue.GetType() != parameterType) {
-                        Debug.Log("Setting a default value for: "+port.FullName);
     					initialValue= iCS_Types.DefaultValue(parameterType);
-                        Debug.Log("Default is null? "+(initialValue == null));
-                        Debug.Log("Type is: "+parameterType);
     				}
                     port.Value= initialValue;
                 }
