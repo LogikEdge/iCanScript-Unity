@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System;
+using System.IO;
 using System.Text;
 using System.Collections;
+using iCanScript.Internal.JSON;
 
 namespace iCanScript.Internal.Editor {
 	using CodeParsing;
@@ -15,9 +17,10 @@ namespace iCanScript.Internal.Editor {
 		// ========================================================================
 		// Fields
 		// ------------------------------------------------------------------------
-		string myProjectName    = null;
-		string myNamespace      = null;
-		string myEditorNamespace= null;
+        public string   myVersion        = null;
+		public string   myProjectName    = null;
+		public string   myNamespace      = null;
+		public string   myEditorNamespace= null;
 		
 		// ========================================================================
 		// Properties
@@ -44,7 +47,38 @@ namespace iCanScript.Internal.Editor {
 		}
 
 		// ========================================================================
+		/// Extracts the absolute project folder path.
+		public string GetProjectFolder() {
+			var projectPath= myProjectName.Replace('.', '/');
+			return Folder.AssetToAbsolutePath(projectPath);
+		}
+		
+		// ========================================================================
+		/// Extracts the project file name from the project name.
+		public string GetFileName() {
+			var projectPath= myProjectName.Replace('.', '/');
+			return Path.GetFileName(projectPath)+".icsproject";
+		}
+		
+		// ========================================================================
+		/// Extracts the engine namespace from the project name.
+		public string GetNamespace() {
+			var splitName= SplitProjectName(myProjectName);
+			return iCS_TextUtility.CombineWith(splitName, ".");
+		}
+		
+		// ========================================================================
+		/// Extracts the editor namespace from the project name.
+		public string GetEditorNamespace() {
+			return GetNamespace()+".Editor";
+		}
+		
+		// ========================================================================
 		/// Parse project name.
+		///
+		/// @param projectName The full name of the project.
+		/// @return An array of the project name constituents.
+		///
 		static string[] SplitProjectName(string projectName) {
 			// -- Convert file path to namespace format. --
 			projectName= projectName.Replace('/', '.'); 
@@ -106,13 +140,38 @@ namespace iCanScript.Internal.Editor {
 		// ========================================================================
 		/// Save and Update the project information.
 		public void Save() {
-			Debug.Log("Saving the project: "+myProjectName);
+            // -- Create the project folders (if not existing). --
+			var projectPath= GetProjectFolder();
+            FileUtils.CreateAssetFolder(projectPath);
+            FileUtils.CreateAssetFolder(projectPath+"/Visual Scripts");
+            FileUtils.CreateAssetFolder(projectPath+"/Generated Code");
+            FileUtils.CreateAssetFolder(projectPath+"/Editor/Visual Scripts");
+            FileUtils.CreateAssetFolder(projectPath+"/Editor/Generated Code");
+            // -- Update version information. --
+            myVersion= Version.Current.ToString();
+            // -- Save the project information. --
+            var fileName= GetFileName();
+            var filePath= Folder.AssetToAbsolutePath(projectPath+"/"+fileName);
+            JSONFile.PrettyWrite(filePath, this);
 		}
 		
 		// ========================================================================
-		/// Build folder structure for project.
-		public void BuildFolders() {
-			
-		}
+		/// Creates a new Project info from the given JSON root object.
+        ///
+        /// @param jsonRoot The JSON root object from which to extract the project
+        ///                 information.
+        ///
+        public static ProjectInfo Create(JObject jsonRoot) {
+            var newProject= new ProjectInfo();
+            JString version        = jsonRoot.GetValueFor("myVersion") as JString;
+            JString projectName    = jsonRoot.GetValueFor("myProjectName") as JString;
+            JString nmspace        = jsonRoot.GetValueFor("myNamespace") as JString;
+            JString editorNamespace= jsonRoot.GetValueFor("myEditorNamespace") as JString;
+            newProject.myVersion        = version.value;
+            newProject.myProjectName    = projectName.value;
+            newProject.myNamespace      = nmspace.value;
+            newProject.myEditorNamespace= editorNamespace.value;
+            return newProject;
+        }
     }
 }

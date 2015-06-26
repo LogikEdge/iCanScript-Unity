@@ -464,6 +464,27 @@ namespace iCanScript.Internal.Editor {
         }
     
         // =================================================================================
+    	// Active Project Preferences
+        // ---------------------------------------------------------------------------------
+    	//
+    	// Default Values
+    	//
+		const string kActiveProjectPath= "";
+		
+    	//
+    	// Database access keys
+    	//
+    	const string kActiveProjectPathKey= "iCS_ActiveProjectPath";
+		
+    	//
+    	// Accessors
+    	//
+		public static string ActiveProjectPath {
+            get { return EditorPrefs.GetString(kActiveProjectPathKey, kActiveProjectPath); }
+            set { EditorPrefs.SetString(kActiveProjectPathKey, value); }        
+		}
+		
+        // =================================================================================
     	// Software Updates Preferences
         // ---------------------------------------------------------------------------------
     	//

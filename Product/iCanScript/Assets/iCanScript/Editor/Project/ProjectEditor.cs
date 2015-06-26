@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace iCanScript.Internal.Editor {
 
-	public class ProjectSettingsEditor : ConfigEditorBase {
+	public class ProjectEditor : ConfigEditorBase {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
@@ -17,7 +17,7 @@ namespace iCanScript.Internal.Editor {
         // INITIALIZATION
         // ---------------------------------------------------------------------------------
         public static void Init(iCS_IStorage iStorage) {
-            var editor= EditorWindow.CreateInstance<ProjectSettingsEditor>();
+            var editor= EditorWindow.CreateInstance<ProjectEditor>();
             editor.ShowUtility();
         }
 

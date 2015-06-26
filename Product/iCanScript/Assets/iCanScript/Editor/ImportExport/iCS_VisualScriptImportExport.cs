@@ -23,15 +23,9 @@ namespace iCanScript.Internal.Editor {
         // Import
         // ---------------------------------------------------------------------------------
         public static bool Import(iCS_VisualScriptData storage, string path) {
-            // -- Open JSON file. --
-            string jsonText= File.ReadAllText(path);
-            if(string.IsNullOrEmpty(jsonText)) {
-                Debug.LogWarning("iCanScript: No text to import from => "+path);
-                return false;
-            }
             // -- Decode JSON string. --
-            JObject root= JSON.JSON.GetRootObject(jsonText);
-            if(root.isNull) {
+            JObject root= JSONFile.Read(path);
+            if(root == null || root.isNull) {
                 Debug.LogWarning("iCanScript: Import failure: JSON file corrupted.");
                 return false;
             }
