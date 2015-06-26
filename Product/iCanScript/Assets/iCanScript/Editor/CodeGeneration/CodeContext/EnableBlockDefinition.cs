@@ -48,13 +48,19 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
             
             // -- Reposition code for simple trigger->enable --
 			CodeBase commonParent= null;
-			if(AreAllProducersTriggers() && AreAllInSameExecutionContext(out commonParent)) {
+            if(AreAllInSameExecutionContext(out commonParent)) {
 				var parentAsExecBlock= commonParent as ExecutionBlockDefinition;
-				if(parentAsExecBlock != null) {
-					parentAsExecBlock.Replace(this, myExecutionList);
-					return;					
-				}
-			}
+    			if(AreAllProducersTriggers()) {
+    				if(parentAsExecBlock != null) {
+    					parentAsExecBlock.Replace(this, myExecutionList);
+    					return;					
+    				}
+    			}
+                else {
+                    Parent.Remove(this);
+                    parentAsExecBlock.AddExecutable(this);
+                }
+            }
             
             // -- Determine if enable producers where optimized out. --
             var enableLen= myEnablePorts.Length;
