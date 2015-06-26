@@ -162,7 +162,16 @@ namespace iCanScript.Internal.Editor {
         ///                 information.
         ///
         public static ProjectInfo Create(JObject jsonRoot) {
-            return null;
+            var newProject= new ProjectInfo();
+            JString version        = jsonRoot.GetValueFor("myVersion") as JString;
+            JString projectName    = jsonRoot.GetValueFor("myProjectName") as JString;
+            JString nmspace        = jsonRoot.GetValueFor("myNamespace") as JString;
+            JString editorNamespace= jsonRoot.GetValueFor("myEditorNamespace") as JString;
+            newProject.myVersion        = version.value;
+            newProject.myProjectName    = projectName.value;
+            newProject.myNamespace      = nmspace.value;
+            newProject.myEditorNamespace= editorNamespace.value;
+            return newProject;
         }
     }
 }
