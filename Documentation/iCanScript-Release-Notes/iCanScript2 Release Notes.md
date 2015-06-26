@@ -18,6 +18,7 @@ V2.0.22 ...
 ### List of Changes
 
 - **<span style="color: red">\[FIXED\] </span>** Variables created for Unity Objects are no longer allocated.
+- **<span style="color: red">\[FIXED\] </span>** Invalid generted code for specific enable port conditions.
 
 
 * * *

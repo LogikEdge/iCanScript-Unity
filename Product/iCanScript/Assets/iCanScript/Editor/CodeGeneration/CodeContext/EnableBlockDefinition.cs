@@ -56,7 +56,7 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
     					return;					
     				}
     			}
-                else {
+                else if(parentAsExecBlock != null) {
                     Parent.Remove(this);
                     parentAsExecBlock.AddExecutable(this);
                 }
