@@ -1,6 +1,6 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.21
+Version: v2.0.22
 CSS: Github.css
 
 #  iCanScript Release Notes [Back to top]
@@ -8,6 +8,19 @@ CSS: Github.css
 <!-- PDF: <<[front-matter/pdf.md] -->
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
+
+## iCanScript v2.0.22 ##
+
+_June 20, 2015_
+
+V2.0.22 ...
+
+### List of Changes
+
+- **<span style="color: red">\[FIXED\] </span>** Variables created for Unity Objects are no longer allocated.
+
+
+* * *
 
 ## iCanScript v2.0.21 ##
 
