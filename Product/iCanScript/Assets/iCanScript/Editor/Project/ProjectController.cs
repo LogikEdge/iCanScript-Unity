@@ -92,10 +92,10 @@ namespace iCanScript.Internal.Editor {
         /// Ask the user to create or select an exist project.
         public static void GetProject() {
             // TODO:
-            myProject= CreateProject("iCanScript-Examples.ProjectTest");
-            var projects= FileUtils.GetFilesWithExtension("icsproject");
-            foreach(var p in projects) {
-            }
+//            myProject= CreateProject("iCanScript-Examples.ProjectTest");
+//            var projects= FileUtils.GetFilesWithExtension("icsproject");
+//            foreach(var p in projects) {
+//            }
         }
 
         // =================================================================================
