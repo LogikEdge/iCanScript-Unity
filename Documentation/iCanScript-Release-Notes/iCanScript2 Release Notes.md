@@ -1,13 +1,25 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.22
+Version: v2.0.23
 CSS: Github.css
 
-#  iCanScript Release Notes [Back to top]
+#  iCanScript Release Notes
 
 <!-- PDF: <<[front-matter/pdf.md] -->
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
+
+## iCanScript v2.0.23 ##
+
+_June 26, 2015_
+
+V2.0.23 ...
+
+### List of Changes
+
+
+
+* * *
 
 ## iCanScript v2.0.22 ##
 

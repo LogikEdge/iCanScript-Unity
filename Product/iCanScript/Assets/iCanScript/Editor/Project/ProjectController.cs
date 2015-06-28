@@ -104,11 +104,9 @@ namespace iCanScript.Internal.Editor {
         /// @param projectName The name of the project.
         /// @return The newly created project info.
         ///
-        public static ProjectInfo CreateProject(string projectName) {
-            var project= new ProjectInfo(projectName);
-			var projectPath= projectName.Replace('.', '/');
-            project.Save();
-            return project;
+        public static ProjectInfo CreateProject() {
+            var editor= CreateProjectDialog.Init();
+            return null;
         }
     }
 

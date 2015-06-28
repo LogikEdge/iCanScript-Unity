@@ -17,10 +17,12 @@ namespace iCanScript.Internal.Editor {
 		// ========================================================================
 		// Fields
 		// ------------------------------------------------------------------------
-        public string   myVersion        = null;
-		public string   myProjectName    = null;
-		public string   myNamespace      = null;
-		public string   myEditorNamespace= null;
+        public string   myVersion            = null;
+		public string   myProjectName        = null;
+        public string   myRootFolder         = null;
+        public bool     myCreateProjectFolder= true;
+		public string   myNamespace          = null;
+		public string   myEditorNamespace    = null;
 		
 		// ========================================================================
 		// Properties
@@ -29,13 +31,24 @@ namespace iCanScript.Internal.Editor {
 			get { return myProjectName; }
 			set { UpdateProjectName(value); }
 		}
+        public string RootFolder {
+            get { return myRootFolder; }
+            set {
+                var baseFolder= Application.dataPath;
+                if(value.StartsWith(baseFolder)) {
+                    myRootFolder= value.Substring(baseFolder.Length+1);
+                }
+            }
+        }
+        public bool CreateProjectFolder {
+            get { return myCreateProjectFolder; }
+            set { myCreateProjectFolder= value; }
+        }
 		public string Namespace {
-			get { return myNamespace; }
-			set { UpdateNamespace(value); }
+			get { return GetNamespace(); }
 		}
 		public string EditorNamespace {
-			get { return myEditorNamespace; }
-			set { myEditorNamespace= value; }
+			get { return GetEditorNamespace(); }
 		}
 		
 		// ========================================================================
@@ -47,24 +60,33 @@ namespace iCanScript.Internal.Editor {
 		}
 
 		// ========================================================================
+		/// Extracts the relative project folder path.
+		public string GetRelativeProjectFolder() {
+            var projectFolder= myRootFolder;
+            if(myCreateProjectFolder) {
+                projectFolder+= "/"+myProjectName;
+            }
+            return projectFolder;
+		}
+		
+		// ========================================================================
 		/// Extracts the absolute project folder path.
 		public string GetProjectFolder() {
-			var projectPath= myProjectName.Replace('.', '/');
-			return Folder.AssetToAbsolutePath(projectPath);
+            return Application.dataPath+"/"+myRootFolder;
 		}
 		
 		// ========================================================================
 		/// Extracts the project file name from the project name.
 		public string GetFileName() {
-			var projectPath= myProjectName.Replace('.', '/');
-			return Path.GetFileName(projectPath)+".icsproject";
+			return myProjectName+".icsproject";
 		}
 		
 		// ========================================================================
 		/// Extracts the engine namespace from the project name.
 		public string GetNamespace() {
-			var splitName= SplitProjectName(myProjectName);
-			return iCS_TextUtility.CombineWith(splitName, ".");
+			var splitName= SplitProjectName(myRootFolder);
+			var baseNamespace= iCS_TextUtility.CombineWith(splitName, ".");
+            return baseNamespace+"."+myProjectName;
 		}
 		
 		// ========================================================================

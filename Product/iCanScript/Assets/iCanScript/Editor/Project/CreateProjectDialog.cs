@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace iCanScript.Internal.Editor {
 
-	public class ProjectEditor : ConfigEditorBase {
+	public class CreateProjectDialog : ConfigEditorBase {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
@@ -16,16 +16,17 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         // INITIALIZATION
         // ---------------------------------------------------------------------------------
-        public static void Init(iCS_IStorage iStorage) {
-            var editor= EditorWindow.CreateInstance<ProjectEditor>();
+        public static CreateProjectDialog Init() {
+            var editor= EditorWindow.CreateInstance<CreateProjectDialog>();
             editor.ShowUtility();
+            return editor;
         }
 
         // =================================================================================
         // INTERFACES TO BE PROVIDED
         // ---------------------------------------------------------------------------------
         protected override string   GetTitle() {
-            return "Project Setting";
+            return "iCanScript Project Settings";
         }
         protected override string[] GetMainSelectionGridStrings() {
             return myOptionStrings;
@@ -41,17 +42,30 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
 		void General() {
             // -- Label column --
-            var pos= GetLabelColumnPositions(4);
+            var pos= GetLabelColumnPositions(7);
             GUI.Label(pos[0], "Project Name");
-            GUI.Label(pos[2], "Namespace");
-            GUI.Label(pos[3], "Editor Namespace");
+            GUI.Label(pos[1], "Project Root Folder");
+            GUI.Label(pos[2], "Create Project Folder");
+            GUI.Label(pos[4], "Project Folder");
+            GUI.Label(pos[5], "Namespace");
+            GUI.Label(pos[6], "Editor Namespace");
             
             // -- Value column --
-            pos= GetValueColumnPositions(4);
-            myProject.ProjectName    = EditorGUI.TextField(pos[0], myProject.ProjectName);
-//			myProject.Namespace      = EditorGUI.TextField(pos[2], myProject.Namespace);
-//			myProject.EditorNamespace= EditorGUI.TextField(pos[3], myProject.EditorNamespace);
+            pos= GetValueColumnPositions(7);
+            myProject.ProjectName= EditorGUI.TextField(pos[0], myProject.ProjectName);
+            var isFolderSelection= GUI.Button(pos[1], "Select Folder...");
+            myProject.CreateProjectFolder= EditorGUI.Toggle(pos[2], myProject.CreateProjectFolder);
+            EditorGUI.BeginDisabledGroup(true);
+            EditorGUI.TextField(pos[4], myProject.GetRelativeProjectFolder());
+			EditorGUI.TextField(pos[5], myProject.GetNamespace());
+			EditorGUI.TextField(pos[6], myProject.GetEditorNamespace());
+            EditorGUI.EndDisabledGroup();
 
+            // -- Process buttons. --
+            if(isFolderSelection) {
+                myProject.RootFolder= EditorUtility.OpenFolderPanel("iCanScript Project Folder Selection", Application.dataPath, "");                
+            }
+        
             // -- Reset button --
             if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Reset Namespaces")) {
 				GUI.FocusControl("");			// Remove keyboard focus.

@@ -60,6 +60,13 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
             myParameters= new CodeBase[pLen];
             foreach(var p in parameters) {
                 int idx= p.PortIndex;
+                if(idx >= parameters.Length) {
+                    VSObject.ForEachChildPort(
+                        dp=> {
+                            Debug.Log("Index: "+dp.PortIndex+" => "+dp.FullName);                            
+                        }
+                    );
+                }
                 if(p.IsInputPort) {
                     var producerPort= GraphInfo.GetProducerPort(p);
                     if(producerPort != null && producerPort != p) {

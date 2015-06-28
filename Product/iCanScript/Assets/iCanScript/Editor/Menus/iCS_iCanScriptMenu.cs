@@ -14,6 +14,13 @@ namespace iCanScript.Internal.Editor {
         }
 
         // ======================================================================
+        /// Create a new iCanScript project.
+    	[MenuItem("iCanScript/Create Project", false, 100)]
+    	public static void CreateProject() {
+            ProjectController.CreateProject();
+    	}
+        
+        // ======================================================================
     	// Create a behavior to selected game object.
     	[MenuItem("iCanScript/Create Visual Script", false, 101)]
     	public static void CreateVisualScript() {
