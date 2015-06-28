@@ -57,6 +57,18 @@ namespace iCanScript.Internal.Editor {
             PerformEngineDataUpgrade();
             GenerateEditorData();
             PerformEditorDataUpgrade();
+            CleanupEdtiorData();
+        }
+        // ----------------------------------------------------------------------
+        public void CleanupEdtiorData() {
+            ForEach(
+                o=> {
+                    // -- Cleanup port indexes. --
+                    if(o.IsNode) {
+                        GraphEditor.AdjustPortIndexes(o);
+                    }
+                }
+            );
         }
         // ----------------------------------------------------------------------
         public void SynchronizeAfterUndoRedo() {

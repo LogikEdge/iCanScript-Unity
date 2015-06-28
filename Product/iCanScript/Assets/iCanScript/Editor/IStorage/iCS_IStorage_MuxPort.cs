@@ -34,7 +34,7 @@ namespace iCanScript.Internal.Editor {
     			if(source != null) {
     				port.ObjectType= port.IsOutMuxPort ? VSObjectType.OutDynamicDataPort : VSObjectType.InDynamicDataPort;
     				SetSource(port, source);
-                    RecalculatePortIndexes(port.ParentNode);
+                    GraphEditor.AdjustPortIndexes(port.ParentNode);
     			} else {
     				DestroyInstance(port);
     			}
