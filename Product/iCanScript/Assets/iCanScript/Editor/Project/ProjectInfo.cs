@@ -18,25 +18,30 @@ namespace iCanScript.Internal.Editor {
 		// Fields
 		// ------------------------------------------------------------------------
         public string   myVersion            = null;
-		public string   myProjectName        = null;
-        public string   myRootFolder         = null;
+		public string   myProjectName        = "";
+        public string   myParentFolder       = "";
         public bool     myCreateProjectFolder= true;
-		public string   myNamespace          = null;
-		public string   myEditorNamespace    = null;
+//		public string   myNamespace          = null;
+//		public string   myEditorNamespace    = null;
 		
 		// ========================================================================
 		// Properties
 		// ------------------------------------------------------------------------
 		public string ProjectName {
-			get { return myProjectName; }
+			get { return myProjectName ?? ""; }
 			set { UpdateProjectName(value); }
 		}
         public string RootFolder {
-            get { return myRootFolder; }
+            get { return myParentFolder ?? ""; }
             set {
                 var baseFolder= Application.dataPath;
                 if(value.StartsWith(baseFolder)) {
-                    myRootFolder= value.Substring(baseFolder.Length+1);
+                    if(baseFolder == value) {
+                        myParentFolder= "";
+                    }
+                    else {
+                        myParentFolder= value.Substring(baseFolder.Length+1);                        
+                    }
                 }
             }
         }
@@ -62,7 +67,10 @@ namespace iCanScript.Internal.Editor {
 		// ========================================================================
 		/// Extracts the relative project folder path.
 		public string GetRelativeProjectFolder() {
-            var projectFolder= myRootFolder;
+            if(string.IsNullOrEmpty(myParentFolder)) {
+                return myCreateProjectFolder ? myProjectName : "";
+            }
+            var projectFolder= myParentFolder;
             if(myCreateProjectFolder) {
                 projectFolder+= "/"+myProjectName;
             }
@@ -72,7 +80,7 @@ namespace iCanScript.Internal.Editor {
 		// ========================================================================
 		/// Extracts the absolute project folder path.
 		public string GetProjectFolder() {
-            return Application.dataPath+"/"+myRootFolder;
+            return Application.dataPath+"/"+myParentFolder;
 		}
 		
 		// ========================================================================
@@ -84,9 +92,12 @@ namespace iCanScript.Internal.Editor {
 		// ========================================================================
 		/// Extracts the engine namespace from the project name.
 		public string GetNamespace() {
-			var splitName= SplitProjectName(myRootFolder);
+            // -- Translate '-' to '_' for the namespace. --
+            var formattedProjectName= NameUtility.ToTypeName(myProjectName.Replace('-','_'));
+            if(string.IsNullOrEmpty(myParentFolder)) return formattedProjectName;
+			var splitName= SplitProjectName(myParentFolder);
 			var baseNamespace= iCS_TextUtility.CombineWith(splitName, ".");
-            return baseNamespace+"."+myProjectName;
+            return baseNamespace+"."+formattedProjectName;
 		}
 		
 		// ========================================================================
@@ -136,10 +147,19 @@ namespace iCanScript.Internal.Editor {
 		/// @param projectName The new project name.
 		///
 		void UpdateProjectName(string projectName) {
-			if(myProjectName == projectName) return;
 			myProjectName= projectName;
-			var splitName= SplitProjectName(projectName);
-			UpdateNamespace(iCS_TextUtility.CombineWith(splitName, "."));
+            // -- Force first character ident rules for project name. --
+            while(myProjectName.Length > 0 && !iCS_TextUtil.IsIdent1(myProjectName[0])) {
+                myProjectName= myProjectName.Substring(1);
+            }
+            // -- Accept ident rule or '-' for remaining of the project name. --
+            for(int i= 1; i < myProjectName.Length; ++i) {
+                var c= myProjectName[i];
+                if(!iCS_TextUtil.IsIdent(c) && c != '-') {
+                    UpdateProjectName(myProjectName.Substring(0,i)+myProjectName.Substring(i+1));
+                    return;
+                }
+            }
 		}
 		
 		// ========================================================================
@@ -147,17 +167,17 @@ namespace iCanScript.Internal.Editor {
 		///
 		/// @param projectName The new project name.
 		///
-		void UpdateNamespace(string newNamespace) {
-			myNamespace= newNamespace;
-			myEditorNamespace= myNamespace+".Editor";			
-		}
-		
-		// ========================================================================
-		/// Resets the namespaces to their default values.
-		public void ResetNamespaces() {
-			var splitName= SplitProjectName(myProjectName);
-			UpdateNamespace(iCS_TextUtility.CombineWith(splitName, "."));			
-		}
+//		void UpdateNamespace(string newNamespace) {
+//			myNamespace= newNamespace;
+//			myEditorNamespace= myNamespace+".Editor";			
+//		}
+//		
+//		// ========================================================================
+//		/// Resets the namespaces to their default values.
+//		public void ResetNamespaces() {
+//			var splitName= SplitProjectName(myProjectName);
+//			UpdateNamespace(iCS_TextUtility.CombineWith(splitName, "."));			
+//		}
 		
 		// ========================================================================
 		/// Save and Update the project information.
@@ -187,12 +207,8 @@ namespace iCanScript.Internal.Editor {
             var newProject= new ProjectInfo();
             JString version        = jsonRoot.GetValueFor("myVersion") as JString;
             JString projectName    = jsonRoot.GetValueFor("myProjectName") as JString;
-            JString nmspace        = jsonRoot.GetValueFor("myNamespace") as JString;
-            JString editorNamespace= jsonRoot.GetValueFor("myEditorNamespace") as JString;
             newProject.myVersion        = version.value;
             newProject.myProjectName    = projectName.value;
-            newProject.myNamespace      = nmspace.value;
-            newProject.myEditorNamespace= editorNamespace.value;
             return newProject;
         }
     }

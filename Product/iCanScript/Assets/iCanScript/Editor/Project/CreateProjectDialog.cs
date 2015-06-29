@@ -44,7 +44,7 @@ namespace iCanScript.Internal.Editor {
             // -- Label column --
             var pos= GetLabelColumnPositions(7);
             GUI.Label(pos[0], "Project Name");
-            GUI.Label(pos[1], "Project Root Folder");
+            GUI.Label(pos[1], "Project Parent Folder");
             GUI.Label(pos[2], "Create Project Folder");
             GUI.Label(pos[4], "Project Folder");
             GUI.Label(pos[5], "Namespace");
@@ -66,11 +66,11 @@ namespace iCanScript.Internal.Editor {
                 myProject.RootFolder= EditorUtility.OpenFolderPanel("iCanScript Project Folder Selection", Application.dataPath, "");                
             }
         
-            // -- Reset button --
-            if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Reset Namespaces")) {
-				GUI.FocusControl("");			// Remove keyboard focus.
-				myProject.ResetNamespaces();
-            }
+//            // -- Reset button --
+//            if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Reset Namespaces")) {
+//				GUI.FocusControl("");			// Remove keyboard focus.
+//				myProject.ResetNamespaces();
+//            }
 
     		// -- Save changes --
             if(GUI.changed) {

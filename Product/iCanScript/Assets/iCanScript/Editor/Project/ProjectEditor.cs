@@ -49,14 +49,12 @@ namespace iCanScript.Internal.Editor {
             // -- Value column --
             pos= GetValueColumnPositions(4);
             myProject.ProjectName    = EditorGUI.TextField(pos[0], myProject.ProjectName);
-//			myProject.Namespace      = EditorGUI.TextField(pos[2], myProject.Namespace);
-//			myProject.EditorNamespace= EditorGUI.TextField(pos[3], myProject.EditorNamespace);
 
-            // -- Reset button --
-            if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Reset Namespaces")) {
-				GUI.FocusControl("");			// Remove keyboard focus.
-				myProject.ResetNamespaces();
-            }
+//            // -- Reset button --
+//            if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Reset Namespaces")) {
+//				GUI.FocusControl("");			// Remove keyboard focus.
+//				myProject.ResetNamespaces();
+//            }
 
     		// -- Save changes --
             if(GUI.changed) {
