@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System;
 using System.IO;
 using System.Collections;
@@ -27,7 +28,7 @@ namespace iCanScript.Internal.Editor {
         public static ProjectInfo Project {
             get {
                 if(myProject == null) {
-                    GetProject();
+                    GetProjects();
                 }
                 return myProject;
             }
@@ -46,6 +47,41 @@ namespace iCanScript.Internal.Editor {
         public static void Start() {}
         public static void Shutdown() {
             Prefs.ActiveProjectPath= myProjectPath;
+        }
+        
+        // =================================================================================
+        /// Creates a project file.
+    	[MenuItem("iCanScript/Create Project", false, 100)]
+    	public static void CreateProject() {
+            /*var editor=*/ CreateProjectDialog.Init();
+    	}
+
+        // =================================================================================
+        /// Opens an existing project file.
+    	[MenuItem("iCanScript/Open Project", false, 101)]
+    	public static void OpenProject() {
+            CreateProjectsMenu(OpenProject);
+    	}
+    	[MenuItem("iCanScript/Open Project", true, 101)]
+    	public static bool ValidateOpenProject() {
+            return GetProjects().Length > 0;
+    	}
+        static void OpenProject(object projectPath) {
+            Debug.Log("Opening: "+projectPath);
+        }
+        
+        // =================================================================================
+        /// Removes an existing project file.
+    	[MenuItem("iCanScript/Remove Project", false, 102)]
+    	public static void RemoveProject() {
+            CreateProjectsMenu(RemoveProject);
+    	}
+    	[MenuItem("iCanScript/Remove Project", true, 102)]
+    	public static bool ValidateRemoveProject() {
+            return GetProjects().Length > 0;
+    	}
+        static void RemoveProject(object projectPath) {
+            Debug.Log("Removing: "+projectPath);
         }
         
         // =================================================================================
@@ -89,25 +125,33 @@ namespace iCanScript.Internal.Editor {
         }
 
         // =================================================================================
-        /// Ask the user to create or select an exist project.
-        public static void GetProject() {
-            // TODO:
-//            myProject= CreateProject("iCanScript-Examples.ProjectTest");
-//            var projects= FileUtils.GetFilesWithExtension("icsproject");
-//            foreach(var p in projects) {
-//            }
+        /// Get all existing projects.
+        public static string[] GetProjects() {
+            return FileUtils.GetFilesWithExtension("icsproject");
         }
 
         // =================================================================================
-        /// Creates a project file.
+        /// Extracts the project name from the given project path.
         ///
-        /// @param projectName The name of the project.
-        /// @return The newly created project info.
+        /// @param projectPath The project path.
+        /// @return The associated project names.
         ///
-        public static ProjectInfo CreateProject() {
-            /*var editor=*/ CreateProjectDialog.Init();
-            return null;
+        public static string GetProjectName(string projectPath) {
+            return Path.GetFileNameWithoutExtension(projectPath);
         }
+
+        // =================================================================================
+        /// Ask the user to create or select an exist project.
+        public static void CreateProjectsMenu(GenericMenu.MenuFunction2 callback) {
+            var projects= GetProjects();
+            var menu= new GenericMenu();
+            foreach(var p in projects) {
+                var projectName= GetProjectName(p);
+                menu.AddItem(new GUIContent(projectName), false, callback, p);
+            }
+            menu.ShowAsContext();
+        }
+
     }
 
 }

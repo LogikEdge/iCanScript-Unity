@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using System.IO;
 using System.Collections;
+using P=iCanScript.Internal.Prelude;
 
 namespace iCanScript.Internal.Editor {
 
@@ -10,7 +12,9 @@ namespace iCanScript.Internal.Editor {
         // ---------------------------------------------------------------------------------
 		ProjectInfo	myProject      = new ProjectInfo();
     	string[]    myOptionStrings= new string[]{
-			"General"
+			"Create",
+            "Open",
+            "Remove"
     	};
     	
         // =================================================================================
@@ -34,13 +38,16 @@ namespace iCanScript.Internal.Editor {
         protected override void     ProcessSelection(int selection) {
             // Execute option specific panel.
             switch(selection) {
-				case 0: General(); break;
+				case 0: Create(); break;
+                case 1: Open(); break;
+                case 2: Remove(); break;
                 default: break;
             }
         }
         
         // =================================================================================
-		void General() {
+        /// Ask the user to provide the needed information to create a project.
+		void Create() {
             // -- Label column --
             var pos= GetLabelColumnPositions(7);
             GUI.Label(pos[0], "Project Name");
@@ -77,12 +84,36 @@ namespace iCanScript.Internal.Editor {
             }
             if(GUI.Button(new Rect(buttonX+width, buttonY, buttonWidth, 20.0f),"Save & Close")) {
                 myProject.Save();
-                DestroyImmediate(this);
+                Close();
             }
             if(GUI.Button(new Rect(buttonX+2f*width, buttonY, buttonWidth, 20.0f),"Cancel")) {
-                DestroyImmediate(this);
+                Close();
             }
 		}
+        
+        // =================================================================================
+        /// Ask the user to select which project to open.
+        void Open() {
+            // -- Label column --
+            var pos= GetLabelColumnPositions(1);
+            GUI.Label(pos[0], "Select Project");
+            
+            // -- Value column --
+            pos= GetValueColumnPositions(1);
+            var projectPaths= ProjectController.GetProjects();
+            var projectNames= P.map(p=> ProjectController.GetProjectName(p), projectPaths);
+            var idx= EditorGUI.Popup(pos[0], -1, projectNames);
+            if(idx >= 0 && idx < projectPaths.Length) {
+                Debug.Log("Opening: "+projectNames[idx]);
+            }
+        }
+
+        // =================================================================================
+        /// Ask the user to select which project to remove.
+        void Remove() {
+            
+        }
+        
 	}
 
 }

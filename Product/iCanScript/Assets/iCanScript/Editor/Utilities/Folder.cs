@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.IO;
 using System.Collections;
 
 namespace iCanScript.Internal.Editor {
@@ -24,6 +25,17 @@ namespace iCanScript.Internal.Editor {
     		}
     		// Assume we need to add the asset path
     		return systemAssetPath+"/"+assetPath;            
+        }
+
+        // ==================================================================
+        /// Returns _true_ if the given folder is empty.
+        ///
+        /// @param absolutePath The absolute path of the folder.
+        /// @return _true_ if folder is empty.
+        ///
+        public static bool IsEmpty(string absolutePath) {
+            var files= Directory.GetFiles(absolutePath);
+            return files == null || files.Length == 0;
         }
     }
 

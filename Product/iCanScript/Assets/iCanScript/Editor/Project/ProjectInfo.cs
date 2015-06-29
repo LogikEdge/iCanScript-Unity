@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System;
 using System.IO;
 using System.Text;
@@ -165,27 +166,43 @@ namespace iCanScript.Internal.Editor {
 		public void Save() {
             // -- Create the project folders (if not existing). --
 			var projectPath= GetRelativeProjectFolder();
-            Debug.Log("Saving in: "+projectPath);
+            var separator= string.IsNullOrEmpty(projectPath) ? "" : "/";
             FileUtils.CreateAssetFolder(projectPath);
-            FileUtils.CreateAssetFolder(projectPath+"/Visual Scripts");
-            FileUtils.CreateAssetFolder(projectPath+"/Generated Code");
-            FileUtils.CreateAssetFolder(projectPath+"/Editor/Visual Scripts");
-            FileUtils.CreateAssetFolder(projectPath+"/Editor/Generated Code");
+            FileUtils.CreateAssetFolder(projectPath+separator+"Visual Scripts");
+            FileUtils.CreateAssetFolder(projectPath+separator+"Generated Code");
+            FileUtils.CreateAssetFolder(projectPath+separator+"Editor/Visual Scripts");
+            FileUtils.CreateAssetFolder(projectPath+separator+"Editor/Generated Code");
             // -- Update version information. --
             myVersion= Version.Current.ToString();
             // -- Save the project information. --
             var fileName= GetFileName();
-            var filePath= Folder.AssetToAbsolutePath(projectPath+"/"+fileName);
+            var filePath= Folder.AssetToAbsolutePath(projectPath+separator+fileName);
             JSONFile.PrettyWrite(filePath, this);
 		}
 		
+		// ========================================================================
+		/// Removes all files associated with the iCanScript project.
+        public void RemoveProject() {
+            // -- Create the project folders (if not existing). --
+			var projectPath= GetRelativeProjectFolder();
+            var separator= string.IsNullOrEmpty(projectPath) ? "" : "/";
+            FileUtil.DeleteFileOrDirectory(projectPath+separator+"Visual Scripts");
+            FileUtil.DeleteFileOrDirectory(projectPath+separator+"Generated Code");
+            FileUtil.DeleteFileOrDirectory(projectPath+separator+"Editor");
+            var fileName= GetFileName();
+            FileUtil.DeleteFileOrDirectory(projectPath+separator+fileName);
+            if(Folder.IsEmpty(GetProjectFolder())) {
+                FileUtil.DeleteFileOrDirectory(GetProjectFolder());
+            }
+        }
+        
 		// ========================================================================
 		/// Creates a new Project info from the given JSON root object.
         ///
         /// @param jsonRoot The JSON root object from which to extract the project
         ///                 information.
         ///
-        public static ProjectInfo Create(JObject jsonRoot) {
+        public static ProjectInfo Load(JObject jsonRoot) {
             var newProject= new ProjectInfo();
             JString version            = jsonRoot.GetValueFor("myVersion") as JString;
             JString projectName        = jsonRoot.GetValueFor("myProjectName") as JString;
