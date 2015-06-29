@@ -18,6 +18,7 @@ V2.0.23 ...
 ### List of Changes
 
 - **<span style="color: red">\[FIXED\] </span>** Fix sporadic index out of range exception when generating code.
+- **<span style="color: red">\[FIXED\] </span>** Fix some conditions that generated unnecessary _**"if(trigger)"**_ code.
 
 * * *
 

@@ -63,9 +63,9 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
         /// @param indentSize The indentation needed for the class definition.
         /// @return The formatted trailer code for the global scope.
         ///
-        public override string GenerateTrailer(int identSize) {
-            return "\n";
-        }
+//        public override string GenerateTrailer(int identSize) {
+//            return "\n";
+//        }
 
 
         // ===================================================================

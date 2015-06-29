@@ -9,7 +9,7 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
         // ===================================================================
         // FIELDS
         // -------------------------------------------------------------------
-        protected List<CodeBase>    myExecutionList= new List<CodeBase>();
+        public List<CodeBase>    myExecutionList= new List<CodeBase>();
 
         // ===================================================================
         // INFORMATION GATHERING FUNCTIONS
@@ -69,6 +69,14 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
                 foreach(var c in theCodeList) {
                     c.Parent= this;
                 }
+            }
+            else {
+                Debug.LogWarning("iCanScript: Internal Error: Unable to replace execution list.");
+                foreach(var cb in myExecutionList) {
+                    if(cb.VSObject != null) {
+                        Debug.Log("node: "+cb.VSObject.FullName);
+                    }
+                 }
             }
         }
         

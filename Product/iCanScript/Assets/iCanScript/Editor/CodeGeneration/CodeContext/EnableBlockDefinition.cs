@@ -46,22 +46,6 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
 				return;					
             }
             
-            // -- Reposition code for simple trigger->enable --
-			CodeBase commonParent= null;
-            if(AreAllInSameExecutionContext(out commonParent)) {
-				var parentAsExecBlock= commonParent as ExecutionBlockDefinition;
-    			if(AreAllProducersTriggers()) {
-    				if(parentAsExecBlock != null) {
-    					parentAsExecBlock.Replace(this, myExecutionList);
-    					return;					
-    				}
-    			}
-                else if(parentAsExecBlock != null) {
-                    Parent.Remove(this);
-                    parentAsExecBlock.AddExecutable(this);
-                }
-            }
-            
             // -- Determine if enable producers where optimized out. --
             var enableLen= myEnablePorts.Length;
             bool hasProducer= false;
@@ -75,6 +59,26 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
             }
             if(!hasProducer) {
 				(Parent as ExecutionBlockDefinition).Replace(this, myExecutionList);                
+                return;
+            }
+            
+            // -- Reposition code for simple trigger->enable --
+			CodeBase commonParent= null;
+            if(AreAllInSameExecutionContext(out commonParent)) {
+				var parentAsExecBlock= commonParent as ExecutionBlockDefinition;
+    			if(AreAllProducersTriggers()) {
+    				if(parentAsExecBlock != null) {
+                        Debug.Log("Removing enable for=> "+myEnablePorts[0].FullName);
+    					parentAsExecBlock.Replace(this, myExecutionList);
+                        return;					
+    				}
+    			}
+                else if(parentAsExecBlock != null) {
+                    if(Parent != parentAsExecBlock) {
+                        Parent.Remove(this);
+                        parentAsExecBlock.AddExecutable(this);                        
+                    }
+                }
             }
             
             // -- Determine best enable order for code optimization. --

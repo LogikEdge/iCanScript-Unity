@@ -105,7 +105,7 @@ namespace iCanScript.Internal.Editor {
         /// @return The newly created project info.
         ///
         public static ProjectInfo CreateProject() {
-            var editor= CreateProjectDialog.Init();
+            /*var editor=*/ CreateProjectDialog.Init();
             return null;
         }
     }
