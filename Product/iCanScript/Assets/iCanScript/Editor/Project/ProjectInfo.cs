@@ -21,8 +21,6 @@ namespace iCanScript.Internal.Editor {
 		public string   myProjectName        = "";
         public string   myParentFolder       = "";
         public bool     myCreateProjectFolder= true;
-//		public string   myNamespace          = null;
-//		public string   myEditorNamespace    = null;
 		
 		// ========================================================================
 		// Properties
@@ -163,23 +161,6 @@ namespace iCanScript.Internal.Editor {
 		}
 		
 		// ========================================================================
-		/// Update base namespace.
-		///
-		/// @param projectName The new project name.
-		///
-//		void UpdateNamespace(string newNamespace) {
-//			myNamespace= newNamespace;
-//			myEditorNamespace= myNamespace+".Editor";			
-//		}
-//		
-//		// ========================================================================
-//		/// Resets the namespaces to their default values.
-//		public void ResetNamespaces() {
-//			var splitName= SplitProjectName(myProjectName);
-//			UpdateNamespace(iCS_TextUtility.CombineWith(splitName, "."));			
-//		}
-		
-		// ========================================================================
 		/// Save and Update the project information.
 		public void Save() {
             // -- Create the project folders (if not existing). --
@@ -205,10 +186,14 @@ namespace iCanScript.Internal.Editor {
         ///
         public static ProjectInfo Create(JObject jsonRoot) {
             var newProject= new ProjectInfo();
-            JString version        = jsonRoot.GetValueFor("myVersion") as JString;
-            JString projectName    = jsonRoot.GetValueFor("myProjectName") as JString;
-            newProject.myVersion        = version.value;
-            newProject.myProjectName    = projectName.value;
+            JString version            = jsonRoot.GetValueFor("myVersion") as JString;
+            JString projectName        = jsonRoot.GetValueFor("myProjectName") as JString;
+            JString parentFolder       = jsonRoot.GetValueFor("myParentFolder") as JString;
+            JBool   createProjectFolder= jsonRoot.GetValueFor("myCreateProjectFolder") as JBool;
+            newProject.myVersion            = version.value;
+            newProject.myProjectName        = projectName.value;
+            newProject.myParentFolder       = parentFolder.value;
+            newProject.myCreateProjectFolder= createProjectFolder.value;
             return newProject;
         }
     }
