@@ -78,7 +78,7 @@ namespace iCanScript.Internal.Editor {
 		// ========================================================================
 		/// Extracts the absolute project folder path.
 		public string GetProjectFolder() {
-            return Application.dataPath+"/"+myParentFolder;
+            return Application.dataPath+"/"+GetRelativeProjectFolder();
 		}
 		
 		// ========================================================================
@@ -164,7 +164,8 @@ namespace iCanScript.Internal.Editor {
 		/// Save and Update the project information.
 		public void Save() {
             // -- Create the project folders (if not existing). --
-			var projectPath= GetProjectFolder();
+			var projectPath= GetRelativeProjectFolder();
+            Debug.Log("Saving in: "+projectPath);
             FileUtils.CreateAssetFolder(projectPath);
             FileUtils.CreateAssetFolder(projectPath+"/Visual Scripts");
             FileUtils.CreateAssetFolder(projectPath+"/Generated Code");

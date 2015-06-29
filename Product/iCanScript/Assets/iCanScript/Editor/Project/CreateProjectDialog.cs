@@ -66,15 +66,21 @@ namespace iCanScript.Internal.Editor {
                 myProject.RootFolder= EditorUtility.OpenFolderPanel("iCanScript Project Folder Selection", Application.dataPath, "");                
             }
         
-//            // -- Reset button --
-//            if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Reset Namespaces")) {
-//				GUI.FocusControl("");			// Remove keyboard focus.
-//				myProject.ResetNamespaces();
-//            }
-
     		// -- Save changes --
-            if(GUI.changed) {
+            var totalWidth= kColumn2Width + kColumn3Width;
+            var width= totalWidth / 3f;
+            var buttonWidth= width - 2f*kMargin;
+            var buttonX= kColumn2X + 2*kMargin;
+            var buttonY= position.height-kMargin-20.0f;
+            if(GUI.Button(new Rect(buttonX, buttonY, buttonWidth, 20.0f),"Save")) {
                 myProject.Save();
+            }
+            if(GUI.Button(new Rect(buttonX+width, buttonY, buttonWidth, 20.0f),"Save & Close")) {
+                myProject.Save();
+                DestroyImmediate(this);
+            }
+            if(GUI.Button(new Rect(buttonX+2f*width, buttonY, buttonWidth, 20.0f),"Cancel")) {
+                DestroyImmediate(this);
             }
 		}
 	}
