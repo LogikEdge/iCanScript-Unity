@@ -92,7 +92,7 @@ namespace iCanScript.Internal.Editor {
 		/// Extracts the project file name from the project name.
 		public string GetRelativeFileNamePath() {
             var relativePath= GetRelativeProjectFolder();
-            if(string.IsNullOrEmpty(relativePath)) {
+            if(!string.IsNullOrEmpty(relativePath)) {
                 relativePath+= "/";
             }
 			return relativePath + GetFileName();
@@ -196,13 +196,15 @@ namespace iCanScript.Internal.Editor {
             // -- Create the project folders (if not existing). --
 			var projectPath= GetRelativeProjectFolder();
             var separator= string.IsNullOrEmpty(projectPath) ? "" : "/";
-            FileUtil.DeleteFileOrDirectory(projectPath+separator+"Visual Scripts");
-            FileUtil.DeleteFileOrDirectory(projectPath+separator+"Generated Code");
-            FileUtil.DeleteFileOrDirectory(projectPath+separator+"Editor");
+			AssetDatabase.DeleteAsset("Assets/"+projectPath+separator+"Visual Scripts");
+            AssetDatabase.DeleteAsset("Assets/"+projectPath+separator+"Generated Code");
+           	AssetDatabase.DeleteAsset("Assets/"+projectPath+separator+"Editor");
             var fileName= GetFileName();
-            FileUtil.DeleteFileOrDirectory(projectPath+separator+fileName);
+            AssetDatabase.DeleteAsset("Assets/"+projectPath+separator+fileName);
             if(Folder.IsEmpty(GetProjectFolder())) {
-                FileUtil.DeleteFileOrDirectory(GetProjectFolder());
+				if(!string.IsNullOrEmpty(projectPath)) {
+	                AssetDatabase.DeleteAsset("Assets/"+projectPath);
+				}
             }
         }
         
@@ -223,6 +225,21 @@ namespace iCanScript.Internal.Editor {
             newProject.myParentFolder       = parentFolder.value;
             newProject.myCreateProjectFolder= createProjectFolder.value;
             return newProject;
+        }
+
+        // =================================================================================
+        /// Load the project file from disk.
+        ///
+        /// @param absolutePath The absolute path of the project file.
+        /// @info The active project set to the newly loaded project.
+        /// 
+        public static ProjectInfo Load(string absolutePath) {
+            var jsonRoot= JSONFile.Read(absolutePath);
+            if(jsonRoot == null || jsonRoot.isNull) {
+                Debug.LogError("iCanScript: Unable to load project at=> "+absolutePath);
+                return null;
+            }
+            return Load(jsonRoot);
         }
     }
 }

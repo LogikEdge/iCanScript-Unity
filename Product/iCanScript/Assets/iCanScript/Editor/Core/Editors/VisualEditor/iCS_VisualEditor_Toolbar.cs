@@ -88,12 +88,17 @@ namespace iCanScript.Internal.Editor {
     		// --------------
     		// CENTER TOOLBAR
             // Show game object name in middle of toolbar.
-    		var name= IStorage.TypeName;
+			var projectName= "";
+			var project= ProjectController.ActiveProject;
+			if(project != null) {
+				projectName= project.ProjectName + " -- ";
+			}
+    		var vsName= IStorage.TypeName;
             var baseType= CodeGenerationUtility.GetBaseType(IStorage);
             if(baseType != null && baseType != typeof(void)) {
-                name+= " : "+baseType.Name;
+                vsName+= " : "+baseType.Name;
             }
-    		iCS_ToolbarUtility.CenteredTitle(ref r, name);
+    		iCS_ToolbarUtility.CenteredTitle(ref r, projectName + vsName);
     
             // Trial information.
             ShowTrialInformation(ref r);

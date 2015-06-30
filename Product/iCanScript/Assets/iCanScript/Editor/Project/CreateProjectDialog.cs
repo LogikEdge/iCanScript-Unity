@@ -81,9 +81,11 @@ namespace iCanScript.Internal.Editor {
             var buttonY= position.height-kMargin-20.0f;
             if(GUI.Button(new Rect(buttonX, buttonY, buttonWidth, 20.0f),"Save")) {
                 myProject.Save();
+				ProjectController.LoadProjectFromRelativePath(myProject.GetRelativeFileNamePath());
             }
             if(GUI.Button(new Rect(buttonX+width, buttonY, buttonWidth, 20.0f),"Save & Close")) {
                 myProject.Save();
+				ProjectController.LoadProjectFromRelativePath(myProject.GetRelativeFileNamePath());
                 Close();
             }
             if(GUI.Button(new Rect(buttonX+2f*width, buttonY, buttonWidth, 20.0f),"Cancel")) {
@@ -104,14 +106,26 @@ namespace iCanScript.Internal.Editor {
             var projectNames= P.map(p=> ProjectController.GetProjectName(p), projectPaths);
             var idx= EditorGUI.Popup(pos[0], -1, projectNames);
             if(idx >= 0 && idx < projectPaths.Length) {
-                Debug.Log("Opening: "+projectNames[idx]);
+				ProjectController.LoadProjectFromAbsolutePath(projectPaths[idx]);
             }
         }
 
         // =================================================================================
         /// Ask the user to select which project to remove.
         void Remove() {
+            // -- Label column --
+            var pos= GetLabelColumnPositions(1);
+            GUI.Label(pos[0], "Select Project");
             
+            // -- Value column --
+            pos= GetValueColumnPositions(1);
+            var projectPaths= ProjectController.GetProjects();
+            var projectNames= P.map(p=> ProjectController.GetProjectName(p), projectPaths);
+            var idx= EditorGUI.Popup(pos[0], -1, projectNames);
+            if(idx >= 0 && idx < projectPaths.Length) {
+				var project= ProjectInfo.Load(projectPaths[idx]);
+				project.RemoveProject();
+            }
         }
         
 	}

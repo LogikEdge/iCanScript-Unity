@@ -77,23 +77,30 @@ namespace iCanScript.Internal.Editor {
 			if(String.IsNullOrEmpty(relativeFileNamePath)) {
 				return;
 			}
-            LoadProject(relativeFileNamePath);
+            LoadProjectFromRelativePath(relativeFileNamePath);
         }
 
         // =================================================================================
         /// Load the project file from disk.
         ///
-        /// @param relativeProjectPath The relative path of the project file.
+        /// @param relativePath The relative path of the project file.
         /// @info The active project set to the newly loaded project.
         /// 
-        public static void LoadProject(string relativeProjectPath) {
-            var absolutePath= Folder.AssetToAbsolutePath(relativeProjectPath);
-            var jsonRoot= JSONFile.Read(absolutePath);
-            if(jsonRoot == null || jsonRoot.isNull) {
-                Debug.LogError("iCanScript: Unable to load project at=> "+relativeProjectPath);
-                return;
-            }
-            myProject= ProjectInfo.Load(jsonRoot);
+        public static void LoadProjectFromRelativePath(string relativePath) {
+            var absolutePath= Folder.AssetToAbsolutePath(relativePath);
+			LoadProjectFromAbsolutePath(absolutePath);
+        }
+
+        // =================================================================================
+        /// Load the project file from disk.
+        ///
+        /// @param absolutePath The absolute path of the project file.
+        /// @info The active project set to the newly loaded project.
+        /// 
+        public static void LoadProjectFromAbsolutePath(string absolutePath) {
+			var newProject= ProjectInfo.Load(absolutePath);
+			if(newProject == null) return;
+            myProject= newProject;
 			RememberMostRecentlyUsedProject();
         }
 
