@@ -89,6 +89,16 @@ namespace iCanScript.Internal.Editor {
 		}
 		
 		// ========================================================================
+		/// Extracts the project file name from the project name.
+		public string GetRelativeFileNamePath() {
+            var relativePath= GetRelativeProjectFolder();
+            if(string.IsNullOrEmpty(relativePath)) {
+                relativePath+= "/";
+            }
+			return relativePath + GetFileName();
+		}
+		
+		// ========================================================================
 		/// Extracts the engine namespace from the project name.
 		public string GetNamespace() {
             // -- Translate '-' to '_' for the namespace. --
