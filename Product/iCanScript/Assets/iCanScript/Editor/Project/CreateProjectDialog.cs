@@ -123,8 +123,7 @@ namespace iCanScript.Internal.Editor {
             var projectNames= P.map(p=> ProjectController.GetProjectName(p), projectPaths);
             var idx= EditorGUI.Popup(pos[0], -1, projectNames);
             if(idx >= 0 && idx < projectPaths.Length) {
-				var project= ProjectInfo.Load(projectPaths[idx]);
-				project.RemoveProject();
+                ProjectInfo.RemoveProject(projectPaths[idx]);
             }
         }
         

@@ -209,6 +209,16 @@ namespace iCanScript.Internal.Editor {
         }
         
 		// ========================================================================
+		/// Removes all files associated with the iCanScript project.
+        ///
+        /// @param absolutePath The absolute path of the project file.
+        ///
+        public static void RemoveProject(string absolutePath) {
+			var project= ProjectInfo.Load(absolutePath);
+			project.RemoveProject();
+        }
+        
+		// ========================================================================
 		/// Creates a new Project info from the given JSON root object.
         ///
         /// @param jsonRoot The JSON root object from which to extract the project
