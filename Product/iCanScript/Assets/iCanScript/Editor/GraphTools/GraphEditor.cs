@@ -33,19 +33,21 @@ namespace iCanScript.Internal.Editor {
         ///
         public static void AdjustPortIndexes(iCS_EditorObject node) {
             // -- Assure continuous port index for data ports. --
-            var dataPorts= node.BuildListOfChildPorts(p=> p.IsDataPort && !p.IsTargetOrSelfPort && !p.IsReturnPort);
-            Array.Sort(dataPorts,
-                (x,y)=> {
-                    if(x.PortSpec == PortSpecification.Parameter &&
-                       y.PortSpec != PortSpecification.Parameter) return -1;
-                    if(x.PortSpec != PortSpecification.Parameter &&
-                       y.PortSpec == PortSpecification.Parameter) return 1;
-                    return x.PortIndex - y.PortIndex;
+            if(!node.IsKindOfFunction) {
+                var dataPorts= node.BuildListOfChildPorts(p=> p.IsDataPort && !p.IsTargetOrSelfPort && !p.IsReturnPort);
+                Array.Sort(dataPorts,
+                    (x,y)=> {
+                        if(x.PortSpec == PortSpecification.Parameter &&
+                           y.PortSpec != PortSpecification.Parameter) return -1;
+                        if(x.PortSpec != PortSpecification.Parameter &&
+                           y.PortSpec == PortSpecification.Parameter) return 1;
+                        return x.PortIndex - y.PortIndex;
                     
-                }
-            );
-            for(int i= 0; i < dataPorts.Length; ++i) {
-                dataPorts[i].PortIndex= i;
+                    }
+                );
+                for(int i= 0; i < dataPorts.Length; ++i) {
+                    dataPorts[i].PortIndex= i;
+                }                
             }
             
             // -- Assure continuous port index for enable ports. --
