@@ -24,23 +24,13 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         // Properties
         // ---------------------------------------------------------------------------------
-        public static ProjectInfo Project {
-            get {
-                return myProject;
-            }
-            set {
-                if(myProject != value) {
-                    SaveProject();
-                    myProject= value;
-                    Prefs.ActiveProjectPath= myProject.GetRelativeFileNamePath();
-                }
-            }
-        }
+        public static ProjectInfo ActiveProject { get { return myProject; }}
+		
         // =================================================================================
         // INIT / SHUTDOWN
         // ---------------------------------------------------------------------------------
         static ProjectController() {
-            LoadProjectFromPreferences();
+            LoadMostRecentlyUsedProject();
         }
         public static void Start() {}
         public static void Shutdown() {}
@@ -81,30 +71,13 @@ namespace iCanScript.Internal.Editor {
         }
         
         // =================================================================================
-        /// Loads the active project from the user preferences.
-        public static void LoadProjectFromPreferences() {
+        /// Loads the most recently used project.
+        public static void LoadMostRecentlyUsedProject() {
 			var relativeFileNamePath= Prefs.ActiveProjectPath;
 			if(String.IsNullOrEmpty(relativeFileNamePath)) {
-//				CreateProject();
 				return;
 			}
             LoadProject(relativeFileNamePath);
-        }
-
-        // =================================================================================
-        /// Save to active project reference in the user preferences.
-        public static void SaveProjectToPreferences() {
-            if(myProject == null) return;
-            SaveProject();
-            //TODO:
-        }
-
-        // =================================================================================
-        /// Save the active project file to disk.
-        public static void SaveProject() {
-            if(myProject != null) {
-                myProject.Save();                
-            }
         }
 
         // =================================================================================
@@ -120,12 +93,22 @@ namespace iCanScript.Internal.Editor {
                 Debug.LogError("iCanScript: Unable to load project at=> "+relativeProjectPath);
                 return;
             }
-            var project= ProjectInfo.Load(jsonRoot);
-            myProject= project;
+            myProject= ProjectInfo.Load(jsonRoot);
+			RememberMostRecentlyUsedProject();
+        }
+
+        // =================================================================================
+        /// Save to active project reference in the user preferences.
+        public static void RememberMostRecentlyUsedProject() {
+            if(myProject == null) return;
+			Prefs.ActiveProjectPath= myProject.GetRelativeFileNamePath();
         }
 
         // =================================================================================
         /// Get all existing projects.
+		///
+		/// @return List of absolute path to existing projects.
+		///
         public static string[] GetProjects() {
             return FileUtils.GetFilesWithExtension("icsproject");
         }
