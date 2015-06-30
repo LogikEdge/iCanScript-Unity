@@ -255,7 +255,8 @@ namespace iCanScript.Internal.Editor {
         public void MoveDynamicPortToLastIndex(iCS_EditorObject port) {
             // -- Display error for invalid use. --
             if(port.IsFixDataPort) {
-                Debug.LogError("iCanScript: Internal error: Tryng to move port index of a fix port");
+                Debug.LogWarning("iCanScript: Internal error: Tryng to move port index of a fix port");
+                return;
             }
             // -- Get next available parameter index. --
             iCS_EditorObject parent= port.ParentNode;
