@@ -54,7 +54,15 @@ namespace iCanScript.Internal.Editor {
 		public string EditorNamespace {
 			get { return GetEditorNamespace(); }
 		}
-		
+		// ========================================================================
+        /// Determines if the project already exists.
+        public bool AlreadyExists {
+            get {
+                var filePath= GetAbsoluteFileNamePath();
+                return File.Exists(filePath);                
+            }
+        }
+        
 		// ========================================================================
 		// Creation/Destruction
 		// ------------------------------------------------------------------------
@@ -77,19 +85,19 @@ namespace iCanScript.Internal.Editor {
 		}
 		
 		// ========================================================================
-		/// Extracts the absolute project folder path.
+		/// Computes the absolute project folder path.
 		public string GetProjectFolder() {
             return Application.dataPath+"/"+GetRelativeProjectFolder();
 		}
 		
 		// ========================================================================
-		/// Extracts the project file name from the project name.
+		/// Computes the project file name.
 		public string GetFileName() {
 			return myProjectName+".icsproject";
 		}
 		
 		// ========================================================================
-		/// Extracts the project file name from the project name.
+		/// Computes the relative path of the project file.
 		public string GetRelativeFileNamePath() {
             var relativePath= GetRelativeProjectFolder();
             if(!string.IsNullOrEmpty(relativePath)) {
@@ -98,6 +106,15 @@ namespace iCanScript.Internal.Editor {
 			return relativePath + GetFileName();
 		}
 		
+		// ========================================================================
+        /// Computes the absolute path of the project file.
+        public string GetAbsoluteFileNamePath() {
+			var projectPath= GetRelativeProjectFolder();
+            var separator= string.IsNullOrEmpty(projectPath) ? "" : "/";
+            var fileName= GetFileName();
+            return Folder.AssetToAbsolutePath(projectPath+separator+fileName);            
+        }
+        
 		// ========================================================================
 		/// Extracts the engine namespace from the project name.
 		public string GetNamespace() {
