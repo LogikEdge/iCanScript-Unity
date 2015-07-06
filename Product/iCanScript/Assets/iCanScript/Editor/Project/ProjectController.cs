@@ -99,7 +99,10 @@ namespace iCanScript.Internal.Editor {
         /// 
         public static void LoadProjectFromAbsolutePath(string absolutePath) {
 			var newProject= ProjectInfo.Load(absolutePath);
-			if(newProject == null) return;
+			if(newProject == null) {
+                Debug.Log("Need to select or create new project");
+                return;
+            }
             myProject= newProject;
 			RememberMostRecentlyUsedProject();
         }

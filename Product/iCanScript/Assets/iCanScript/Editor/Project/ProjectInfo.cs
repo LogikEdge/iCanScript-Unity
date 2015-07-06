@@ -243,10 +243,12 @@ namespace iCanScript.Internal.Editor {
         /// @param absolutePath The absolute path of the project file.
         /// @info The active project set to the newly loaded project.
         /// 
-        public static ProjectInfo Load(string absolutePath) {
+        public static ProjectInfo Load(string absolutePath, bool declareError= false) {
             var jsonRoot= JSONFile.Read(absolutePath);
             if(jsonRoot == null || jsonRoot.isNull) {
-                Debug.LogError("iCanScript: Unable to load project at=> "+absolutePath);
+                if(declareError) {
+                    Debug.LogError("iCanScript: Unable to load project at=> "+absolutePath);                    
+                }
                 return null;
             }
             return Load(jsonRoot);
