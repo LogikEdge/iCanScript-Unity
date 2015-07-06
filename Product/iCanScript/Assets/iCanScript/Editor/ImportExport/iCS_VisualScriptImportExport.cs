@@ -49,8 +49,6 @@ namespace iCanScript.Internal.Editor {
             cache.CSharpFileName   = csharpFileName.value;
             cache.BaseTypeOverride = baseTypeOverride.value;
             cache.BaseType         = baseType.value;
-            cache.NamespaceOverride= namespaceOverride.value;
-            cache.Namespace        = namespaceName.value;
             cache.SourceFileGUID   = sourceFileGUID.value;
             // -- Extract engine objects. --
             JArray engineObjects= root.GetValueFor("Storage.EngineObjects") as JArray;

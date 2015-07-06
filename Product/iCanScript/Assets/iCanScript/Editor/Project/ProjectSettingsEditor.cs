@@ -6,7 +6,7 @@ using P=iCanScript.Internal.Prelude;
 
 namespace iCanScript.Internal.Editor {
 
-	public class CreateProjectDialog : ConfigEditorBase {
+	public class ProjectSettingsEditor : ConfigEditorBase {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
@@ -22,8 +22,8 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         // INITIALIZATION
         // ---------------------------------------------------------------------------------
-        public static CreateProjectDialog Init() {
-            var editor= EditorWindow.CreateInstance<CreateProjectDialog>();
+        public static ProjectSettingsEditor Init() {
+            var editor= EditorWindow.CreateInstance<ProjectSettingsEditor>();
             editor.ShowUtility();
             return editor;
         }
