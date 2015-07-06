@@ -19,8 +19,7 @@ namespace iCanScript.Internal.Editor {
     	    "Canvas",
     	    "Node Colors",
     	    "Type Colors",
-    		"Software Update",
-    	    "Code Generation"
+    		"Software Update"
     	};
     	
         // =================================================================================
@@ -48,7 +47,6 @@ namespace iCanScript.Internal.Editor {
                 case 2: NodeColors(); break;
                 case 3: TypeColors(); break;
     			case 4: SoftwareUpdate(); break;
-                case 5: CodeGeneration(); break;
                 default: break;
             }
         }
@@ -245,68 +243,6 @@ namespace iCanScript.Internal.Editor {
     			Prefs.ResetSoftwareUpdateInterval();
     			Prefs.ResetSoftwareUpdateSkippedVersion();
             }        
-    	}
-    	// =================================================================================
-        // CODE GENERATION
-        // ---------------------------------------------------------------------------------
-    	void CodeGeneration() {
-            // -- Label column --
-            Rect[] pos= GetLabelColumnPositions(9);
-            GUI.Label(pos[0], "Editor Code", EditorStyles.boldLabel);
-            GUI.Label(pos[1], "Namespace");
-            GUI.Label(pos[2], "Code Generation Folder");
-
-            GUI.Label(pos[4], "Engine Code", EditorStyles.boldLabel);
-            GUI.Label(pos[5], "Base Type");
-            GUI.Label(pos[7], "Namespace");
-            GUI.Label(pos[8], "Code Generation Folder");
-    
-            // -- Value column --
-            pos= GetValueColumnPositions(9);
-            Prefs.EditorNamespace           = EditorGUI.TextField(pos[1], Prefs.EditorNamespace);
-            Prefs.EditorCodeGenerationFolder= EditorGUI.TextField(pos[2], Prefs.EditorCodeGenerationFolder);
-
-            Prefs.EngineBaseType            = EditorGUI.TextField(pos[5], Prefs.EngineBaseType);
-            GUI.Label(pos[6], "<i>(format: namespace.type)</i>");
-            Prefs.EngineNamespace           = EditorGUI.TextField(pos[7], Prefs.EngineNamespace);
-            Prefs.EngineCodeGenerationFolder= EditorGUI.TextField(pos[8], Prefs.EngineCodeGenerationFolder);
-            
-            // -- Reset button --
-            if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
-                GUI.FocusControl("");
-                Prefs.ResetEngineCodeGenerationFolder();
-                Prefs.ResetEditorCodeGenerationFolder();
-                Prefs.ResetEngineBaseType();
-                Prefs.ResetEngineNamespace();
-                Prefs.ResetEditorNamespace();
-            }
-
-            // -- Display error if base type not found --
-            var message= Sanity.ValidateEngineBaseType();
-            if(message != null) {
-                DisplayError(pos[6], message);
-                return;
-            }
-            message= Sanity.ValidateEngineNamespace(/*shortFormat=*/true);
-            if(message != null) {
-                DisplayError(pos[8], message);
-                return;
-            }
-            message= Sanity.ValidateEditorNamespace(/*shortFormat=*/true);
-            if(message != null) {
-                DisplayError(pos[2], message);
-                return;
-            }
-            message= Sanity.ValidateEditorCodeGenerationFolder(/*shortFormat=*/true);
-            if(message != null) {
-                DisplayError(pos[3], message);
-                return;
-            }
-            message= Sanity.ValidateEngineCodeGenerationFolder(/*shortFormat=*/true);
-            if(message != null) {
-                DisplayError(pos[9], message);
-                return;
-            }
     	}
         
     }

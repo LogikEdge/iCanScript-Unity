@@ -39,7 +39,7 @@ namespace iCanScript.Internal.Editor {
         /// Creates a project file.
     	[MenuItem("iCanScript/Create Project", false, 100)]
     	public static void CreateProject() {
-            /*var editor=*/ CreateProjectDialog.Init();
+            /*var editor=*/ ProjectSettingsEditor.Init();
     	}
 
         // =================================================================================
@@ -145,6 +145,40 @@ namespace iCanScript.Internal.Editor {
             menu.ShowAsContext();
         }
 
+        // =================================================================================
+		/// Returns the project associated with a Unity Object.
+		///
+		/// @param iStorage The visual script storage.
+		/// @return The project info assicated with the Unity Object.
+		///
+		public static ProjectInfo GetProjectFor(iCS_IStorage iStorage) {
+			var go= iStorage.HostGameObject;
+			if(go == null) {
+				Debug.LogWarning("iCanScript: Internal Error: Unable to find Game Object of visual script");
+				return null;
+			}
+			string path= null;
+			// -- Search for scene path if GO is in the a scene. --
+			if(iCS_UnityUtility.IsSceneGameObject(go)) {
+				path= EditorApplication.currentScene;
+			}
+			// -- Search for asset path if GO is a prefab. --
+			else {
+				path= AssetDatabase.GetAssetPath(go);
+			}
+			path= Folder.AssetToAbsolutePath(path);
+			return GetProjectFor(path);
+		}
+
+        // =================================================================================
+		/// Returns the project associated with a Unity Object.
+		///
+		/// @param absolutePath The absolute path of the asset.
+		/// @return The project info assicated with the Unity Object.
+		///
+		public static ProjectInfo GetProjectFor(string absolutePath) {
+			
+		}
     }
 
 }
