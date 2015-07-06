@@ -84,9 +84,11 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
             if(nbOfLines == 0) return "";
             // -- Assure that the code ends properly. --
             var lastLine= lines[nbOfLines-1];
-            var lastChar= lastLine[lastLine.Length-1];
-            if(lastChar != ';' && lastChar != '}') {
-                lastLine+= ";";
+            if(lastLine.Length > 0 && lastLine[0] != '#') {
+                var lastChar= lastLine[lastLine.Length-1];
+                if(lastChar != ';' && lastChar != '}') {
+                    lastLine+= ";";
+                }                
             }
             lines[nbOfLines-1]= lastLine;
             // -- Remove starting white spaces. --
@@ -98,8 +100,11 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
             // -- Fold back the lines into code. --
             var result= new StringBuilder(128);
             for(int i= 0; i < nbOfLines; ++i) {
-                result.Append(ident);
-                result.Append(lines[i]);
+                var line= lines[i];
+                if(line.Length > 0 && line[0] != '#') {
+                    result.Append(ident);                    
+                }
+                result.Append(line);
                 result.Append("\n");
             }
             return result.ToString();
