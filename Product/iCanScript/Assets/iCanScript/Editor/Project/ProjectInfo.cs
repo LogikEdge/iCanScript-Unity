@@ -181,7 +181,7 @@ namespace iCanScript.Internal.Editor {
             // -- Accept ident rule or '-' for remaining of the project name. --
             for(int i= 1; i < myProjectName.Length; ++i) {
                 var c= myProjectName[i];
-                if(!iCS_TextUtil.IsIdent(c) && c != '-') {
+                if(!iCS_TextUtil.IsIdent(c) && c != '-' && c != ' ') {
                     UpdateProjectName(myProjectName.Substring(0,i)+myProjectName.Substring(i+1));
                     return;
                 }
