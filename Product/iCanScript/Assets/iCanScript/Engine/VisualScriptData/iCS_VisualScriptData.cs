@@ -27,6 +27,8 @@ namespace iCanScript.Internal.Engine {
         public string                   CSharpFileName        = null;
         public bool                     BaseTypeOverride      = false;
         public string                   BaseType              = null;
+        public bool                     NamespaceOverride     = false;
+        public string                   Namespace             = null;
         public string                   SourceFileGUID        = null;
         public int			            MajorVersion          = iCS_Config.MajorVersion;
         public int    		            MinorVersion          = iCS_Config.MinorVersion;
@@ -60,6 +62,14 @@ namespace iCanScript.Internal.Engine {
         string iCS_IVisualScriptData.BaseType {
             get { return BaseType; }
             set { BaseType= value; }
+        }
+        bool iCS_IVisualScriptData.NamespaceOverride {
+            get { return NamespaceOverride; }
+            set { NamespaceOverride= value; }
+        }
+        string iCS_IVisualScriptData.Namespace {
+            get { return Namespace; }
+            set { Namespace= value; }
         }
         string iCS_IVisualScriptData.SourceFileGUID {
             get { return SourceFileGUID; }
@@ -242,6 +252,8 @@ namespace iCanScript.Internal.Engine {
             to.CSharpFileName   = from.CSharpFileName;
             to.BaseTypeOverride = from.BaseTypeOverride;
             to.BaseType         = from.BaseType;
+            to.NamespaceOverride= from.NamespaceOverride;
+            to.Namespace        = from.Namespace;
             to.SourceFileGUID   = from.SourceFileGUID;
             to.MajorVersion     = from.MajorVersion;
             to.MinorVersion     = from.MinorVersion;

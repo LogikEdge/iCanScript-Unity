@@ -10,6 +10,8 @@ namespace iCanScript.Internal.Engine {
         string                  CSharpFileName          { get; set; }
         bool                    BaseTypeOverride        { get; set; }
         string                  BaseType                { get; set; }
+        bool                    NamespaceOverride       { get; set; }
+        string                  Namespace               { get; set; }
         string                  SourceFileGUID          { get; set; }
         int                     DisplayRoot             { get; set; }
         int                     SelectedObject          { get; set; }

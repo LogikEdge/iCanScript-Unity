@@ -36,6 +36,20 @@ namespace iCanScript.Internal.Editor {
                 ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
             }        
 
+            // -- Verify namespaces --
+            message= Sanity.ValidateEditorNamespace();
+            if(message != null) {
+                ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
+            }
+            message= Sanity.ValidateEngineNamespace();
+            if(message != null) {
+                ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
+            }
+            message= Sanity.ValidateVisualScriptNamespace(this);
+            if(message != null) {
+                ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
+            }        
+
             // -- Validate folders --
             message= Sanity.ValidateEditorCodeGenerationFolder();
             if(message != null) {

@@ -44,25 +44,39 @@ namespace iCanScript.Internal.Editor {
         // ======================================================================
         // NAMESPACE UTILITIES
         // ----------------------------------------------------------------------
+        /// Get namespace used for code generation.
+        ///
+        /// @param iStorage The visual script storage.
+        /// @return The namespace.
+        ///
+        public static string GetNamespace(iCS_IStorage iStorage) {
+            if(iStorage.NamespaceOverride) {
+                return iStorage.Namespace;
+            }
+            return GetDefaultNamespace(iStorage);
+        }
+
+        // ----------------------------------------------------------------------
         /// Returns the default namespace according to the type of viusal script.
         ///
         /// @param iStorage The visual script storage.
         /// @return The default namespace.
         ///
-        public static string GetNamespace(iCS_IStorage iStorage) {
-            var project= ProjectController.ActiveProject;
-            return iStorage.IsEditorScript ? project.EditorNamespace : project.Namespace;
+        public static string GetDefaultNamespace(iCS_IStorage iStorage) {
+            if(iStorage.IsEditorScript) {
+                return Prefs.EditorNamespace;
+            }
+            return Prefs.EngineNamespace;
         }
 
         // ======================================================================
         // NAMESPACE UTILITIES
         // ----------------------------------------------------------------------
         public static string GetCodeGenerationFolder(iCS_IStorage iStorage) {
-            var project= ProjectController.ActiveProject;
             if(iStorage.IsEditorScript) {
-                return project.GetRelativeEditorCodeGenerationFolder();
+                return Prefs.EditorCodeGenerationFolder;
             }
-            return project.GetRelativeEngineCodeGenerationFolder();
+            return Prefs.EngineCodeGenerationFolder;
         }
     }    
 }

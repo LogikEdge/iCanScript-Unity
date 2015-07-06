@@ -39,7 +39,7 @@ namespace iCanScript.Internal.Editor {
         /// Creates a project file.
     	[MenuItem("iCanScript/Create Project", false, 100)]
     	public static void CreateProject() {
-            /*var editor=*/ ProjectSettingsEditor.Init();
+            /*var editor=*/ CreateProjectDialog.Init();
     	}
 
         // =================================================================================

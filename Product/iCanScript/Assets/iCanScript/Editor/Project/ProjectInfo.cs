@@ -133,28 +133,6 @@ namespace iCanScript.Internal.Editor {
 		}
 		
 		// ========================================================================
-		/// Computes the engine code generation folder.
-		///
-		/// @return The relative path of the folder for the generated engine code.
-		///
-		public string GetRelativeEngineCodeGenerationFolder() {
-			var projectPath= GetRelativeProjectFolder();
-            var separator= string.IsNullOrEmpty(projectPath) ? "" : "/";
-            return projectPath+separator+"Generated Code";			
-		}
-		
-		// ========================================================================
-		/// Computes the editor code generation folder.
-		///
-		/// @return The relative path of the folder for the generated editor code.
-		///
-		public string GetRelativeEditorCodeGenerationFolder() {
-			var projectPath= GetRelativeProjectFolder();
-            var separator= string.IsNullOrEmpty(projectPath) ? "" : "/";
-            return projectPath+separator+"Editor/Generated Code";			
-		}
-		
-		// ========================================================================
 		/// Parse project name.
 		///
 		/// @param projectName The full name of the project.

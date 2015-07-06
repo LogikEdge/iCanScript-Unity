@@ -20,14 +20,6 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
             if(iStorage == null || iStorage.EditorObjects.Count == 0) {
                 return;
             }
-			
-			// -- Get associated project information. --
-			var project= ProjectController.ActiveProject;
-			if(project == null) {
-				var visualScriptName= NameUtility.ToTypeName(iStorage.TypeName);
-				Debug.LogWarning("iCanScript: No project selected for visual script=> "+visualScriptName);
-				return;
-			}
 
             // -- Build code global scope. --
             var typeName= NameUtility.ToTypeName(iStorage.TypeName);
