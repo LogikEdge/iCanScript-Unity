@@ -19,27 +19,27 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
-        static ProjectInfo  myProject= null;
+        static ProjectInfo[]	myProjects= null;
         
         // =================================================================================
         // Properties
         // ---------------------------------------------------------------------------------
-        public static ProjectInfo ActiveProject { get { return myProject; }}
+		public static ProjectInfo[] Projects {
+			get { return myProjects; }
+		}
 		
         // =================================================================================
         // INIT / SHUTDOWN
         // ---------------------------------------------------------------------------------
-        static ProjectController() {
-            LoadMostRecentlyUsedProject();
-        }
-        public static void Start() {}
+        static ProjectController()    { UpdateProjectDatabase(); }
+        public static void Start()    {}
         public static void Shutdown() {}
         
         // =================================================================================
         /// Creates a project file.
     	[MenuItem("iCanScript/Create Project", false, 100)]
     	public static void CreateProject() {
-            /*var editor=*/ CreateProjectDialog.Init();
+            /*var editor=*/ ProjectSettingsEditor.Init();
     	}
 
         // =================================================================================
@@ -50,7 +50,7 @@ namespace iCanScript.Internal.Editor {
     	}
     	[MenuItem("iCanScript/Open Project", true, 101)]
     	public static bool ValidateOpenProject() {
-            return GetProjects().Length > 0;
+            return myProjects.Length > 0;
     	}
         static void OpenProject(object projectPath) {
             Debug.Log("Opening: "+projectPath);
@@ -64,63 +64,27 @@ namespace iCanScript.Internal.Editor {
     	}
     	[MenuItem("iCanScript/Remove Project", true, 102)]
     	public static bool ValidateRemoveProject() {
-            return GetProjects().Length > 0;
+            return myProjects.Length > 0;
     	}
         static void RemoveProject(object projectPath) {
             Debug.Log("Removing: "+projectPath);
         }
         
         // =================================================================================
-        /// Loads the most recently used project.
-        public static void LoadMostRecentlyUsedProject() {
-			var relativeFileNamePath= Prefs.ActiveProjectPath;
-			if(String.IsNullOrEmpty(relativeFileNamePath)) {
-				return;
+        /// Updates the project database from the disk.
+		///
+		/// @info The project database is made current from the disk.
+		///
+        public static void UpdateProjectDatabase() {
+            var projectPaths= FileUtils.GetFilesWithExtension("icsproject");
+			var nbOfProjects= projectPaths.Length;
+			myProjects= new ProjectInfo[nbOfProjects];
+			for(int i= 0; i < nbOfProjects; ++i) {
+				var path= projectPaths[i];
+				myProjects[i]= ProjectInfo.Load(path);
 			}
-            LoadProjectFromRelativePath(relativeFileNamePath);
-        }
-
-        // =================================================================================
-        /// Load the project file from disk.
-        ///
-        /// @param relativePath The relative path of the project file.
-        /// @info The active project set to the newly loaded project.
-        /// 
-        public static void LoadProjectFromRelativePath(string relativePath) {
-            var absolutePath= Folder.AssetToAbsolutePath(relativePath);
-			LoadProjectFromAbsolutePath(absolutePath);
-        }
-
-        // =================================================================================
-        /// Load the project file from disk.
-        ///
-        /// @param absolutePath The absolute path of the project file.
-        /// @info The active project set to the newly loaded project.
-        /// 
-        public static void LoadProjectFromAbsolutePath(string absolutePath) {
-			var newProject= ProjectInfo.Load(absolutePath);
-			if(newProject == null) {
-                Debug.Log("Need to select or create new project");
-                return;
-            }
-            myProject= newProject;
-			RememberMostRecentlyUsedProject();
-        }
-
-        // =================================================================================
-        /// Save to active project reference in the user preferences.
-        public static void RememberMostRecentlyUsedProject() {
-            if(myProject == null) return;
-			Prefs.ActiveProjectPath= myProject.GetRelativeFileNamePath();
-        }
-
-        // =================================================================================
-        /// Get all existing projects.
-		///
-		/// @return List of absolute path to existing projects.
-		///
-        public static string[] GetProjects() {
-            return FileUtils.GetFilesWithExtension("icsproject");
+			// -- Assure that the longest path is first to simplify serach. --
+			Array.Sort(myProjects, (x,y)=> y.GetProjectFolder().Length - x.GetProjectFolder().Length);
         }
 
         // =================================================================================
@@ -136,15 +100,53 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         /// Ask the user to create or select an exist project.
         public static void CreateProjectsMenu(GenericMenu.MenuFunction2 callback) {
-            var projects= GetProjects();
             var menu= new GenericMenu();
-            foreach(var p in projects) {
-                var projectName= GetProjectName(p);
+            foreach(var p in myProjects) {
+                var projectName= p.ProjectName;
                 menu.AddItem(new GUIContent(projectName), false, callback, p);
             }
             menu.ShowAsContext();
         }
 
+        // =================================================================================
+		/// Returns the project associated with a Unity Object.
+		///
+		/// @param iStorage The visual script storage.
+		/// @return The project info assicated with the Unity Object.
+		///
+		public static ProjectInfo GetProjectFor(iCS_IStorage iStorage) {
+			var go= iStorage.HostGameObject;
+			if(go == null) {
+				Debug.LogWarning("iCanScript: Internal Error: Unable to find Game Object of visual script");
+				return null;
+			}
+			string path= null;
+			// -- Search for scene path if GO is in the a scene. --
+			if(iCS_UnityUtility.IsSceneGameObject(go)) {
+				path= EditorApplication.currentScene;
+			}
+			// -- Search for asset path if GO is a prefab. --
+			else {
+				path= AssetDatabase.GetAssetPath(go);
+			}
+			path= Folder.AssetToAbsolutePath(path);
+			return GetProjectFor(path);
+		}
+
+        // =================================================================================
+		/// Returns the project associated with a Unity Object.
+		///
+		/// @param absolutePath The absolute path of the asset.
+		/// @return The project info assicated with the Unity Object.
+		///
+		public static ProjectInfo GetProjectFor(string absolutePath) {
+			foreach(var p in myProjects) {
+				if(absolutePath.StartsWith(p.GetProjectFolder())) {
+					return p;
+				}
+			}
+			return null;
+		}
     }
 
 }

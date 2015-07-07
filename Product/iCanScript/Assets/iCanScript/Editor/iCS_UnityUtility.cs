@@ -12,7 +12,7 @@ namespace iCanScript.Internal.Editor {
             return iCS_Types.IsA<GameObject>(theObject.GetType());
         }
         // -----------------------------------------------------------------------
-        //! Returns true if the given GameObject is a Prefab.
+        /// Returns true if the given GameObject is a Prefab.
         public static bool IsPrefab(GameObject go) {
             if(go == null) return false;
             var prefabType= PrefabUtility.GetPrefabType(go);
@@ -22,7 +22,7 @@ namespace iCanScript.Internal.Editor {
             return false;
         }
         // -----------------------------------------------------------------------
-        //! Returns true if the given GameObject is an instance of a Prefab.
+        /// Returns true if the given GameObject is an instance of a Prefab.
         public static bool IsPrefabInstance(GameObject go) {
             if(go == null) return false;
             var prefabType= PrefabUtility.GetPrefabType(go);
@@ -33,7 +33,7 @@ namespace iCanScript.Internal.Editor {
             return false;
         }
         // -----------------------------------------------------------------------
-        //! Returns true if the given GameObject is in the current scene.
+        /// Returns true if the given GameObject is in the current scene.
         public static bool IsSceneGameObject(GameObject go) {
             if(go == null) return false;
             return !IsPrefab(go);

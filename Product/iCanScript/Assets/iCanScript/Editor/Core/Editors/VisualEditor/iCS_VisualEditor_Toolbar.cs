@@ -71,7 +71,7 @@ namespace iCanScript.Internal.Editor {
             }
             // -- Project Settings --
             if(iCS_ToolbarUtility.Button(ref r, 100, true, "Project Settings", 0, spacer, true)) {
-                ProjectEditor.Init(IStorage);
+                ProjectSettingsEditor.Init();
             }
             // -- Visual Script Settings --
             if(iCS_ToolbarUtility.Button(ref r, 100, true, "Visual Script Settings", 0, spacer, true)) {
@@ -89,7 +89,7 @@ namespace iCanScript.Internal.Editor {
     		// CENTER TOOLBAR
             // Show game object name in middle of toolbar.
 			var projectName= "";
-			var project= ProjectController.ActiveProject;
+			var project= IStorage.Project;
 			if(project != null) {
 				projectName= project.ProjectName + " -- ";
 			}

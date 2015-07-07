@@ -35,12 +35,27 @@ namespace iCanScript.Internal.Editor {
         /// @return The base type string or _null_ if not found.
         ///
         public static string GetBaseTypeString(iCS_IStorage iStorage) {
-            if(iStorage.BaseTypeOverride) {
-                return iStorage.BaseType;
-            }
-            return Prefs.EngineBaseType;
+        	return iStorage.BaseType;
         }
         
+        // ----------------------------------------------------------------------
+		/// Get default base type for the engine code.
+		///
+		/// @return A type name string representing the engine base type.
+		///
+		public static string DefaultEngineBaseTypeString {
+			get { return "UnityEngine.MonoBehaviour"; }
+		}
+		
+        // ----------------------------------------------------------------------
+		/// Get default base type for the editor code.
+		///
+		/// @return A type name string representing the engine base type.
+		///
+		public static string DefaultEditorBaseTypeString {
+			get { return "UnityEditor.EditorWindow"; }
+		}
+		
         // ======================================================================
         // NAMESPACE UTILITIES
         // ----------------------------------------------------------------------
@@ -50,33 +65,24 @@ namespace iCanScript.Internal.Editor {
         /// @return The namespace.
         ///
         public static string GetNamespace(iCS_IStorage iStorage) {
-            if(iStorage.NamespaceOverride) {
-                return iStorage.Namespace;
-            }
-            return GetDefaultNamespace(iStorage);
-        }
-
-        // ----------------------------------------------------------------------
-        /// Returns the default namespace according to the type of viusal script.
-        ///
-        /// @param iStorage The visual script storage.
-        /// @return The default namespace.
-        ///
-        public static string GetDefaultNamespace(iCS_IStorage iStorage) {
-            if(iStorage.IsEditorScript) {
-                return Prefs.EditorNamespace;
-            }
-            return Prefs.EngineNamespace;
+			var project= ProjectController.GetProjectFor(iStorage);
+			if(project == null) return null;
+			if(iStorage.IsEditorScript) {
+				return project.EditorNamespace;
+			}
+        	return project.EngineNamespace;
         }
 
         // ======================================================================
         // NAMESPACE UTILITIES
         // ----------------------------------------------------------------------
         public static string GetCodeGenerationFolder(iCS_IStorage iStorage) {
+			var project= ProjectController.GetProjectFor(iStorage);
+			if(project == null) return null;
             if(iStorage.IsEditorScript) {
-                return Prefs.EditorCodeGenerationFolder;
+                return project.GetEditorCodeGenerationFolder();
             }
-            return Prefs.EngineCodeGenerationFolder;
+            return project.GetEngineCodeGenerationFolder();
         }
     }    
 }

@@ -15,19 +15,28 @@ namespace iCanScript.Internal.Editor {
         // ======================================================================
         // Fields
         // ----------------------------------------------------------------------
-                bool                    myForceRelayout     = true;
-        public  iCS_MonoBehaviourImp    iCSMonoBehaviour    = null;
-        public  iCS_VisualScriptData    EditorStorage       = null;
-        List<iCS_EditorObject>          myEditorObjects     = null;
-        public  int                     ModificationId      = -1;
-        public  bool                    CleanupDeadPorts    = true;
-        public  int                     NumberOfNodes       = 0;
+                bool                    myForceRelayout = true;
+				ProjectInfo				myProject       = null;
+        public  iCS_MonoBehaviourImp    iCSMonoBehaviour= null;
+        public  iCS_VisualScriptData    EditorStorage   = null;
+        List<iCS_EditorObject>          myEditorObjects = null;
+        public  int                     ModificationId  = -1;
+        public  bool                    CleanupDeadPorts= true;
+        public  int                     NumberOfNodes   = 0;
     
         // ======================================================================
         // Properties
         // ----------------------------------------------------------------------
         public List<iCS_EditorObject>   EditorObjects    { get { return myEditorObjects; }}
         public List<iCS_EngineObject>   EngineObjects    { get { return Storage.EngineObjects; }}
+		public ProjectInfo	Project {
+			get {
+				if(myProject == null) {
+					myProject= ProjectController.GetProjectFor(this);
+				}
+				return myProject;
+			}
+		}
         public iCS_VisualScriptData Storage {
             get { return EditorStorage; }
             set { EditorStorage= value; }
@@ -131,13 +140,8 @@ namespace iCanScript.Internal.Editor {
             get { return Storage.BaseType; }
             set { Storage.BaseType= value; }
         }
-        public bool NamespaceOverride {
-            get { return Storage.NamespaceOverride; }
-            set { Storage.NamespaceOverride= value; }
-        }
         public string Namespace {
-            get { return Storage.Namespace; }
-            set { Storage.Namespace= value; }
+            get { return CodeGenerationUtility.GetNamespace(this); }
         }
     	public Vector2 ScrollPosition {
     	    get { return Storage.ScrollPosition; }

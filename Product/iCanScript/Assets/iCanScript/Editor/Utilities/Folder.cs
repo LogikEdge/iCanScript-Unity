@@ -28,6 +28,25 @@ namespace iCanScript.Internal.Editor {
         }
 
         // ==================================================================
+        /// Converts a system path to an Assets relative path.
+        ///
+        /// @param systemPath The system path to be converted.
+        /// @return The _Assets_ relative path.
+        ///
+		public static string AbsoluteToAssetPath(string systemPath) {
+    		var systemAssetPath= Application.dataPath;
+			if(!systemPath.StartsWith(systemAssetPath)) {
+				Debug.LogWarning("iCanScript: Internal Error: Unable to convert from absolute to Assets path=> "+systemPath);
+				return systemPath;
+			}
+			var assetPath= systemPath.Remove(0, systemAssetPath.Length);
+			if(assetPath.StartsWith("/")) {
+				assetPath= assetPath.Remove(0, 1);
+			}
+			return assetPath;
+		}
+		
+        // ==================================================================
         /// Returns _true_ if the given folder is empty.
         ///
         /// @param absolutePath The absolute path of the folder.

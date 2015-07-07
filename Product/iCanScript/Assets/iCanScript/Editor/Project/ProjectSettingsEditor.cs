@@ -6,7 +6,7 @@ using P=iCanScript.Internal.Prelude;
 
 namespace iCanScript.Internal.Editor {
 
-	public class CreateProjectDialog : ConfigEditorBase {
+	public class ProjectSettingsEditor : ConfigEditorBase {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
@@ -14,17 +14,31 @@ namespace iCanScript.Internal.Editor {
     	string[]    myOptionStrings= new string[]{
 			"Create",
             "Open",
+            "Update",
+            "Close",
             "Remove"
     	};
     	
         // =================================================================================
         // INITIALIZATION
         // ---------------------------------------------------------------------------------
-        public static CreateProjectDialog Init() {
-            var editor= EditorWindow.CreateInstance<CreateProjectDialog>();
+        public static ProjectSettingsEditor Init() {
+            var editor= EditorWindow.CreateInstance<ProjectSettingsEditor>();
             editor.ShowUtility();
             return editor;
         }
+
+        // =================================================================================
+        // SPECIALIZATION
+        // ---------------------------------------------------------------------------------
+        /// Allows the child class to define an horizontal offset for the value column.
+        ///
+        /// @return The horizontal offset.
+        ///
+        protected override float GetValueHorizontalOffset() {
+            return -30f;
+        }
+        
 
         // =================================================================================
         // INTERFACES TO BE PROVIDED
@@ -40,7 +54,9 @@ namespace iCanScript.Internal.Editor {
             switch(selection) {
 				case 0: Create(); break;
                 case 1: Open(); break;
-                case 2: Remove(); break;
+                case 2: Update(); break;
+                case 3: CloseProject(); break;
+                case 4: Remove(); break;
                 default: break;
             }
         }
@@ -64,7 +80,7 @@ namespace iCanScript.Internal.Editor {
             myProject.CreateProjectFolder= EditorGUI.Toggle(pos[2], myProject.CreateProjectFolder);
             EditorGUI.BeginDisabledGroup(true);
             EditorGUI.TextField(pos[4], myProject.GetRelativeProjectFolder());
-			EditorGUI.TextField(pos[5], myProject.GetNamespace());
+			EditorGUI.TextField(pos[5], myProject.GetEngineNamespace());
 			EditorGUI.TextField(pos[6], myProject.GetEditorNamespace());
             EditorGUI.EndDisabledGroup();
 
@@ -73,31 +89,34 @@ namespace iCanScript.Internal.Editor {
                 myProject.RootFolder= EditorUtility.OpenFolderPanel("iCanScript Project Folder Selection", Application.dataPath, "");                
             }
         
-    		// -- Save changes --
+    		// -- Compute button area. --
             var totalWidth= kColumn2Width + kColumn3Width;
             var width= totalWidth / 3f;
             var buttonWidth= width - 2f*kMargin;
             var buttonX= kColumn2X + 2*kMargin;
             var buttonY= position.height-kMargin-20.0f;
-            if(GUI.Button(new Rect(buttonX, buttonY, buttonWidth, 20.0f),"Save")) {
-                if(myProject.AlreadyExists) {
-                    Debug.Log("Project already exists");
-                }
-                else {
-                    myProject.Save();
-    				ProjectController.LoadProjectFromRelativePath(myProject.GetRelativeFileNamePath());                    
-                }
+
+            // -- Show project already exists error message. --
+            bool projectAlreadyExists= myProject.AlreadyExists;
+            if(projectAlreadyExists) {
+                var x= buttonX-kMargin;
+                var y= buttonY - 3f*pos[0].height;
+                var w= totalWidth;
+                var h= 2f*pos[0].height;
+                EditorGUI.HelpBox(new Rect(x,y,w,h), "PROJECT ALREADY EXISTS:\n--> "+myProject.GetRelativeFileNamePath(), MessageType.Error);                
             }
-            if(GUI.Button(new Rect(buttonX+width, buttonY, buttonWidth, 20.0f),"Save & Close")) {
-                if(myProject.AlreadyExists) {
-                    Debug.Log("Project already exists");
-                }
-                else {
+                        
+            // -- Process "Save" button. --
+            EditorGUI.BeginDisabledGroup(projectAlreadyExists);
+            if(GUI.Button(new Rect(buttonX+width, buttonY, buttonWidth, 20.0f),"Save")) {
+                if(!projectAlreadyExists) {
                     myProject.Save();
-    				ProjectController.LoadProjectFromRelativePath(myProject.GetRelativeFileNamePath());
+					ProjectController.UpdateProjectDatabase();
                     Close();
                 }
             }
+            EditorGUI.EndDisabledGroup();            
+            // -- Process "Cancel" button. --
             if(GUI.Button(new Rect(buttonX+2f*width, buttonY, buttonWidth, 20.0f),"Cancel")) {
                 Close();
             }
@@ -112,14 +131,26 @@ namespace iCanScript.Internal.Editor {
             
             // -- Value column --
             pos= GetValueColumnPositions(1);
-            var projectPaths= ProjectController.GetProjects();
-            var projectNames= P.map(p=> ProjectController.GetProjectName(p), projectPaths);
+            var projects= ProjectController.Projects;
+            var projectNames= P.map(p=> p.ProjectName, projects);
             var idx= EditorGUI.Popup(pos[0], -1, projectNames);
-            if(idx >= 0 && idx < projectPaths.Length) {
-				ProjectController.LoadProjectFromAbsolutePath(projectPaths[idx]);
+            if(idx >= 0 && idx < projects.Length) {
+				// TODO: Activate project.
             }
         }
 
+        // =================================================================================
+        /// Updates the active project information.
+        void Update() {
+            
+        }
+        
+        // =================================================================================
+        /// Closes the active project.
+        void CloseProject() {
+            
+        }
+        
         // =================================================================================
         /// Ask the user to select which project to remove.
         void Remove() {
@@ -129,11 +160,12 @@ namespace iCanScript.Internal.Editor {
             
             // -- Value column --
             pos= GetValueColumnPositions(1);
-            var projectPaths= ProjectController.GetProjects();
-            var projectNames= P.map(p=> ProjectController.GetProjectName(p), projectPaths);
+            var projects= ProjectController.Projects;
+            var projectNames= P.map(p=> p.ProjectName, projects);
             var idx= EditorGUI.Popup(pos[0], -1, projectNames);
-            if(idx >= 0 && idx < projectPaths.Length) {
-                ProjectInfo.RemoveProject(projectPaths[idx]);
+            if(idx >= 0 && idx < projects.Length) {
+                projects[idx].RemoveProject();
+				ProjectController.UpdateProjectDatabase();
             }
         }
         

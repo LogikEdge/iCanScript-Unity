@@ -48,8 +48,8 @@ namespace iCanScript.Internal.Editor {
             get { return myCreateProjectFolder; }
             set { myCreateProjectFolder= value; }
         }
-		public string Namespace {
-			get { return GetNamespace(); }
+		public string EngineNamespace {
+			get { return GetEngineNamespace(); }
 		}
 		public string EditorNamespace {
 			get { return GetEditorNamespace(); }
@@ -117,7 +117,7 @@ namespace iCanScript.Internal.Editor {
         
 		// ========================================================================
 		/// Extracts the engine namespace from the project name.
-		public string GetNamespace() {
+		public string GetEngineNamespace() {
             // -- Translate '-' to '_' for the namespace. --
             var formattedProjectName= NameUtility.ToTypeName(myProjectName.Replace('-','_'));
             if(string.IsNullOrEmpty(myParentFolder)) return formattedProjectName;
@@ -129,7 +129,51 @@ namespace iCanScript.Internal.Editor {
 		// ========================================================================
 		/// Extracts the editor namespace from the project name.
 		public string GetEditorNamespace() {
-			return GetNamespace()+".Editor";
+			return GetEngineNamespace()+".Editor";
+		}
+		
+		// ========================================================================
+		/// Returns the absolute path of the generated engine code.
+		///
+		/// @return The absolute path of the generated engine code.
+		///
+		public string GetEngineCodeGenerationFolder() {
+			var relativePath= GetRelativeEngineCodeGenerationFolder();
+			return Folder.AssetToAbsolutePath(relativePath);
+		}
+		
+		// ========================================================================
+		/// Returns the relative path of the generated engine code.
+		///
+		/// @return The relative path of the generated engine code.
+		///
+		public string GetRelativeEngineCodeGenerationFolder() {
+			var projectPath= GetRelativeProjectFolder();
+            var separator= string.IsNullOrEmpty(projectPath) ? "" : "/";
+            FileUtils.CreateAssetFolder(projectPath);
+            return projectPath+separator+"Generated Code";
+		}
+		
+		// ========================================================================
+		/// Returns the absolute path of the generated editor code.
+		///
+		/// @return The absolute path of the generated editor code.
+		///
+		public string GetEditorCodeGenerationFolder() {
+			var relativePath= GetRelativeEditorCodeGenerationFolder();
+			return Folder.AssetToAbsolutePath(relativePath);
+		}
+		
+		// ========================================================================
+		/// Returns the relative path of the generated editor code.
+		///
+		/// @return The relative path of the generated editor code.
+		///
+		public string GetRelativeEditorCodeGenerationFolder() {
+			var projectPath= GetRelativeProjectFolder();
+            var separator= string.IsNullOrEmpty(projectPath) ? "" : "/";
+            FileUtils.CreateAssetFolder(projectPath);
+            return projectPath+separator+"Editor/Generated Code";
 		}
 		
 		// ========================================================================
@@ -181,7 +225,7 @@ namespace iCanScript.Internal.Editor {
             // -- Accept ident rule or '-' for remaining of the project name. --
             for(int i= 1; i < myProjectName.Length; ++i) {
                 var c= myProjectName[i];
-                if(!iCS_TextUtil.IsIdent(c) && c != '-') {
+                if(!iCS_TextUtil.IsIdent(c) && c != '-' && c != ' ') {
                     UpdateProjectName(myProjectName.Substring(0,i)+myProjectName.Substring(i+1));
                     return;
                 }
