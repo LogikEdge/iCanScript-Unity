@@ -89,7 +89,7 @@ namespace iCanScript.Internal.Editor {
     		// CENTER TOOLBAR
             // Show game object name in middle of toolbar.
 			var projectName= "";
-			var project= ProjectController.ActiveProject;
+			var project= IStorage.Project;
 			if(project != null) {
 				projectName= project.ProjectName + " -- ";
 			}

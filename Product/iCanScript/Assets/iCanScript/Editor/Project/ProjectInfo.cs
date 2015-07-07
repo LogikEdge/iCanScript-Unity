@@ -129,7 +129,7 @@ namespace iCanScript.Internal.Editor {
 		// ========================================================================
 		/// Extracts the editor namespace from the project name.
 		public string GetEditorNamespace() {
-			return GetNamespace()+".Editor";
+			return GetEngineNamespace()+".Editor";
 		}
 		
 		// ========================================================================

@@ -80,7 +80,7 @@ namespace iCanScript.Internal.Editor {
             myProject.CreateProjectFolder= EditorGUI.Toggle(pos[2], myProject.CreateProjectFolder);
             EditorGUI.BeginDisabledGroup(true);
             EditorGUI.TextField(pos[4], myProject.GetRelativeProjectFolder());
-			EditorGUI.TextField(pos[5], myProject.GetNamespace());
+			EditorGUI.TextField(pos[5], myProject.GetEngineNamespace());
 			EditorGUI.TextField(pos[6], myProject.GetEditorNamespace());
             EditorGUI.EndDisabledGroup();
 
@@ -111,7 +111,7 @@ namespace iCanScript.Internal.Editor {
             if(GUI.Button(new Rect(buttonX+width, buttonY, buttonWidth, 20.0f),"Save")) {
                 if(!projectAlreadyExists) {
                     myProject.Save();
-    				ProjectController.LoadProjectFromRelativePath(myProject.GetRelativeFileNamePath());
+					ProjectController.UpdateProjectDatabase();
                     Close();
                 }
             }
@@ -131,11 +131,11 @@ namespace iCanScript.Internal.Editor {
             
             // -- Value column --
             pos= GetValueColumnPositions(1);
-            var projectPaths= ProjectController.GetProjects();
-            var projectNames= P.map(p=> ProjectController.GetProjectName(p), projectPaths);
+            var projects= ProjectController.Projects;
+            var projectNames= P.map(p=> p.ProjectName, projects);
             var idx= EditorGUI.Popup(pos[0], -1, projectNames);
-            if(idx >= 0 && idx < projectPaths.Length) {
-				ProjectController.LoadProjectFromAbsolutePath(projectPaths[idx]);
+            if(idx >= 0 && idx < projects.Length) {
+				// TODO: Activate project.
             }
         }
 
@@ -160,11 +160,12 @@ namespace iCanScript.Internal.Editor {
             
             // -- Value column --
             pos= GetValueColumnPositions(1);
-            var projectPaths= ProjectController.GetProjects();
-            var projectNames= P.map(p=> ProjectController.GetProjectName(p), projectPaths);
+            var projects= ProjectController.Projects;
+            var projectNames= P.map(p=> p.ProjectName, projects);
             var idx= EditorGUI.Popup(pos[0], -1, projectNames);
-            if(idx >= 0 && idx < projectPaths.Length) {
-                ProjectInfo.RemoveProject(projectPaths[idx]);
+            if(idx >= 0 && idx < projects.Length) {
+                projects[idx].RemoveProject();
+				ProjectController.UpdateProjectDatabase();
             }
         }
         

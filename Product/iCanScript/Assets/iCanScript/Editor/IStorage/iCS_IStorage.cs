@@ -15,19 +15,28 @@ namespace iCanScript.Internal.Editor {
         // ======================================================================
         // Fields
         // ----------------------------------------------------------------------
-                bool                    myForceRelayout     = true;
-        public  iCS_MonoBehaviourImp    iCSMonoBehaviour    = null;
-        public  iCS_VisualScriptData    EditorStorage       = null;
-        List<iCS_EditorObject>          myEditorObjects     = null;
-        public  int                     ModificationId      = -1;
-        public  bool                    CleanupDeadPorts    = true;
-        public  int                     NumberOfNodes       = 0;
+                bool                    myForceRelayout = true;
+				ProjectInfo				myProject       = null;
+        public  iCS_MonoBehaviourImp    iCSMonoBehaviour= null;
+        public  iCS_VisualScriptData    EditorStorage   = null;
+        List<iCS_EditorObject>          myEditorObjects = null;
+        public  int                     ModificationId  = -1;
+        public  bool                    CleanupDeadPorts= true;
+        public  int                     NumberOfNodes   = 0;
     
         // ======================================================================
         // Properties
         // ----------------------------------------------------------------------
         public List<iCS_EditorObject>   EditorObjects    { get { return myEditorObjects; }}
         public List<iCS_EngineObject>   EngineObjects    { get { return Storage.EngineObjects; }}
+		public ProjectInfo	Project {
+			get {
+				if(myProject == null) {
+					myProject= ProjectController.GetProjectFor(this);
+				}
+				return myProject;
+			}
+		}
         public iCS_VisualScriptData Storage {
             get { return EditorStorage; }
             set { EditorStorage= value; }

@@ -39,7 +39,11 @@ namespace iCanScript.Internal.Editor {
 				Debug.LogWarning("iCanScript: Internal Error: Unable to convert from absolute to Assets path=> "+systemPath);
 				return systemPath;
 			}
-			return systemPath.Remove(0, systemAssetPath.Length);
+			var assetPath= systemPath.Remove(0, systemAssetPath.Length);
+			if(assetPath.StartsWith("/")) {
+				assetPath= assetPath.Remove(0, 1);
+			}
+			return assetPath;
 		}
 		
         // ==================================================================
