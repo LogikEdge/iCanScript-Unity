@@ -56,8 +56,8 @@ namespace iCanScript.Internal.Editor {
     		if(storageVersion.IsOlderThen(2,0,21)) {
                 isUpgraded |= V2_0_21_EditorUpgrade();
             }
-    		if(storageVersion.IsOlderThen(2,0,23)) {
-                isUpgraded |= V2_0_23_EditorUpgrade();
+    		if(storageVersion.IsOlderThen(2,0,24)) {
+                isUpgraded |= V2_0_24_EditorUpgrade();
             }
 
             // -- Warn the user that an upgrade toke place --
@@ -174,7 +174,7 @@ namespace iCanScript.Internal.Editor {
         }
         // ======================================================================
         /// Set default base type for engine scripts.
-        bool V2_0_23_EditorUpgrade() {
+        bool V2_0_24_EditorUpgrade() {
             // -- Test and fix parameter indexes --
             bool isUpgraded= false;
 			if(!IsEditorScript && !BaseTypeOverride) {
