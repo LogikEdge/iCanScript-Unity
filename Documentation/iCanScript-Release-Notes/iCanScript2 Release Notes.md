@@ -1,6 +1,6 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.23
+Version: v2.0.24
 CSS: Github.css
 
 #  iCanScript Release Notes
@@ -9,17 +9,23 @@ CSS: Github.css
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
 
-## iCanScript v2.0.23 ##
+## iCanScript v2.0.24 ##
 
-_June 26, 2015_
+_July 7, 2015_
 
-V2.0.23 ...
+V2.0.24 ...
 
 ### List of Changes
 
 - **<span style="color: blue">\[IMPROVED\] </span>** Support preprocessor directives in inline code node.
 - **<span style="color: red">\[FIXED\] </span>** Fix sporadic index out of range exception when generating code.
 - **<span style="color: red">\[FIXED\] </span>** Fix some conditions that generated unnecessary _**"if(trigger)"**_ code.
+
+* * *
+
+## iCanScript v2.0.23 ##
+
+V2.0.23 was internally used for testing features in development and was not released to the user community.
 
 * * *
 
