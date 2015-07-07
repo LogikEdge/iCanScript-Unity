@@ -41,42 +41,6 @@ namespace iCanScript.Internal.Editor {
         private static string c_visualScriptBaseTypeMessage= null;
 
 
-        // =========================================================================
-        // NAMESPACE VALIDATIONS
-        // -------------------------------------------------------------------------
-        /// Validates that the visual script namespace follows programmatic conventions.
-        ///
-        /// @return The error message or _null_ if no error found.
-        ///
-        public static string ValidateVisualScriptNamespace(iCS_IStorage iStorage, bool shortFormat= false) {
-            if(!iStorage.IsRootObjectAType) return null;
-            if(iStorage.NamespaceOverride == false) return null;
-            var ns= iStorage.Namespace;
-            var error= ValidateNamespace(ns);
-            if(error == null) return null;
-            if(shortFormat) {
-                return "Invalid namespace format: "+error;
-            }
-            return "Invalid <b>Namespace '<color=red>"+ns+"</color>'</b> defined in the <b>Visual Script Configuration</b>: "+error;
-        }
-
-        // -------------------------------------------------------------------------
-        /// Validates that the given namespace follows programmatic conventions.
-        ///
-        /// @return The error message or _null_ if no error found.
-        ///
-        public static string ValidateNamespace(string ns) {
-            if(string.IsNullOrEmpty(ns)) return null;
-            var parts= ns.Split(new Char[1]{'.'});
-            foreach(var p in parts) {
-                var error= ValidateIdentifier(p);
-                if(error != null) {
-                    return error;
-                }
-            }
-            return null;
-        }
-
         // -------------------------------------------------------------------------
         /// Verifies for a valid programmatic identifier.
         ///

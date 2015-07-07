@@ -32,12 +32,6 @@ namespace iCanScript.Internal.Editor {
                 ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
             }        
 
-            // -- Verify namespaces --
-            message= Sanity.ValidateVisualScriptNamespace(this);
-            if(message != null) {
-                ErrorController.AddError(kSanityCheckServiceKey, message, VisualScript, 0);
-            }        
-
             // -- Ask each object to perform their own sanity check --
             ForEach(o=> o.SanityCheck(kSanityCheckServiceKey));
         }

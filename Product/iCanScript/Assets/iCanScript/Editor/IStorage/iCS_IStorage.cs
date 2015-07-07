@@ -140,13 +140,8 @@ namespace iCanScript.Internal.Editor {
             get { return Storage.BaseType; }
             set { Storage.BaseType= value; }
         }
-        public bool NamespaceOverride {
-            get { return Storage.NamespaceOverride; }
-            set { Storage.NamespaceOverride= value; }
-        }
         public string Namespace {
-            get { return Storage.Namespace; }
-            set { Storage.Namespace= value; }
+            get { return CodeGenerationUtility.GetNamespace(this); }
         }
     	public Vector2 ScrollPosition {
     	    get { return Storage.ScrollPosition; }

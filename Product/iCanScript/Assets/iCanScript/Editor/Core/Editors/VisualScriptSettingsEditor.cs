@@ -98,11 +98,6 @@ namespace iCanScript.Internal.Editor {
                 DisplayError(pos[4], message);
                 return;
             }
-            message= Sanity.ValidateVisualScriptNamespace(iStorage, /*shortFormat=*/true);
-            if(message != null) {
-                DisplayError(pos[7], message);
-                return;
-            }
             message= Sanity.ValidateVisualScriptTypeName(iStorage, /*shortFormat=*/true);
             if(message != null) {
                 DisplayError(pos[0], message);
