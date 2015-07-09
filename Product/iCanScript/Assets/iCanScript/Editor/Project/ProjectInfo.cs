@@ -67,10 +67,24 @@ namespace iCanScript.Internal.Editor {
 		// Creation/Destruction
 		// ------------------------------------------------------------------------
 		public ProjectInfo(string projectName= null) {
-			if(projectName == null) projectName= "MyProject";
+			if(projectName == null) {
+                projectName= UnityUtility.GetProjectName();
+    			UpdateProjectName(projectName);
+                CreateProjectFolder= false;
+                return;
+            }
 			UpdateProjectName(projectName);
 		}
 
+		// ========================================================================
+		/// Computes the project file name.
+        ///
+        /// @return The iCanScript file name including its extension.
+        ///
+		public string GetFileName() {
+			return myProjectName+".icsproject";
+		}
+		
 		// ========================================================================
 		/// Extracts the relative project folder path.
 		public string GetRelativeProjectFolder() {
@@ -88,12 +102,6 @@ namespace iCanScript.Internal.Editor {
 		/// Computes the absolute project folder path.
 		public string GetProjectFolder() {
             return Application.dataPath+"/"+GetRelativeProjectFolder();
-		}
-		
-		// ========================================================================
-		/// Computes the project file name.
-		public string GetFileName() {
-			return myProjectName+".icsproject";
 		}
 		
 		// ========================================================================

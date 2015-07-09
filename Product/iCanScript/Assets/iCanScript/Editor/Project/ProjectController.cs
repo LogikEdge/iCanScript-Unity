@@ -34,10 +34,8 @@ namespace iCanScript.Internal.Editor {
         public static ProjectInfo DefaultProject {
             get {
                 if(myDefaultProject == null) {
-                    var unityProjectName= UnityUtility.GetProjectName();
-                    myDefaultProject= new ProjectInfo(unityProjectName);
-                    myDefaultProject.CreateProjectFolder= false;
-                    myDefaultProject.Save();                
+                    myDefaultProject= new ProjectInfo();
+                    myDefaultProject.Save();            
                 }
                 return myDefaultProject;                
             }
