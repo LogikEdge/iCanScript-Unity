@@ -5,7 +5,7 @@ using iCanScript;
 
 namespace iCanScript.Internal.Editor {
     
-    public static class iCS_UnityUtility {
+    public static class UnityUtility {
         // -----------------------------------------------------------------------
         //! Returns true if the given object is a GameObject
         public static bool IsGameObject(UnityEngine.Object theObject) {
@@ -37,6 +37,18 @@ namespace iCanScript.Internal.Editor {
         public static bool IsSceneGameObject(GameObject go) {
             if(go == null) return false;
             return !IsPrefab(go);
+        }
+
+        // =======================================================================
+        /// Retreives the Unity project name.
+        ///
+        /// @return The unity project name.
+        ///
+        public static string GetProjectName()
+        {
+            string[] s = Application.dataPath.Split('/');
+            string projectName = s[s.Length - 2];
+            return projectName;
         }
     }
 

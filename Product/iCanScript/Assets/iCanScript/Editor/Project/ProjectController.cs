@@ -19,7 +19,8 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
-        static ProjectInfo[]	myProjects= null;
+        static ProjectInfo      myDefaultProject= null;
+        static ProjectInfo[]	myProjects      = null;
         
         // =================================================================================
         // Properties
@@ -94,7 +95,7 @@ namespace iCanScript.Internal.Editor {
 			}
 			string path= null;
 			// -- Search for scene path if GO is in the a scene. --
-			if(iCS_UnityUtility.IsSceneGameObject(go)) {
+			if(UnityUtility.IsSceneGameObject(go)) {
 				path= EditorApplication.currentScene;
 			}
 			// -- Search for asset path if GO is a prefab. --
@@ -117,8 +118,23 @@ namespace iCanScript.Internal.Editor {
 					return p;
 				}
 			}
-			return null;
+			return GetDefaultProject();
 		}
+
+        // =================================================================================
+        /// Returns the default iCS project matching the Unity project.
+        ///
+        /// @return The default iCanScript project for this Unity project.
+        ///
+        public static ProjectInfo GetDefaultProject() {
+            if(myDefaultProject == null) {
+                var unityProjectName= UnityUtility.GetProjectName();
+                myDefaultProject= new ProjectInfo(unityProjectName);
+                myDefaultProject.CreateProjectFolder= false;
+                myDefaultProject.Save();                
+            }
+            return myDefaultProject;
+        }
     }
 
 }

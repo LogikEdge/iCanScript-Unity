@@ -118,7 +118,7 @@ public static class iCS_GuiUtilities {
 				// Do not allow GameObject binding in Prefabs.
                 if(PrefabUtility.GetPrefabType(iStorage.HostGameObject) == PrefabType.Prefab) {
                     if(newValue != null && iCS_Types.IsA<GameObject>(newValue.GetType())) {
-                        var isSceneObject= iCS_UnityUtility.IsSceneGameObject(newValue as GameObject);
+                        var isSceneObject= UnityUtility.IsSceneGameObject(newValue as GameObject);
                         if(isSceneObject == true) {
                             iCS_EditorController.ShowNotificationOnVisualEditor(new GUIContent("Unity does not allow binding a Scene object to a Prefab."));
 							iCS_EditorController.RepaintVisualEditor();
