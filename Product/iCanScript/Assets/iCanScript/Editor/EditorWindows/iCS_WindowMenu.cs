@@ -5,18 +5,18 @@ namespace iCanScript.Internal.Editor {
     
     public static class iCS_WindowMenu {
         // ======================================================================
-    	// Quick Open Visual Editor.
-    	[MenuItem("iCanScript/Open iCanScript",false,20)]
-    	public static void OpeniCanScript() {
-            MenuGraphEditor();
-            MenuLibraryEditor();
-    	}
-        // ======================================================================
     	// iCanScript Graph editor.
-    	[MenuItem("iCanScript/Preferences...",false,50)]
+    	[MenuItem("iCanScript/Preferences...",false,11)]
     	public static void MenuPreferences() {
             var editor= EditorWindow.CreateInstance<iCS_GlobalSettingsEditorWindow>();
             editor.ShowUtility();
+    	}
+        // ======================================================================
+    	// Quick Open Visual Editor.
+    	[MenuItem("iCanScript/Open iCanScript",false,12)]
+    	public static void OpeniCanScript() {
+            MenuGraphEditor();
+            MenuLibraryEditor();
     	}
         // ======================================================================
     	// iCanScript Graph editor.

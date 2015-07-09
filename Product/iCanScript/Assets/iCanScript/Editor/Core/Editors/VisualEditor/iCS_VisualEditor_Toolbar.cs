@@ -65,14 +65,6 @@ namespace iCanScript.Internal.Editor {
                 CenterAtWithScale(pivot, newScale);
     		}
             
-            // -- Global Settings --
-            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Global Settings", 0, spacer, true)) {
-                GlobalSettingsEditor.Init(IStorage);
-            }
-            // -- Project Settings --
-            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Project Settings", 0, spacer, true)) {
-                ProjectSettingsEditor.Init();
-            }
             // -- Visual Script Settings --
             if(iCS_ToolbarUtility.Button(ref r, 100, true, "Visual Script Settings", 0, spacer, true)) {
                 VisualScriptSettingsEditor.Init(IStorage);
