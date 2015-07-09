@@ -25,9 +25,23 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         // Properties
         // ---------------------------------------------------------------------------------
+        /// Returns the list of existing iCanScript projects.
 		public static ProjectInfo[] Projects {
 			get { return myProjects; }
 		}
+        // =================================================================================
+        /// Returns the default iCanScript project for this Unity project.
+        public static ProjectInfo DefaultProject {
+            get {
+                if(myDefaultProject == null) {
+                    var unityProjectName= UnityUtility.GetProjectName();
+                    myDefaultProject= new ProjectInfo(unityProjectName);
+                    myDefaultProject.CreateProjectFolder= false;
+                    myDefaultProject.Save();                
+                }
+                return myDefaultProject;                
+            }
+        }
 		
         // =================================================================================
         // INIT / SHUTDOWN
@@ -118,23 +132,9 @@ namespace iCanScript.Internal.Editor {
 					return p;
 				}
 			}
-			return GetDefaultProject();
+			return DefaultProject;
 		}
 
-        // =================================================================================
-        /// Returns the default iCS project matching the Unity project.
-        ///
-        /// @return The default iCanScript project for this Unity project.
-        ///
-        public static ProjectInfo GetDefaultProject() {
-            if(myDefaultProject == null) {
-                var unityProjectName= UnityUtility.GetProjectName();
-                myDefaultProject= new ProjectInfo(unityProjectName);
-                myDefaultProject.CreateProjectFolder= false;
-                myDefaultProject.Save();                
-            }
-            return myDefaultProject;
-        }
     }
 
 }
