@@ -80,9 +80,9 @@ namespace iCanScript.Internal.Editor {
 			var project= ProjectController.GetProjectFor(iStorage);
 			if(project == null) return null;
             if(iStorage.IsEditorScript) {
-                return project.GetEditorCodeGenerationFolder();
+                return project.GetEditorGeneratedCodeFolder();
             }
-            return project.GetEngineCodeGenerationFolder();
+            return project.GetEngineGeneratedCodeFolder();
         }
     }    
 }

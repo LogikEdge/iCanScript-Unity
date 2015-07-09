@@ -67,33 +67,158 @@ namespace iCanScript.Internal.Editor {
 		// Creation/Destruction
 		// ------------------------------------------------------------------------
 		public ProjectInfo(string projectName= null) {
-			if(projectName == null) projectName= "MyProject";
+			if(projectName == null) {
+                projectName= UnityUtility.GetProjectName();
+    			UpdateProjectName(projectName);
+                CreateProjectFolder= false;
+                return;
+            }
 			UpdateProjectName(projectName);
 		}
 
 		// ========================================================================
-		/// Extracts the relative project folder path.
-		public string GetRelativeProjectFolder() {
+		/// Computes the project file name.
+        ///
+        /// @return The iCanScript file name including its extension.
+        ///
+		public string GetFileName() {
+			return myProjectName+".icsproject";
+		}
+		
+		// ========================================================================
+		/// Creates and return the relative project folder path.
+        ///
+        /// @return The project folder path relative to the Assets folder.
+        ///
+        public string GetRelativeProjectFolder() {
+            // -- Determine project folder from the configuration. --
+            string projectFolder;
             if(string.IsNullOrEmpty(myParentFolder)) {
-                return myCreateProjectFolder ? myProjectName : "";
+                projectFolder= myCreateProjectFolder ? myProjectName : "";
             }
-            var projectFolder= myParentFolder;
-            if(myCreateProjectFolder) {
-                projectFolder+= "/"+myProjectName;
+            else {
+                projectFolder= myParentFolder;
+                if(myCreateProjectFolder) {
+                    projectFolder+= "/"+myProjectName;
+                }                
             }
+            // -- Create project folder if it does not exists. --
+            FileUtils.CreateAssetFolder(projectFolder);
             return projectFolder;
 		}
 		
 		// ========================================================================
-		/// Computes the absolute project folder path.
+		/// Creates and returns the absolute project folder path.
+        ///
+        /// @return Returns the full path to the iCanScript project folder.
+        ///
 		public string GetProjectFolder() {
             return Application.dataPath+"/"+GetRelativeProjectFolder();
 		}
 		
 		// ========================================================================
-		/// Computes the project file name.
-		public string GetFileName() {
-			return myProjectName+".icsproject";
+		/// Creates and return the relative engine visual script folder path.
+        ///
+        /// @return The engine visual script folder path relative to the _Assets_
+        ///         folder.
+        ///
+        public string GetRelativeEngineVisualScriptFolder() {
+            // -- Determine project folder from the configuration. --
+			var projectPath= GetRelativeProjectFolder();
+            var separator= string.IsNullOrEmpty(projectPath) ? "" : "/";
+            var visualScriptPath= projectPath+separator+"Visual Scripts";
+            // -- Create project folder if it does not exists. --
+            FileUtils.CreateAssetFolder(visualScriptPath);
+            return visualScriptPath;
+		}
+		
+		// ========================================================================
+		/// Creates and returns the absolute engine visual script folder path.
+        ///
+        /// @return Returns the full path to the iCanScript engine visual script
+        ///         folder.
+        ///
+		public string GetEngineVisualScriptFolder() {
+            return Application.dataPath+"/"+GetRelativeEngineVisualScriptFolder();
+		}
+		
+		// ========================================================================
+		/// Creates and return the relative engine generated code folder path.
+        ///
+        /// @return The engine generated code folder path relative to the _Assets_
+        ///         folder.
+        ///
+        public string GetRelativeEngineGeneratedCodeFolder() {
+            // -- Determine project folder from the configuration. --
+			var projectPath= GetRelativeProjectFolder();
+            var separator= string.IsNullOrEmpty(projectPath) ? "" : "/";
+            var generatedCodePath= projectPath+separator+"Generated Code";
+            // -- Create project folder if it does not exists. --
+            Debug.Log("Creating: "+generatedCodePath);
+            FileUtils.CreateAssetFolder(generatedCodePath);
+            return generatedCodePath;
+		}
+		
+		// ========================================================================
+		/// Creates and returns the absolute engine generated code folder path.
+        ///
+        /// @return Returns the full path to the iCanScript engine generated code
+        ///         folder.
+        ///
+		public string GetEngineGeneratedCodeFolder() {
+            return Application.dataPath+"/"+GetRelativeEngineGeneratedCodeFolder();
+		}
+		
+		// ========================================================================
+		/// Creates and return the relative editor visual script folder path.
+        ///
+        /// @return The editor visual script folder path relative to the _Assets_
+        ///         folder.
+        ///
+        public string GetRelativeEditorVisualScriptFolder() {
+            // -- Determine project folder from the configuration. --
+			var projectPath= GetRelativeProjectFolder();
+            var separator= string.IsNullOrEmpty(projectPath) ? "" : "/";
+            var visualScriptPath= projectPath+separator+"Editor/Visual Scripts";
+            // -- Create project folder if it does not exists. --
+            FileUtils.CreateAssetFolder(visualScriptPath);
+            return visualScriptPath;
+		}
+		
+		// ========================================================================
+		/// Creates and returns the absolute editor visual script folder path.
+        ///
+        /// @return Returns the full path to the iCanScript editor visual script
+        ///         folder.
+        ///
+		public string GetEditorVisualScriptFolder() {
+            return Application.dataPath+"/"+GetRelativeEditorVisualScriptFolder();
+		}
+		
+		// ========================================================================
+		/// Creates and return the relative editor generated code folder path.
+        ///
+        /// @return The editor generated code folder path relative to the _Assets_
+        ///         folder.
+        ///
+        public string GetRelativeEditorGeneratedCodeFolder() {
+            // -- Determine project folder from the configuration. --
+			var projectPath= GetRelativeProjectFolder();
+            var separator= string.IsNullOrEmpty(projectPath) ? "" : "/";
+            var generatedCodePath= projectPath+separator+"Editor/Generated Code";
+            // -- Create project folder if it does not exists. --
+            FileUtils.CreateAssetFolder(generatedCodePath);
+            return generatedCodePath;
+		}
+		
+		// ========================================================================
+		/// Creates and returns the absolute editor generated code folder path.
+        ///
+        /// @return Returns the full path to the iCanScript editor generated code
+        ///         folder.
+        ///
+		public string GetEditorGeneratedCodeFolder() {
+            return Application.dataPath+"/"+GetRelativeEditorGeneratedCodeFolder();
 		}
 		
 		// ========================================================================
@@ -130,50 +255,6 @@ namespace iCanScript.Internal.Editor {
 		/// Extracts the editor namespace from the project name.
 		public string GetEditorNamespace() {
 			return GetEngineNamespace()+".Editor";
-		}
-		
-		// ========================================================================
-		/// Returns the absolute path of the generated engine code.
-		///
-		/// @return The absolute path of the generated engine code.
-		///
-		public string GetEngineCodeGenerationFolder() {
-			var relativePath= GetRelativeEngineCodeGenerationFolder();
-			return Folder.AssetToAbsolutePath(relativePath);
-		}
-		
-		// ========================================================================
-		/// Returns the relative path of the generated engine code.
-		///
-		/// @return The relative path of the generated engine code.
-		///
-		public string GetRelativeEngineCodeGenerationFolder() {
-			var projectPath= GetRelativeProjectFolder();
-            var separator= string.IsNullOrEmpty(projectPath) ? "" : "/";
-            FileUtils.CreateAssetFolder(projectPath);
-            return projectPath+separator+"Generated Code";
-		}
-		
-		// ========================================================================
-		/// Returns the absolute path of the generated editor code.
-		///
-		/// @return The absolute path of the generated editor code.
-		///
-		public string GetEditorCodeGenerationFolder() {
-			var relativePath= GetRelativeEditorCodeGenerationFolder();
-			return Folder.AssetToAbsolutePath(relativePath);
-		}
-		
-		// ========================================================================
-		/// Returns the relative path of the generated editor code.
-		///
-		/// @return The relative path of the generated editor code.
-		///
-		public string GetRelativeEditorCodeGenerationFolder() {
-			var projectPath= GetRelativeProjectFolder();
-            var separator= string.IsNullOrEmpty(projectPath) ? "" : "/";
-            FileUtils.CreateAssetFolder(projectPath);
-            return projectPath+separator+"Editor/Generated Code";
 		}
 		
 		// ========================================================================
@@ -238,11 +319,6 @@ namespace iCanScript.Internal.Editor {
             // -- Create the project folders (if not existing). --
 			var projectPath= GetRelativeProjectFolder();
             var separator= string.IsNullOrEmpty(projectPath) ? "" : "/";
-            FileUtils.CreateAssetFolder(projectPath);
-            FileUtils.CreateAssetFolder(projectPath+separator+"Visual Scripts");
-            FileUtils.CreateAssetFolder(projectPath+separator+"Generated Code");
-            FileUtils.CreateAssetFolder(projectPath+separator+"Editor/Visual Scripts");
-            FileUtils.CreateAssetFolder(projectPath+separator+"Editor/Generated Code");
             // -- Update version information. --
             myVersion= Version.Current.ToString();
             // -- Save the project information. --
