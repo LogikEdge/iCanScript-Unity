@@ -213,6 +213,21 @@ namespace iCanScript.Internal.Editor {
         protected virtual float GetValueHorizontalOffset() {
             return 0f;
         }
+        // =================================================================================
+        /// Changes the active selection.
+        ///
+        /// @param selectionName String with the selection string.
+        /// @return _true_ if selection has been changed; _false_ otherwise. 
+        ///
+        public bool ChangeSelection(string selectionStr) {
+            for(int i= 0; i < optionStrings.Length; ++i) {
+                if(optionStrings[i] == selectionStr) {
+                    selGridId= i;
+                    return true;
+                }
+            }
+            return false;
+        }
         
     	// =================================================================================
         // ERROR DSIPLAY UTILITIES

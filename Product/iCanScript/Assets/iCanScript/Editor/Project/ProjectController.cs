@@ -37,38 +37,34 @@ namespace iCanScript.Internal.Editor {
         
         // =================================================================================
         /// Creates a project file.
-    	[MenuItem("iCanScript/Create Project", false, 100)]
+    	[MenuItem("iCanScript/Create Project...", false, 100)]
     	public static void CreateProject() {
             /*var editor=*/ ProjectSettingsEditor.Init();
     	}
 
         // =================================================================================
         /// Opens an existing project file.
-    	[MenuItem("iCanScript/Open Project", false, 101)]
+    	[MenuItem("iCanScript/Open Project...", false, 101)]
     	public static void OpenProject() {
-            CreateProjectsMenu(OpenProject);
+            var editor= ProjectSettingsEditor.Init();
+            editor.ChangeSelection("Open");
     	}
-    	[MenuItem("iCanScript/Open Project", true, 101)]
+    	[MenuItem("iCanScript/Open Project...", true, 101)]
     	public static bool ValidateOpenProject() {
             return myProjects.Length > 0;
     	}
-        static void OpenProject(object projectPath) {
-            Debug.Log("Opening: "+projectPath);
-        }
         
         // =================================================================================
         /// Removes an existing project file.
-    	[MenuItem("iCanScript/Remove Project", false, 102)]
+    	[MenuItem("iCanScript/Remove Project...", false, 102)]
     	public static void RemoveProject() {
-            CreateProjectsMenu(RemoveProject);
+            var editor= ProjectSettingsEditor.Init();
+            editor.ChangeSelection("Remove");
     	}
-    	[MenuItem("iCanScript/Remove Project", true, 102)]
+    	[MenuItem("iCanScript/Remove Project...", true, 102)]
     	public static bool ValidateRemoveProject() {
             return myProjects.Length > 0;
     	}
-        static void RemoveProject(object projectPath) {
-            Debug.Log("Removing: "+projectPath);
-        }
         
         // =================================================================================
         /// Updates the project database from the disk.
