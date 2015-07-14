@@ -44,6 +44,10 @@ namespace iCanScript.Internal.Editor {
                 }
             }
         }
+		public string ProjectVersion {
+			get { return myVersion; }
+			set { myVersion= value; }
+		}
         public bool CreateProjectFolder {
             get { return myCreateProjectFolder; }
             set { myCreateProjectFolder= value; }

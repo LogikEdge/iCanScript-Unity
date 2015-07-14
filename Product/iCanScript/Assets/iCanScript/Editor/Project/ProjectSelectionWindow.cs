@@ -40,7 +40,7 @@ namespace iCanScript.Internal.Editor {
 		static GUIStyle	   ourProjectFolderStyle= null;
 		static GUIStyle	   ourButtonStyle       = null;
 		
-		int selection= 0;
+		int selectedProjectId= 0;
 		
         // =================================================================================
         /// Creates a project selection window.
@@ -58,6 +58,14 @@ namespace iCanScript.Internal.Editor {
             editor.minSize= new Vector2(kWidth, kHeaderHeight+kListAreaHeight);
             editor.maxSize= new Vector2(kWidth, kHeaderHeight+kListAreaHeight);
 
+            // -- Show the window. --
+            editor.ShowUtility();
+            return editor;
+        }
+
+        // =================================================================================
+		/// Initialize all class variables.
+		static void Initialize() {
             // -- Build the window area shapes. --
 			ourHeaderShape  = Shapes.Rectangle2D(0, 0, kWidth, kHeaderHeight);
 			ourListAreaShape= Shapes.Rectangle2D(0, kHeaderHeight, kWidth, kListAreaHeight);
@@ -77,16 +85,15 @@ namespace iCanScript.Internal.Editor {
 			ourProjectTitleStyle= new GUIStyle(EditorStyles.largeLabel);
 			ourProjectTitleStyle.fontSize= kTitleFontSize;
 			ourProjectFolderStyle= new GUIStyle(EditorStyles.largeLabel);
-			ourProjectFolderStyle.fontSize= kFolderFontSize;
-			
-            // -- Show the window. --
-            editor.ShowUtility();
-            return editor;
-        }
-
+			ourProjectFolderStyle.fontSize= kFolderFontSize;			
+		}
+		
         // =================================================================================
         /// Draw window
         public void OnGUI() {
+			// -- Assure the GUI is properly initialized. --
+			Initialize();
+			
 			// -- Set background colors. --
 			Handles.DrawSolidRectangleWithOutline(ourHeaderShape, ourHeaderBackgroundColor, ourHeaderBackgroundColor);
 			Handles.DrawSolidRectangleWithOutline(ourListAreaShape, ourListAreaBackgroundColor, ourListAreaBackgroundColor);
@@ -98,13 +105,30 @@ namespace iCanScript.Internal.Editor {
 			GUI.Label(ourProjectsTextRect, ourProjectsText, ourHeaderTextStyle);
 
 			// -- Project list. --
-			if(DisplayRow(0, "Roll A Ball", "Assets/iCanScript-Examples/Roll A Ball", "2.0.24", selection==0) == RowSelection.Project) {
-				selection= 0;
+			var projects= ProjectController.Projects;
+			for(int i= 0; i < projects.Length; ++i) {
+				var p= projects[i];
+				var name= p.ProjectName;
+				var folder= p.GetRelativeProjectFolder();
+				var version= p.ProjectVersion;
+				switch(DisplayRow(i, name, folder, version, i == selectedProjectId)) {
+					case RowSelection.Project: {
+						selectedProjectId= i;
+						break;
+					}
+					case RowSelection.Remove: {
+						selectedProjectId= 0;
+						p.RemoveProject();
+						ProjectController.UpdateProjectDatabase();
+						break;
+					}
+					case RowSelection.Settings: {
+						var editor= ProjectSettingsEditor.Init();
+						editor.ChangeSelection("Update");
+						break;
+					}
+				}
 			}
-			if(DisplayRow(1, "Nightmare", "Assets/iCanScript-Examples/Nightmare", "2.0.23", selection==1) == RowSelection.Project) {
-				selection= 1;
-			}
-			DisplayRow(2, "Space Shooter", "Assets/iCanScript-Examples/Space Shooter", "2.0.19", selection==2);
 
 			Event.current.Use();
         }
@@ -123,7 +147,7 @@ namespace iCanScript.Internal.Editor {
 			// -- Assume project is selected if mouse button is pressed. --
 			var rowSelection= RowSelection.None;
 			var e= Event.current;
-			if(isMouseOver && e.isMouse && e.button == 0) {
+			if(isMouseOver && e.type == EventType.MouseDown && e.button == 0) {
 				rowSelection= RowSelection.Project;
 			}
 			
