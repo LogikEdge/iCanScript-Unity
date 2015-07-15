@@ -12,7 +12,7 @@ namespace iCanScript.Internal.Engine {
         [HideInInspector] public bool                     IsEditorScript        = false;
         [HideInInspector] public string                   CSharpFileName        = null;
         [HideInInspector] public bool                     BaseTypeOverride      = false;
-        [HideInInspector] public string                   BaseType              = null;
+        [HideInInspector] public string                   BaseType              = "UnityEngine.MonoBehaviour";
         [HideInInspector] public bool                     NamespaceOverride     = false;
         [HideInInspector] public string                   Namespace             = null;
         [HideInInspector] public string                   SourceFileGUID        = null;
