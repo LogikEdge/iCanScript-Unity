@@ -13,10 +13,7 @@ namespace iCanScript.Internal.Editor {
 		ProjectInfo	myProject      = new ProjectInfo();
     	string[]    myOptionStrings= new string[]{
 			"Create",
-            "Open",
-            "Update",
-            "Close",
-            "Remove"
+            "Update"
     	};
     	
         // =================================================================================
@@ -53,10 +50,7 @@ namespace iCanScript.Internal.Editor {
             // Execute option specific panel.
             switch(selection) {
 				case 0: Create(); break;
-                case 1: Open(); break;
-                case 2: Update(); break;
-                case 3: CloseProject(); break;
-                case 4: Remove(); break;
+                case 1: Update(); break;
                 default: break;
             }
         }
@@ -123,52 +117,11 @@ namespace iCanScript.Internal.Editor {
 		}
         
         // =================================================================================
-        /// Ask the user to select which project to open.
-        void Open() {
-            // -- Label column --
-            var pos= GetLabelColumnPositions(1);
-            GUI.Label(pos[0], "Select Project");
-            
-            // -- Value column --
-            pos= GetValueColumnPositions(1);
-            var projects= ProjectController.Projects;
-            var projectNames= P.map(p=> p.ProjectName, projects);
-            var idx= EditorGUI.Popup(pos[0], -1, projectNames);
-            if(idx >= 0 && idx < projects.Length) {
-				// TODO: Activate project.
-            }
-        }
-
-        // =================================================================================
         /// Updates the active project information.
         void Update() {
             
         }
-        
-        // =================================================================================
-        /// Closes the active project.
-        void CloseProject() {
-            
-        }
-        
-        // =================================================================================
-        /// Ask the user to select which project to remove.
-        void Remove() {
-            // -- Label column --
-            var pos= GetLabelColumnPositions(1);
-            GUI.Label(pos[0], "Select Project");
-            
-            // -- Value column --
-            pos= GetValueColumnPositions(1);
-            var projects= ProjectController.Projects;
-            var projectNames= P.map(p=> p.ProjectName, projects);
-            var idx= EditorGUI.Popup(pos[0], -1, projectNames);
-            if(idx >= 0 && idx < projects.Length) {
-                projects[idx].RemoveProject();
-				ProjectController.UpdateProjectDatabase();
-            }
-        }
-        
+       
 	}
 
 }
