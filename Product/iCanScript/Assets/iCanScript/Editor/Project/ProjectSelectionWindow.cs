@@ -39,6 +39,7 @@ namespace iCanScript.Internal.Editor {
 		static GUIStyle	   ourProjectTitleStyle = null;
 		static GUIStyle	   ourProjectFolderStyle= null;
 		static GUIStyle	   ourButtonStyle       = null;
+        static Vector2     ourScrollPosition    = Vector2.zero;
 		
 		int selectedProjectId= 0;
 		
@@ -106,6 +107,8 @@ namespace iCanScript.Internal.Editor {
 
 			// -- Project list. --
 			var projects= ProjectController.Projects;
+            var viewRect= new Rect(0,0, ourListAreaRect.width-16f, kRowHeight*projects.Length);
+            ourScrollPosition= GUI.BeginScrollView(ourListAreaRect, ourScrollPosition, viewRect);
 			for(int i= 0; i < projects.Length; ++i) {
 				var p= projects[i];
 				var name= p.ProjectName;
@@ -131,13 +134,14 @@ namespace iCanScript.Internal.Editor {
 					}
 				}
 			}
+            GUI.EndScrollView();
 
 			Event.current.Use();
         }
 		
 		RowSelection DisplayRow(int rowId, string title, string folder, string version, bool isSelected= false) {
 			// -- Determine if mouse is hovering. --
-			float y= kHeaderHeight + rowId*kRowHeight;
+			float y= rowId*kRowHeight;
 			var mousePosition= Event.current.mousePosition+Event.current.delta;
 			bool isMouseOver= false;
 			if(mouseOverWindow) {
