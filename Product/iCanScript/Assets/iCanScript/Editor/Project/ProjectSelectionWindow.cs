@@ -81,7 +81,7 @@ namespace iCanScript.Internal.Editor {
 			ourHeaderTextStyle= new GUIStyle(EditorStyles.largeLabel);
 			ourHeaderTextStyle.fontSize= kHeaderFontSize;
 			ourHeaderTextStyle.fontStyle= FontStyle.Normal;
-			ourProjectsText= new GUIContent("Projects");
+			ourProjectsText= new GUIContent("Namespaces");
 			var projectsTextSize= ourHeaderTextStyle.CalcSize(ourProjectsText);
 			ourProjectsTextRect= new Rect(kSpacer,kHeaderHeight-kSpacer-projectsTextSize.y, projectsTextSize.x, projectsTextSize.y);
 
@@ -90,7 +90,7 @@ namespace iCanScript.Internal.Editor {
 			ourProjectFolderStyle= new GUIStyle(EditorStyles.largeLabel);
 			ourProjectFolderStyle.fontSize= kFolderFontSize;
 			
-			ourNewProjectText= new GUIContent("+ New Project");
+			ourNewProjectText= new GUIContent("+ New Namespace");
 			var newProjectTextSize= ourProjectTitleStyle.CalcSize(ourNewProjectText);
 			ourNewProjectTextRect= new Rect(ourLogoPosition.x-kSpacer-newProjectTextSize.x, kHeaderHeight-1.5f*kSpacer-newProjectTextSize.y, newProjectTextSize.x, newProjectTextSize.y);
 			
@@ -132,7 +132,7 @@ namespace iCanScript.Internal.Editor {
                 var separator= string.IsNullOrEmpty(folder) ? "" : "/";
                 folder= "Assets"+separator+folder;
 				var version= p.ProjectVersion;
-				switch(DisplayRow(i, name, folder, version, i == selectedProjectId)) {
+				switch(DisplayRow(i, name, folder, version, i == selectedProjectId, p.IsRootProject)) {
 					case RowSelection.Project: {
 						selectedProjectId= i;
 						break;
@@ -155,7 +155,7 @@ namespace iCanScript.Internal.Editor {
 			Event.current.Use();
         }
 		
-		RowSelection DisplayRow(int rowId, string title, string folder, string version, bool isSelected= false) {
+		RowSelection DisplayRow(int rowId, string title, string folder, string version, bool isSelected, bool isRootProject) {
 			// -- Determine if mouse is hovering. --
 			float y= rowId*kRowHeight;
 			var mousePosition= Event.current.mousePosition+Event.current.delta;
@@ -197,13 +197,15 @@ namespace iCanScript.Internal.Editor {
 			GUI.Label(versionRect, versionContent, ourProjectTitleStyle);
 
 			// -- Show option buttons. --
-			var settingRect= new Rect(kWidth-kSpacer-300f, y, 100f-0.5f*kSpacer, 34f);
-			if(GUI.Button(settingRect, "Settings")) {
-				rowSelection= RowSelection.Settings;
-			}
-			var removeRect= new Rect(kWidth-kSpacer-200f, y, 100f-0.5f*kSpacer, 34f);
-			if(GUI.Button(removeRect, "Remove")) {
-				rowSelection= RowSelection.Remove;
+			if(!isRootProject) {
+				var settingRect= new Rect(kWidth-kSpacer-300f, y, 100f-0.5f*kSpacer, 34f);
+				if(GUI.Button(settingRect, "Settings")) {
+					rowSelection= RowSelection.Settings;
+				}
+				var removeRect= new Rect(kWidth-kSpacer-200f, y, 100f-0.5f*kSpacer, 34f);
+				if(GUI.Button(removeRect, "Remove")) {
+					rowSelection= RowSelection.Remove;
+				}				
 			}
 
 			// -- Show project folder. --

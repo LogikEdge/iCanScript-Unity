@@ -50,7 +50,7 @@ namespace iCanScript.Internal.Editor {
         
         // =================================================================================
         /// Creates a project file.
-    	[MenuItem("iCanScript/Projects...", false, 80)]
+    	[MenuItem("iCanScript/Namespaces...", false, 80)]
     	public static void OpenProjectWindow() {
             ProjectSelectionWindow.Init();
     	}
@@ -68,7 +68,20 @@ namespace iCanScript.Internal.Editor {
 				var path= projectPaths[i];
 				myProjects[i]= ProjectInfo.Load(path);
 			}
-			// -- Assure that the longest path is first to simplify serach. --
+			// -- Add default project if it does not exist. --
+			bool rootProjectFound= false;
+			foreach(var p in myProjects) {
+				if(p.IsRootProject) {
+					rootProjectFound= true;
+				}
+			}
+			if(!rootProjectFound) {
+				var rootProject= new ProjectInfo();
+				rootProject.Save();
+				Array.Resize(ref myProjects, myProjects.Length+1); 
+				myProjects[myProjects.Length-1]= rootProject;
+			}
+			// -- Assure that the longest path is first to simplify search. --
 			Array.Sort(myProjects, (x,y)=> y.GetProjectFolder().Length - x.GetProjectFolder().Length);
         }
 
