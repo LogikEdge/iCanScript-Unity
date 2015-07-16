@@ -52,7 +52,6 @@ namespace iCanScript.Internal.Editor {
         /// Creates a project file.
     	[MenuItem("iCanScript/Projects...", false, 80)]
     	public static void OpenProjectWindow() {
-            ProjectSettingsEditor.Init();
             ProjectSelectionWindow.Init();
     	}
 

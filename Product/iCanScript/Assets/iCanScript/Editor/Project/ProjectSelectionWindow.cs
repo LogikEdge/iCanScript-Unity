@@ -36,6 +36,8 @@ namespace iCanScript.Internal.Editor {
 		static GUIStyle	   ourHeaderTextStyle= null;
 		static GUIContent  ourProjectsText;
 		static Rect		   ourProjectsTextRect;
+		static GUIContent  ourNewProjectText;
+		static Rect		   ourNewProjectTextRect;
 		static GUIStyle	   ourProjectTitleStyle = null;
 		static GUIStyle	   ourProjectFolderStyle= null;
 		static GUIStyle	   ourButtonStyle       = null;
@@ -86,7 +88,14 @@ namespace iCanScript.Internal.Editor {
 			ourProjectTitleStyle= new GUIStyle(EditorStyles.largeLabel);
 			ourProjectTitleStyle.fontSize= kTitleFontSize;
 			ourProjectFolderStyle= new GUIStyle(EditorStyles.largeLabel);
-			ourProjectFolderStyle.fontSize= kFolderFontSize;			
+			ourProjectFolderStyle.fontSize= kFolderFontSize;
+			
+			ourNewProjectText= new GUIContent("+ New Project");
+			var newProjectTextSize= ourProjectTitleStyle.CalcSize(ourNewProjectText);
+			ourNewProjectTextRect= new Rect(ourLogoPosition.x-kSpacer-newProjectTextSize.x, kHeaderHeight-1.5f*kSpacer-newProjectTextSize.y, newProjectTextSize.x, newProjectTextSize.y);
+			
+			// -- Refresh existing project information. --
+			ProjectController.UpdateProjectDatabase();			
 		}
 		
         // =================================================================================
@@ -104,7 +113,14 @@ namespace iCanScript.Internal.Editor {
 
 			// -- Header. --
 			GUI.Label(ourProjectsTextRect, ourProjectsText, ourHeaderTextStyle);
-
+			if(ourButtonStyle == null) {
+				ourButtonStyle= new GUIStyle(GUI.skin.button);
+				ourButtonStyle.fontSize= ourProjectTitleStyle.fontSize;				
+			}			
+			if(GUI.Button(ourNewProjectTextRect, ourNewProjectText)) {
+	            ProjectSettingsEditor.Init();
+			}
+			
 			// -- Project list. --
 			var projects= ProjectController.Projects;
             var viewRect= new Rect(0,0, ourListAreaRect.width-16f, kRowHeight*projects.Length);
@@ -181,16 +197,12 @@ namespace iCanScript.Internal.Editor {
 			GUI.Label(versionRect, versionContent, ourProjectTitleStyle);
 
 			// -- Show option buttons. --
-			if(ourButtonStyle == null) {
-				ourButtonStyle= new GUIStyle(GUI.skin.button);
-				ourButtonStyle.fontSize= ourProjectTitleStyle.fontSize;				
-			}			
 			var settingRect= new Rect(kWidth-kSpacer-300f, y, 100f-0.5f*kSpacer, 34f);
-			if(GUI.Button(settingRect, "Settings", ourButtonStyle)) {
+			if(GUI.Button(settingRect, "Settings")) {
 				rowSelection= RowSelection.Settings;
 			}
 			var removeRect= new Rect(kWidth-kSpacer-200f, y, 100f-0.5f*kSpacer, 34f);
-			if(GUI.Button(removeRect, "Remove", ourButtonStyle)) {
+			if(GUI.Button(removeRect, "Remove")) {
 				rowSelection= RowSelection.Remove;
 			}
 
