@@ -18,10 +18,11 @@ namespace iCanScript.Internal.Editor {
 		// ========================================================================
 		// Fields
 		// ------------------------------------------------------------------------
-        public string   myVersion            = null;
-		public string   myPackageName        = "";
-        public string   myParentFolder       = "";
-        public bool     myCreateProjectFolder= true;
+        public string        myVersion            = null;
+		public string        myPackageName        = "";
+        public PackageInfo   myParentPackage      = null;
+        public string        myParentFolder       = "";
+        public bool          myCreateProjectFolder= true;
 		
 		// ========================================================================
 		// Properties
@@ -30,8 +31,23 @@ namespace iCanScript.Internal.Editor {
 			get { return myPackageName ?? ""; }
 			set { UpdatePackageName(value); }
 		}
-        public string RootFolder {
-            get { return myParentFolder ?? ""; }
+		public string PackageVersion {
+			get { return myVersion; }
+			set { myVersion= value; }
+		}
+        public PackageInfo ParentPackage {
+            get {
+                return myParentPackage;
+            }
+            set {
+                myParentPackage= value;
+            }
+        }
+        public string ParentFolder {
+            get {
+                if(myParentPackage == null || IsRootPackage) return "";
+                return myParentPackage.GetRelativePackageFolder();
+            }
             set {
                 var baseFolder= Application.dataPath;
                 if(value.StartsWith(baseFolder)) {
@@ -43,14 +59,6 @@ namespace iCanScript.Internal.Editor {
                     }
                 }
             }
-        }
-		public string PackageVersion {
-			get { return myVersion; }
-			set { myVersion= value; }
-		}
-        public bool CreateProjectFolder {
-            get { return myCreateProjectFolder; }
-            set { myCreateProjectFolder= value; }
         }
 		public string EngineNamespace {
 			get { return GetEngineNamespace(); }
@@ -69,19 +77,28 @@ namespace iCanScript.Internal.Editor {
 		public bool IsRootPackage {
 			get {
                 var rootPackageName= UnityUtility.GetProjectName();
-				return PackageName == rootPackageName && string.IsNullOrEmpty(RootFolder);
+				return PackageName == rootPackageName && string.IsNullOrEmpty(ParentFolder);
 			}
 		}
 		// ========================================================================
 		// Creation/Destruction
 		// ------------------------------------------------------------------------
-		public PackageInfo(string packageName= null) {
+		public PackageInfo() {
+            DefaultConstructor();
+		}
+		// ------------------------------------------------------------------------
+        void DefaultConstructor() {
+            var packageName= UnityUtility.GetProjectName();
+            myParentPackage= null;
+    		UpdatePackageName(packageName);
+        }
+		// ------------------------------------------------------------------------
+		public PackageInfo(string packageName, PackageInfo parent= null) {
 			if(packageName == null) {
-                packageName= UnityUtility.GetProjectName();
-    			UpdatePackageName(packageName);
-                CreateProjectFolder= false;
+                DefaultConstructor();
                 return;
             }
+            myParentPackage= parent;
 			UpdatePackageName(packageName);
 		}
 
@@ -101,17 +118,12 @@ namespace iCanScript.Internal.Editor {
         /// @return The project folder path relative to the Assets folder.
         ///
         public string GetRelativePackageFolder(bool doCreate= false) {
-            // -- Determine project folder from the configuration. --
-            string packageFolder;
-            if(string.IsNullOrEmpty(myParentFolder)) {
-                packageFolder= myCreateProjectFolder ? myPackageName : "";
-            }
-            else {
-                packageFolder= myParentFolder;
-                if(myCreateProjectFolder) {
-                    packageFolder+= "/"+myPackageName;
-                }                
-            }
+            // -- Special case for the root package. --
+            if(IsRootPackage) return "";
+            // -- Otherwise postpend the package folder to the parent folder. --
+            var parentFolder= ParentFolder ?? "";
+            var separator= string.IsNullOrEmpty(parentFolder) ? "" : "/";
+            string packageFolder= ParentFolder+separator+myPackageName;
             // -- Create project folder if it does not exists. --
             if(doCreate) {
                 FileUtils.CreateAssetFolder(packageFolder);                
@@ -279,10 +291,8 @@ namespace iCanScript.Internal.Editor {
 		public string GetEngineNamespace() {
             // -- Translate '-' to '_' for the namespace. --
             var formattedProjectName= NameUtility.ToTypeName(myPackageName.Replace('-','_'));
-            if(string.IsNullOrEmpty(myParentFolder)) return formattedProjectName;
-			var splitName= SplitPackageName(myParentFolder);
-			var baseNamespace= iCS_TextUtility.CombineWith(splitName, ".");
-            return baseNamespace+"."+formattedProjectName;
+            if(myParentPackage == null) return formattedProjectName;
+            return myParentPackage.EngineNamespace+"."+formattedProjectName;
 		}
 		
 		// ========================================================================
