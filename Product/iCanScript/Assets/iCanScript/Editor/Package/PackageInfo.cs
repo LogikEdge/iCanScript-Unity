@@ -363,7 +363,7 @@ namespace iCanScript.Internal.Editor {
 		
 		// ========================================================================
 		/// Removes all files associated with the iCanScript project.
-        public void RemoveProject() {
+        public void RemovePackage() {
             // -- Create the project folders (if not existing). --
 			var projectPath= GetRelativePackageFolder();
             var separator= string.IsNullOrEmpty(projectPath) ? "" : "/";
@@ -386,7 +386,7 @@ namespace iCanScript.Internal.Editor {
         ///
         public static void RemoveProject(string absolutePath) {
 			var project= PackageInfo.Load(absolutePath);
-			project.RemoveProject();
+			project.RemovePackage();
         }
         
 		// ========================================================================

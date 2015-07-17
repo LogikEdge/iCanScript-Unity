@@ -139,7 +139,7 @@ namespace iCanScript.Internal.Editor {
 					}
 					case RowSelection.Remove: {
 						selectedProjectId= 0;
-						p.RemoveProject();
+						p.RemovePackage();
 						PackageController.UpdateProjectDatabase();
 						break;
 					}
