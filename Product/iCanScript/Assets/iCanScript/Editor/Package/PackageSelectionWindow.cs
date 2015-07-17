@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
 namespace iCanScript.Internal.Editor {
     
-    public class ProjectSelectionWindow : EditorWindow {
+    public class PackageSelectionWindow : EditorWindow {
         // =================================================================================
         // Types
         // ---------------------------------------------------------------------------------
@@ -47,15 +47,15 @@ namespace iCanScript.Internal.Editor {
 		
         // =================================================================================
         /// Creates a project selection window.
-        public static ProjectSelectionWindow Init() {
+        public static PackageSelectionWindow Init() {
             // -- Create window. --
-            var editor= EditorWindow.CreateInstance<ProjectSelectionWindow>();
+            var editor= EditorWindow.CreateInstance<PackageSelectionWindow>();
 			editor.wantsMouseMove= true;
 			
             // -- Set window title --
             Texture2D iCanScriptLogo= null;
             TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo);
-            editor.titleContent= new GUIContent("iCanScript Project Selection", iCanScriptLogo);
+            editor.titleContent= new GUIContent("iCanScript Package Selection", iCanScriptLogo);
     
             // -- Fix window size. --
             editor.minSize= new Vector2(kWidth, kHeaderHeight+kListAreaHeight);
@@ -81,7 +81,7 @@ namespace iCanScript.Internal.Editor {
 			ourHeaderTextStyle= new GUIStyle(EditorStyles.largeLabel);
 			ourHeaderTextStyle.fontSize= kHeaderFontSize;
 			ourHeaderTextStyle.fontStyle= FontStyle.Normal;
-			ourProjectsText= new GUIContent("Namespaces");
+			ourProjectsText= new GUIContent("Packages");
 			var projectsTextSize= ourHeaderTextStyle.CalcSize(ourProjectsText);
 			ourProjectsTextRect= new Rect(kSpacer,kHeaderHeight-kSpacer-projectsTextSize.y, projectsTextSize.x, projectsTextSize.y);
 
@@ -90,12 +90,12 @@ namespace iCanScript.Internal.Editor {
 			ourProjectFolderStyle= new GUIStyle(EditorStyles.largeLabel);
 			ourProjectFolderStyle.fontSize= kFolderFontSize;
 			
-			ourNewProjectText= new GUIContent("+ New Namespace");
+			ourNewProjectText= new GUIContent("+ New Packages");
 			var newProjectTextSize= ourProjectTitleStyle.CalcSize(ourNewProjectText);
 			ourNewProjectTextRect= new Rect(ourLogoPosition.x-kSpacer-newProjectTextSize.x, kHeaderHeight-1.5f*kSpacer-newProjectTextSize.y, newProjectTextSize.x, newProjectTextSize.y);
 			
 			// -- Refresh existing project information. --
-			ProjectController.UpdateProjectDatabase();			
+			PackageController.UpdateProjectDatabase();			
 		}
 		
         // =================================================================================
@@ -118,11 +118,11 @@ namespace iCanScript.Internal.Editor {
 				ourButtonStyle.fontSize= ourProjectTitleStyle.fontSize;				
 			}			
 			if(GUI.Button(ourNewProjectTextRect, ourNewProjectText)) {
-	            ProjectSettingsEditor.Init();
+	            PackageSettingsEditor.Init();
 			}
 			
 			// -- Project list. --
-			var projects= ProjectController.Projects;
+			var projects= PackageController.Projects;
             var viewRect= new Rect(0,0, ourListAreaRect.width-16f, kRowHeight*projects.Length);
             ourScrollPosition= GUI.BeginScrollView(ourListAreaRect, ourScrollPosition, viewRect);
 			for(int i= 0; i < projects.Length; ++i) {
@@ -140,11 +140,11 @@ namespace iCanScript.Internal.Editor {
 					case RowSelection.Remove: {
 						selectedProjectId= 0;
 						p.RemoveProject();
-						ProjectController.UpdateProjectDatabase();
+						PackageController.UpdateProjectDatabase();
 						break;
 					}
 					case RowSelection.Settings: {
-						var editor= ProjectSettingsEditor.Init();
+						var editor= PackageSettingsEditor.Init();
 						editor.ChangeSelection("Update");
 						break;
 					}

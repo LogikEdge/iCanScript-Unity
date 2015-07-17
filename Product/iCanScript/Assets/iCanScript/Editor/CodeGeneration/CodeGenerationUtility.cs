@@ -65,7 +65,7 @@ namespace iCanScript.Internal.Editor {
         /// @return The namespace.
         ///
         public static string GetNamespace(iCS_IStorage iStorage) {
-			var project= ProjectController.GetProjectFor(iStorage);
+			var project= PackageController.GetProjectFor(iStorage);
 			if(project == null) return null;
 			if(iStorage.IsEditorScript) {
 				return project.EditorNamespace;
@@ -77,7 +77,7 @@ namespace iCanScript.Internal.Editor {
         // NAMESPACE UTILITIES
         // ----------------------------------------------------------------------
         public static string GetCodeGenerationFolder(iCS_IStorage iStorage) {
-			var project= ProjectController.GetProjectFor(iStorage);
+			var project= PackageController.GetProjectFor(iStorage);
 			if(project == null) return null;
             if(iStorage.IsEditorScript) {
                 return project.GetEditorGeneratedCodeFolder(true);

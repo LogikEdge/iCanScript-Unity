@@ -15,26 +15,26 @@ namespace iCanScript.Internal.Editor {
     /// active project can be found, the user will be asked to create or select
     /// an existing project.
     ///
-    public static class ProjectController {
+    public static class PackageController {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
-        static ProjectInfo      myDefaultProject= null;
-        static ProjectInfo[]	myProjects      = null;
+        static PackageInfo      myDefaultProject= null;
+        static PackageInfo[]	myProjects      = null;
         
         // =================================================================================
         // Properties
         // ---------------------------------------------------------------------------------
         /// Returns the list of existing iCanScript projects.
-		public static ProjectInfo[] Projects {
+		public static PackageInfo[] Projects {
 			get { return myProjects; }
 		}
         // =================================================================================
         /// Returns the default iCanScript project for this Unity project.
-        public static ProjectInfo DefaultProject {
+        public static PackageInfo DefaultProject {
             get {
                 if(myDefaultProject == null) {
-                    myDefaultProject= new ProjectInfo();
+                    myDefaultProject= new PackageInfo();
                     myDefaultProject.Save();            
                 }
                 return myDefaultProject;                
@@ -44,15 +44,15 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         // INIT / SHUTDOWN
         // ---------------------------------------------------------------------------------
-        static ProjectController()    { UpdateProjectDatabase(); }
+        static PackageController()    { UpdateProjectDatabase(); }
         public static void Start()    {}
         public static void Shutdown() {}
         
         // =================================================================================
         /// Creates a project file.
-    	[MenuItem("iCanScript/Namespaces...", false, 80)]
-    	public static void OpenProjectWindow() {
-            ProjectSelectionWindow.Init();
+    	[MenuItem("iCanScript/Packages...", false, 80)]
+    	public static void OpenPackageWindow() {
+            PackageSelectionWindow.Init();
     	}
 
         // =================================================================================
@@ -61,12 +61,12 @@ namespace iCanScript.Internal.Editor {
 		/// @info The project database is made current from the disk.
 		///
         public static void UpdateProjectDatabase() {
-            var projectPaths= FileUtils.GetFilesWithExtension("icsproject");
+            var projectPaths= FileUtils.GetFilesWithExtension("icspackage");
 			var nbOfProjects= projectPaths.Length;
-			myProjects= new ProjectInfo[nbOfProjects];
+			myProjects= new PackageInfo[nbOfProjects];
 			for(int i= 0; i < nbOfProjects; ++i) {
 				var path= projectPaths[i];
-				myProjects[i]= ProjectInfo.Load(path);
+				myProjects[i]= PackageInfo.Load(path);
 			}
 			// -- Add default project if it does not exist. --
 			bool rootProjectFound= false;
@@ -76,7 +76,7 @@ namespace iCanScript.Internal.Editor {
 				}
 			}
 			if(!rootProjectFound) {
-				var rootProject= new ProjectInfo();
+				var rootProject= new PackageInfo();
 				rootProject.Save();
 				Array.Resize(ref myProjects, myProjects.Length+1); 
 				myProjects[myProjects.Length-1]= rootProject;
@@ -112,7 +112,7 @@ namespace iCanScript.Internal.Editor {
 		/// @param iStorage The visual script storage.
 		/// @return The project info assicated with the Unity Object.
 		///
-		public static ProjectInfo GetProjectFor(iCS_IStorage iStorage) {
+		public static PackageInfo GetProjectFor(iCS_IStorage iStorage) {
 			var go= iStorage.HostGameObject;
 			if(go == null) {
 				Debug.LogWarning("iCanScript: Internal Error: Unable to find Game Object of visual script");
@@ -137,7 +137,7 @@ namespace iCanScript.Internal.Editor {
 		/// @param absolutePath The absolute path of the asset.
 		/// @return The project info assicated with the Unity Object.
 		///
-		public static ProjectInfo GetProjectFor(string absolutePath) {
+		public static PackageInfo GetProjectFor(string absolutePath) {
 			foreach(var p in myProjects) {
 				if(absolutePath.StartsWith(p.GetProjectFolder())) {
 					return p;

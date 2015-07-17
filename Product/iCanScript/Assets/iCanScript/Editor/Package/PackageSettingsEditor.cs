@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
@@ -7,11 +7,11 @@ using P=iCanScript.Internal.Prelude;
 
 namespace iCanScript.Internal.Editor {
 
-	public class ProjectSettingsEditor : ConfigEditorBase {
+	public class PackageSettingsEditor : ConfigEditorBase {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
-		ProjectInfo	myProject      = new ProjectInfo();
+		PackageInfo	myProject      = new PackageInfo();
     	string[]    myOptionStrings= new string[]{
 			"Create",
             "Update"
@@ -20,8 +20,8 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         // INITIALIZATION
         // ---------------------------------------------------------------------------------
-        public static ProjectSettingsEditor Init() {
-            var editor= EditorWindow.CreateInstance<ProjectSettingsEditor>();
+        public static PackageSettingsEditor Init() {
+            var editor= EditorWindow.CreateInstance<PackageSettingsEditor>();
             editor.ShowUtility();
             return editor;
         }
@@ -42,7 +42,7 @@ namespace iCanScript.Internal.Editor {
         // INTERFACES TO BE PROVIDED
         // ---------------------------------------------------------------------------------
         protected override string   GetTitle() {
-            return "iCanScript Project Settings";
+            return "iCanScript Package Settings";
         }
         protected override string[] GetMainSelectionGridStrings() {
             return myOptionStrings;
@@ -107,7 +107,7 @@ namespace iCanScript.Internal.Editor {
             if(GUI.Button(new Rect(buttonX+width, buttonY, buttonWidth, 20.0f),"Save")) {
                 if(!projectAlreadyExists) {
                     myProject.Save();
-					ProjectController.UpdateProjectDatabase();
+					PackageController.UpdateProjectDatabase();
                     Close();
                 }
             }
@@ -126,7 +126,7 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         /// Build namespace menu.
 		string[] BuildNamespaceSelection() {
-			var allNamespaces= P.map(p=> p.EngineNamespace, ProjectController.Projects);
+			var allNamespaces= P.map(p=> p.EngineNamespace, PackageController.Projects);
 			Array.Sort(allNamespaces, (x,y)=> string.Compare(x,y));
 			var len= allNamespaces.Length;
 			Array.Resize(ref allNamespaces, len+1);

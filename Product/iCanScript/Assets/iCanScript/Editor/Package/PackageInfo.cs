@@ -14,7 +14,7 @@ namespace iCanScript.Internal.Editor {
     ///
     /// The content is saved inside the project file.
     ///
-    public class ProjectInfo {
+    public class PackageInfo {
 		// ========================================================================
 		// Fields
 		// ------------------------------------------------------------------------
@@ -75,7 +75,7 @@ namespace iCanScript.Internal.Editor {
 		// ========================================================================
 		// Creation/Destruction
 		// ------------------------------------------------------------------------
-		public ProjectInfo(string projectName= null) {
+		public PackageInfo(string projectName= null) {
 			if(projectName == null) {
                 projectName= UnityUtility.GetProjectName();
     			UpdateProjectName(projectName);
@@ -91,7 +91,7 @@ namespace iCanScript.Internal.Editor {
         /// @return The iCanScript file name including its extension.
         ///
 		public string GetFileName() {
-			return myProjectName+".icsproject";
+			return myProjectName+".icspackage";
 		}
 		
 		// ========================================================================
@@ -385,7 +385,7 @@ namespace iCanScript.Internal.Editor {
         /// @param absolutePath The absolute path of the project file.
         ///
         public static void RemoveProject(string absolutePath) {
-			var project= ProjectInfo.Load(absolutePath);
+			var project= PackageInfo.Load(absolutePath);
 			project.RemoveProject();
         }
         
@@ -395,8 +395,8 @@ namespace iCanScript.Internal.Editor {
         /// @param jsonRoot The JSON root object from which to extract the project
         ///                 information.
         ///
-        public static ProjectInfo Load(JObject jsonRoot) {
-            var newProject= new ProjectInfo();
+        public static PackageInfo Load(JObject jsonRoot) {
+            var newProject= new PackageInfo();
             JString version            = jsonRoot.GetValueFor("myVersion") as JString;
             JString projectName        = jsonRoot.GetValueFor("myProjectName") as JString;
             JString parentFolder       = jsonRoot.GetValueFor("myParentFolder") as JString;
@@ -414,11 +414,11 @@ namespace iCanScript.Internal.Editor {
         /// @param absolutePath The absolute path of the project file.
         /// @info The active project set to the newly loaded project.
         /// 
-        public static ProjectInfo Load(string absolutePath, bool declareError= false) {
+        public static PackageInfo Load(string absolutePath, bool declareError= false) {
             var jsonRoot= JSONFile.Read(absolutePath);
             if(jsonRoot == null || jsonRoot.isNull) {
                 if(declareError) {
-                    Debug.LogError("iCanScript: Unable to load project at=> "+absolutePath);                    
+                    Debug.LogError("iCanScript: Unable to load package at=> "+absolutePath);                    
                 }
                 return null;
             }
