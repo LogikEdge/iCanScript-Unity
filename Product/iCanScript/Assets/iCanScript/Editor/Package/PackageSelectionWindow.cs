@@ -128,7 +128,7 @@ namespace iCanScript.Internal.Editor {
 			for(int i= 0; i < projects.Length; ++i) {
 				var p= projects[i];
 				var name= p.PackageName;
-				var folder= p.GetRelativeProjectFolder();
+				var folder= p.GetRelativePackageFolder();
                 var separator= string.IsNullOrEmpty(folder) ? "" : "/";
                 folder= "Assets"+separator+folder;
 				var version= p.PackageVersion;

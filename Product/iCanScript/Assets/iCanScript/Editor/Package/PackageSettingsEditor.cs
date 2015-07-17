@@ -75,7 +75,7 @@ namespace iCanScript.Internal.Editor {
             var isFolderSelection= EditorGUI.Popup(pos[1], 0, allProjects);
             myProject.CreateProjectFolder= EditorGUI.Toggle(pos[2], myProject.CreateProjectFolder);
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUI.TextField(pos[4], myProject.GetRelativeProjectFolder());
+            EditorGUI.TextField(pos[4], myProject.GetRelativePackageFolder());
 			EditorGUI.TextField(pos[5], myProject.GetEngineNamespace());
 			EditorGUI.TextField(pos[6], myProject.GetEditorNamespace());
             EditorGUI.EndDisabledGroup();
