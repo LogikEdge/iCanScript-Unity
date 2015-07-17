@@ -20,9 +20,7 @@ namespace iCanScript.Internal.Editor {
 		// ------------------------------------------------------------------------
         public string        myVersion            = null;
 		public string        myPackageName        = "";
-        public PackageInfo   myParentPackage      = null;
-        public string        myParentFolder       = "";
-        public bool          myCreateProjectFolder= true;
+        private PackageInfo  myParentPackage      = null;
 		
 		// ========================================================================
 		// Properties
@@ -47,17 +45,6 @@ namespace iCanScript.Internal.Editor {
             get {
                 if(myParentPackage == null || IsRootPackage) return "";
                 return myParentPackage.GetRelativePackageFolder();
-            }
-            set {
-                var baseFolder= Application.dataPath;
-                if(value.StartsWith(baseFolder)) {
-                    if(baseFolder == value) {
-                        myParentFolder= "";
-                    }
-                    else {
-                        myParentFolder= value.Substring(baseFolder.Length+1);                        
-                    }
-                }
             }
         }
 		public string EngineNamespace {
@@ -409,18 +396,16 @@ namespace iCanScript.Internal.Editor {
             // -- Read the package information from the JSON string. --
             JString version            = jsonRoot.GetValueFor("myVersion") as JString;
             JString packageName        = jsonRoot.GetValueFor("myPackageName") as JString;
-            JString parentFolder       = jsonRoot.GetValueFor("myParentFolder") as JString;
-            JBool   createProjectFolder= jsonRoot.GetValueFor("myCreateProjectFolder") as JBool;
             // -- Don't create a package if core infromation is not present. --
             if(version == null || version.isNull || packageName == null || packageName.isNull) {
                 return null;
             }
-            // -- Create project information structure. --
+            // -- Set the package with the information red from the JSON file. --
             var newProject= new PackageInfo();
-            newProject.myVersion            = version.value;
-            newProject.myPackageName        = packageName.value;
-            newProject.myParentFolder       = parentFolder.value;
-            newProject.myCreateProjectFolder= createProjectFolder.value;
+            newProject.myVersion    = version.value;
+            newProject.myPackageName= packageName.value;
+
+//            newProject.myParentFolder       = parentFolder.value;
             return newProject;
         }
 
