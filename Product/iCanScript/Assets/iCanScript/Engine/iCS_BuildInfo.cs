@@ -1,5 +1,5 @@
 namespace iCanScript.Internal.Engine {
   public static class iCS_BuildInfo {
-public const string kBuildDateStr= "15/07/15 13:33:54";
+public const string kBuildDateStr= "15/07/17 13:13:20";
   }
 }

@@ -33,7 +33,6 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
             // -- Write final code to file. --
             var fileName= typeName;
             var folder= CodeGenerationUtility.GetCodeGenerationFolder(iStorage);
-            FileUtils.CreateAssetFolder(folder);
             CSharpFileUtils.WriteCSharpFile(folder, fileName, result.ToString());
         }
 

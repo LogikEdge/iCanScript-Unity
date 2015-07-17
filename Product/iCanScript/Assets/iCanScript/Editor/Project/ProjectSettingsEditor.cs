@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using System;
 using System.IO;
 using System.Collections;
 using P=iCanScript.Internal.Prelude;
@@ -61,7 +62,7 @@ namespace iCanScript.Internal.Editor {
             // -- Label column --
             var pos= GetLabelColumnPositions(7);
             GUI.Label(pos[0], "Project Name");
-            GUI.Label(pos[1], "Project Parent Folder");
+            GUI.Label(pos[1], "Parent Namespace");
             GUI.Label(pos[2], "Create Project Folder");
             GUI.Label(pos[4], "Project Folder");
             GUI.Label(pos[5], "Namespace");
@@ -70,7 +71,8 @@ namespace iCanScript.Internal.Editor {
             // -- Value column --
             pos= GetValueColumnPositions(7);
             myProject.ProjectName= EditorGUI.TextField(pos[0], myProject.ProjectName);
-            var isFolderSelection= GUI.Button(pos[1], "Select Folder...");
+			var allProjects= BuildNamespaceSelection();
+            var isFolderSelection= EditorGUI.Popup(pos[1], 0, allProjects);
             myProject.CreateProjectFolder= EditorGUI.Toggle(pos[2], myProject.CreateProjectFolder);
             EditorGUI.BeginDisabledGroup(true);
             EditorGUI.TextField(pos[4], myProject.GetRelativeProjectFolder());
@@ -79,7 +81,7 @@ namespace iCanScript.Internal.Editor {
             EditorGUI.EndDisabledGroup();
 
             // -- Process buttons. --
-            if(isFolderSelection) {
+            if(isFolderSelection != 0) {
                 myProject.RootFolder= EditorUtility.OpenFolderPanel("iCanScript Project Folder Selection", Application.dataPath, "");                
             }
         
@@ -121,7 +123,19 @@ namespace iCanScript.Internal.Editor {
         void Update() {
             
         }
-       
+        // =================================================================================
+        /// Build namespace menu.
+		string[] BuildNamespaceSelection() {
+			var allNamespaces= P.map(p=> p.EngineNamespace, ProjectController.Projects);
+			Array.Sort(allNamespaces, (x,y)=> string.Compare(x,y));
+			var len= allNamespaces.Length;
+			Array.Resize(ref allNamespaces, len+1);
+			Array.Copy(allNamespaces, 0, allNamespaces, 1, len);
+			allNamespaces[0]= "-- None --";
+			return allNamespaces;
+		}
+
+		 
 	}
 
 }
