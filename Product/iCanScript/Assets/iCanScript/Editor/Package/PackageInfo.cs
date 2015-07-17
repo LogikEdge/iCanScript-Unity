@@ -44,7 +44,7 @@ namespace iCanScript.Internal.Editor {
                 }
             }
         }
-		public string ProjectVersion {
+		public string PackageVersion {
 			get { return myVersion; }
 			set { myVersion= value; }
 		}

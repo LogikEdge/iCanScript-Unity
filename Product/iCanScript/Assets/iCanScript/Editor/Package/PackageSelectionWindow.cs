@@ -131,7 +131,7 @@ namespace iCanScript.Internal.Editor {
 				var folder= p.GetRelativeProjectFolder();
                 var separator= string.IsNullOrEmpty(folder) ? "" : "/";
                 folder= "Assets"+separator+folder;
-				var version= p.ProjectVersion;
+				var version= p.PackageVersion;
 				switch(DisplayRow(i, name, folder, version, i == selectedProjectId, p.IsRootProject)) {
 					case RowSelection.Project: {
 						selectedProjectId= i;
