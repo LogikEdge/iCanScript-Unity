@@ -132,7 +132,7 @@ namespace iCanScript.Internal.Editor {
                 var separator= string.IsNullOrEmpty(folder) ? "" : "/";
                 folder= "Assets"+separator+folder;
 				var version= p.PackageVersion;
-				switch(DisplayRow(i, name, folder, version, i == selectedProjectId, p.IsRootProject)) {
+				switch(DisplayRow(i, name, folder, version, i == selectedProjectId, p.IsRootPackage)) {
 					case RowSelection.Project: {
 						selectedProjectId= i;
 						break;

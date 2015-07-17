@@ -71,7 +71,7 @@ namespace iCanScript.Internal.Editor {
 			// -- Add default project if it does not exist. --
 			bool rootProjectFound= false;
 			foreach(var p in myProjects) {
-				if(p.IsRootProject) {
+				if(p.IsRootPackage) {
 					rootProjectFound= true;
 				}
 			}

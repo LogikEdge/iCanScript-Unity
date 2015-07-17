@@ -66,7 +66,7 @@ namespace iCanScript.Internal.Editor {
                 return File.Exists(filePath);                
             }
         }
-		public bool IsRootProject {
+		public bool IsRootPackage {
 			get {
                 var rootPackageName= UnityUtility.GetProjectName();
 				return PackageName == rootPackageName && string.IsNullOrEmpty(RootFolder);
