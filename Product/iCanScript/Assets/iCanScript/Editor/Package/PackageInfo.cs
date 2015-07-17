@@ -19,16 +19,16 @@ namespace iCanScript.Internal.Editor {
 		// Fields
 		// ------------------------------------------------------------------------
         public string   myVersion            = null;
-		public string   myProjectName        = "";
+		public string   myPackageName        = "";
         public string   myParentFolder       = "";
         public bool     myCreateProjectFolder= true;
 		
 		// ========================================================================
 		// Properties
 		// ------------------------------------------------------------------------
-		public string ProjectName {
-			get { return myProjectName ?? ""; }
-			set { UpdateProjectName(value); }
+		public string PackageName {
+			get { return myPackageName ?? ""; }
+			set { UpdatePackageName(value); }
 		}
         public string RootFolder {
             get { return myParentFolder ?? ""; }
@@ -68,21 +68,21 @@ namespace iCanScript.Internal.Editor {
         }
 		public bool IsRootProject {
 			get {
-                var rootProjectName= UnityUtility.GetProjectName();
-				return ProjectName == rootProjectName && string.IsNullOrEmpty(RootFolder);
+                var rootPackageName= UnityUtility.GetProjectName();
+				return PackageName == rootPackageName && string.IsNullOrEmpty(RootFolder);
 			}
 		}
 		// ========================================================================
 		// Creation/Destruction
 		// ------------------------------------------------------------------------
-		public PackageInfo(string projectName= null) {
-			if(projectName == null) {
-                projectName= UnityUtility.GetProjectName();
-    			UpdateProjectName(projectName);
+		public PackageInfo(string packageName= null) {
+			if(packageName == null) {
+                packageName= UnityUtility.GetProjectName();
+    			UpdatePackageName(packageName);
                 CreateProjectFolder= false;
                 return;
             }
-			UpdateProjectName(projectName);
+			UpdatePackageName(packageName);
 		}
 
 		// ========================================================================
@@ -91,7 +91,7 @@ namespace iCanScript.Internal.Editor {
         /// @return The iCanScript file name including its extension.
         ///
 		public string GetFileName() {
-			return myProjectName+".icspackage";
+			return myPackageName+".icspackage";
 		}
 		
 		// ========================================================================
@@ -104,12 +104,12 @@ namespace iCanScript.Internal.Editor {
             // -- Determine project folder from the configuration. --
             string projectFolder;
             if(string.IsNullOrEmpty(myParentFolder)) {
-                projectFolder= myCreateProjectFolder ? myProjectName : "";
+                projectFolder= myCreateProjectFolder ? myPackageName : "";
             }
             else {
                 projectFolder= myParentFolder;
                 if(myCreateProjectFolder) {
-                    projectFolder+= "/"+myProjectName;
+                    projectFolder+= "/"+myPackageName;
                 }                
             }
             // -- Create project folder if it does not exists. --
@@ -278,7 +278,7 @@ namespace iCanScript.Internal.Editor {
 		/// Extracts the engine namespace from the project name.
 		public string GetEngineNamespace() {
             // -- Translate '-' to '_' for the namespace. --
-            var formattedProjectName= NameUtility.ToTypeName(myProjectName.Replace('-','_'));
+            var formattedProjectName= NameUtility.ToTypeName(myPackageName.Replace('-','_'));
             if(string.IsNullOrEmpty(myParentFolder)) return formattedProjectName;
 			var splitName= SplitProjectName(myParentFolder);
 			var baseNamespace= iCS_TextUtility.CombineWith(splitName, ".");
@@ -331,17 +331,17 @@ namespace iCanScript.Internal.Editor {
 		///
 		/// @param projectName The new project name.
 		///
-		void UpdateProjectName(string projectName) {
-			myProjectName= projectName;
+		void UpdatePackageName(string projectName) {
+			myPackageName= projectName;
             // -- Force first character ident rules for project name. --
-            while(myProjectName.Length > 0 && !iCS_TextUtil.IsIdent1(myProjectName[0])) {
-                myProjectName= myProjectName.Substring(1);
+            while(myPackageName.Length > 0 && !iCS_TextUtil.IsIdent1(myPackageName[0])) {
+                myPackageName= myPackageName.Substring(1);
             }
             // -- Accept ident rule or '-' for remaining of the project name. --
-            for(int i= 1; i < myProjectName.Length; ++i) {
-                var c= myProjectName[i];
+            for(int i= 1; i < myPackageName.Length; ++i) {
+                var c= myPackageName[i];
                 if(!iCS_TextUtil.IsIdent(c) && c != '-' && c != ' ') {
-                    UpdateProjectName(myProjectName.Substring(0,i)+myProjectName.Substring(i+1));
+                    UpdatePackageName(myPackageName.Substring(0,i)+myPackageName.Substring(i+1));
                     return;
                 }
             }
@@ -396,13 +396,19 @@ namespace iCanScript.Internal.Editor {
         ///                 information.
         ///
         public static PackageInfo Load(JObject jsonRoot) {
-            var newProject= new PackageInfo();
+            // -- Read the package information from the JSON string. --
             JString version            = jsonRoot.GetValueFor("myVersion") as JString;
-            JString projectName        = jsonRoot.GetValueFor("myProjectName") as JString;
+            JString packageName        = jsonRoot.GetValueFor("myPackageName") as JString;
             JString parentFolder       = jsonRoot.GetValueFor("myParentFolder") as JString;
             JBool   createProjectFolder= jsonRoot.GetValueFor("myCreateProjectFolder") as JBool;
+            // -- Don't create a package if core infromation is not present. --
+            if(version == null || version.isNull || packageName == null || packageName.isNull) {
+                return null;
+            }
+            // -- Create project information structure. --
+            var newProject= new PackageInfo();
             newProject.myVersion            = version.value;
-            newProject.myProjectName        = projectName.value;
+            newProject.myPackageName        = packageName.value;
             newProject.myParentFolder       = parentFolder.value;
             newProject.myCreateProjectFolder= createProjectFolder.value;
             return newProject;

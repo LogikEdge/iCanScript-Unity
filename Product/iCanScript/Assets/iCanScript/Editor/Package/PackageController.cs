@@ -100,8 +100,8 @@ namespace iCanScript.Internal.Editor {
         public static void CreateProjectsMenu(GenericMenu.MenuFunction2 callback) {
             var menu= new GenericMenu();
             foreach(var p in myProjects) {
-                var projectName= p.ProjectName;
-                menu.AddItem(new GUIContent(projectName), false, callback, p);
+                var packageName= p.PackageName;
+                menu.AddItem(new GUIContent(packageName), false, callback, p);
             }
             menu.ShowAsContext();
         }

@@ -127,7 +127,7 @@ namespace iCanScript.Internal.Editor {
             ourScrollPosition= GUI.BeginScrollView(ourListAreaRect, ourScrollPosition, viewRect);
 			for(int i= 0; i < projects.Length; ++i) {
 				var p= projects[i];
-				var name= p.ProjectName;
+				var name= p.PackageName;
 				var folder= p.GetRelativeProjectFolder();
                 var separator= string.IsNullOrEmpty(folder) ? "" : "/";
                 folder= "Assets"+separator+folder;

@@ -61,7 +61,7 @@ namespace iCanScript.Internal.Editor {
 		void Create() {
             // -- Label column --
             var pos= GetLabelColumnPositions(7);
-            GUI.Label(pos[0], "Project Name");
+            GUI.Label(pos[0], "Package Name");
             GUI.Label(pos[1], "Parent Namespace");
             GUI.Label(pos[2], "Create Project Folder");
             GUI.Label(pos[4], "Project Folder");
@@ -70,7 +70,7 @@ namespace iCanScript.Internal.Editor {
             
             // -- Value column --
             pos= GetValueColumnPositions(7);
-            myProject.ProjectName= EditorGUI.TextField(pos[0], myProject.ProjectName);
+            myProject.PackageName= EditorGUI.TextField(pos[0], myProject.PackageName);
 			var allProjects= BuildNamespaceSelection();
             var isFolderSelection= EditorGUI.Popup(pos[1], 0, allProjects);
             myProject.CreateProjectFolder= EditorGUI.Toggle(pos[2], myProject.CreateProjectFolder);
