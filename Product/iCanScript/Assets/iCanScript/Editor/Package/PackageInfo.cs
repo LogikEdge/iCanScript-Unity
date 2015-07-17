@@ -86,7 +86,7 @@ namespace iCanScript.Internal.Editor {
 		}
 
 		// ========================================================================
-		/// Computes the project file name.
+		/// Computes the package file name.
         ///
         /// @return The iCanScript file name including its extension.
         ///
@@ -95,37 +95,37 @@ namespace iCanScript.Internal.Editor {
 		}
 		
 		// ========================================================================
-		/// Creates and return the relative project folder path.
+		/// Creates and return the relative package folder path.
         ///
         /// @param doCreate Set to _true_ to create the folder.  Default is _false_.
         /// @return The project folder path relative to the Assets folder.
         ///
         public string GetRelativePackageFolder(bool doCreate= false) {
             // -- Determine project folder from the configuration. --
-            string projectFolder;
+            string packageFolder;
             if(string.IsNullOrEmpty(myParentFolder)) {
-                projectFolder= myCreateProjectFolder ? myPackageName : "";
+                packageFolder= myCreateProjectFolder ? myPackageName : "";
             }
             else {
-                projectFolder= myParentFolder;
+                packageFolder= myParentFolder;
                 if(myCreateProjectFolder) {
-                    projectFolder+= "/"+myPackageName;
+                    packageFolder+= "/"+myPackageName;
                 }                
             }
             // -- Create project folder if it does not exists. --
             if(doCreate) {
-                FileUtils.CreateAssetFolder(projectFolder);                
+                FileUtils.CreateAssetFolder(packageFolder);                
             }
-            return projectFolder;
+            return packageFolder;
 		}
 		
 		// ========================================================================
-		/// Creates and returns the absolute project folder path.
+		/// Creates and returns the absolute package folder path.
         ///
         /// @param doCreate Set to _true_ to create the folder.  Default is _false_.
         /// @return Returns the full path to the iCanScript project folder.
         ///
-		public string GetProjectFolder(bool doCreate= false) {
+		public string GetPackageFolder(bool doCreate= false) {
             return Application.dataPath+"/"+GetRelativePackageFolder(doCreate);
 		}
 		
@@ -280,7 +280,7 @@ namespace iCanScript.Internal.Editor {
             // -- Translate '-' to '_' for the namespace. --
             var formattedProjectName= NameUtility.ToTypeName(myPackageName.Replace('-','_'));
             if(string.IsNullOrEmpty(myParentFolder)) return formattedProjectName;
-			var splitName= SplitProjectName(myParentFolder);
+			var splitName= SplitPackageName(myParentFolder);
 			var baseNamespace= iCS_TextUtility.CombineWith(splitName, ".");
             return baseNamespace+"."+formattedProjectName;
 		}
@@ -297,7 +297,7 @@ namespace iCanScript.Internal.Editor {
 		/// @param projectName The full name of the project.
 		/// @return An array of the project name constituents.
 		///
-		static string[] SplitProjectName(string projectName) {
+		static string[] SplitPackageName(string projectName) {
 			// -- Convert file path to namespace format. --
 			projectName= projectName.Replace('/', '.'); 
 			// -- Remove all illegal characters. --
@@ -362,7 +362,7 @@ namespace iCanScript.Internal.Editor {
 		}
 		
 		// ========================================================================
-		/// Removes all files associated with the iCanScript project.
+		/// Removes all files associated with the iCanScript package.
         public void RemovePackage() {
             // -- Create the project folders (if not existing). --
 			var projectPath= GetRelativePackageFolder();
@@ -372,7 +372,7 @@ namespace iCanScript.Internal.Editor {
            	AssetDatabase.DeleteAsset("Assets/"+projectPath+separator+"Editor");
             var fileName= GetFileName();
             AssetDatabase.DeleteAsset("Assets/"+projectPath+separator+fileName);
-            if(Folder.IsEmpty(GetProjectFolder())) {
+            if(Folder.IsEmpty(GetPackageFolder())) {
 				if(!string.IsNullOrEmpty(projectPath)) {
 	                AssetDatabase.DeleteAsset("Assets/"+projectPath);
 				}
@@ -380,11 +380,11 @@ namespace iCanScript.Internal.Editor {
         }
         
 		// ========================================================================
-		/// Removes all files associated with the iCanScript project.
+		/// Removes all files associated with the iCanScript package.
         ///
-        /// @param absolutePath The absolute path of the project file.
+        /// @param absolutePath The absolute path of the package file.
         ///
-        public static void RemoveProject(string absolutePath) {
+        public static void RemovePackage(string absolutePath) {
 			var project= PackageInfo.Load(absolutePath);
 			project.RemovePackage();
         }
@@ -392,7 +392,7 @@ namespace iCanScript.Internal.Editor {
 		// ========================================================================
 		/// Creates a new Project info from the given JSON root object.
         ///
-        /// @param jsonRoot The JSON root object from which to extract the project
+        /// @param jsonRoot The JSON root object from which to extract the package
         ///                 information.
         ///
         public static PackageInfo Load(JObject jsonRoot) {
@@ -415,7 +415,7 @@ namespace iCanScript.Internal.Editor {
         }
 
         // =================================================================================
-        /// Load the project file from disk.
+        /// Load the package file from disk.
         ///
         /// @param absolutePath The absolute path of the project file.
         /// @info The active project set to the newly loaded project.

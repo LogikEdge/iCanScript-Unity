@@ -82,7 +82,7 @@ namespace iCanScript.Internal.Editor {
 				myProjects[myProjects.Length-1]= rootProject;
 			}
 			// -- Assure that the longest path is first to simplify search. --
-			Array.Sort(myProjects, (x,y)=> y.GetProjectFolder().Length - x.GetProjectFolder().Length);
+			Array.Sort(myProjects, (x,y)=> y.GetPackageFolder().Length - x.GetPackageFolder().Length);
         }
 
         // =================================================================================
@@ -139,7 +139,7 @@ namespace iCanScript.Internal.Editor {
 		///
 		public static PackageInfo GetProjectFor(string absolutePath) {
 			foreach(var p in myProjects) {
-				if(absolutePath.StartsWith(p.GetProjectFolder())) {
+				if(absolutePath.StartsWith(p.GetPackageFolder())) {
 					return p;
 				}
 			}
