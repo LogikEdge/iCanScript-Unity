@@ -439,13 +439,28 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
                 if(q == Quaternion.identity) return "Quaternion.identity";
                 return "new Quaternion("+q.x+"f, "+q.y+"f, "+q.z+"f, "+q.w+"f)";
             }
+            if(obj is Color) {
+                Color c= (Color)obj;
+                if(c == Color.black)   return "Color.black";
+                if(c == Color.blue)    return "Color.blue";
+                if(c == Color.clear)   return "Color.clear";
+                if(c == Color.cyan)    return "Color.cyan";
+                if(c == Color.gray)    return "Color.grey";
+                if(c == Color.green)   return "Color.green";
+                if(c == Color.gray)    return "Color.grey";
+                if(c == Color.magenta) return "Color.magenta";
+                if(c == Color.red)     return "Color.red";
+                if(c == Color.white)   return "Color.white";
+                if(c == Color.yellow)  return "Color.yellow";
+                return "new Color("+c.r+"f, "+c.g+"f, "+c.b+"f, "+c.a+"f)";
+            }
             if(objType.IsEnum) {
                 return ToTypeName(obj.GetType())+"."+obj.ToString();
             }
             if(obj is Type) {
                 return "typeof("+obj.ToString()+")";
             }
-            return obj.ToString();
+            return iCS_Types.ToString(obj);
         }
         // ---------------------------------------------------------------------------------
         /// Convert the given VS object to a class name.

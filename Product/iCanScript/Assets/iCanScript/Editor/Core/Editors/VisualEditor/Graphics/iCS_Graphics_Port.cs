@@ -26,7 +26,7 @@ namespace iCanScript.Internal.Editor {
             if(value is Vector2) return ((Vector2)value).ToString();
             if(value is Vector3) return ((Vector3)value).ToString();
             if(value is Vector4) return ((Vector4)value).ToString();
-            if(value is Color) return ((Color)value).ToString();
+            if(value is Color) return iCS_Types.ToString(value);
             if(value is string) return "\""+(string)value+"\"";
             if(value is char) return "\'"+(char)value+"\'";
             if(value is UnityEngine.Object) {

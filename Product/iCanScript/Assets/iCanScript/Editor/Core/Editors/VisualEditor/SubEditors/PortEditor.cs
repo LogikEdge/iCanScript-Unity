@@ -63,10 +63,15 @@ namespace iCanScript.Internal.Editor {
             // -- Edit the value of the port. --
             EditPortValue();
 
+            // -- Edit port specification. --
             var variableType= ConvertEnum(vsObject.PortSpec, GraphInfo.GetAllowedPortSpecification(vsObject));
-            variableType= EditorGUILayout.EnumPopup("Variable Type", variableType);
+            variableType= EditorGUILayout.EnumPopup("Variable Specification", variableType);
             SetPortSpec(ConvertEnum(variableType, PortSpecification.Default));                        
 			
+            // -- Show port type. --
+            EditorGUILayout.LabelField("Variable Type", iCS_Types.TypeName(vsObject.Value.GetType()));
+            Debug.Log(iCS_Types.ToString(vsObject.Value));
+            
             // -- Show port index. --
             EditorGUILayout.IntField("Parameter Index", vsObject.PortIndex);
             

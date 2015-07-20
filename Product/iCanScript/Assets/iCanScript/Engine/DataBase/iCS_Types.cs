@@ -87,7 +87,11 @@ namespace iCanScript.Internal {
         }
 
         // ----------------------------------------------------------------------
-        // Returns the default value of the given type.
+        /// Returns the default value of the given type.
+        ///
+        /// @param type The type for which to get a default value.
+        /// @return The default value for the given type.
+        ///
         public static object DefaultValue(Type type) {
             // Can't create default value if we don't have a type...
             if(type == null || type == typeof(void)) return null;
@@ -103,6 +107,20 @@ namespace iCanScript.Internal {
             return (type.IsValueType || type.IsEnum ? Activator.CreateInstance(type) : null);
         }
 
+        // ----------------------------------------------------------------------
+        /// Returns the string representation for the given object.
+        ///
+        /// @param value The object to convert to a string.
+        /// @return The C# string representation of the object.
+        ///
+        public static string ToString(System.Object value) {
+            if(value is Color) {
+                var c= (Color)value;
+                return "Color("+c.r+"f, "+c.g+"f, "+c.b+"f, "+c.a+"f)";
+            }
+            return value.ToString();
+        }
+        
     	// ----------------------------------------------------------------------
         public static bool CanBeConnectedWithoutConversion(Type outType, Type inType) {
             // Accept all .NET native array connections.
