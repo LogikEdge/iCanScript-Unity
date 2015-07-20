@@ -91,6 +91,7 @@ namespace iCanScript.Internal.Editor {
                         break;
                     }
                 }
+                myProjects[i].SetPackageFolder(pi);
             }
 			// -- Assure that the longest path is first to simplify search. --
 			Array.Sort(myProjects, (x,y)=> y.GetPackageFolder().Length - x.GetPackageFolder().Length);

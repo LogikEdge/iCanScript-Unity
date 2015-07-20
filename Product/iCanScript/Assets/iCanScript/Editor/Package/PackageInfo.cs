@@ -18,9 +18,10 @@ namespace iCanScript.Internal.Editor {
 		// ========================================================================
 		// Fields
 		// ------------------------------------------------------------------------
-        public string        myVersion            = null;
-		public string        myPackageName        = "";
-        private PackageInfo  myParentPackage      = null;
+        public  string      myVersion       = null;
+		public  string      myPackageName   = "";
+        private string      myRelativeFolder= "";
+        private PackageInfo myParentPackage = null;
 		
 		// ========================================================================
 		// Properties
@@ -39,6 +40,7 @@ namespace iCanScript.Internal.Editor {
             }
             set {
                 myParentPackage= value;
+                SetPackageFolder(value);
             }
         }
         public string ParentFolder {
@@ -64,7 +66,7 @@ namespace iCanScript.Internal.Editor {
 		public bool IsRootPackage {
 			get {
                 var rootPackageName= UnityUtility.GetProjectName();
-				return PackageName == rootPackageName && string.IsNullOrEmpty(ParentFolder);
+				return PackageName == rootPackageName && ParentPackage == null;
 			}
 		}
 		// ========================================================================
@@ -76,16 +78,16 @@ namespace iCanScript.Internal.Editor {
 		// ------------------------------------------------------------------------
         void DefaultConstructor() {
             var packageName= UnityUtility.GetProjectName();
-            myParentPackage= null;
+            ParentPackage= null;
     		UpdatePackageName(packageName);
         }
 		// ------------------------------------------------------------------------
-		public PackageInfo(string packageName, PackageInfo parent= null) {
+		public PackageInfo(string packageName, PackageInfo parent) {
 			if(packageName == null) {
                 DefaultConstructor();
                 return;
             }
-            myParentPackage= parent;
+            ParentPackage= parent;
 			UpdatePackageName(packageName);
 		}
 
@@ -106,16 +108,36 @@ namespace iCanScript.Internal.Editor {
         ///
         public string GetRelativePackageFolder(bool doCreate= false) {
             // -- Special case for the root package. --
-            if(IsRootPackage) return "";
-            // -- Otherwise postpend the package folder to the parent folder. --
-            var parentFolder= ParentFolder ?? "";
-            var separator= string.IsNullOrEmpty(parentFolder) ? "" : "/";
-            string packageFolder= ParentFolder+separator+myPackageName;
-            // -- Create project folder if it does not exists. --
-            if(doCreate) {
-                FileUtils.CreateAssetFolder(packageFolder);                
+            return IsRootPackage ? "" : myRelativeFolder;
+		}
+		
+		// ========================================================================
+		/// Sets the package folder path.
+        ///
+        /// @param path The package path.
+        ///
+        public void SetPackageFolder(string path) {
+            if(path == null) { myRelativeFolder= ""; return; }
+            if(path.StartsWith(Application.dataPath)) {
+                var dpLen= Application.dataPath.Length;
+                path= path.Substring(dpLen, path.Length-dpLen);
+                if(path.Length > 0 && path[0] == '/') {
+                    path= path.Substring(1, path.Length-1);
+                }
             }
-            return packageFolder;
+            myRelativeFolder= path;
+		}
+		
+		// ========================================================================
+		/// Sets the package folder path.
+        ///
+        /// @param parent The parent package.
+        ///
+        public void SetPackageFolder(PackageInfo parent) {
+            if(parent == null) { myRelativeFolder= ""; return; }
+            var parentPath= parent.GetRelativePackageFolder();
+            var separator= string.IsNullOrEmpty(parentPath) ? "" : "/";
+            myRelativeFolder= parentPath+separator+myPackageName;
 		}
 		
 		// ========================================================================
