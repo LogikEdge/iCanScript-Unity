@@ -83,7 +83,7 @@ namespace iCanScript.Internal.Editor {
 			var projectName= "";
 			var project= IStorage.Project;
 			if(project != null) {
-				projectName= project.ProjectName + " -- ";
+				projectName= project.PackageName + " -- ";
 			}
     		var vsName= IStorage.TypeName;
             var baseType= CodeGenerationUtility.GetBaseType(IStorage);

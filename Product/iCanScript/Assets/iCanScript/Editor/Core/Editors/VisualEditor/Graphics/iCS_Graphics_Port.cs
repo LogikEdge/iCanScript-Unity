@@ -26,9 +26,27 @@ namespace iCanScript.Internal.Editor {
             if(value is Vector2) return ((Vector2)value).ToString();
             if(value is Vector3) return ((Vector3)value).ToString();
             if(value is Vector4) return ((Vector4)value).ToString();
-            if(value is Color) return ((Color)value).ToString();
             if(value is string) return "\""+(string)value+"\"";
             if(value is char) return "\'"+(char)value+"\'";
+            if(value is Color) {
+                Color c= (Color)value;
+                if(c == Color.black)   return "Color.black";
+                if(c == Color.blue)    return "Color.blue";
+                if(c == Color.clear)   return "Color.clear";
+                if(c == Color.cyan)    return "Color.cyan";
+                if(c == Color.gray)    return "Color.grey";
+                if(c == Color.green)   return "Color.green";
+                if(c == Color.gray)    return "Color.grey";
+                if(c == Color.magenta) return "Color.magenta";
+                if(c == Color.red)     return "Color.red";
+                if(c == Color.white)   return "Color.white";
+                if(c == Color.yellow)  return "Color.yellow";
+                var r= c.r.ToString(); if(r.Length > 5) r= r.Substring(0,5);
+                var g= c.g.ToString(); if(g.Length > 5) g= g.Substring(0,5);
+                var b= c.b.ToString(); if(b.Length > 5) b= b.Substring(0,5);
+                var a= c.a.ToString(); if(a.Length > 5) a= a.Substring(0,5);
+                return "Color("+r+", "+g+", "+b+", "+a+")";
+            }
             if(value is UnityEngine.Object) {
                 var obj= value as UnityEngine.Object;
                 if(obj != null) {

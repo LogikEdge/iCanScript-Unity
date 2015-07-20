@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
@@ -7,12 +7,13 @@ using P=iCanScript.Internal.Prelude;
 
 namespace iCanScript.Internal.Editor {
 
-	public class ProjectSettingsEditor : ConfigEditorBase {
+	public class PackageSettingsEditor : ConfigEditorBase {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
-		ProjectInfo	myProject      = new ProjectInfo();
-    	string[]    myOptionStrings= new string[]{
+		PackageInfo	myProject        = new PackageInfo();
+        int         myParentSelection= 0;
+    	string[]    myOptionStrings  = new string[]{
 			"Create",
             "Update"
     	};
@@ -20,8 +21,8 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         // INITIALIZATION
         // ---------------------------------------------------------------------------------
-        public static ProjectSettingsEditor Init() {
-            var editor= EditorWindow.CreateInstance<ProjectSettingsEditor>();
+        public static PackageSettingsEditor Init() {
+            var editor= EditorWindow.CreateInstance<PackageSettingsEditor>();
             editor.ShowUtility();
             return editor;
         }
@@ -42,7 +43,7 @@ namespace iCanScript.Internal.Editor {
         // INTERFACES TO BE PROVIDED
         // ---------------------------------------------------------------------------------
         protected override string   GetTitle() {
-            return "iCanScript Project Settings";
+            return "iCanScript Package Settings";
         }
         protected override string[] GetMainSelectionGridStrings() {
             return myOptionStrings;
@@ -60,31 +61,26 @@ namespace iCanScript.Internal.Editor {
         /// Ask the user to provide the needed information to create a project.
 		void Create() {
             // -- Label column --
-            var pos= GetLabelColumnPositions(7);
-            GUI.Label(pos[0], "Project Name");
-            GUI.Label(pos[1], "Parent Namespace");
-            GUI.Label(pos[2], "Create Project Folder");
-            GUI.Label(pos[4], "Project Folder");
-            GUI.Label(pos[5], "Namespace");
-            GUI.Label(pos[6], "Editor Namespace");
+            var pos= GetLabelColumnPositions(6);
+            GUI.Label(pos[0], "Package Name");
+            GUI.Label(pos[1], "Parent Package");
+            GUI.Label(pos[3], "Package Folder");
+            GUI.Label(pos[4], "Engine Namespace");
+            GUI.Label(pos[5], "Editor Namespace");
             
             // -- Value column --
-            pos= GetValueColumnPositions(7);
-            myProject.ProjectName= EditorGUI.TextField(pos[0], myProject.ProjectName);
-			var allProjects= BuildNamespaceSelection();
-            var isFolderSelection= EditorGUI.Popup(pos[1], 0, allProjects);
-            myProject.CreateProjectFolder= EditorGUI.Toggle(pos[2], myProject.CreateProjectFolder);
+            pos= GetValueColumnPositions(6);
+            myProject.PackageName= EditorGUI.TextField(pos[0], myProject.PackageName);
+			var allPackages= BuildPackageSelection();
+            var packageNames= P.map(p=> p == null ? "-- None --" : p.PackageName, allPackages);
+            myParentSelection= EditorGUI.Popup(pos[1], myParentSelection, packageNames);
+            myProject.ParentPackage= allPackages[myParentSelection];
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUI.TextField(pos[4], myProject.GetRelativeProjectFolder());
-			EditorGUI.TextField(pos[5], myProject.GetEngineNamespace());
-			EditorGUI.TextField(pos[6], myProject.GetEditorNamespace());
+            EditorGUI.TextField(pos[3], myProject.GetRelativePackageFolder());
+			EditorGUI.TextField(pos[4], myProject.GetEngineNamespace());
+			EditorGUI.TextField(pos[5], myProject.GetEditorNamespace());
             EditorGUI.EndDisabledGroup();
 
-            // -- Process buttons. --
-            if(isFolderSelection != 0) {
-                myProject.RootFolder= EditorUtility.OpenFolderPanel("iCanScript Project Folder Selection", Application.dataPath, "");                
-            }
-        
     		// -- Compute button area. --
             var totalWidth= kColumn2Width + kColumn3Width;
             var width= totalWidth / 3f;
@@ -107,7 +103,7 @@ namespace iCanScript.Internal.Editor {
             if(GUI.Button(new Rect(buttonX+width, buttonY, buttonWidth, 20.0f),"Save")) {
                 if(!projectAlreadyExists) {
                     myProject.Save();
-					ProjectController.UpdateProjectDatabase();
+					PackageController.UpdateProjectDatabase();
                     Close();
                 }
             }
@@ -125,14 +121,14 @@ namespace iCanScript.Internal.Editor {
         }
         // =================================================================================
         /// Build namespace menu.
-		string[] BuildNamespaceSelection() {
-			var allNamespaces= P.map(p=> p.EngineNamespace, ProjectController.Projects);
-			Array.Sort(allNamespaces, (x,y)=> string.Compare(x,y));
-			var len= allNamespaces.Length;
-			Array.Resize(ref allNamespaces, len+1);
-			Array.Copy(allNamespaces, 0, allNamespaces, 1, len);
-			allNamespaces[0]= "-- None --";
-			return allNamespaces;
+		PackageInfo[] BuildPackageSelection() {
+			PackageInfo[] allPackages= PackageController.Projects.Clone() as PackageInfo[];
+			Array.Sort(allPackages, (x,y)=> string.Compare(x.PackageName, y.PackageName));
+			var len= allPackages.Length;
+			Array.Resize(ref allPackages, len+1);
+			Array.Copy(allPackages, 0, allPackages, 1, len);
+			allPackages[0]= null;
+			return allPackages;
 		}
 
 		 
