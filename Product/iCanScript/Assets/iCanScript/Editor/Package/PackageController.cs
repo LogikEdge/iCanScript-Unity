@@ -119,6 +119,21 @@ namespace iCanScript.Internal.Editor {
         }
 
         // =================================================================================
+        /// Determines if the given package has child package(s).
+        ///
+        /// @param package The package to verify.
+        /// @return _true_ if the given package has one or more children. _false_ otherwise.
+        ///
+        public static bool HasChildPackage(PackageInfo package) {
+            foreach(var p in myProjects) {
+                if(p.ParentPackage == package) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        // =================================================================================
 		/// Returns the project associated with a Unity Object.
 		///
 		/// @param iStorage The visual script storage.

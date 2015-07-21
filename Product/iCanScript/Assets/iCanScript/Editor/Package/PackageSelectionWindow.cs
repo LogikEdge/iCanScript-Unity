@@ -127,12 +127,7 @@ namespace iCanScript.Internal.Editor {
             ourScrollPosition= GUI.BeginScrollView(ourListAreaRect, ourScrollPosition, viewRect);
 			for(int i= 0; i < projects.Length; ++i) {
 				var p= projects[i];
-				var name= p.PackageName;
-				var folder= p.GetRelativePackageFolder();
-                var separator= string.IsNullOrEmpty(folder) ? "" : "/";
-                folder= "Assets"+separator+folder;
-				var version= p.PackageVersion;
-				switch(DisplayRow(i, name, folder, version, i == selectedProjectId, p.IsRootPackage)) {
+				switch(DisplayRow(i, p, i == selectedProjectId)) {
 					case RowSelection.Project: {
 						selectedProjectId= i;
 						break;
@@ -155,7 +150,14 @@ namespace iCanScript.Internal.Editor {
 			Event.current.Use();
         }
 		
-		RowSelection DisplayRow(int rowId, string title, string folder, string version, bool isSelected, bool isRootProject) {
+		RowSelection DisplayRow(int rowId, PackageInfo package, bool isSelected) {
+            // -- Extract the package information. --
+            var title= package.PackageName;
+            var folder= package.GetRelativePackageFolder();
+            var separator= string.IsNullOrEmpty(folder) ? "" : "/";
+            folder= "Assets"+separator+folder;
+			var version= package.PackageVersion;
+            var isRootPackage= package.IsRootPackage;
 			// -- Determine if mouse is hovering. --
 			float y= rowId*kRowHeight;
 			var mousePosition= Event.current.mousePosition+Event.current.delta;
@@ -197,15 +199,17 @@ namespace iCanScript.Internal.Editor {
 			GUI.Label(versionRect, versionContent, ourProjectTitleStyle);
 
 			// -- Show option buttons. --
-			if(!isRootProject) {
+			if(!isRootPackage) {
 				var settingRect= new Rect(kWidth-kSpacer-300f, y, 100f-0.5f*kSpacer, 34f);
 				if(GUI.Button(settingRect, "Settings")) {
 					rowSelection= RowSelection.Settings;
 				}
+                EditorGUI.BeginDisabledGroup(PackageController.HasChildPackage(package));
 				var removeRect= new Rect(kWidth-kSpacer-200f, y, 100f-0.5f*kSpacer, 34f);
 				if(GUI.Button(removeRect, "Remove")) {
 					rowSelection= RowSelection.Remove;
 				}				
+                EditorGUI.EndDisabledGroup();
 			}
 
 			// -- Show project folder. --

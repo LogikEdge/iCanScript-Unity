@@ -108,7 +108,12 @@ namespace iCanScript.Internal.Editor {
         ///
         public string GetRelativePackageFolder(bool doCreate= false) {
             // -- Special case for the root package. --
-            return IsRootPackage ? "" : myRelativeFolder;
+            var packagePath= IsRootPackage ? "" : myRelativeFolder;
+            // -- Create project folder if it does not exists. --
+            if(doCreate) {
+                FileUtils.CreateAssetFolder(packagePath);                
+            }
+            return packagePath;
 		}
 		
 		// ========================================================================
@@ -367,7 +372,7 @@ namespace iCanScript.Internal.Editor {
 		}
 		
 		// ========================================================================
-		/// Save and Update the project information.
+		/// Save and Update the package information.
 		public void Save() {
             // -- Create the project folders (if not existing). --
 			var projectPath= GetRelativePackageFolder(true);
