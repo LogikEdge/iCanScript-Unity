@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
+using P= iCanScript.Internal.Prelude;
 
 namespace iCanScript.Internal.Editor {
     
@@ -36,14 +38,21 @@ namespace iCanScript.Internal.Editor {
 		static GUIStyle	   ourHeaderTextStyle= null;
 		static GUIContent  ourProjectsText;
 		static Rect		   ourProjectsTextRect;
+		static GUIContent  ourCreatePackageText;
+		static Rect		   ourCreatePackageTextRect;
 		static GUIContent  ourNewProjectText;
 		static Rect		   ourNewProjectTextRect;
 		static GUIStyle	   ourProjectTitleStyle = null;
 		static GUIStyle	   ourProjectFolderStyle= null;
 		static GUIStyle	   ourButtonStyle       = null;
+        static GUIStyle    ourTextFieldStyle    = null;
+        static GUIStyle    ourPopupStyle        = null;
         static Vector2     ourScrollPosition    = Vector2.zero;
 		
-		int selectedProjectId= 0;
+        int         myMenuSelection    = 0;
+		int         mySelectedProjectId= 0;
+        int         myParentSelection  = 0;
+        PackageInfo myPackage          = null;
 		
         // =================================================================================
         /// Creates a project selection window.
@@ -69,6 +78,9 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
 		/// Initialize all class variables.
 		static void Initialize() {
+            // -- Initialize only once. --
+            if(ourPopupStyle != null) return;
+            
             // -- Build the window area shapes. --
 			ourHeaderShape  = Shapes.Rectangle2D(0, 0, kWidth, kHeaderHeight);
 			ourListAreaShape= Shapes.Rectangle2D(0, kHeaderHeight, kWidth, kListAreaHeight);
@@ -84,22 +96,31 @@ namespace iCanScript.Internal.Editor {
 			ourProjectsText= new GUIContent("Packages");
 			var projectsTextSize= ourHeaderTextStyle.CalcSize(ourProjectsText);
 			ourProjectsTextRect= new Rect(kSpacer,kHeaderHeight-kSpacer-projectsTextSize.y, projectsTextSize.x, projectsTextSize.y);
+			ourCreatePackageText= new GUIContent("Create Package");
+			projectsTextSize= ourHeaderTextStyle.CalcSize(ourCreatePackageText);
+			ourCreatePackageTextRect= new Rect(kSpacer,kHeaderHeight-kSpacer-projectsTextSize.y, projectsTextSize.x, projectsTextSize.y);
 
 			ourProjectTitleStyle= new GUIStyle(EditorStyles.largeLabel);
 			ourProjectTitleStyle.fontSize= kTitleFontSize;
 			ourProjectFolderStyle= new GUIStyle(EditorStyles.largeLabel);
 			ourProjectFolderStyle.fontSize= kFolderFontSize;
 			
-			ourNewProjectText= new GUIContent("+ New Packages");
+			ourNewProjectText= new GUIContent("+ New Package");
 			var newProjectTextSize= ourProjectTitleStyle.CalcSize(ourNewProjectText);
 			ourNewProjectTextRect= new Rect(ourLogoPosition.x-kSpacer-newProjectTextSize.x, kHeaderHeight-1.5f*kSpacer-newProjectTextSize.y, newProjectTextSize.x, newProjectTextSize.y);
 			
+            ourTextFieldStyle= new GUIStyle(EditorStyles.textField);
+            ourTextFieldStyle.fontSize= kTitleFontSize;
+            
+            ourPopupStyle= new GUIStyle(EditorStyles.popup);
+            ourPopupStyle.fontSize= kTitleFontSize;
+            
 			// -- Refresh existing project information. --
 			PackageController.UpdateProjectDatabase();			
 		}
 		
         // =================================================================================
-        /// Draw window
+        /// GUI Event
         public void OnGUI() {
 			// -- Assure the GUI is properly initialized. --
 			Initialize();
@@ -111,14 +132,28 @@ namespace iCanScript.Internal.Editor {
 			// -- Draw fix adornments. --
 			GUI.DrawTexture(ourLogoPosition, ourLogo);
 
+            // -- Menu Selection. --
+            switch(myMenuSelection) {
+                case 0: PackageList(); break;
+                case 1: CreatePackage(); break;
+            }
+			Event.current.Use();
+        }
+
+        // =================================================================================
+        /// Package Selection
+        public void PackageList() {
 			// -- Header. --
+            ourHeaderTextStyle.normal.textColor= ourSelectedColor;
 			GUI.Label(ourProjectsTextRect, ourProjectsText, ourHeaderTextStyle);
 			if(ourButtonStyle == null) {
 				ourButtonStyle= new GUIStyle(GUI.skin.button);
 				ourButtonStyle.fontSize= ourProjectTitleStyle.fontSize;				
 			}			
 			if(GUI.Button(ourNewProjectTextRect, ourNewProjectText)) {
-	            PackageSettingsEditor.Init();
+                myPackage= new PackageInfo();
+	            myMenuSelection= 1;
+                return;
 			}
 			
 			// -- Project list. --
@@ -127,13 +162,13 @@ namespace iCanScript.Internal.Editor {
             ourScrollPosition= GUI.BeginScrollView(ourListAreaRect, ourScrollPosition, viewRect);
 			for(int i= 0; i < projects.Length; ++i) {
 				var p= projects[i];
-				switch(DisplayRow(i, p, i == selectedProjectId)) {
+				switch(DisplayRow(i, p, i == mySelectedProjectId)) {
 					case RowSelection.Project: {
-						selectedProjectId= i;
+						mySelectedProjectId= i;
 						break;
 					}
 					case RowSelection.Remove: {
-						selectedProjectId= 0;
+						mySelectedProjectId= 0;
 						p.RemovePackage();
 						PackageController.UpdateProjectDatabase();
 						break;
@@ -146,8 +181,6 @@ namespace iCanScript.Internal.Editor {
 				}
 			}
             GUI.EndScrollView();
-
-			Event.current.Use();
         }
 		
 		RowSelection DisplayRow(int rowId, PackageInfo package, bool isSelected) {
@@ -218,6 +251,86 @@ namespace iCanScript.Internal.Editor {
 
 			return rowSelection;
 		}
+        
+        // =================================================================================
+        /// Ask the user to provide the needed information to create a project.
+		void CreatePackage() {
+			// -- Header. --
+            ourHeaderTextStyle.normal.textColor= ourSelectedColor;
+			GUI.Label(ourCreatePackageTextRect, ourCreatePackageText, ourHeaderTextStyle);
+			
+            // -- Project fields. --
+            myPackage.PackageName= EditorGUI.TextField(GetFieldPosition(0), "Package Name", myPackage.PackageName, ourTextFieldStyle);
+			var allPackages= BuildPackageSelection();
+            var packageNames= P.map(p=> p == null ? "-- None --" : p.PackageName, allPackages);
+            myParentSelection= EditorGUI.Popup(GetFieldPosition(1), "Parent Package", myParentSelection, packageNames, ourPopupStyle);
+            myPackage.ParentPackage= allPackages[myParentSelection];
+            EditorGUI.BeginDisabledGroup(true);
+            EditorGUI.TextField(GetFieldPosition(3), "Package Folder", myPackage.GetRelativePackageFolder(), ourTextFieldStyle);
+            EditorGUI.TextField(GetFieldPosition(4), "Engine Namespace", myPackage.GetEngineNamespace(), ourTextFieldStyle);
+            EditorGUI.TextField(GetFieldPosition(5), "Editor Namespace", myPackage.GetEditorNamespace(), ourTextFieldStyle);
+            EditorGUI.EndDisabledGroup();
+
+    		// -- Compute button area. --
+            var totalWidth= ourListAreaRect.width;
+            var width= totalWidth / 4f;
+            var buttonWidth= width - kSpacer;
+            var buttonXMax= ourListAreaRect.xMax;
+            var buttonY= position.height-kSpacer-20.0f;
+
+            // -- Show project already exists error message. --
+            bool packageAlreadyExists= myPackage.AlreadyExists;
+            if(packageAlreadyExists) {
+                var pos= GetFieldPosition(0);
+                var x= buttonXMax-2f*width;
+                var y= buttonY - 60f;
+                var w= 2f*width-kSpacer;
+                var h= 40f;
+                EditorGUI.HelpBox(new Rect(x,y,w,h), "PROJECT ALREADY EXISTS:\n--> "+myPackage.GetRelativeFileNamePath(), MessageType.Error);                
+            }
+                        
+            // -- Process "Save" button. --
+            EditorGUI.BeginDisabledGroup(packageAlreadyExists);
+            if(GUI.Button(new Rect(buttonXMax-width, buttonY, buttonWidth, 20.0f),"Save")) {
+                if(!packageAlreadyExists) {
+                    myPackage.Save();
+					PackageController.UpdateProjectDatabase();
+                    myMenuSelection= 0;
+                }
+            }
+            EditorGUI.EndDisabledGroup();            
+            // -- Process "Cancel" button. --
+            if(GUI.Button(new Rect(buttonXMax-2f*width, buttonY, buttonWidth, 20.0f),"Cancel")) {
+                myMenuSelection= 0;
+            }
+		}
+        
+        // =================================================================================
+        /// Return the field position for the given id.
+        ///
+        /// @param id Index of the field.
+        /// @return The rectangle for that field.
+        ///
+        Rect GetFieldPosition(int id) {
+            var x= ourListAreaRect.x+kSpacer;
+            var width= ourListAreaRect.width-2f*kSpacer;
+            var height= 2f*kSpacer+kTitleFontSize;
+            var y= ourListAreaRect.y+kSpacer + id*height;
+            return new Rect(x, y, width, height);
+        }
+        
+        // =================================================================================
+        /// Build namespace menu.
+		static PackageInfo[] BuildPackageSelection() {
+			PackageInfo[] allPackages= PackageController.Projects.Clone() as PackageInfo[];
+			Array.Sort(allPackages, (x,y)=> string.Compare(x.PackageName, y.PackageName));
+			var len= allPackages.Length;
+			Array.Resize(ref allPackages, len+1);
+			Array.Copy(allPackages, 0, allPackages, 1, len);
+			allPackages[0]= null;
+			return allPackages;
+		}
+
     }
 
 }
