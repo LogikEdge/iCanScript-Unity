@@ -92,7 +92,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	            Type portType= eObj.RuntimeType;
 	            Type dragObjType= draggedObject.GetType();
                 if(iCS_Types.IsA<GameObject>(dragObjType) && PrefabUtility.GetPrefabType(IStorage.HostGameObject) == PrefabType.Prefab) {
-                    var isSceneObject= iCS_UnityUtility.IsSceneGameObject(draggedObject as GameObject);
+                    var isSceneObject= UnityUtility.IsSceneGameObject(draggedObject as GameObject);
                     if(isSceneObject == true) {
                         ShowNotification(new GUIContent("Unity does not allow binding a Scene object to a Prefab."));
                         return;                        
@@ -192,7 +192,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void CreateGameObjectNode(GameObject go, iCS_EditorObject parent, Vector2 graphMousePosition) {
         var instance= iCS_UserCommands.CreateGameObject(go, parent, graphMousePosition);
         if(PrefabUtility.GetPrefabType(IStorage.HostGameObject) == PrefabType.Prefab) {
-            var isSceneObject= iCS_UnityUtility.IsSceneGameObject(go);
+            var isSceneObject= UnityUtility.IsSceneGameObject(go);
             if(isSceneObject == true) {
                 ShowNotification(new GUIContent("Unity does not allow binding a Scene object to a Prefab."));
                 var thisPort= IStorage.PropertiesWizardGetInputThisPort(instance);

@@ -42,15 +42,11 @@ namespace iCanScript.Internal.Editor {
             JString csharpFileName   = root.GetValueFor("Storage.CSharpFileName") as JString;
             JBool baseTypeOverride   = root.GetValueFor("Storage.BaseTypeOverride") as JBool;
             JString baseType         = root.GetValueFor("Storage.BaseType") as JString;
-            JBool namespaceOverride  = root.GetValueFor("Storage.NamespaceOverride") as JBool;
-            JString namespaceName    = root.GetValueFor("Storage.Namespace") as JString;
             JString sourceFileGUID   = root.GetValueFor("Storage.SourceFileGUID") as JString;
             cache.IsEditorScript   = isEditorScript.value;
             cache.CSharpFileName   = csharpFileName.value;
             cache.BaseTypeOverride = baseTypeOverride.value;
             cache.BaseType         = baseType.value;
-            cache.NamespaceOverride= namespaceOverride.value;
-            cache.Namespace        = namespaceName.value;
             cache.SourceFileGUID   = sourceFileGUID.value;
             // -- Extract engine objects. --
             JArray engineObjects= root.GetValueFor("Storage.EngineObjects") as JArray;

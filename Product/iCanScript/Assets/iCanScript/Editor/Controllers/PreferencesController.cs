@@ -538,72 +538,7 @@ namespace iCanScript.Internal.Editor {
     		set { SetDateTime(kSoftwareUpdateLastWatchDateKey, value); }
     	}
     	
-    
-    	// =================================================================================
-    	// Code Engineering Preferences
-        // ---------------------------------------------------------------------------------
-    	//
-    	// Default Values
-    	//
-    	const string kEngineCodeGenerationFolder= "My Visual Scripts";
-        const string kEditorCodeGenerationFolder= "Editor/My Visual Scripts";
-    	const string kEngineBaseType            = "UnityEngine.MonoBehaviour";
-        const string kEngineNamespace           = "MyVisualScripts.Engine";
-        const string kEditorNamespace           = "MyVisualScripts.Editor";
-    
-    	//
-    	// Database access keys
-    	//
-    	const string kEngineCodeGenerationFolderKey= "iCS_EngineCodeGenerationFolder";
-    	const string kEditorCodeGenerationFolderKey= "iCS_EditorCodeGenerationFolder";
-    	const string kEngineBaseTypeKey            = "iCS_EngineBaseType";
-        const string kEngineNamespaceKey           = "iCS_EngineNamespace";
-        const string kEditorNamespaceKey           = "iCS_EditorNamespace";
-
-    	//
-    	// Reset to default value functions
-    	//
-    	public static void ResetEngineCodeGenerationFolder() {
-    	    EngineCodeGenerationFolder= kEngineCodeGenerationFolder;
-    	}
-    	public static void ResetEditorCodeGenerationFolder() {
-    	    EditorCodeGenerationFolder= kEditorCodeGenerationFolder;
-    	}
-    	public static void ResetEngineBaseType() {
-    	    EngineBaseType= kEngineBaseType;
-    	}
-    	public static void ResetEngineNamespace() {
-    	    EngineNamespace= kEngineNamespace;
-    	}
-    	public static void ResetEditorNamespace() {
-    	    EditorNamespace= kEditorNamespace;
-    	}
-    
-    	//
-    	// Accessors
-    	//
-        public static string EngineCodeGenerationFolder {
-            get { return EditorPrefs.GetString(kEngineCodeGenerationFolderKey, kEngineCodeGenerationFolder); }
-            set { EditorPrefs.SetString(kEngineCodeGenerationFolderKey, value); }
-        }
-        public static string EditorCodeGenerationFolder {
-            get { return EditorPrefs.GetString(kEditorCodeGenerationFolderKey, kEditorCodeGenerationFolder); }
-            set { EditorPrefs.SetString(kEditorCodeGenerationFolderKey, value); }
-        }
-        public static string EngineBaseType {
-            get { return EditorPrefs.GetString(kEngineBaseTypeKey, kEngineBaseType); }
-            set { EditorPrefs.SetString(kEngineBaseTypeKey, value); }
-        }
-        public static string EngineNamespace {
-            get { return EditorPrefs.GetString(kEngineNamespaceKey, kEngineNamespace); }
-            set { EditorPrefs.SetString(kEngineNamespaceKey, value); }
-        }
-        public static string EditorNamespace {
-            get { return EditorPrefs.GetString(kEditorNamespaceKey, kEditorNamespace); }
-            set { EditorPrefs.SetString(kEditorNamespaceKey, value); }
-        }
-    
-    	// =================================================================================
+        // =================================================================================
     	// Library Preferences
         // ---------------------------------------------------------------------------------
     	//

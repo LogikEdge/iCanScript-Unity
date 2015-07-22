@@ -37,16 +37,20 @@ namespace iCanScript.Internal.JSON {
         /// @param filePath The file path from which to read.
         /// @return The JSON root object. _Null_ is return on error.
         ///
-        public static JObject Read(string filePath) {
+        public static JObject Read(string filePath, bool declareError= false) {
             var jsonData= TextFileUtils.ReadFile(filePath);
             if(string.IsNullOrEmpty(jsonData)) {
-                Debug.LogWarning("iCanScript: Unable to read file at=> "+filePath);
+                if(declareError) {
+                    Debug.LogWarning("iCanScript: Unable to read file at=> "+filePath);                    
+                }
                 return null;
             }
             // -- Decode JSON string. --
             JObject root= JSON.GetRootObject(jsonData);
             if(root.isNull) {
-                Debug.LogWarning("iCanScript: JSON file corruption at=> "+filePath);
+                if(declareError) {
+                    Debug.LogWarning("iCanScript: JSON file corruption at=> "+filePath);                    
+                }
                 return null;
             }
             return root;

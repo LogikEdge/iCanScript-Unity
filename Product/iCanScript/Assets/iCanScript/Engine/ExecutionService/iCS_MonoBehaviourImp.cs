@@ -12,9 +12,7 @@ namespace iCanScript.Internal.Engine {
         [HideInInspector] public bool                     IsEditorScript        = false;
         [HideInInspector] public string                   CSharpFileName        = null;
         [HideInInspector] public bool                     BaseTypeOverride      = false;
-        [HideInInspector] public string                   BaseType              = null;
-        [HideInInspector] public bool                     NamespaceOverride     = false;
-        [HideInInspector] public string                   Namespace             = null;
+        [HideInInspector] public string                   BaseType              = "UnityEngine.MonoBehaviour";
         [HideInInspector] public string                   SourceFileGUID        = null;
         [HideInInspector] public int			          MajorVersion          = iCS_Config.MajorVersion;
         [HideInInspector] public int    		          MinorVersion          = iCS_Config.MinorVersion;
@@ -48,14 +46,6 @@ namespace iCanScript.Internal.Engine {
         string iCS_IVisualScriptData.BaseType {
             get { return BaseType; }
             set { BaseType= value; }
-        }
-        bool iCS_IVisualScriptData.NamespaceOverride {
-            get { return NamespaceOverride; }
-            set { NamespaceOverride= value; }
-        }
-        string iCS_IVisualScriptData.Namespace {
-            get { return Namespace; }
-            set { Namespace= value; }
         }
         string iCS_IVisualScriptData.SourceFileGUID {
             get { return SourceFileGUID; }

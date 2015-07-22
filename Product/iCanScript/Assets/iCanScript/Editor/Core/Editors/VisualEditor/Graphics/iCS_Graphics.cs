@@ -1202,7 +1202,7 @@ namespace iCanScript.Internal.Editor {
     	bool IsDisable(iCS_EditorObject obj) { return !IsEnable(obj); }
     	bool IsEnable(iCS_EditorObject obj) {
     		if(obj.IsBehaviour) return true;
-    		if(iCS_UnityUtility.IsPrefab(obj.IStorage.VSMonoBehaviour.gameObject)) return true;
+    		if(UnityUtility.IsPrefab(obj.IStorage.VSMonoBehaviour.gameObject)) return true;
     		if(obj.IsInStatePort) {
     			var transitionPackage= obj.IStorage.GetTransitionPackage(obj);
     			if(transitionPackage == null) {

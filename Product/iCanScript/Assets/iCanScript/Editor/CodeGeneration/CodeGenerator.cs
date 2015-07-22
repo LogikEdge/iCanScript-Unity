@@ -33,7 +33,6 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
             // -- Write final code to file. --
             var fileName= typeName;
             var folder= CodeGenerationUtility.GetCodeGenerationFolder(iStorage);
-            FileUtils.CreateAssetFolder(folder);
             CSharpFileUtils.WriteCSharpFile(folder, fileName, result.ToString());
         }
 
@@ -43,7 +42,7 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
         /// @param iStorage The VS storage to convert to code.
         ///
         public void DeleteGeneratedFilesFor(iCS_IStorage iStorage) {
-            var fileName= NameUtility.ToTypeName(iStorage.EditorObjects[0].CodeName);
+            var fileName= NameUtility.ToTypeName(iStorage.TypeName);
             var folder= CodeGenerationUtility.GetCodeGenerationFolder(iStorage);
             CSharpFileUtils.DeleteCSharpFile(folder, fileName);
         }

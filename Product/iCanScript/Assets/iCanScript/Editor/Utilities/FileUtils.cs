@@ -31,7 +31,11 @@ namespace iCanScript.Internal.Editor {
         }
         
         // ----------------------------------------------------------------------
-        // Create a subfolder under the project Assets folder (if it does not exist)
+        /// Create a subfolder under the project Assets folder
+		/// (if it does not exist).
+		///
+		/// @param folderPath A path relative to the 'Assets' folder.
+		///
         public static void CreateAssetFolder(string folderPath) {
             // -- Split up folder into its parts --
             var folders= folderPath.Split(new Char[1]{'/'});

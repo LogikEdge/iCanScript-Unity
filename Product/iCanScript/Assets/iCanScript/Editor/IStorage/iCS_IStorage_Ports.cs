@@ -253,49 +253,36 @@ namespace iCanScript.Internal.Editor {
         // Creation
         // ----------------------------------------------------------------------
         public void MoveDynamicPortToLastIndex(iCS_EditorObject port) {
-    		// Relocate the port at the end.
-            iCS_EditorObject parent= port.Parent;
-    		port.PortIndex= RecalculatePortIndexes(parent).Length;
-            // Rearrange port indexes
-            RecalculatePortIndexes(parent);
+            // -- Display error for invalid use. --
+            if(port.IsFixDataPort) {
+                Debug.LogWarning("iCanScript: Internal error: Tryng to move port index of a fix port");
+                return;
+            }
+            // -- Get next available parameter index. --
+            iCS_EditorObject parent= port.ParentNode;
+    		port.PortIndex= GetNextDynamicOrProposedPortIndex(parent);
+            // -- Reajust the port indexes. --
+            GraphEditor.AdjustPortIndexes(parent);
         }
 
     	// ======================================================================
     	// High-order functions
-        // ----------------------------------------------------------------------
-    	public iCS_EditorObject[] RecalculatePortIndexes(iCS_EditorObject node) {
-    		List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
-    		// Get all child data ports.
-    		ForEachChildDataPort(node, child=> ports.Add(child));
-    		// Sort child ports according to index.
-    		iCS_EditorObject[] result= SortPortsOnIndex(ports.ToArray());
-    		// Find first dynamic or proposed port
-    		int firstDynamicIdx= 0;
-    		for(int i= 0; i < result.Length; ++i) {
-    		    if(result[i].IsParameterPort && result[i].IsFixDataPort) {
-    		        firstDynamicIdx= result[i].PortIndex+1;
-    		    }
-    		}
-    		// Re-index dynamic and proposed ports
-            for(int i= 0; i < result.Length; ++i) {
-                if(result[i].IsDynamicDataPort || result[i].IsProposedDataPort) {
-                    if(result[i].PortIndex <= (int)iCS_PortIndex.ParametersEnd) {
-                        result[i].PortIndex= firstDynamicIdx++; 
-                    }
-                }
-            }
-    		return result;
-    	}
         // -------------------------------------------------------------------------
         public int GetNextDynamicOrProposedPortIndex(iCS_EditorObject node) {
-            var ports= RecalculatePortIndexes(node);
+            // -- Assure that the port indexes are proper. --
+            GraphEditor.AdjustPortIndexes(node);
+            // -- Search for last parameter port. --
             int lastIdx= 0;
-            for(int i= 0; i < ports.Length; ++i) {
-                var p= ports[i];
-                if(p.IsDynamicDataPort || p.IsProposedDataPort) {
-                    lastIdx= p.PortIndex+1;
+            node.ForEachChildPort(
+                p=> {
+                    var idx= p.PortIndex;
+                    if(idx < (int)iCS_PortIndex.ParametersEnd) {
+                        if(lastIdx <= idx) {
+                            lastIdx= idx+1;                            
+                        }
+                    }
                 }
-            }
+            );
             return lastIdx;
         }
         // ----------------------------------------------------------------------
@@ -309,7 +296,7 @@ namespace iCanScript.Internal.Editor {
     	            }				
     			}
             }
-            // Assign all unassigned port indexes (we assume that it is a dynmic port).
+            // Assign all unassigned port indexes (we assume that it is a dynamic port).
             if(lastIndex != -1) {
                 foreach(var p in lst) {
                     if(p.PortIndex < 0) {

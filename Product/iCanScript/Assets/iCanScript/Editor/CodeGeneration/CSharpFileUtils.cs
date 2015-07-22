@@ -32,15 +32,24 @@ namespace iCanScript.Internal.Editor.CodeGeneration {
     
         // ----------------------------------------------------------------------
         /// Writes or overwrites the CSharp code file.
+		///
+		/// @param folderPath The absolute path of the code generation folder.
+		/// @param className The name of the type/file.
+		/// @param code The code to be put into the file.
+		///
         public static void WriteCSharpFile(string folderPath, string className, string code) {
-            var filePath= "Assets/"+folderPath+"/"+className+kFileExtension;
+            var filePath= folderPath+"/"+className+kFileExtension;
             TextFileUtils.WriteFile(filePath, code);
         }
 
         // ----------------------------------------------------------------------
         /// Deletes CSharp code file.
+		///
+		/// @param folderPath The absolute path of the code generation folder.
+		/// @param className The name of the type/file.
+		///
         public static void DeleteCSharpFile(string folderPath, string className) {
-            var filePath= "Assets/"+folderPath+"/"+className+kFileExtension;
+            var filePath= "Assets/"+Folder.AbsoluteToAssetPath(folderPath)+"/"+className+kFileExtension;
             AssetDatabase.DeleteAsset(filePath);
         }
     }

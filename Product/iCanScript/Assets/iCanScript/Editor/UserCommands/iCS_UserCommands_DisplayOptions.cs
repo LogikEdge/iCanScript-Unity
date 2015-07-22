@@ -14,9 +14,9 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
         // OK
         public static void Unfold(iCS_EditorObject node) {
-    #if DEBUG
+#if DEBUG
             Debug.Log("iCanScript: Unfold => "+node.DisplayName);
-    #endif
+#endif
             if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
                 return;
             }
@@ -47,9 +47,9 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
         // OK
         public static void Fold(iCS_EditorObject node) {
-    #if DEBUG
+#if DEBUG
             Debug.Log("iCanScript: Fold => "+node.DisplayName);
-    #endif        
+#endif        
             if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Folded) {
                 return;
             }
@@ -80,9 +80,9 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
         // OK
         public static void Iconize(iCS_EditorObject node) {
-    #if DEBUG
+#if DEBUG
             Debug.Log("iCanScript: Iconize => "+node.DisplayName);
-    #endif        
+#endif        
             if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Iconized) {
                 return;
             }

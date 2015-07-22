@@ -65,14 +65,6 @@ namespace iCanScript.Internal.Editor {
                 CenterAtWithScale(pivot, newScale);
     		}
             
-            // -- Global Settings --
-            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Global Settings", 0, spacer, true)) {
-                GlobalSettingsEditor.Init(IStorage);
-            }
-            // -- Project Settings --
-            if(iCS_ToolbarUtility.Button(ref r, 100, true, "Project Settings", 0, spacer, true)) {
-                ProjectEditor.Init(IStorage);
-            }
             // -- Visual Script Settings --
             if(iCS_ToolbarUtility.Button(ref r, 100, true, "Visual Script Settings", 0, spacer, true)) {
                 VisualScriptSettingsEditor.Init(IStorage);
@@ -88,12 +80,17 @@ namespace iCanScript.Internal.Editor {
     		// --------------
     		// CENTER TOOLBAR
             // Show game object name in middle of toolbar.
-    		var name= IStorage.TypeName;
+			var projectName= "";
+			var project= IStorage.Project;
+			if(project != null) {
+				projectName= project.PackageName + " -- ";
+			}
+    		var vsName= IStorage.TypeName;
             var baseType= CodeGenerationUtility.GetBaseType(IStorage);
             if(baseType != null && baseType != typeof(void)) {
-                name+= " : "+baseType.Name;
+                vsName+= " : "+baseType.Name;
             }
-    		iCS_ToolbarUtility.CenteredTitle(ref r, name);
+    		iCS_ToolbarUtility.CenteredTitle(ref r, projectName + vsName);
     
             // Trial information.
             ShowTrialInformation(ref r);

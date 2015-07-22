@@ -529,7 +529,8 @@ namespace iCanScript.Internal {
                 case '*': return "Times";
                 case '/': return "Divide";
                 case '&': return "And";
-                case '!': return "Or";
+                case '|': return "Or";
+                case '!': return "Not";
                 case '<': return "SmallerThan";
                 case '>': return "LargerThan";
                 case '{': return "OpenCurlyBrace";

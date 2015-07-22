@@ -6,39 +6,6 @@ namespace iCanScript.Internal.Editor {
     using Prefs= PreferencesController;
     
     public class Sanity {
-        // =========================================================================
-        // BASE TYPE VALIDATIONS
-        // -------------------------------------------------------------------------
-        /// Validates the engine base type defined in the Preferences.
-        ///
-        /// @return A user message if a problem is found. _null_ otherwise.
-        ///
-        public static string ValidateEngineBaseType() {
-            // -- Return previous message if nothing changed --
-            var baseTypeName= Prefs.EngineBaseType;
-            if(baseTypeName == c_CodeGenerationBaseTypeName) {
-                return c_CodeGenerationBaseTypeMessage;
-            }
-            c_CodeGenerationBaseTypeName= baseTypeName;
-            // -- Accept no base type --
-            if(string.IsNullOrEmpty(baseTypeName)) {
-                c_CodeGenerationBaseTypeMessage= null;
-                return null;
-            }
-            // -- Attempt to find the base type inside the application --
-            if(iCS_Types.GetTypeFromTypeString(baseTypeName) != null) {
-                c_CodeGenerationBaseTypeMessage= null;
-                return null;
-            }
-            // -- Base type not found; generate error message --
-            c_CodeGenerationBaseTypeMessage=
-                "Unable to locate the <b>Engine Base Type</b> <color=red><b>"+baseTypeName+
-                "</b></color> configured in the <b>Global Preferences</b>";
-            return c_CodeGenerationBaseTypeMessage;
-        }
-        private static string c_CodeGenerationBaseTypeName    = null;
-        private static string c_CodeGenerationBaseTypeMessage= null;
-
         // -------------------------------------------------------------------------
         /// Validates the default type defined in the uSer Preferences.
         ///
@@ -74,71 +41,6 @@ namespace iCanScript.Internal.Editor {
         private static string c_visualScriptBaseTypeMessage= null;
 
 
-        // =========================================================================
-        // NAMESPACE VALIDATIONS
-        // -------------------------------------------------------------------------
-        /// Validates that the default engine namespace.
-        ///
-        /// @return The error message or _null_ if no error found.
-        ///
-        public static string ValidateEngineNamespace(bool shortFormat= false) {
-            var ns= Prefs.EngineNamespace;
-            var error= ValidateNamespace(ns);
-            if(error == null) return null;
-            if(shortFormat) {
-                return "Invalid namespace format: "+error;
-            }
-            return "Invalid <b>Engine Namespace '<color=red>"+ns+"</color>'</b> defined in <b>Global Preferences</b>: "+error;
-        }
-        // -------------------------------------------------------------------------
-        /// Validates that the default editor namespace.
-        ///
-        /// @return The error message or _null_ if no error found.
-        ///
-        public static string ValidateEditorNamespace(bool shortFormat= false) {
-            var ns= Prefs.EditorNamespace;
-            var error= ValidateNamespace(ns);
-            if(error == null) return null;
-            if(shortFormat) {
-                return "Invalid namespace format: "+error;
-            }
-            return "Invalid <b>Editor Namespace '<color=red>"+ns+"</color>'</b> defined in <b>Global Preferences</b>: "+error;
-        }
-
-        // -------------------------------------------------------------------------
-        /// Validates that the visual script namespace follows programmatic conventions.
-        ///
-        /// @return The error message or _null_ if no error found.
-        ///
-        public static string ValidateVisualScriptNamespace(iCS_IStorage iStorage, bool shortFormat= false) {
-            if(!iStorage.IsRootObjectAType) return null;
-            if(iStorage.NamespaceOverride == false) return null;
-            var ns= iStorage.Namespace;
-            var error= ValidateNamespace(ns);
-            if(error == null) return null;
-            if(shortFormat) {
-                return "Invalid namespace format: "+error;
-            }
-            return "Invalid <b>Namespace '<color=red>"+ns+"</color>'</b> defined in the <b>Visual Script Configuration</b>: "+error;
-        }
-
-        // -------------------------------------------------------------------------
-        /// Validates that the given namespace follows programmatic conventions.
-        ///
-        /// @return The error message or _null_ if no error found.
-        ///
-        public static string ValidateNamespace(string ns) {
-            if(string.IsNullOrEmpty(ns)) return null;
-            var parts= ns.Split(new Char[1]{'.'});
-            foreach(var p in parts) {
-                var error= ValidateIdentifier(p);
-                if(error != null) {
-                    return error;
-                }
-            }
-            return null;
-        }
-
         // -------------------------------------------------------------------------
         /// Verifies for a valid programmatic identifier.
         ///
@@ -161,59 +63,6 @@ namespace iCanScript.Internal.Editor {
 
         // =========================================================================
         // FOLDER NAME VALIDATIONS
-        // -------------------------------------------------------------------------
-        /// Validates the editor code generation folder from Global Preferences.
-        ///
-        /// @return The error message or _null_ if no error found.
-        ///
-        public static string ValidateEditorCodeGenerationFolder(bool shortFormat= false) {
-            var folder= Prefs.EditorCodeGenerationFolder;
-            var pathParts= folder.Split(new Char[1]{'/'});
-            bool isEditorFolderFound= false;
-            foreach(var p in pathParts) {
-                if(p == "Editor") isEditorFolderFound= true;
-            }
-            if(!isEditorFolderFound) {
-                if(shortFormat) {
-                    return "<b>'<color=red>"+folder+"</color>'</b> MUST include <b>'Editor'</b> in its path.";                    
-                }
-                return "The <b>Editor Code Generation Folder '<color=red>"+folder+"</color>'</b> defined in <b>Global Preferences</b> MUST include <b>'Editor'</b> in its path.";
-            }
-            var error= ValidateFolderName(folder, true);
-            if(error == null) return null;
-            if(shortFormat) {
-                return "<b>'<color=red>"+folder+"</color>'</b> includes invalid characters. "+error;                
-            }
-            return "The <b>Editor Code Generation Folder '<color=red>"+folder+"</color>'</b> defined in <b>Global Preferences</b> includes invalid characters. "+error;
-        }
-
-        // -------------------------------------------------------------------------
-        /// Validates the engine code generation folder from Global Preferences.
-        ///
-        /// @return The error message or _null_ if no error found.
-        ///
-        public static string ValidateEngineCodeGenerationFolder(bool shortFormat= false) {
-            // -- Verify that the 'Editor' path is not included --
-            var folder= Prefs.EngineCodeGenerationFolder;
-            var pathParts= folder.Split(new Char[1]{'/'});
-            bool isEditorFolderFound= false;
-            foreach(var p in pathParts) {
-                if(p == "Editor") isEditorFolderFound= true;
-            }
-            if(isEditorFolderFound) {
-                if(shortFormat) {
-                    return "<b>'<color=red>"+folder+"</color>'</b> CAN NOT include <b>'Editor'</b> in its path.";                    
-                }
-                return "The <b>Engine Code Generation Folder '<color=red>"+folder+"</color>'</b> defined in <b>Global Preferences</b> CAN NOT include <b>'Editor'</b> in its path.";
-            }
-            var error= ValidateFolderName(folder, true);
-            if(error == null) return null;
-            if(shortFormat) {
-                return "<b>'<color=red>"+folder+"</color>'</b> includes invalid characters. "+error;                
-            }
-            return "<b>Engine Code Generation Folder '<color=red>"+folder+"</color>'</b> defined in <b>Global Preferences</b> includes invalid characters. "+error;
-        }
-
         // -------------------------------------------------------------------------
         /// Validates the given folder name.
         ///

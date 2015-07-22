@@ -196,13 +196,37 @@ namespace iCanScript.Internal.Editor {
         /// @return Array of positions for each line.
         ///
         protected Rect[] GetValueColumnPositions(int numberOfLines) {
+            var hOffset= GetValueHorizontalOffset();
             var pos= new Rect[numberOfLines];
-            pos[0]= new Rect(kColumn3X+kMargin, kMargin+kTitleHeight, kColumn3Width, 20.0f);
+            pos[0]= new Rect(kColumn3X+kMargin+hOffset, kMargin+kTitleHeight, kColumn3Width-hOffset, 20.0f);
             for(int i= 1; i < numberOfLines; ++i) {
                 pos[i]= pos[i-1];
                 pos[i].y= pos[i-1].yMax;
             }
             return pos;            
+        }
+        // =================================================================================
+        /// Allows the child class to define an horizontal offset for the value column.
+        ///
+        /// @return The horizontal offset.
+        ///
+        protected virtual float GetValueHorizontalOffset() {
+            return 0f;
+        }
+        // =================================================================================
+        /// Changes the active selection.
+        ///
+        /// @param selectionName String with the selection string.
+        /// @return _true_ if selection has been changed; _false_ otherwise. 
+        ///
+        public bool ChangeSelection(string selectionStr) {
+            for(int i= 0; i < optionStrings.Length; ++i) {
+                if(optionStrings[i] == selectionStr) {
+                    selGridId= i;
+                    return true;
+                }
+            }
+            return false;
         }
         
     	// =================================================================================
