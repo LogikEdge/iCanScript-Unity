@@ -20,6 +20,7 @@ namespace iCanScript.Internal.Editor {
 		// ------------------------------------------------------------------------
         public  string      myVersion       = null;
 		public  string      myPackageName   = "";
+        public  bool        myIsNested      = false;
         private string      myRelativeFolder= "";
         private PackageInfo myParentPackage = null;
 		
@@ -40,9 +41,10 @@ namespace iCanScript.Internal.Editor {
             }
             set {
                 myParentPackage= value;
-                SetPackageFolder(value);
+                myIsNested= value != null;
             }
         }
+        public bool IsNested { get { return myIsNested; }}
         public string ParentFolder {
             get {
                 if(myParentPackage == null || IsRootPackage) return "";
@@ -108,7 +110,18 @@ namespace iCanScript.Internal.Editor {
         ///
         public string GetRelativePackageFolder(bool doCreate= false) {
             // -- Special case for the root package. --
-            var packagePath= IsRootPackage ? "" : myRelativeFolder;
+            if(IsRootPackage) return "";
+            var packagePath= myRelativeFolder;
+            if(string.IsNullOrEmpty(packagePath)) {
+                if(myParentPackage == null) {
+                    packagePath= myPackageName;
+                }
+                else {
+                    var parentPath= myParentPackage.GetRelativePackageFolder();
+                    var separator= string.IsNullOrEmpty(parentPath) ? "" : "/";
+                    packagePath= parentPath+separator+myPackageName;                    
+                }
+            }
             // -- Create project folder if it does not exists. --
             if(doCreate) {
                 FileUtils.CreateAssetFolder(packagePath);                
@@ -122,7 +135,14 @@ namespace iCanScript.Internal.Editor {
         /// @param path The package path.
         ///
         public void SetPackageFolder(string path) {
-            if(path == null) { myRelativeFolder= ""; return; }
+            if(IsRootPackage) {
+                myRelativeFolder= "";
+                return;
+            }
+            if(string.IsNullOrEmpty(path)) {
+                myRelativeFolder= myPackageName;
+                return;
+            }
             if(path.StartsWith(Application.dataPath)) {
                 var dpLen= Application.dataPath.Length;
                 path= path.Substring(dpLen, path.Length-dpLen);
@@ -131,18 +151,6 @@ namespace iCanScript.Internal.Editor {
                 }
             }
             myRelativeFolder= path;
-		}
-		
-		// ========================================================================
-		/// Sets the package folder path.
-        ///
-        /// @param parent The parent package.
-        ///
-        public void SetPackageFolder(PackageInfo parent) {
-            if(parent == null) { myRelativeFolder= ""; return; }
-            var parentPath= parent.GetRelativePackageFolder();
-            var separator= string.IsNullOrEmpty(parentPath) ? "" : "/";
-            myRelativeFolder= parentPath+separator+myPackageName;
 		}
 		
 		// ========================================================================
@@ -421,16 +429,20 @@ namespace iCanScript.Internal.Editor {
         ///
         public static PackageInfo Load(JObject jsonRoot) {
             // -- Read the package information from the JSON string. --
-            JString version            = jsonRoot.GetValueFor("myVersion") as JString;
-            JString packageName        = jsonRoot.GetValueFor("myPackageName") as JString;
+            JString version    = jsonRoot.GetValueFor("myVersion") as JString;
+            JString packageName= jsonRoot.GetValueFor("myPackageName") as JString;
+            JBool   isNested   = jsonRoot.GetValueFor("myIsNested") as JBool;
             // -- Don't create a package if core infromation is not present. --
-            if(version == null || version.isNull || packageName == null || packageName.isNull) {
+            if(version == null || version.isNull ||
+               packageName == null || packageName.isNull ||
+               isNested == null || isNested.isNull) {
                 return null;
             }
             // -- Set the package with the information red from the JSON file. --
             var newProject= new PackageInfo();
             newProject.myVersion    = version.value;
             newProject.myPackageName= packageName.value;
+            newProject.myIsNested   = isNested.value;
 
 //            newProject.myParentFolder       = parentFolder.value;
             return newProject;

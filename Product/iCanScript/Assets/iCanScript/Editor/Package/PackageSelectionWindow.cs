@@ -26,7 +26,8 @@ namespace iCanScript.Internal.Editor {
 		const  float	   kButtonHeight      = kTitleFontSize+kFolderFontSize;
 		const  float	   kTileToFolderSpacer= 0.25f*kSpacer;
 		const  float       kRowHeight         = 2f*kSpacer+kTitleFontSize+kFolderFontSize+kTileToFolderSpacer;
-		static Color	   ourHeaderBackgroundColor  = Color.white;
+        static bool        isInitialized= false;
+        static Color	   ourHeaderBackgroundColor  = Color.white;
 		static Color	   ourListAreaBackgroundColor= new Color(0.9f, 0.9f, 0.9f);
 		static Color	   ourSelectedColor  		 = new Color(0.25f, 0.5f, 1f);
         static Vector3[]   ourHeaderShape  = null;
@@ -35,20 +36,21 @@ namespace iCanScript.Internal.Editor {
         static Rect        ourListAreaRect = new Rect(0, kHeaderHeight, kWidth, kListAreaHeight);
         static Texture2D   ourLogo         = null;
 		static Rect		   ourLogoPosition;
-		static GUIStyle	   ourHeaderTextStyle= null;
 		static GUIContent  ourProjectsText;
 		static Rect		   ourProjectsTextRect;
 		static GUIContent  ourCreatePackageText;
 		static Rect		   ourCreatePackageTextRect;
 		static GUIContent  ourNewProjectText;
 		static Rect		   ourNewProjectTextRect;
+		static GUIStyle	   ourHeaderTextStyle= null;
 		static GUIStyle	   ourProjectTitleStyle = null;
 		static GUIStyle	   ourProjectFolderStyle= null;
 		static GUIStyle	   ourButtonStyle       = null;
         static GUIStyle    ourTextFieldStyle    = null;
         static GUIStyle    ourPopupStyle        = null;
         static Vector2     ourScrollPosition    = Vector2.zero;
-		
+        static float       ourTitleHeight       = kTitleFontSize;
+        
         int         myMenuSelection    = 0;
 		int         mySelectedProjectId= 0;
         int         myParentSelection  = 0;
@@ -79,7 +81,8 @@ namespace iCanScript.Internal.Editor {
 		/// Initialize all class variables.
 		static void Initialize() {
             // -- Initialize only once. --
-            if(ourPopupStyle != null) return;
+            if(isInitialized) return;
+            isInitialized= true;
             
             // -- Build the window area shapes. --
 			ourHeaderShape  = Shapes.Rectangle2D(0, 0, kWidth, kHeaderHeight);
@@ -104,7 +107,8 @@ namespace iCanScript.Internal.Editor {
 			ourProjectTitleStyle.fontSize= kTitleFontSize;
 			ourProjectFolderStyle= new GUIStyle(EditorStyles.largeLabel);
 			ourProjectFolderStyle.fontSize= kFolderFontSize;
-			
+            ourTitleHeight= ourProjectTitleStyle.CalcSize(new GUIContent("A")).y;
+            
 			ourNewProjectText= new GUIContent("+ New Package");
 			var newProjectTextSize= ourProjectTitleStyle.CalcSize(ourNewProjectText);
 			ourNewProjectTextRect= new Rect(ourLogoPosition.x-kSpacer-newProjectTextSize.x, kHeaderHeight-1.5f*kSpacer-newProjectTextSize.y, newProjectTextSize.x, newProjectTextSize.y);
@@ -152,6 +156,7 @@ namespace iCanScript.Internal.Editor {
 			}			
 			if(GUI.Button(ourNewProjectTextRect, ourNewProjectText)) {
                 myPackage= new PackageInfo();
+                myParentSelection= 0;
 	            myMenuSelection= 1;
                 return;
 			}
@@ -263,7 +268,7 @@ namespace iCanScript.Internal.Editor {
             myPackage.PackageName= EditorGUI.TextField(GetFieldPosition(0), "Package Name", myPackage.PackageName, ourTextFieldStyle);
 			var allPackages= BuildPackageSelection();
             var packageNames= P.map(p=> p == null ? "-- None --" : p.PackageName, allPackages);
-            myParentSelection= EditorGUI.Popup(GetFieldPosition(1), "Parent Package", myParentSelection, packageNames, ourPopupStyle);
+            myParentSelection= EditorGUI.Popup(GetFieldPosition(1), "Parent Package", myParentSelection, packageNames/*, ourPopupStyle*/);
             myPackage.ParentPackage= allPackages[myParentSelection];
             EditorGUI.BeginDisabledGroup(true);
             EditorGUI.TextField(GetFieldPosition(3), "Package Folder", myPackage.GetRelativePackageFolder(), ourTextFieldStyle);
@@ -281,7 +286,6 @@ namespace iCanScript.Internal.Editor {
             // -- Show project already exists error message. --
             bool packageAlreadyExists= myPackage.AlreadyExists;
             if(packageAlreadyExists) {
-                var pos= GetFieldPosition(0);
                 var x= buttonXMax-2f*width;
                 var y= buttonY - 60f;
                 var w= 2f*width-kSpacer;
@@ -314,9 +318,10 @@ namespace iCanScript.Internal.Editor {
         Rect GetFieldPosition(int id) {
             var x= ourListAreaRect.x+kSpacer;
             var width= ourListAreaRect.width-2f*kSpacer;
-            var height= 2f*kSpacer+kTitleFontSize;
-            var y= ourListAreaRect.y+kSpacer + id*height;
-            return new Rect(x, y, width, height);
+            var margin= 0.5f*kSpacer;
+            var height= ourTitleHeight;
+            var y= ourListAreaRect.y+kSpacer + id*(height+2f*margin);
+            return new Rect(x, y+margin, width, height);
         }
         
         // =================================================================================
