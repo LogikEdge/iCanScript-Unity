@@ -44,7 +44,7 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         // INIT / SHUTDOWN
         // ---------------------------------------------------------------------------------
-        static PackageController()    { UpdateProjectDatabase(); }
+        static PackageController()    { UpdatePackageDatabase(); }
         public static void Start()    {}
         public static void Shutdown() {}
         
@@ -60,7 +60,7 @@ namespace iCanScript.Internal.Editor {
 		///
 		/// @info The project database is made current from the disk.
 		///
-        public static void UpdateProjectDatabase() {
+        public static void UpdatePackageDatabase() {
             var projectPaths= FileUtils.GetFilesWithExtension("icspackage");
 			var nbOfProjects= projectPaths.Length;
 			myProjects= new PackageInfo[nbOfProjects];
@@ -84,14 +84,16 @@ namespace iCanScript.Internal.Editor {
             // -- Rebuild package hierarchy. --
             for(int i= 0; i < projectPaths.Length; ++i) {
                 var pi= Path.GetDirectoryName(projectPaths[i]);
-                for(int j= i-1; j >= 0; --j) {
-                    var pj= Path.GetDirectoryName(projectPaths[j]);
-                    if(pi.StartsWith(pj)) {
-                        myProjects[i].ParentPackage= myProjects[j];
-                        break;
+                if(myProjects[i].IsNested) {
+                    for(int j= i-1; j >= 0; --j) {
+                        var pj= Path.GetDirectoryName(projectPaths[j]);
+                        if(pi.StartsWith(pj)) {
+                            myProjects[i].ParentPackage= myProjects[j];
+                            break;
+                        }
                     }
+                    myProjects[i].SetPackageFolder(pi);                    
                 }
-                myProjects[i].SetPackageFolder(pi);
             }
 			// -- Assure that the longest path is first to simplify search. --
 			Array.Sort(myProjects, (x,y)=> y.GetPackageFolder().Length - x.GetPackageFolder().Length);

@@ -11,12 +11,30 @@ CSS: Github.css
 
 ## iCanScript v2.0.24 ##
 
-_July 7, 2015_
+_July 22, 2015_
 
-V2.0.24 ...
+V2.0.24 introduces the iCanScript packages!
+
+A package allows to configure common traits for a group of visual scripts.  Packages can be independent or nested.
+The package controls the following visual script traits:
+
+- engine & editor namespaces;
+- engine & editor code generation folders;
+- engine & editor visual script folders (future use).
+
+**<span style="color: red">\[WARNING\]:</span>**  **EXAMPLES FILES prior to v2.0.24:**
+
+Each example created prior to V2.0.24 uses a seperate namespace but a common code generation folder for all of the examples.  With packages, the namespaces and code generation folders should be seperate.  Therefore, these examples must be adapted to work with V2.0.24.
 
 ### List of Changes
 
+- **<span style="color: green">\[NEW\] </span>** **iCanScript Packages:**
+    - A package allows to configure common traits for a group of visual scripts.  Packages can be independent or nested.  The package controls the following viosual script traits:
+        - engine & editor namespaces;
+        - engine & editor code generation folders;
+        - engine & editor visual script folders (future use).
+    - A default package with the name of the Unity project is automatically generated.  This package may be sufficent for small projects.
+- **<span style="color: green">\[NEW\] </span>** Added _**iCanScript->Packages...**_ menu item to access the package settings.
 - **<span style="color: blue">\[IMPROVED\] </span>** Support preprocessor directives in inline code node.
 - **<span style="color: red">\[FIXED\] </span>** Fix sporadic index out of range exception when generating code.
 - **<span style="color: red">\[FIXED\] </span>** Fix some conditions that generated unnecessary _**"if(trigger)"**_ code.
