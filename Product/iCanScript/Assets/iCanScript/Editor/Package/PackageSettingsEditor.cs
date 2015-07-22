@@ -103,7 +103,7 @@ namespace iCanScript.Internal.Editor {
             if(GUI.Button(new Rect(buttonX+width, buttonY, buttonWidth, 20.0f),"Save")) {
                 if(!projectAlreadyExists) {
                     myProject.Save();
-					PackageController.UpdateProjectDatabase();
+					PackageController.UpdatePackageDatabase();
                     Close();
                 }
             }

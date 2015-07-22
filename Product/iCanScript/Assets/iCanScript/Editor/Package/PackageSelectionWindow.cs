@@ -15,6 +15,7 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
+        // Class variables.
 		const  float	   kSpacer            = 16f;
         const  float       kWidth             = 1000f;
         const  float       kHeaderHeight      = 100f;
@@ -42,7 +43,7 @@ namespace iCanScript.Internal.Editor {
 		static Rect		   ourCreatePackageTextRect;
 		static GUIContent  ourNewProjectText;
 		static Rect		   ourNewProjectTextRect;
-		static GUIStyle	   ourHeaderTextStyle= null;
+		static GUIStyle	   ourHeaderTextStyle   = null;
 		static GUIStyle	   ourProjectTitleStyle = null;
 		static GUIStyle	   ourProjectFolderStyle= null;
 		static GUIStyle	   ourButtonStyle       = null;
@@ -51,13 +52,16 @@ namespace iCanScript.Internal.Editor {
         static Vector2     ourScrollPosition    = Vector2.zero;
         static float       ourTitleHeight       = kTitleFontSize;
         
-        int         myMenuSelection    = 0;
-		int         mySelectedProjectId= 0;
-        int         myParentSelection  = 0;
-        PackageInfo myPackage          = null;
+        // Variables used by different window pages.
+        int         myMenuSelection    = 0;     //< Determines which page is selected.
+		int         mySelectedPackageId= 0;     //< The package that is selected
+
+        // Create package variables.
+        PackageInfo myNewPackage       = null;  //< The new package info.
+        int         myParentSelection  = 0;     //< The parent package selection 
 		
         // =================================================================================
-        /// Creates a project selection window.
+        /// Creates a package selection window.
         public static PackageSelectionWindow Init() {
             // -- Create window. --
             var editor= EditorWindow.CreateInstance<PackageSelectionWindow>();
@@ -120,11 +124,12 @@ namespace iCanScript.Internal.Editor {
             ourPopupStyle.fontSize= kTitleFontSize;
             
 			// -- Refresh existing project information. --
-			PackageController.UpdateProjectDatabase();			
+			PackageController.UpdatePackageDatabase();			
 		}
 		
         // =================================================================================
         /// GUI Event
+        public void Update() { Repaint(); }
         public void OnGUI() {
 			// -- Assure the GUI is properly initialized. --
 			Initialize();
@@ -155,7 +160,7 @@ namespace iCanScript.Internal.Editor {
 				ourButtonStyle.fontSize= ourProjectTitleStyle.fontSize;				
 			}			
 			if(GUI.Button(ourNewProjectTextRect, ourNewProjectText)) {
-                myPackage= new PackageInfo();
+                myNewPackage= new PackageInfo();
                 myParentSelection= 0;
 	            myMenuSelection= 1;
                 return;
@@ -167,15 +172,15 @@ namespace iCanScript.Internal.Editor {
             ourScrollPosition= GUI.BeginScrollView(ourListAreaRect, ourScrollPosition, viewRect);
 			for(int i= 0; i < projects.Length; ++i) {
 				var p= projects[i];
-				switch(DisplayRow(i, p, i == mySelectedProjectId)) {
+				switch(DisplayRow(i, p, i == mySelectedPackageId)) {
 					case RowSelection.Project: {
-						mySelectedProjectId= i;
+						mySelectedPackageId= i;
 						break;
 					}
 					case RowSelection.Remove: {
-						mySelectedProjectId= 0;
+						mySelectedPackageId= 0;
 						p.RemovePackage();
-						PackageController.UpdateProjectDatabase();
+						PackageController.UpdatePackageDatabase();
 						break;
 					}
 					case RowSelection.Settings: {
@@ -238,10 +243,12 @@ namespace iCanScript.Internal.Editor {
 
 			// -- Show option buttons. --
 			if(!isRootPackage) {
+                EditorGUI.BeginDisabledGroup(true);
 				var settingRect= new Rect(kWidth-kSpacer-300f, y, 100f-0.5f*kSpacer, 34f);
 				if(GUI.Button(settingRect, "Settings")) {
 					rowSelection= RowSelection.Settings;
 				}
+                EditorGUI.EndDisabledGroup();
                 EditorGUI.BeginDisabledGroup(PackageController.HasChildPackage(package));
 				var removeRect= new Rect(kWidth-kSpacer-200f, y, 100f-0.5f*kSpacer, 34f);
 				if(GUI.Button(removeRect, "Remove")) {
@@ -265,15 +272,15 @@ namespace iCanScript.Internal.Editor {
 			GUI.Label(ourCreatePackageTextRect, ourCreatePackageText, ourHeaderTextStyle);
 			
             // -- Project fields. --
-            myPackage.PackageName= EditorGUI.TextField(GetFieldPosition(0), "Package Name", myPackage.PackageName, ourTextFieldStyle);
+            myNewPackage.PackageName= EditorGUI.TextField(GetFieldPosition(0), "Package Name", myNewPackage.PackageName, ourTextFieldStyle);
 			var allPackages= BuildPackageSelection();
             var packageNames= P.map(p=> p == null ? "-- None --" : p.PackageName, allPackages);
             myParentSelection= EditorGUI.Popup(GetFieldPosition(1), "Parent Package", myParentSelection, packageNames/*, ourPopupStyle*/);
-            myPackage.ParentPackage= allPackages[myParentSelection];
+            myNewPackage.ParentPackage= allPackages[myParentSelection];
             EditorGUI.BeginDisabledGroup(true);
-            EditorGUI.TextField(GetFieldPosition(3), "Package Folder", myPackage.GetRelativePackageFolder(), ourTextFieldStyle);
-            EditorGUI.TextField(GetFieldPosition(4), "Engine Namespace", myPackage.GetEngineNamespace(), ourTextFieldStyle);
-            EditorGUI.TextField(GetFieldPosition(5), "Editor Namespace", myPackage.GetEditorNamespace(), ourTextFieldStyle);
+            EditorGUI.TextField(GetFieldPosition(3), "Package Folder", myNewPackage.GetRelativePackageFolder(), ourTextFieldStyle);
+            EditorGUI.TextField(GetFieldPosition(4), "Engine Namespace", myNewPackage.GetEngineNamespace(), ourTextFieldStyle);
+            EditorGUI.TextField(GetFieldPosition(5), "Editor Namespace", myNewPackage.GetEditorNamespace(), ourTextFieldStyle);
             EditorGUI.EndDisabledGroup();
 
     		// -- Compute button area. --
@@ -284,21 +291,21 @@ namespace iCanScript.Internal.Editor {
             var buttonY= position.height-kSpacer-20.0f;
 
             // -- Show project already exists error message. --
-            bool packageAlreadyExists= myPackage.AlreadyExists;
+            bool packageAlreadyExists= myNewPackage.AlreadyExists;
             if(packageAlreadyExists) {
                 var x= buttonXMax-2f*width;
                 var y= buttonY - 60f;
                 var w= 2f*width-kSpacer;
                 var h= 40f;
-                EditorGUI.HelpBox(new Rect(x,y,w,h), "PROJECT ALREADY EXISTS:\n--> "+myPackage.GetRelativeFileNamePath(), MessageType.Error);                
+                EditorGUI.HelpBox(new Rect(x,y,w,h), "PROJECT ALREADY EXISTS:\n--> "+myNewPackage.GetRelativeFileNamePath(), MessageType.Error);                
             }
                         
             // -- Process "Save" button. --
             EditorGUI.BeginDisabledGroup(packageAlreadyExists);
             if(GUI.Button(new Rect(buttonXMax-width, buttonY, buttonWidth, 20.0f),"Save")) {
                 if(!packageAlreadyExists) {
-                    myPackage.Save();
-					PackageController.UpdateProjectDatabase();
+                    myNewPackage.Save();
+					PackageController.UpdatePackageDatabase();
                     myMenuSelection= 0;
                 }
             }

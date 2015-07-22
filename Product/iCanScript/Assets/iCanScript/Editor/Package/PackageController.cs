@@ -44,7 +44,7 @@ namespace iCanScript.Internal.Editor {
         // =================================================================================
         // INIT / SHUTDOWN
         // ---------------------------------------------------------------------------------
-        static PackageController()    { UpdateProjectDatabase(); }
+        static PackageController()    { UpdatePackageDatabase(); }
         public static void Start()    {}
         public static void Shutdown() {}
         
@@ -60,7 +60,7 @@ namespace iCanScript.Internal.Editor {
 		///
 		/// @info The project database is made current from the disk.
 		///
-        public static void UpdateProjectDatabase() {
+        public static void UpdatePackageDatabase() {
             var projectPaths= FileUtils.GetFilesWithExtension("icspackage");
 			var nbOfProjects= projectPaths.Length;
 			myProjects= new PackageInfo[nbOfProjects];
