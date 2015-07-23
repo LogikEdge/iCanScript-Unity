@@ -1,6 +1,6 @@
 Title: iCanScript Release Notes
 Author: Michel Launier
-Version: v2.0.24
+Version: v2.0.25
 CSS: Github.css
 
 #  iCanScript Release Notes
@@ -8,6 +8,23 @@ CSS: Github.css
 <!-- PDF: <<[front-matter/pdf.md] -->
 <!-- HTML: <<[front-matter/html.md] -->
 ![](images/iCanScript-logo_512x512.png)
+
+## iCanScript v2.0.25 ##
+
+_July 23, 2015_
+
+V2.0.25 is a bug fix release.
+
+**<span style="color: red">\[WARNING\]:</span>**  **EXAMPLES FILES prior to v2.0.24:**
+
+Each example created prior to V2.0.24 uses a seperate namespace but a common code generation folder for all of the examples.  With packages, the namespaces and code generation folders should be seperate.  Therefore, these examples must be adapted to work with V2.0.24.
+
+### List of Changes
+
+- **<span style="color: red">\[FIXED\] </span>** Package folder path not properly set on Windows platform.
+- **<span style="color: red">\[FIXED\] </span>** Port editor not properly displayed when port value is _NULL_.
+
+* * *
 
 ## iCanScript v2.0.24 ##
 
