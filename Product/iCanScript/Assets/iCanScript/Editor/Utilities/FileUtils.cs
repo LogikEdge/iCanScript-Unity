@@ -27,7 +27,11 @@ namespace iCanScript.Internal.Editor {
             if(!String.IsNullOrEmpty(relativePath)) {
                 path+= "/"+relativePath;
             }
-            return Directory.GetFiles(path, "*."+extension, SearchOption.AllDirectories);
+            var paths= Directory.GetFiles(path, "*."+extension, SearchOption.AllDirectories);
+            for(int i= 0; i < paths.Length; ++paths) {
+                paths[i]= paths[i].Replace('\\', '/');
+            }
+            return paths;
         }
         
         // ----------------------------------------------------------------------
