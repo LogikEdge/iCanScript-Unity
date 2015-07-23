@@ -11,7 +11,7 @@ CSS: Github.css
 
 ## iCanScript v2.0.25 ##
 
-_July 22, 2015_
+_July 23, 2015_
 
 V2.0.25 is a bug fix release.
 
