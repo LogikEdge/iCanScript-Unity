@@ -343,6 +343,13 @@ namespace iCanScript.Internal.Editor {
 			return allPackages;
 		}
 
+		void OnEnable() {
+			var visualScripts= FileUtils.GetAllVisualScriptPaths();
+			foreach(var vs in visualScripts) {
+				Debug.Log(vs);
+			}
+		}
+
     }
 
 }

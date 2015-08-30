@@ -34,6 +34,37 @@ namespace iCanScript.Internal.Editor {
             return paths;
         }
         
+        // ======================================================================
+		/// Make path relative to asset folder.
+		///
+		/// @param path The path to convert.
+		/// @return The path relative to the Unity asset folder.
+		///
+		public static string MakeRelativeToAssetFolder(string path) {
+			int idx= path.LastIndexOf("Assets");
+			if(idx < 0) {
+				Debug.LogWarning("iCanScript: Unable to locate asset folder!");
+				return path;
+			}
+			idx+= 7;
+			return path.Substring(idx, path.Length-idx);
+		}
+
+        // ======================================================================
+		/// Get all visual script paths.
+		///
+		/// @return A list of paths to the all visual scripts of this project.
+		///
+		public static string[] GetAllVisualScriptPaths() {
+			var visualScripts= GetFilesWithExtension("ics2");
+			var len= visualScripts.Length;
+			var paths= new string[len];
+			for(int i= 0; i < len; ++i) {
+				paths[i]= MakeRelativeToAssetFolder(visualScripts[i]);
+			}
+			return paths;
+		}
+		
         // ----------------------------------------------------------------------
         /// Create a subfolder under the project Assets folder
 		/// (if it does not exist).
