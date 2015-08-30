@@ -344,7 +344,7 @@ namespace iCanScript.Internal.Editor {
 		}
 
 		void OnEnable() {
-			var visualScripts= FileUtils.GetAllVisualScriptPaths();
+			var visualScripts= FileUtils.GetPathsOfAllVisualScripts();
 			foreach(var vs in visualScripts) {
 				Debug.Log(vs);
 			}

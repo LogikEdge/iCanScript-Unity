@@ -51,11 +51,11 @@ namespace iCanScript.Internal.Editor {
 		}
 
         // ======================================================================
-		/// Get all visual script paths.
+		/// Get the paths of all visual scripts in the project.
 		///
 		/// @return A list of paths to the all visual scripts of this project.
 		///
-		public static string[] GetAllVisualScriptPaths() {
+		public static string[] GetPathsOfAllVisualScripts() {
 			var visualScripts= GetFilesWithExtension("ics2");
 			var len= visualScripts.Length;
 			var paths= new string[len];
