@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System.Collections;
 
 namespace iCanScript.Internal.Editor {
@@ -16,7 +17,7 @@ namespace iCanScript.Internal.Editor {
                 package.GetEditorVisualScriptFolder(true) :
                 package.GetEngineVisualScriptFolder(true);
             var path= folder+"/"+NameUtility.ToTypeName(iStorage.TypeName)+".ics2";
-            iCS_VisualScriptImportExport.Export(iStorage.Storage, path);                        
+            iCS_VisualScriptImportExport.Export(iStorage.Storage, path);
         }
     }
     

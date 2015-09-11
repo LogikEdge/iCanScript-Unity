@@ -8,6 +8,7 @@ using System.Collections;
 namespace iCanScript.Internal.Editor.CodeGeneration {
 
     public static class CSharpFileUtils {
+		// TODO: Factorize visual script extension and folder name.
         const string    kFileExtension= ".cs";
 
         // ----------------------------------------------------------------------

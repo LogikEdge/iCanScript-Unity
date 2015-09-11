@@ -99,7 +99,20 @@ namespace iCanScript.Internal.Editor {
             base.OnSelectionChange();
             myNeedRepaint= true;
             CloseSubEditor();
+			var selected= Selection.activeObject;
+			if(selected != null) {
+				Debug.Log("Selection has changed to: "+selected.name+" of type: "+selected.GetType().Name+" at: "+AssetDatabase.GetAssetPath(selected));				
+				Debug.Log("Is iCS Visual Script: "+isVisualScriptFile(selected));
+			}
         }
+		bool isVisualScriptFile(UnityEngine.Object asset) {
+			if(asset == null) return false;
+			if(!(asset is DefaultAsset)) return false;
+			var assetPath= AssetDatabase.GetAssetPath(asset);
+			if(!assetPath.EndsWith(".ics2")) return false;
+			Debug.Log("Dir name: "+Path.GetDirectoryName(assetPath));
+			return Path.GetDirectoryName(assetPath).EndsWith("Visual Scripts");
+		}
         // ======================================================================
         // Update all message ports when hierarchy has changed
     	// ----------------------------------------------------------------------
