@@ -4,14 +4,14 @@ using System.Collections;
 using iCanScript.Internal.Engine;
 
 namespace iCanScript.Internal.Editor {
-    
+
     public class iCS_AboutDialog : EditorWindow {
         // ======================================================================
         // Fields
         // ----------------------------------------------------------------------
     	const float kSpacer= 5f;
     	GUIStyle    h1     = null;
-	
+
         // ======================================================================
         // Initialization/Teardown
         // ----------------------------------------------------------------------
@@ -31,7 +31,7 @@ namespace iCanScript.Internal.Editor {
     		if(h1 == null) {
     			BuildStyles();
     		}
-		
+
             // Show product icon
             var logoWidth= 64f;
             var logoHeight= 64f;
@@ -46,7 +46,7 @@ namespace iCanScript.Internal.Editor {
     		var titleSize= h1.CalcSize(title);
     		Rect rTitle= new Rect(2f*kSpacer+logoWidth, kSpacer, titleSize.x, titleSize.y);
     		GUI.Label(rTitle, title, h1);
-		
+
     		// Show version
             GUIContent versionContent= new GUIContent(iCS_EditorConfig.VersionStr);
             Vector2 versionSize= GUI.skin.label.CalcSize(versionContent);
@@ -64,10 +64,10 @@ namespace iCanScript.Internal.Editor {
     		float column1Width= Math3D.Max(buildDateTitleSize.x,
     									   userLicenseTitleSize.x);
     		var labelHeight= buildDateTitleSize.y;
-		
+
     		float column2X= column1X+column1Width+kSpacer;
     		float column2Width= position.width-column2X-kSpacer;
-		
+
     		// Edition
     		var rEdition= new Rect(column1X, kSpacer+logoHeight+labelHeight, column2Width, labelHeight);
     		GUI.Label(rEdition, editionTitle);
@@ -91,13 +91,13 @@ namespace iCanScript.Internal.Editor {
     		GUIContent buildDate= new GUIContent(iCS_BuildInfo.kBuildDateStr);
     		rBuildDate.x= column2X; rBuildDate.width= column2Width;
     		GUI.Label(rBuildDate, buildDate);
-		
+
     		// Disclamer
-    		GUIContent copyright= new GUIContent("(c) copyright Disruptive Software 2015.  All rights reserved.");
+    		GUIContent copyright= new GUIContent("(c) copyright LogikEdge 2015.  All rights reserved.");
     		var copyrightSize= GUI.skin.label.CalcSize(copyright);
     		var rCopyright= new Rect(column1X, rBuildDate.yMax+copyrightSize.y, copyrightSize.x, copyrightSize.y);
     		GUI.Label(rCopyright, copyright);
-	
+
     		var p= position;
     		p.width= Math3D.Max(copyrightSize.x+2f*kSpacer, column2X+userLicenseSize.x+kSpacer);
     		p.height= rCopyright.yMax+kSpacer;
@@ -110,7 +110,7 @@ namespace iCanScript.Internal.Editor {
     	void BuildStyles() {
     		// Build H1 style
     		h1= new GUIStyle(EditorStyles.boldLabel);
-    		h1.fontSize= 24;		
+    		h1.fontSize= 24;
     	}
     }
 
