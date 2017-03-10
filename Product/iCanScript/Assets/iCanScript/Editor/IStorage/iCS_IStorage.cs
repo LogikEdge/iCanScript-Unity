@@ -16,7 +16,7 @@ namespace iCanScript.Internal.Editor {
         // Fields
         // ----------------------------------------------------------------------
                 bool                    myForceRelayout = true;
-				PackageInfo				myProject       = null;
+				PackageInfo				myPackage       = null;
         public  iCS_MonoBehaviourImp    iCSMonoBehaviour= null;
         public  iCS_VisualScriptData    EditorStorage   = null;
         List<iCS_EditorObject>          myEditorObjects = null;
@@ -29,12 +29,12 @@ namespace iCanScript.Internal.Editor {
         // ----------------------------------------------------------------------
         public List<iCS_EditorObject>   EditorObjects    { get { return myEditorObjects; }}
         public List<iCS_EngineObject>   EngineObjects    { get { return Storage.EngineObjects; }}
-		public PackageInfo	Project {
+		public PackageInfo	Package {
 			get {
-				if(myProject == null) {
-					myProject= PackageController.GetProjectFor(this);
+				if(myPackage == null) {
+					myPackage= PackageController.GetProjectFor(this);
 				}
-				return myProject;
+				return myPackage;
 			}
 		}
         public iCS_VisualScriptData Storage {

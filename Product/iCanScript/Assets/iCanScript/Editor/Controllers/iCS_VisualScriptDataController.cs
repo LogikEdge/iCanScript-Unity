@@ -61,9 +61,17 @@ namespace iCanScript.Internal.Editor {
         // Storage & Selected object Update.  This update is called by the Editors.
         // ---------------------------------------------------------------------------------
     	public static void Update() {
-            // Use previous game object if new selection does not include a visual script.
+            // -- Use previous game object if new selection does not include a visual script. --
     		GameObject go= Selection.activeGameObject;
             var monoBehaviour= go != null ? go.GetComponent<iCS_MonoBehaviourImp>() : null;
+            // -- Verify if we should save visual script. --
+            if(myIStorage != null && myIStorage.iCSMonoBehaviour != monoBehaviour) {
+                var previousMonobehaviour= myIStorage.iCSMonoBehaviour;
+                if(previousMonobehaviour != null) {
+                    ImmediateSaveWithUndo();
+                    SaveAndLoad.Save(myIStorage);
+                }
+            }
             if(monoBehaviour == null) {
                 // Clear if previous game object is not valid.
                 ImmediateSaveWithUndo();

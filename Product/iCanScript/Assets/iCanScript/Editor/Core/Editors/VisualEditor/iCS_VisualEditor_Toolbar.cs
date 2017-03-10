@@ -81,7 +81,7 @@ namespace iCanScript.Internal.Editor {
     		// CENTER TOOLBAR
             // Show game object name in middle of toolbar.
 			var projectName= "";
-			var project= IStorage.Project;
+			var project= IStorage.Package;
 			if(project != null) {
 				projectName= project.PackageName + " -- ";
 			}
