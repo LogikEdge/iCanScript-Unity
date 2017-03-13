@@ -1,20 +1,20 @@
 //
 // File: iCS_UserCommands_DisplayOptions
 //
-//#define DEBUG
+//#define _DEBUG
 using UnityEngine;
 using System.Collections;
 using iCanScript.Internal.Engine;
 
 namespace iCanScript.Internal.Editor {
-    
+
     public static partial class iCS_UserCommands {
         // ======================================================================
         // Change in display options.
     	// ----------------------------------------------------------------------
         // OK
         public static void Unfold(iCS_EditorObject node) {
-#if DEBUG
+#if _DEBUG
             Debug.Log("iCanScript: Unfold => "+node.DisplayName);
 #endif
             if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
@@ -36,7 +36,7 @@ namespace iCanScript.Internal.Editor {
                         }
                     }
                 );
-                SendEndRelayoutOfTree(iStorage);            
+                SendEndRelayoutOfTree(iStorage);
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -47,9 +47,9 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
         // OK
         public static void Fold(iCS_EditorObject node) {
-#if DEBUG
+#if _DEBUG
             Debug.Log("iCanScript: Fold => "+node.DisplayName);
-#endif        
+#endif
             if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Folded) {
                 return;
             }
@@ -69,7 +69,7 @@ namespace iCanScript.Internal.Editor {
                         }
                     }
                 );
-                SendEndRelayoutOfTree(iStorage);            
+                SendEndRelayoutOfTree(iStorage);
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -82,7 +82,7 @@ namespace iCanScript.Internal.Editor {
         public static void Iconize(iCS_EditorObject node) {
 #if DEBUG
             Debug.Log("iCanScript: Iconize => "+node.DisplayName);
-#endif        
+#endif
             if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Iconized) {
                 return;
             }
@@ -104,7 +104,7 @@ namespace iCanScript.Internal.Editor {
                         }
                     }
                 );
-                SendEndRelayoutOfTree(iStorage);                   
+                SendEndRelayoutOfTree(iStorage);
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
