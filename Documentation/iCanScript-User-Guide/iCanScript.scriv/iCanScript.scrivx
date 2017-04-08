@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<ScrivenerProject Version="1.0" Creator="SCRMAC-2.6-25479" Modified="2015-06-08 23:31:41 -0400">
+<ScrivenerProject Version="1.5" Creator="SCRMAC-2.7.1-26120" Device="Michels-iMac" Modified="2016-06-16 07:49:40 -0400" ModID="FDC9B7D4-4B1F-4239-A0AE-E3E4F41CE520">
     <Binder>
-        <BinderItem ID="0" Type="DraftFolder" Created="2013-09-17 10:34:16 -0400" Modified="2013-10-24 14:11:22 -0400">
+        <BinderItem ID="0" UUID="B46D901E-B32D-457A-A271-A2668BD6AF07" Type="DraftFolder" Created="2013-09-17 10:34:16 -0400" Modified="2013-10-24 14:11:22 -0400">
             <Title>Documents</Title>
             <MetaData>
                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -18,7 +18,7 @@
                 </OutlinerExpandedState>
             </CorkboardAndOutliner>
             <Children>
-                <BinderItem ID="276" Type="Folder" Created="2013-10-24 14:00:59 -0400" Modified="2014-02-05 15:35:20 -0500">
+                <BinderItem ID="276" UUID="3800218F-F003-46B2-B94B-EA01567A8B46" Type="Folder" Created="2013-10-24 14:00:59 -0400" Modified="2014-02-05 15:35:20 -0500">
                     <Title>User Guide</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -38,7 +38,7 @@
                         <Reference Destination="evernote:///view/7870103/s70/a528fb83-c414-4c66-bd78-3c6db1d94161/a528fb83-c414-4c66-bd78-3c6db1d94161/">Evernote</Reference>
                     </References>
                     <Children>
-                        <BinderItem ID="475" Type="Folder" Created="2014-02-26 08:49:57 -0500" Modified="2014-04-22 10:52:18 -0400">
+                        <BinderItem ID="475" UUID="B8401C9F-B354-454B-B25F-3E72CB22A9CB" Type="Folder" Created="2014-02-26 08:49:57 -0500" Modified="2014-04-22 10:52:18 -0400">
                             <Title>Introduction</Title>
                             <MetaData>
                                 <LabelID>16</LabelID>
@@ -50,7 +50,7 @@
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
                             <Children>
-                                <BinderItem ID="12" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2015-06-08 23:31:21 -0400">
+                                <BinderItem ID="12" UUID="92DFB490-D3C3-48A6-9351-F56DCB2E5B35" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2015-06-08 23:31:21 -0400">
                                     <Title>What is iCanScript?</Title>
                                     <MetaData>
                                         <LabelID>16</LabelID>
@@ -68,7 +68,7 @@
                                         <TextSelection>1285,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="366" Type="Text" Created="2013-12-02 14:15:16 -0500" Modified="2014-04-28 11:42:22 -0400">
+                                <BinderItem ID="366" UUID="E04A19EC-8EC5-48FF-A876-D93A144D401E" Type="Text" Created="2013-12-02 14:15:16 -0500" Modified="2014-04-28 11:42:22 -0400">
                                     <Title>Feature Overview</Title>
                                     <MetaData>
                                         <LabelID>16</LabelID>
@@ -86,7 +86,7 @@
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="367" Type="Text" Created="2013-12-02 14:15:48 -0500" Modified="2014-04-28 11:42:08 -0400">
+                                <BinderItem ID="367" UUID="DC54A675-44BA-42CA-A488-5B45218129A5" Type="Text" Created="2013-12-02 14:15:48 -0500" Modified="2014-04-28 11:42:08 -0400">
                                     <Title>When to use Visual Scripts?</Title>
                                     <MetaData>
                                         <LabelID>16</LabelID>
@@ -104,7 +104,7 @@
                                         <TextSelection>1,1492</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="368" Type="Text" Created="2013-12-02 14:16:28 -0500" Modified="2014-04-28 11:41:57 -0400">
+                                <BinderItem ID="368" UUID="FA1CEE72-3932-4D79-B9BF-68C5C06F53CE" Type="Text" Created="2013-12-02 14:16:28 -0500" Modified="2014-04-28 11:41:57 -0400">
                                     <Title>Who will Benefit from Using iCanScript?</Title>
                                     <MetaData>
                                         <LabelID>16</LabelID>
@@ -124,7 +124,7 @@
                                 </BinderItem>
                             </Children>
                         </BinderItem>
-                        <BinderItem ID="476" Type="Folder" Created="2014-02-26 08:51:04 -0500" Modified="2014-04-28 11:34:22 -0400">
+                        <BinderItem ID="476" UUID="0F4B592B-2D99-440C-ABC6-ABB170035E2C" Type="Folder" Created="2014-02-26 08:51:04 -0500" Modified="2014-04-28 11:34:22 -0400">
                             <Title>Installation &amp; Upgrade</Title>
                             <MetaData>
                                 <LabelID>11</LabelID>
@@ -142,7 +142,7 @@
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
                             <Children>
-                                <BinderItem ID="22" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2014-04-28 11:27:08 -0400">
+                                <BinderItem ID="22" UUID="68A17EF8-9F07-4322-895D-948CB79169B3" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2014-04-28 11:27:08 -0400">
                                     <Title>Installation</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -158,7 +158,7 @@
                                         <Reference BinderID="12" Destination="[Internal Link]">What is iCanScript?</Reference>
                                     </References>
                                 </BinderItem>
-                                <BinderItem ID="369" Type="Text" Created="2013-12-02 16:10:26 -0500" Modified="2014-04-23 11:46:10 -0400">
+                                <BinderItem ID="369" UUID="B26D25B2-86A3-4C97-A712-DBF72E2C8F12" Type="Text" Created="2013-12-02 16:10:26 -0500" Modified="2014-04-23 11:46:10 -0400">
                                     <Title>Removing iCanScript</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -174,7 +174,7 @@
                                         <Reference BinderID="370" Destination="[Internal Link]">Upgrading iCanScript</Reference>
                                     </References>
                                 </BinderItem>
-                                <BinderItem ID="370" Type="Text" Created="2013-12-02 16:11:04 -0500" Modified="2014-04-23 11:48:21 -0400">
+                                <BinderItem ID="370" UUID="709C29EE-8052-4AB3-B528-0A9DD9DFCCF6" Type="Text" Created="2013-12-02 16:11:04 -0500" Modified="2014-04-23 11:48:21 -0400">
                                     <Title>Upgrading iCanScript</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -191,7 +191,7 @@
                                 </BinderItem>
                             </Children>
                         </BinderItem>
-                        <BinderItem ID="478" Type="Folder" Created="2014-02-26 08:52:55 -0500" Modified="2014-04-28 11:34:34 -0400">
+                        <BinderItem ID="478" UUID="4042E757-2B6B-45E6-9DAF-AAF3CB75A853" Type="Folder" Created="2014-02-26 08:52:55 -0500" Modified="2014-04-28 11:34:34 -0400">
                             <Title>Visual Script Anatomy</Title>
                             <MetaData>
                                 <LabelID>11</LabelID>
@@ -209,7 +209,7 @@
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
                             <Children>
-                                <BinderItem ID="482" Type="Text" Created="2014-02-28 13:08:44 -0500" Modified="2014-06-10 13:08:23 -0400">
+                                <BinderItem ID="482" UUID="8DAD1D1E-9A5A-43D0-80AD-CD00AEC43778" Type="Text" Created="2014-02-28 13:08:44 -0500" Modified="2014-06-10 13:08:23 -0400">
                                     <Title>Nodes, Ports, and Bindings</Title>
                                     <MetaData>
                                         <LabelID>16</LabelID>
@@ -221,7 +221,7 @@
                                         <TextSelection>2015,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="255" Type="Text" Created="2013-10-11 08:03:53 -0400" Modified="2014-04-25 15:47:16 -0400">
+                                <BinderItem ID="255" UUID="210C1A54-A83C-4C58-8BA3-C386FDE9C209" Type="Text" Created="2013-10-11 08:03:53 -0400" Modified="2014-04-25 15:47:16 -0400">
                                     <Title>Node Anatomy</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -233,7 +233,7 @@
                                         <TextSelection>906,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="273" Type="Text" Created="2013-10-24 13:31:47 -0400" Modified="2014-04-25 15:19:15 -0400">
+                                <BinderItem ID="273" UUID="4C5256D1-A5FA-435A-9370-715AD2A7E18D" Type="Text" Created="2013-10-24 13:31:47 -0400" Modified="2014-04-25 15:19:15 -0400">
                                     <Title>Specialized Nodes</Title>
                                     <MetaData>
                                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -243,7 +243,7 @@
                                         <TextSelection>200,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="274" Type="Text" Created="2013-10-24 13:31:55 -0400" Modified="2014-02-25 22:29:35 -0500">
+                                <BinderItem ID="274" UUID="3B687F0C-85F3-4D9A-BAAE-A3A2591D96C6" Type="Text" Created="2013-10-24 13:31:55 -0400" Modified="2014-02-25 22:29:35 -0500">
                                     <Title>Port Types</Title>
                                     <MetaData>
                                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -253,7 +253,7 @@
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="272" Type="Text" Created="2013-10-24 13:31:31 -0400" Modified="2014-02-25 22:29:37 -0500">
+                                <BinderItem ID="272" UUID="A65A0919-A00E-48EE-8CDA-F857A4868901" Type="Text" Created="2013-10-24 13:31:31 -0400" Modified="2014-02-25 22:29:37 -0500">
                                     <Title>Node Nesting</Title>
                                     <MetaData>
                                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -263,7 +263,7 @@
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="153" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-28 15:46:05 -0500">
+                                <BinderItem ID="153" UUID="F080EA91-B224-4AAA-9A78-204F09FE63CB" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-28 15:46:05 -0500">
                                     <Title>Data Flow Diagram</Title>
                                     <MetaData>
                                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -273,7 +273,7 @@
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="157" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:29:41 -0500">
+                                <BinderItem ID="157" UUID="060FDA16-C2ED-446B-AF99-679F89C9A2B1" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:29:41 -0500">
                                     <Title>State Chart Diagram</Title>
                                     <MetaData>
                                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -283,7 +283,7 @@
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
                                     <Children>
-                                        <BinderItem ID="158" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:29:54 -0500">
+                                        <BinderItem ID="158" UUID="EC6FDF1B-019E-47DB-BD61-3334D1BA0D3A" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:29:54 -0500">
                                             <Title>States</Title>
                                             <MetaData>
                                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -293,7 +293,7 @@
                                                 <TextSelection>0,0</TextSelection>
                                             </TextSettings>
                                             <Children>
-                                                <BinderItem ID="159" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:30:01 -0500">
+                                                <BinderItem ID="159" UUID="246372AB-F493-4DAC-AC07-635E1C1A26B1" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:30:01 -0500">
                                                     <Title>Entry Function</Title>
                                                     <MetaData>
                                                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -303,7 +303,7 @@
                                                         <TextSelection>0,0</TextSelection>
                                                     </TextSettings>
                                                 </BinderItem>
-                                                <BinderItem ID="160" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:30:02 -0500">
+                                                <BinderItem ID="160" UUID="93D0A069-199F-40AD-82F2-1CDA36DB6E3F" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:30:02 -0500">
                                                     <Title>Update Function</Title>
                                                     <MetaData>
                                                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -313,7 +313,7 @@
                                                         <TextSelection>0,0</TextSelection>
                                                     </TextSettings>
                                                 </BinderItem>
-                                                <BinderItem ID="161" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:30:04 -0500">
+                                                <BinderItem ID="161" UUID="F3BD4077-0125-452C-BE2B-DF294081576F" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:30:04 -0500">
                                                     <Title>Exit Function</Title>
                                                     <MetaData>
                                                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -323,7 +323,7 @@
                                                         <TextSelection>0,0</TextSelection>
                                                     </TextSettings>
                                                 </BinderItem>
-                                                <BinderItem ID="162" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:30:06 -0500">
+                                                <BinderItem ID="162" UUID="7326F1D0-9561-4283-A422-963D74D41E7B" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:30:06 -0500">
                                                     <Title>Nested State</Title>
                                                     <MetaData>
                                                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -335,7 +335,7 @@
                                                 </BinderItem>
                                             </Children>
                                         </BinderItem>
-                                        <BinderItem ID="163" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:29:56 -0500">
+                                        <BinderItem ID="163" UUID="C3A92244-024A-449B-BBD3-4EF31BCE0BD7" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:29:56 -0500">
                                             <Title>Transitions</Title>
                                             <MetaData>
                                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -345,7 +345,7 @@
                                                 <TextSelection>0,0</TextSelection>
                                             </TextSettings>
                                             <Children>
-                                                <BinderItem ID="164" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:30:10 -0500">
+                                                <BinderItem ID="164" UUID="2EDF39C0-49E3-4C74-91AA-52E2E0D2270E" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-25 22:30:10 -0500">
                                                     <Title>Trigger Function</Title>
                                                     <MetaData>
                                                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -355,7 +355,7 @@
                                                         <TextSelection>0,0</TextSelection>
                                                     </TextSettings>
                                                 </BinderItem>
-                                                <BinderItem ID="165" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-28 15:46:05 -0500">
+                                                <BinderItem ID="165" UUID="0F42BE2C-A9E2-452A-B3B1-911020698834" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-28 15:46:05 -0500">
                                                     <Title>Transition Behaviour</Title>
                                                     <MetaData>
                                                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -371,7 +371,7 @@
                                 </BinderItem>
                             </Children>
                         </BinderItem>
-                        <BinderItem ID="483" Type="Folder" Created="2014-02-28 14:27:28 -0500" Modified="2014-04-25 13:55:07 -0400">
+                        <BinderItem ID="483" UUID="EC944610-45C8-4FB4-BD69-9C451DDFD507" Type="Folder" Created="2014-02-28 14:27:28 -0500" Modified="2014-04-25 13:55:07 -0400">
                             <Title>Integration with Unity</Title>
                             <MetaData>
                                 <LabelID>11</LabelID>
@@ -383,7 +383,7 @@
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
                             <Children>
-                                <BinderItem ID="49" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:55:14 -0400">
+                                <BinderItem ID="49" UUID="0D83A5EC-E4DF-4DD8-8837-D67DFAB9E36A" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:55:14 -0400">
                                     <Title>Unity Integration</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -395,7 +395,7 @@
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="145" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-04-25 13:55:20 -0400">
+                                <BinderItem ID="145" UUID="DF6851A3-D2E6-4637-A4F7-67C3B4B8DDC0" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-04-25 13:55:20 -0400">
                                     <Title>Adding a Visual Script</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -407,7 +407,7 @@
                                         <TextSelection>364,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="146" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-28 15:46:04 -0500">
+                                <BinderItem ID="146" UUID="DD01FCB6-3587-4A76-88F2-09B1265CAA27" Type="Text" Created="2013-10-07 15:55:53 -0400" Modified="2014-02-28 15:46:04 -0500">
                                     <Title>Libraries &amp; Prefabs</Title>
                                     <MetaData>
                                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -422,7 +422,7 @@
                                 </BinderItem>
                             </Children>
                         </BinderItem>
-                        <BinderItem ID="481" Type="Folder" Created="2014-02-28 10:54:44 -0500" Modified="2014-02-28 10:54:49 -0500">
+                        <BinderItem ID="481" UUID="611D146E-E7F9-45E2-A936-FE5793A0EED5" Type="Folder" Created="2014-02-28 10:54:44 -0500" Modified="2014-02-28 10:54:49 -0500">
                             <Title>How To</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -432,7 +432,7 @@
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="477" Type="Folder" Created="2014-02-26 08:52:04 -0500" Modified="2014-04-25 13:55:36 -0400">
+                        <BinderItem ID="477" UUID="23B564C6-AA99-4C6A-8377-10EAC07412B0" Type="Folder" Created="2014-02-26 08:52:04 -0500" Modified="2014-04-25 13:55:36 -0400">
                             <Title>Example Project</Title>
                             <MetaData>
                                 <LabelID>11</LabelID>
@@ -444,7 +444,7 @@
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
                             <Children>
-                                <BinderItem ID="268" Type="Text" Created="2013-10-24 13:24:51 -0400" Modified="2014-04-25 13:55:42 -0400">
+                                <BinderItem ID="268" UUID="0B878BEB-DC11-472B-A706-7149E432D3D7" Type="Text" Created="2013-10-24 13:24:51 -0400" Modified="2014-04-25 13:55:42 -0400">
                                     <Title>Objective</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -466,7 +466,7 @@
                                         <Reference BinderID="22" Destination="[Internal Link]">Installation</Reference>
                                     </References>
                                 </BinderItem>
-                                <BinderItem ID="304" Type="Text" Created="2013-10-30 15:22:25 -0400" Modified="2014-04-25 13:55:48 -0400">
+                                <BinderItem ID="304" UUID="830A9D91-80E0-4B3C-97C4-646BE071039F" Type="Text" Created="2013-10-30 15:22:25 -0400" Modified="2014-04-25 13:55:48 -0400">
                                     <Title>Storyline</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -481,7 +481,7 @@
                                         <Reference BinderID="268" Destination="[Internal Link]">Quick Start Tutorial</Reference>
                                     </References>
                                 </BinderItem>
-                                <BinderItem ID="305" Type="Text" Created="2013-10-30 15:23:00 -0400" Modified="2014-04-25 13:55:54 -0400">
+                                <BinderItem ID="305" UUID="30049FE1-37CB-43D2-80CB-06B4D2F49986" Type="Text" Created="2013-10-30 15:23:00 -0400" Modified="2014-04-25 13:55:54 -0400">
                                     <Title>Our Actors</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -496,7 +496,7 @@
                                         <Reference BinderID="268" Destination="[Internal Link]">Quick Start Tutorial</Reference>
                                     </References>
                                 </BinderItem>
-                                <BinderItem ID="349" Type="Text" Created="2013-11-12 10:42:54 -0500" Modified="2014-04-25 13:56:02 -0400">
+                                <BinderItem ID="349" UUID="2704ACF8-2785-4EDD-9E2E-FF60EE6D4F5C" Type="Text" Created="2013-11-12 10:42:54 -0500" Modified="2014-04-25 13:56:02 -0400">
                                     <Title>Creating the Unity Project</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -508,7 +508,7 @@
                                         <TextSelection>710,0</TextSelection>
                                     </TextSettings>
                                     <Children>
-                                        <BinderItem ID="357" Type="Text" Created="2013-11-19 17:27:43 -0500" Modified="2014-04-25 13:56:10 -0400">
+                                        <BinderItem ID="357" UUID="3DEB7CC1-7395-4D82-9E25-A063C0248F1B" Type="Text" Created="2013-11-19 17:27:43 -0500" Modified="2014-04-25 13:56:10 -0400">
                                             <Title>Adding Actors to the Scene</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -520,7 +520,7 @@
                                                 <TextSelection>153,0</TextSelection>
                                             </TextSettings>
                                             <Children>
-                                                <BinderItem ID="358" Type="Text" Created="2013-11-19 17:28:30 -0500" Modified="2014-04-25 15:51:15 -0400">
+                                                <BinderItem ID="358" UUID="4D3F1EA5-83AD-4D9A-953F-F34DECB4233D" Type="Text" Created="2013-11-19 17:28:30 -0500" Modified="2014-04-25 15:51:15 -0400">
                                                     <Title>Ms Light</Title>
                                                     <MetaData>
                                                         <LabelID>11</LabelID>
@@ -532,7 +532,7 @@
                                                         <TextSelection>620,2</TextSelection>
                                                     </TextSettings>
                                                 </BinderItem>
-                                                <BinderItem ID="359" Type="Text" Created="2013-11-19 17:28:52 -0500" Modified="2014-04-25 13:56:22 -0400">
+                                                <BinderItem ID="359" UUID="6ADFC74B-F2CF-4DE0-887A-3C5EF04BED6A" Type="Text" Created="2013-11-19 17:28:52 -0500" Modified="2014-04-25 13:56:22 -0400">
                                                     <Title>Near &amp; Far Trigger Zones</Title>
                                                     <MetaData>
                                                         <LabelID>11</LabelID>
@@ -544,7 +544,7 @@
                                                         <TextSelection>110,0</TextSelection>
                                                     </TextSettings>
                                                 </BinderItem>
-                                                <BinderItem ID="360" Type="Text" Created="2013-11-19 17:29:11 -0500" Modified="2014-04-25 13:56:28 -0400">
+                                                <BinderItem ID="360" UUID="386F3ECA-03BB-4211-9BBF-E7514277A472" Type="Text" Created="2013-11-19 17:29:11 -0500" Modified="2014-04-25 13:56:28 -0400">
                                                     <Title>Mr Cube</Title>
                                                     <MetaData>
                                                         <LabelID>11</LabelID>
@@ -558,7 +558,7 @@
                                                 </BinderItem>
                                             </Children>
                                         </BinderItem>
-                                        <BinderItem ID="361" Type="Text" Created="2013-11-19 17:29:40 -0500" Modified="2014-04-25 15:52:59 -0400">
+                                        <BinderItem ID="361" UUID="02CC96D2-58A9-475A-BD98-47F44B47CEED" Type="Text" Created="2013-11-19 17:29:40 -0500" Modified="2014-04-25 15:52:59 -0400">
                                             <Title>Hiding the Trigger Zones</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -572,7 +572,7 @@
                                         </BinderItem>
                                     </Children>
                                 </BinderItem>
-                                <BinderItem ID="307" Type="Text" Created="2013-10-31 09:49:36 -0400" Modified="2014-04-25 13:56:43 -0400">
+                                <BinderItem ID="307" UUID="5511CF7A-C3FB-40B9-AD88-DACC652A61F2" Type="Text" Created="2013-10-31 09:49:36 -0400" Modified="2014-04-25 13:56:43 -0400">
                                     <Title>Opening the iCanScript Editors</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -584,7 +584,7 @@
                                         <TextSelection>879,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="306" Type="Text" Created="2013-10-30 15:25:38 -0400" Modified="2014-04-25 13:56:51 -0400">
+                                <BinderItem ID="306" UUID="488FFE69-E095-4863-91A7-A7BD6818131D" Type="Text" Created="2013-10-30 15:25:38 -0400" Modified="2014-04-25 13:56:51 -0400">
                                     <Title>Moving Mr Cube (step 1)</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -599,7 +599,7 @@
                                         <Reference BinderID="268" Destination="[Internal Link]">Quick Start Tutorial</Reference>
                                     </References>
                                     <Children>
-                                        <BinderItem ID="364" Type="Text" Created="2013-11-27 14:56:13 -0500" Modified="2014-04-25 13:56:56 -0400">
+                                        <BinderItem ID="364" UUID="83F33B5D-4FC5-48E0-99F6-C00562C54B9A" Type="Text" Created="2013-11-27 14:56:13 -0500" Modified="2014-04-25 13:56:56 -0400">
                                             <Title>Installing a Visual Script on _Mr Cube_</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -611,7 +611,7 @@
                                                 <TextSelection>1370,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="371" Type="Text" Created="2013-12-03 11:56:11 -0500" Modified="2014-04-25 13:57:01 -0400">
+                                        <BinderItem ID="371" UUID="A1B921BA-B363-430D-9DE1-B3CCF408AA0A" Type="Text" Created="2013-12-03 11:56:11 -0500" Modified="2014-04-25 13:57:01 -0400">
                                             <Title>Installing the _Update_ Message Handler</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -623,7 +623,7 @@
                                                 <TextSelection>1026,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="365" Type="Text" Created="2013-11-29 13:42:50 -0500" Modified="2014-04-25 13:57:07 -0400">
+                                        <BinderItem ID="365" UUID="19F311AF-6464-4E3A-8F19-E5ECA9470BAF" Type="Text" Created="2013-11-29 13:42:50 -0500" Modified="2014-04-25 13:57:07 -0400">
                                             <Title>Visual Script Overview</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -638,7 +638,7 @@
                                                 <Reference BinderID="374" Destination="[Internal Link]">Controlling Speed and Direction Separately</Reference>
                                             </References>
                                         </BinderItem>
-                                        <BinderItem ID="383" Type="Text" Created="2013-12-09 10:45:38 -0500" Modified="2014-04-25 13:57:14 -0400">
+                                        <BinderItem ID="383" UUID="251C2047-AA02-44A6-A8BD-511D25ABABC0" Type="Text" Created="2013-12-09 10:45:38 -0500" Modified="2014-04-25 13:57:14 -0400">
                                             <Title>Creating the _"Move Mr Cube Package"_</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -650,7 +650,7 @@
                                                 <TextSelection>230,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="372" Type="Text" Created="2013-12-03 12:06:21 -0500" Modified="2014-04-25 13:57:20 -0400">
+                                        <BinderItem ID="372" UUID="0B7D5889-CBF0-45EF-B9AE-67BB25F7F5D4" Type="Text" Created="2013-12-03 12:06:21 -0500" Modified="2014-04-25 13:57:20 -0400">
                                             <Title>Adding _Mr Cube_ to the Visual Script</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -662,7 +662,7 @@
                                                 <TextSelection>226,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="384" Type="Text" Created="2013-12-10 12:19:24 -0500" Modified="2014-04-25 13:57:27 -0400">
+                                        <BinderItem ID="384" UUID="7DA91904-5787-4DB5-9063-878FD5FB6C6C" Type="Text" Created="2013-12-10 12:19:24 -0500" Modified="2014-04-25 13:57:27 -0400">
                                             <Title>Exposing the _Transform_ of _Mr Cube_</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -674,7 +674,7 @@
                                                 <TextSelection>2985,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="385" Type="Text" Created="2013-12-12 16:18:32 -0500" Modified="2014-04-25 13:57:34 -0400">
+                                        <BinderItem ID="385" UUID="2406BBFC-714D-48A0-A91A-9A688C765070" Type="Text" Created="2013-12-12 16:18:32 -0500" Modified="2014-04-25 13:57:34 -0400">
                                             <Title>Adding the _Translation_ operation to the _Transform_ node</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -686,7 +686,7 @@
                                                 <TextSelection>854,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="373" Type="Text" Created="2013-12-03 12:13:37 -0500" Modified="2014-04-25 13:57:40 -0400">
+                                        <BinderItem ID="373" UUID="B87F9507-5629-426D-8298-2771D4A46DA4" Type="Text" Created="2013-12-03 12:13:37 -0500" Modified="2014-04-25 13:57:40 -0400">
                                             <Title>Moving with Consistent Velocity</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -698,7 +698,7 @@
                                                 <TextSelection>2327,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="374" Type="Text" Created="2013-12-03 14:25:36 -0500" Modified="2014-04-25 13:57:46 -0400">
+                                        <BinderItem ID="374" UUID="7C9546F8-2C29-47A4-8CDB-42F895B89956" Type="Text" Created="2013-12-03 14:25:36 -0500" Modified="2014-04-25 13:57:46 -0400">
                                             <Title>Controlling Speed and Direction Separately</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -710,7 +710,7 @@
                                                 <TextSelection>856,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="375" Type="Text" Created="2013-12-03 14:50:57 -0500" Modified="2014-04-25 13:57:52 -0400">
+                                        <BinderItem ID="375" UUID="275749A7-3C3B-49AC-BD23-3B10F0EF2812" Type="Text" Created="2013-12-03 14:50:57 -0500" Modified="2014-04-25 13:57:52 -0400">
                                             <Title>Publishing the Interface</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -722,7 +722,7 @@
                                                 <TextSelection>371,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="376" Type="Text" Created="2013-12-03 14:53:26 -0500" Modified="2014-04-25 13:57:57 -0400">
+                                        <BinderItem ID="376" UUID="F6CEFD9A-08FC-40D8-BFA4-C901FCF6C145" Type="Text" Created="2013-12-03 14:53:26 -0500" Modified="2014-04-25 13:57:57 -0400">
                                             <Title>Running the _Move Mr Cube_ Visual Script</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -734,7 +734,7 @@
                                                 <TextSelection>1147,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="377" Type="Text" Created="2013-12-03 15:17:15 -0500" Modified="2014-04-25 13:58:04 -0400">
+                                        <BinderItem ID="377" UUID="D0D5BCEB-5C7C-48CE-B109-3C88851DE2DA" Type="Text" Created="2013-12-03 15:17:15 -0500" Modified="2014-04-25 13:58:04 -0400">
                                             <Title>Accessing Runtime Information</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -746,7 +746,7 @@
                                                 <TextSelection>0,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="378" Type="Text" Created="2013-12-03 15:40:23 -0500" Modified="2014-04-25 13:58:10 -0400">
+                                        <BinderItem ID="378" UUID="8D7565E6-82F2-4A58-9936-C9F8568E0001" Type="Text" Created="2013-12-03 15:40:23 -0500" Modified="2014-04-25 13:58:10 -0400">
                                             <Title>Recap on Your First Visual Script</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -760,7 +760,7 @@
                                         </BinderItem>
                                     </Children>
                                 </BinderItem>
-                                <BinderItem ID="350" Type="Text" Created="2013-11-12 10:46:50 -0500" Modified="2014-03-10 19:53:31 -0400">
+                                <BinderItem ID="350" UUID="E9EEED61-9CEB-433E-A694-43BDD7CE2B4F" Type="Text" Created="2013-11-12 10:46:50 -0500" Modified="2014-03-10 19:53:31 -0400">
                                     <Title>Enabling &amp; Disabling Ms Light</Title>
                                     <MetaData>
                                         <NotesTextSelection>0,0</NotesTextSelection>
@@ -772,7 +772,7 @@
                                         <Reference BinderID="268" Destination="[Internal Link]">Quick Start Tutorial</Reference>
                                     </References>
                                 </BinderItem>
-                                <BinderItem ID="352" Type="Text" Created="2013-11-14 19:27:09 -0500" Modified="2014-03-10 19:53:31 -0400">
+                                <BinderItem ID="352" UUID="07488822-2908-4783-A5A1-D13EDBC4A579" Type="Text" Created="2013-11-14 19:27:09 -0500" Modified="2014-03-10 19:53:31 -0400">
                                     <Title>Homing on Ms Light</Title>
                                     <MetaData>
                                         <NotesTextSelection>0,0</NotesTextSelection>
@@ -781,7 +781,7 @@
                                         <TextSelection>12,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="351" Type="Text" Created="2013-11-12 10:47:23 -0500" Modified="2014-03-10 19:53:31 -0400">
+                                <BinderItem ID="351" UUID="06C755CE-FBC0-426F-ACA4-1CF2D66FA74C" Type="Text" Created="2013-11-12 10:47:23 -0500" Modified="2014-03-10 19:53:31 -0400">
                                     <Title>Creating a Timer Utility</Title>
                                     <MetaData>
                                         <NotesTextSelection>0,0</NotesTextSelection>
@@ -790,7 +790,7 @@
                                         <TextSelection>12,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="353" Type="Text" Created="2013-11-14 19:30:29 -0500" Modified="2014-03-10 19:53:31 -0400">
+                                <BinderItem ID="353" UUID="A9095BBD-0F0E-49C7-84E0-35152A182BEC" Type="Text" Created="2013-11-14 19:30:29 -0500" Modified="2014-03-10 19:53:31 -0400">
                                     <Title>Changing Direction</Title>
                                     <MetaData>
                                         <NotesTextSelection>0,0</NotesTextSelection>
@@ -799,7 +799,7 @@
                                         <TextSelection>12,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="354" Type="Text" Created="2013-11-14 19:32:01 -0500" Modified="2014-03-10 19:53:31 -0400">
+                                <BinderItem ID="354" UUID="6D5C2AB8-E453-4266-B645-A5724CCAD58B" Type="Text" Created="2013-11-14 19:32:01 -0500" Modified="2014-03-10 19:53:31 -0400">
                                     <Title>Mr Cube Roaming State</Title>
                                     <MetaData>
                                         <NotesTextSelection>0,0</NotesTextSelection>
@@ -808,7 +808,7 @@
                                         <TextSelection>12,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="355" Type="Text" Created="2013-11-14 19:32:32 -0500" Modified="2014-03-10 19:53:31 -0400">
+                                <BinderItem ID="355" UUID="76F24023-5145-4FD0-B0AE-8AFAD06A26FE" Type="Text" Created="2013-11-14 19:32:32 -0500" Modified="2014-03-10 19:53:31 -0400">
                                     <Title>Adding a Panic State</Title>
                                     <MetaData>
                                         <NotesTextSelection>0,0</NotesTextSelection>
@@ -820,7 +820,7 @@
                                         <Reference BinderID="268" Destination="[Internal Link]">Quick Start Tutorial</Reference>
                                     </References>
                                 </BinderItem>
-                                <BinderItem ID="356" Type="Text" Created="2013-11-14 19:33:16 -0500" Modified="2014-03-10 19:53:31 -0400">
+                                <BinderItem ID="356" UUID="418C3C3E-F3A6-412E-8AB7-72BC021C701D" Type="Text" Created="2013-11-14 19:33:16 -0500" Modified="2014-03-10 19:53:31 -0400">
                                     <Title>Beautifying your Scripts</Title>
                                     <MetaData>
                                         <NotesTextSelection>0,0</NotesTextSelection>
@@ -831,7 +831,7 @@
                                 </BinderItem>
                             </Children>
                         </BinderItem>
-                        <BinderItem ID="418" Type="Folder" Created="2014-02-04 15:53:09 -0500" Modified="2014-04-25 13:58:25 -0400">
+                        <BinderItem ID="418" UUID="2784FE2D-EC32-4B3C-ACEC-4BC154058D13" Type="Folder" Created="2014-02-04 15:53:09 -0500" Modified="2014-04-25 13:58:25 -0400">
                             <Title>User Interface</Title>
                             <MetaData>
                                 <LabelID>11</LabelID>
@@ -843,7 +843,7 @@
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
                             <Children>
-                                <BinderItem ID="30" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:58:33 -0400">
+                                <BinderItem ID="30" UUID="6BECCB99-A34D-435F-8E89-A9FB18DE2E60" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:58:33 -0400">
                                     <Title>Menus</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -854,7 +854,7 @@
                                         <TextSelection>0,162</TextSelection>
                                     </TextSettings>
                                     <Children>
-                                        <BinderItem ID="31" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:58:40 -0400">
+                                        <BinderItem ID="31" UUID="A1DAD243-B444-4EC6-8CA5-990F31E03CDA" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:58:40 -0400">
                                             <Title>Edit Menu</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -866,7 +866,7 @@
                                                 <TextSelection>197,0</TextSelection>
                                             </TextSettings>
                                             <Children>
-                                                <BinderItem ID="32" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:58:48 -0400">
+                                                <BinderItem ID="32" UUID="4B4AE214-F109-443B-A943-53154F9FBBCF" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:58:48 -0400">
                                                     <Title>Edit-&gt;iCanScript-&gt;Create Visual Script</Title>
                                                     <MetaData>
                                                         <LabelID>11</LabelID>
@@ -878,7 +878,7 @@
                                                         <TextSelection>116,0</TextSelection>
                                                     </TextSettings>
                                                 </BinderItem>
-                                                <BinderItem ID="33" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:58:54 -0400">
+                                                <BinderItem ID="33" UUID="6F230EC0-7A8E-43C5-917A-1B99EAE37F3D" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:58:54 -0400">
                                                     <Title>Edit-&gt;iCanScript-&gt;Center Visual Script</Title>
                                                     <MetaData>
                                                         <LabelID>11</LabelID>
@@ -890,7 +890,7 @@
                                                         <TextSelection>51,0</TextSelection>
                                                     </TextSettings>
                                                 </BinderItem>
-                                                <BinderItem ID="34" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:59:00 -0400">
+                                                <BinderItem ID="34" UUID="0DA6C64E-1A61-427E-8925-1205F2BE8A5C" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:59:00 -0400">
                                                     <Title>Edit-&gt;iCanScript-&gt;Center Selected</Title>
                                                     <MetaData>
                                                         <LabelID>11</LabelID>
@@ -904,7 +904,7 @@
                                                 </BinderItem>
                                             </Children>
                                         </BinderItem>
-                                        <BinderItem ID="41" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:59:07 -0400">
+                                        <BinderItem ID="41" UUID="006973B0-DB41-4AAF-AF9D-9AF1C0786147" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:59:07 -0400">
                                             <Title>Component Menus</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -918,7 +918,7 @@
                                                 <Reference BinderID="145" Destination="[Internal Link]">Visual Scripts &amp; Behaviours</Reference>
                                             </References>
                                             <Children>
-                                                <BinderItem ID="381" Type="Text" Created="2013-12-04 17:14:19 -0500" Modified="2014-04-25 13:59:14 -0400">
+                                                <BinderItem ID="381" UUID="32EE385B-A699-4CE0-9692-A632022577BF" Type="Text" Created="2013-12-04 17:14:19 -0500" Modified="2014-04-25 13:59:14 -0400">
                                                     <Title>Attaching a Visual Script component</Title>
                                                     <MetaData>
                                                         <LabelID>11</LabelID>
@@ -934,7 +934,7 @@
                                                 </BinderItem>
                                             </Children>
                                         </BinderItem>
-                                        <BinderItem ID="40" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:59:23 -0400">
+                                        <BinderItem ID="40" UUID="BA6BA686-DCF9-4368-8108-4E3E94F13C1F" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:59:23 -0400">
                                             <Title>Window Menu</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -945,7 +945,7 @@
                                                 <TextSelection>0,0</TextSelection>
                                             </TextSettings>
                                             <Children>
-                                                <BinderItem ID="68" Type="Text" Created="2013-09-19 15:16:03 -0400" Modified="2014-04-25 13:59:30 -0400">
+                                                <BinderItem ID="68" UUID="082A13A4-74E7-42B2-8893-DB4530DD2ED9" Type="Text" Created="2013-09-19 15:16:03 -0400" Modified="2014-04-25 13:59:30 -0400">
                                                     <Title>Window-&gt;iCanScript-&gt;Preferences</Title>
                                                     <MetaData>
                                                         <LabelID>11</LabelID>
@@ -956,7 +956,7 @@
                                                         <TextSelection>0,65</TextSelection>
                                                     </TextSettings>
                                                 </BinderItem>
-                                                <BinderItem ID="69" Type="Text" Created="2013-09-19 15:16:28 -0400" Modified="2014-04-25 13:59:36 -0400">
+                                                <BinderItem ID="69" UUID="63C7F43D-1A0E-4A3C-8B68-960EBD4902BC" Type="Text" Created="2013-09-19 15:16:28 -0400" Modified="2014-04-25 13:59:36 -0400">
                                                     <Title>Window-&gt;iCanScript-&gt;Visual Editor</Title>
                                                     <MetaData>
                                                         <LabelID>11</LabelID>
@@ -967,7 +967,7 @@
                                                         <TextSelection>415,0</TextSelection>
                                                     </TextSettings>
                                                 </BinderItem>
-                                                <BinderItem ID="70" Type="Text" Created="2013-09-19 15:16:46 -0400" Modified="2014-04-25 13:59:42 -0400">
+                                                <BinderItem ID="70" UUID="FBBC914B-4003-4574-88F7-9F4CA93E723A" Type="Text" Created="2013-09-19 15:16:46 -0400" Modified="2014-04-25 13:59:42 -0400">
                                                     <Title>Window-&gt;iCanScript-&gt;Hierarchy</Title>
                                                     <MetaData>
                                                         <LabelID>11</LabelID>
@@ -978,7 +978,7 @@
                                                         <TextSelection>320,0</TextSelection>
                                                     </TextSettings>
                                                 </BinderItem>
-                                                <BinderItem ID="71" Type="Text" Created="2013-09-19 15:17:02 -0400" Modified="2014-04-25 13:59:47 -0400">
+                                                <BinderItem ID="71" UUID="CB284F35-A102-4C35-9F61-5F702530656D" Type="Text" Created="2013-09-19 15:17:02 -0400" Modified="2014-04-25 13:59:47 -0400">
                                                     <Title>Window-&gt;iCanScript-&gt;Library</Title>
                                                     <MetaData>
                                                         <LabelID>11</LabelID>
@@ -989,7 +989,7 @@
                                                         <TextSelection>47,0</TextSelection>
                                                     </TextSettings>
                                                 </BinderItem>
-                                                <BinderItem ID="72" Type="Text" Created="2013-09-19 15:17:15 -0400" Modified="2014-04-25 13:59:53 -0400">
+                                                <BinderItem ID="72" UUID="A650A186-8BD3-463F-81A9-C28FA1D5279E" Type="Text" Created="2013-09-19 15:17:15 -0400" Modified="2014-04-25 13:59:53 -0400">
                                                     <Title>Window-&gt;iCanScript-&gt;Instance Wizard</Title>
                                                     <MetaData>
                                                         <LabelID>11</LabelID>
@@ -1002,7 +1002,7 @@
                                                 </BinderItem>
                                             </Children>
                                         </BinderItem>
-                                        <BinderItem ID="387" Type="Text" Created="2014-01-11 22:12:26 -0500" Modified="2014-04-25 14:00:03 -0400">
+                                        <BinderItem ID="387" UUID="5F52EC8A-FF60-460C-9435-86540082AD44" Type="Text" Created="2014-01-11 22:12:26 -0500" Modified="2014-04-25 14:00:03 -0400">
                                             <Title>Help Menu</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -1013,7 +1013,7 @@
                                                 <TextSelection>34,0</TextSelection>
                                             </TextSettings>
                                             <Children>
-                                                <BinderItem ID="35" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:00:11 -0400">
+                                                <BinderItem ID="35" UUID="F858B267-5026-4EB3-A92F-190AFE59A57A" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:00:11 -0400">
                                                     <Title>Help-&gt;iCanScript-&gt;Home Page</Title>
                                                     <MetaData>
                                                         <LabelID>11</LabelID>
@@ -1024,7 +1024,7 @@
                                                         <TextSelection>52,0</TextSelection>
                                                     </TextSettings>
                                                 </BinderItem>
-                                                <BinderItem ID="36" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:00:18 -0400">
+                                                <BinderItem ID="36" UUID="82F16500-7D25-4E12-9B0D-05206014C11F" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:00:18 -0400">
                                                     <Title>Help-&gt;iCanScript-&gt;User's Guide</Title>
                                                     <MetaData>
                                                         <LabelID>11</LabelID>
@@ -1035,7 +1035,7 @@
                                                         <TextSelection>54,0</TextSelection>
                                                     </TextSettings>
                                                 </BinderItem>
-                                                <BinderItem ID="37" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:00:24 -0400">
+                                                <BinderItem ID="37" UUID="086D278F-3761-4A6E-AC31-FBD1063E25EE" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:00:24 -0400">
                                                     <Title>Help-&gt;iCanScript-&gt;Release Notes</Title>
                                                     <MetaData>
                                                         <LabelID>11</LabelID>
@@ -1046,7 +1046,7 @@
                                                         <TextSelection>52,0</TextSelection>
                                                     </TextSettings>
                                                 </BinderItem>
-                                                <BinderItem ID="38" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:00:30 -0400">
+                                                <BinderItem ID="38" UUID="23FAB686-FAA7-45A3-83D2-E21F0698EF93" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:00:30 -0400">
                                                     <Title>Help-&gt;iCanScript-&gt;Customer Request</Title>
                                                     <MetaData>
                                                         <LabelID>11</LabelID>
@@ -1057,7 +1057,7 @@
                                                         <TextSelection>23,0</TextSelection>
                                                     </TextSettings>
                                                 </BinderItem>
-                                                <BinderItem ID="39" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:00:36 -0400">
+                                                <BinderItem ID="39" UUID="E4E832C8-0A21-40DA-AAFB-23B040F74F41" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:00:36 -0400">
                                                     <Title>Help-&gt;iCanScript-&gt;Check for Updates...</Title>
                                                     <MetaData>
                                                         <LabelID>11</LabelID>
@@ -1072,7 +1072,7 @@
                                         </BinderItem>
                                     </Children>
                                 </BinderItem>
-                                <BinderItem ID="76" Type="Text" Created="2013-09-21 11:29:22 -0400" Modified="2014-04-25 14:00:53 -0400">
+                                <BinderItem ID="76" UUID="A0C2E1E1-497D-458F-B0B5-59B97B4CBB60" Type="Text" Created="2013-09-21 11:29:22 -0400" Modified="2014-04-25 14:00:53 -0400">
                                     <Title>Editors</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -1084,7 +1084,7 @@
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
                                     <Children>
-                                        <BinderItem ID="43" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-05-09 09:19:14 -0400">
+                                        <BinderItem ID="43" UUID="DBE615AE-4B36-4DC9-9454-0261EFACFE04" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-05-09 09:19:14 -0400">
                                             <Title>User Preferences</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -1096,7 +1096,7 @@
                                                 <TextSelection>108,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="44" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:01:07 -0400">
+                                        <BinderItem ID="44" UUID="859FB4BF-1D01-4664-8511-65F95F080A24" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:01:07 -0400">
                                             <Title>Visual Editor</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -1108,7 +1108,7 @@
                                                 <TextSelection>0,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="45" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:01:13 -0400">
+                                        <BinderItem ID="45" UUID="351D2C4B-5888-4CB5-B7BE-07A1BF015466" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:01:13 -0400">
                                             <Title>Hierarchy Tree</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -1120,7 +1120,7 @@
                                                 <TextSelection>136,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="46" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:01:19 -0400">
+                                        <BinderItem ID="46" UUID="12F8F71B-F9D6-4CDD-8DDA-8B010AB42EF1" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:01:19 -0400">
                                             <Title>Library Tree</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -1135,7 +1135,7 @@
                                                 <Reference BinderID="52" Destination="[Internal Link]">Extending the Library</Reference>
                                             </References>
                                         </BinderItem>
-                                        <BinderItem ID="47" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-05-09 09:19:47 -0400">
+                                        <BinderItem ID="47" UUID="80D22091-2BD2-41CE-88E0-2A74F4C63A82" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-05-09 09:19:47 -0400">
                                             <Title>Instance Wizard</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -1147,7 +1147,7 @@
                                                 <TextSelection>428,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="48" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:01:31 -0400">
+                                        <BinderItem ID="48" UUID="DA79F346-E7AC-4431-B454-41C1D9B4BCFF" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 14:01:31 -0400">
                                             <Title>Unity Inspector</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -1163,7 +1163,7 @@
                                 </BinderItem>
                             </Children>
                         </BinderItem>
-                        <BinderItem ID="479" Type="Folder" Created="2014-02-26 08:53:46 -0500" Modified="2014-04-25 13:54:14 -0400">
+                        <BinderItem ID="479" UUID="723E26B6-440B-4938-99ED-31AA20B8E2F7" Type="Folder" Created="2014-02-26 08:53:46 -0500" Modified="2014-04-25 13:54:14 -0400">
                             <Title>Extending iCanScript</Title>
                             <MetaData>
                                 <LabelID>11</LabelID>
@@ -1175,7 +1175,7 @@
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
                             <Children>
-                                <BinderItem ID="52" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 15:56:58 -0400">
+                                <BinderItem ID="52" UUID="201AB819-DAEF-4965-8A16-A397BA74F119" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 15:56:58 -0400">
                                     <Title>Extending iCanScript</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -1186,7 +1186,7 @@
                                         <TextSelection>1962,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="53" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 15:59:05 -0400">
+                                <BinderItem ID="53" UUID="899060D6-89CB-4003-BD30-B4CE4965405C" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 15:59:05 -0400">
                                     <Title>Tagging your Source Code</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -1201,7 +1201,7 @@
                                         <Reference BinderID="112" Destination="[Internal Link]">Adding Message Handlers</Reference>
                                     </References>
                                 </BinderItem>
-                                <BinderItem ID="54" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 15:57:10 -0400">
+                                <BinderItem ID="54" UUID="D2CA7B15-0372-43A7-842E-0D2B2FFF740E" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 15:57:10 -0400">
                                     <Title>Importing Public Members</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -1216,7 +1216,7 @@
                                         <Reference BinderID="112" Destination="[Internal Link]">Adding Message Handlers</Reference>
                                     </References>
                                 </BinderItem>
-                                <BinderItem ID="112" Type="Text" Created="2013-09-30 15:08:08 -0400" Modified="2014-04-25 13:54:40 -0400">
+                                <BinderItem ID="112" UUID="615272E9-606E-45A4-970C-772CE24EBFD1" Type="Text" Created="2013-09-30 15:08:08 -0400" Modified="2014-04-25 13:54:40 -0400">
                                     <Title>Adding Message Handlers</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -1233,7 +1233,7 @@
                                 </BinderItem>
                             </Children>
                         </BinderItem>
-                        <BinderItem ID="256" Type="Folder" Created="2013-10-11 08:05:57 -0400" Modified="2014-04-25 13:53:19 -0400">
+                        <BinderItem ID="256" UUID="CCFED45E-6F02-4266-87AF-4BDAFBF96571" Type="Folder" Created="2013-10-11 08:05:57 -0400" Modified="2014-04-25 13:53:19 -0400">
                             <Title>Appendices</Title>
                             <MetaData>
                                 <LabelID>11</LabelID>
@@ -1245,7 +1245,7 @@
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
                             <Children>
-                                <BinderItem ID="57" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:53:28 -0400">
+                                <BinderItem ID="57" UUID="0901E74E-D106-42C8-A78C-8D50489F02FB" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:53:28 -0400">
                                     <Title>Keyboard Shortcuts</Title>
                                     <MetaData>
                                         <LabelID>11</LabelID>
@@ -1256,7 +1256,7 @@
                                         <TextSelection>179,0</TextSelection>
                                     </TextSettings>
                                     <Children>
-                                        <BinderItem ID="484" Type="Text" Created="2014-04-02 11:46:22 -0400" Modified="2014-04-25 13:53:34 -0400">
+                                        <BinderItem ID="484" UUID="2ABEC07B-E1E8-4CAD-B511-BE0D0E5C2FD0" Type="Text" Created="2014-04-02 11:46:22 -0400" Modified="2014-04-25 13:53:34 -0400">
                                             <Title>Visual Script Navigation</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -1268,7 +1268,7 @@
                                                 <TextSelection>690,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="58" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-06-26 13:20:26 -0400">
+                                        <BinderItem ID="58" UUID="DE02C9E3-9C05-4892-9748-DA5A34AA74AD" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-06-26 13:20:26 -0400">
                                             <Title>Selection Navigation</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -1280,7 +1280,7 @@
                                                 <TextSelection>569,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="59" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:53:48 -0400">
+                                        <BinderItem ID="59" UUID="4F81C1D0-8085-4421-B41B-CEA53E864592" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:53:48 -0400">
                                             <Title>Bookmarks</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -1292,7 +1292,7 @@
                                                 <TextSelection>0,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="60" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:53:56 -0400">
+                                        <BinderItem ID="60" UUID="8C3AB9C3-0837-4CE9-81E3-166216A899A6" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:53:56 -0400">
                                             <Title>Expand / Fold</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -1304,7 +1304,7 @@
                                                 <TextSelection>369,0</TextSelection>
                                             </TextSettings>
                                         </BinderItem>
-                                        <BinderItem ID="61" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:54:04 -0400">
+                                        <BinderItem ID="61" UUID="5399FA9C-EAE6-47ED-B959-7CA6FE6F2CCD" Type="Text" Created="2013-09-17 10:37:31 -0400" Modified="2014-04-25 13:54:04 -0400">
                                             <Title>Edition</Title>
                                             <MetaData>
                                                 <LabelID>11</LabelID>
@@ -1322,7 +1322,7 @@
                         </BinderItem>
                     </Children>
                 </BinderItem>
-                <BinderItem ID="277" Type="Folder" Created="2013-10-24 14:02:00 -0400" Modified="2014-02-05 15:33:21 -0500">
+                <BinderItem ID="277" UUID="673F32D3-589D-4018-A895-CD113F10C85E" Type="Folder" Created="2013-10-24 14:02:00 -0400" Modified="2014-02-05 15:33:21 -0500">
                     <Title>Release Notes</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -1333,7 +1333,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="423" Type="Folder" Created="2014-02-05 15:35:59 -0500" Modified="2015-01-25 22:03:20 -0500">
+                <BinderItem ID="423" UUID="93E6BFF5-F737-408F-8A8D-4CAE617597C8" Type="Folder" Created="2014-02-05 15:35:59 -0500" Modified="2015-01-25 22:03:20 -0500">
                     <Title>Readme</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -1344,7 +1344,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="570" Type="Folder" Created="2015-01-26 10:40:18 -0500" Modified="2015-01-26 10:40:21 -0500">
+                <BinderItem ID="570" UUID="4CA8F06F-389E-480D-912D-EC158ECCAA75" Type="Folder" Created="2015-01-26 10:40:18 -0500" Modified="2015-01-26 10:40:21 -0500">
                     <Title>Support</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -1354,7 +1354,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                     <Children>
-                        <BinderItem ID="571" Type="Folder" Created="2015-01-26 10:40:43 -0500" Modified="2015-01-26 10:40:51 -0500">
+                        <BinderItem ID="571" UUID="964F1503-22A0-409A-B12A-2C8B2230E951" Type="Folder" Created="2015-01-26 10:40:43 -0500" Modified="2015-01-26 10:40:51 -0500">
                             <Title>FAQs</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1364,7 +1364,7 @@
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="573" Type="Folder" Created="2015-01-26 10:41:25 -0500" Modified="2015-01-26 10:41:31 -0500">
+                        <BinderItem ID="573" UUID="7AB56AE0-1412-4DDB-B767-C25553BB8B89" Type="Folder" Created="2015-01-26 10:41:25 -0500" Modified="2015-01-26 10:41:31 -0500">
                             <Title>Announcements</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1374,7 +1374,7 @@
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="574" Type="Folder" Created="2015-01-26 10:41:38 -0500" Modified="2015-01-26 10:41:45 -0500">
+                        <BinderItem ID="574" UUID="293FD4A6-15CC-4710-896B-05312CADB6A7" Type="Folder" Created="2015-01-26 10:41:38 -0500" Modified="2015-01-26 10:41:45 -0500">
                             <Title>Testomonials</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1384,7 +1384,7 @@
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
                             <Children>
-                                <BinderItem ID="576" Type="Text" Created="2015-01-26 10:52:59 -0500" Modified="2015-01-26 14:45:50 -0500">
+                                <BinderItem ID="576" UUID="A52936FA-9C41-466B-B132-436BF075796D" Type="Text" Created="2015-01-26 10:52:59 -0500" Modified="2015-01-26 14:45:50 -0500">
                                     <Title>devang_xprt</Title>
                                     <MetaData>
                                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -1395,7 +1395,7 @@
                                         <TextSelection>177,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="581" Type="Text" Created="2015-01-26 14:41:15 -0500" Modified="2015-01-26 14:45:27 -0500">
+                                <BinderItem ID="581" UUID="3D580707-7BCD-42CE-9B57-98EE2566DAF5" Type="Text" Created="2015-01-26 14:41:15 -0500" Modified="2015-01-26 14:45:27 -0500">
                                     <Title>Pushkar Chufal</Title>
                                     <MetaData>
                                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -1405,7 +1405,7 @@
                                         <TextSelection>247,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="582" Type="Text" Created="2015-01-26 14:43:44 -0500" Modified="2015-01-26 14:45:17 -0500">
+                                <BinderItem ID="582" UUID="C6C6B348-83F4-4A9B-8E9F-6C814161BAF0" Type="Text" Created="2015-01-26 14:43:44 -0500" Modified="2015-01-26 14:45:17 -0500">
                                     <Title>Red_Studio</Title>
                                     <MetaData>
                                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -1417,7 +1417,7 @@
                                 </BinderItem>
                             </Children>
                         </BinderItem>
-                        <BinderItem ID="575" Type="Folder" Created="2015-01-26 10:41:54 -0500" Modified="2015-01-26 10:41:59 -0500">
+                        <BinderItem ID="575" UUID="F6EB4123-FDAA-4E41-9D0B-6BD1FF6C407B" Type="Folder" Created="2015-01-26 10:41:54 -0500" Modified="2015-01-26 10:41:59 -0500">
                             <Title>Glossary</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1427,7 +1427,7 @@
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="572" Type="Folder" Created="2015-01-26 10:41:00 -0500" Modified="2015-01-26 10:41:08 -0500">
+                        <BinderItem ID="572" UUID="3CD4A7E0-B085-4779-9647-83EF2F7A3E12" Type="Folder" Created="2015-01-26 10:41:00 -0500" Modified="2015-01-26 10:41:08 -0500">
                             <Title>Knowledge Base</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1439,7 +1439,7 @@
                         </BinderItem>
                     </Children>
                 </BinderItem>
-                <BinderItem ID="577" Type="Folder" Created="2015-01-26 11:18:11 -0500" Modified="2015-01-26 11:18:30 -0500">
+                <BinderItem ID="577" UUID="D2A26A68-61E8-449A-8E02-A40D315E2D01" Type="Folder" Created="2015-01-26 11:18:11 -0500" Modified="2015-01-26 11:18:30 -0500">
                     <Title>Website</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -1449,7 +1449,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                     <Children>
-                        <BinderItem ID="578" Type="Text" Created="2015-01-26 11:18:33 -0500" Modified="2015-01-26 11:42:54 -0500">
+                        <BinderItem ID="578" UUID="8095EAD5-6371-417F-99DC-FAD591247D65" Type="Text" Created="2015-01-26 11:18:33 -0500" Modified="2015-01-26 11:42:54 -0500">
                             <Title>Marketing Statement</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1459,7 +1459,7 @@
                                 <TextSelection>1279,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="583" Type="Text" Created="2015-01-26 14:57:47 -0500" Modified="2015-01-26 14:58:30 -0500">
+                        <BinderItem ID="583" UUID="90E7CF62-638C-46EE-B5CF-8D6476BB1442" Type="Text" Created="2015-01-26 14:57:47 -0500" Modified="2015-01-26 14:58:30 -0500">
                             <Title>Company Profile</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1469,7 +1469,7 @@
                                 <TextSelection>913,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="584" Type="Text" Created="2015-01-26 14:58:46 -0500" Modified="2015-01-26 14:59:32 -0500">
+                        <BinderItem ID="584" UUID="22CAC119-732A-4FDD-BC17-B732F8539027" Type="Text" Created="2015-01-26 14:58:46 -0500" Modified="2015-01-26 14:59:32 -0500">
                             <Title>Leadership Team</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1483,13 +1483,13 @@
                 </BinderItem>
             </Children>
         </BinderItem>
-        <BinderItem ID="1" Type="ResearchFolder" Created="2013-09-17 10:34:16 -0400" Modified="2015-01-26 14:50:50 -0500">
+        <BinderItem ID="1" UUID="78839498-CF02-4B31-8471-8F80D4B60385" Type="ResearchFolder" Created="2013-09-17 10:34:16 -0400" Modified="2015-01-26 14:50:50 -0500">
             <Title>Filing Cabinet</Title>
             <MetaData>
                 <IncludeInCompile>Yes</IncludeInCompile>
             </MetaData>
             <Children>
-                <BinderItem ID="270" Type="Folder" Created="2013-10-24 13:28:06 -0400" Modified="2013-10-24 14:20:05 -0400">
+                <BinderItem ID="270" UUID="DB8C1AD1-CBAB-4F00-9BDC-4D9F00D1182E" Type="Folder" Created="2013-10-24 13:28:06 -0400" Modified="2013-10-24 14:20:05 -0400">
                     <Title>User Guide</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -1500,7 +1500,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                     <Children>
-                        <BinderItem ID="259" Type="Text" Created="2013-10-13 07:17:11 -0400" Modified="2013-10-13 07:53:22 -0400">
+                        <BinderItem ID="259" UUID="0339A1D9-5D9B-42F5-A8FF-2C88A002D77F" Type="Text" Created="2013-10-13 07:17:11 -0400" Modified="2013-10-13 07:53:22 -0400">
                             <Title>Binding Types</Title>
                             <MetaData>
                                 <NotesTextSelection>0,0</NotesTextSelection>
@@ -1509,7 +1509,7 @@
                                 <TextSelection>204,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="258" Type="Text" Created="2013-10-13 07:17:02 -0400" Modified="2013-10-13 12:46:09 -0400">
+                        <BinderItem ID="258" UUID="882CC516-0EA6-43B5-9DAA-F407135D4A19" Type="Text" Created="2013-10-13 07:17:02 -0400" Modified="2013-10-13 12:46:09 -0400">
                             <Title>Port Types</Title>
                             <MetaData>
                                 <NotesTextSelection>0,0</NotesTextSelection>
@@ -1518,7 +1518,7 @@
                                 <TextSelection>54,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="264" Type="Text" Created="2013-10-21 19:15:22 -0400" Modified="2013-10-22 16:55:31 -0400">
+                        <BinderItem ID="264" UUID="62F391E7-0D00-4B0C-A171-8D7A0CF174CD" Type="Text" Created="2013-10-21 19:15:22 -0400" Modified="2013-10-22 16:55:31 -0400">
                             <Title>iCanScript Architecture -261- (Michel Launier's conflicted copy)</Title>
                             <MetaData>
                                 <NotesTextSelection>0,0</NotesTextSelection>
@@ -1527,7 +1527,7 @@
                                 <TextSelection>4085,291</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="262" Type="Text" Created="2013-10-18 13:38:22 -0400" Modified="2013-10-18 14:50:35 -0400">
+                        <BinderItem ID="262" UUID="C325775C-B602-47F1-9394-65CC36A290FB" Type="Text" Created="2013-10-18 13:38:22 -0400" Modified="2013-10-18 14:50:35 -0400">
                             <Title>iCanScript Architecture</Title>
                             <MetaData>
                                 <NotesTextSelection>0,0</NotesTextSelection>
@@ -1536,7 +1536,7 @@
                                 <TextSelection>0,1810</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="77" Type="Text" Created="2013-09-21 11:31:59 -0400" Modified="2013-10-08 16:22:55 -0400">
+                        <BinderItem ID="77" UUID="DF7CAC26-B327-48A9-8BF3-33B2F07BFAF9" Type="Text" Created="2013-09-21 11:31:59 -0400" Modified="2013-10-08 16:22:55 -0400">
                             <Title>Examples</Title>
                             <MetaData>
                                 <NotesTextSelection>0,0</NotesTextSelection>
@@ -1545,7 +1545,7 @@
                                 <TextSelection>16,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="261" Type="Text" Created="2013-10-18 11:25:50 -0400" Modified="2013-10-22 16:28:54 -0400">
+                        <BinderItem ID="261" UUID="1C0E1953-75B2-47F9-8ABB-45C5095E5136" Type="Text" Created="2013-10-18 11:25:50 -0400" Modified="2013-10-22 16:28:54 -0400">
                             <Title>iCanScript Architecture</Title>
                             <MetaData>
                                 <NotesTextSelection>0,0</NotesTextSelection>
@@ -1554,7 +1554,7 @@
                                 <TextSelection>5139,4852</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="263" Type="Text" Created="2013-10-22 16:28:59 -0400" Modified="2013-10-22 18:12:32 -0400">
+                        <BinderItem ID="263" UUID="F8A3A7C9-B4C7-4A83-9792-CA9B4477BF30" Type="Text" Created="2013-10-22 16:28:59 -0400" Modified="2013-10-22 18:12:32 -0400">
                             <Title>An Overview of iCanScript</Title>
                             <MetaData>
                                 <NotesTextSelection>0,0</NotesTextSelection>
@@ -1563,7 +1563,7 @@
                                 <TextSelection>1502,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="19" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                        <BinderItem ID="19" UUID="B02C7605-9826-44C0-AE48-B6D0652D8CF5" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
                             <Title>System Requirements</Title>
                             <MetaData>
                                 <NotesTextSelection>0,0</NotesTextSelection>
@@ -1572,7 +1572,7 @@
                                 <TextSelection>477,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="13" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                        <BinderItem ID="13" UUID="C0206EA5-1FAC-4083-BB8C-BC96057F5FED" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
                             <Title>Message from the Founder</Title>
                             <MetaData>
                                 <NotesTextSelection>0,0</NotesTextSelection>
@@ -1581,7 +1581,7 @@
                                 <TextSelection>1570,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="16" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                        <BinderItem ID="16" UUID="BF147E88-B929-4DE6-A0EB-E3D221FCE314" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
                             <Title>Many Thanks ...</Title>
                             <MetaData>
                                 <NotesTextSelection>0,0</NotesTextSelection>
@@ -1590,7 +1590,7 @@
                                 <TextSelection>359,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="15" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                        <BinderItem ID="15" UUID="3368C9A2-0EBC-436E-95B2-C22A45BDB131" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
                             <Title>What's New?</Title>
                             <MetaData>
                                 <NotesTextSelection>0,0</NotesTextSelection>
@@ -1599,7 +1599,7 @@
                                 <TextSelection>329,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="18" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                        <BinderItem ID="18" UUID="04616497-A12D-4224-A175-68B0858CB594" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
                             <Title>Product Licensing</Title>
                             <MetaData>
                                 <NotesTextSelection>0,0</NotesTextSelection>
@@ -1608,7 +1608,7 @@
                                 <TextSelection>431,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="14" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
+                        <BinderItem ID="14" UUID="A9DF5785-5702-4093-97D5-1D435E434C9C" Type="Text" Created="2013-09-17 10:37:30 -0400" Modified="2013-09-24 11:55:20 -0400">
                             <Title>Acknowledgement</Title>
                             <MetaData>
                                 <NotesTextSelection>0,0</NotesTextSelection>
@@ -1617,7 +1617,7 @@
                                 <TextSelection>473,11</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="260" Type="Text" Created="2013-10-15 16:53:36 -0400" Modified="2013-10-15 17:21:24 -0400">
+                        <BinderItem ID="260" UUID="87CBC943-A44C-4C97-BF21-6F9E83F41938" Type="Text" Created="2013-10-15 16:53:36 -0400" Modified="2013-10-15 17:21:24 -0400">
                             <Title>Visual Scripts &amp; Behaviours -145- (Michel Launier's conflicted copy)</Title>
                             <MetaData>
                                 <NotesTextSelection>0,0</NotesTextSelection>
@@ -1626,7 +1626,7 @@
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="251" Type="Text" Created="2013-10-09 10:18:04 -0400" Modified="2013-10-15 14:56:28 -0400">
+                        <BinderItem ID="251" UUID="A7D3A946-8A41-42C1-9265-1EB7EA1E6224" Type="Text" Created="2013-10-09 10:18:04 -0400" Modified="2013-10-15 14:56:28 -0400">
                             <Title>Node Types</Title>
                             <MetaData>
                                 <NotesTextSelection>0,0</NotesTextSelection>
@@ -1635,7 +1635,7 @@
                                 <TextSelection>3556,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="284" Type="Folder" Created="2013-10-25 09:35:23 -0400" Modified="2013-10-25 09:35:26 -0400">
+                        <BinderItem ID="284" UUID="BDF15181-1A25-45B8-AAD5-DA1042D3A4BD" Type="Folder" Created="2013-10-25 09:35:23 -0400" Modified="2013-10-25 09:35:26 -0400">
                             <Title>images</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1647,7 +1647,7 @@
                         </BinderItem>
                     </Children>
                 </BinderItem>
-                <BinderItem ID="281" Type="Folder" Created="2013-10-24 14:20:10 -0400" Modified="2013-10-24 14:20:22 -0400">
+                <BinderItem ID="281" UUID="B5CD3446-128A-4194-A189-3DCCD0C79BF7" Type="Folder" Created="2013-10-24 14:20:10 -0400" Modified="2013-10-24 14:20:22 -0400">
                     <Title>Release Notes</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -1658,7 +1658,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="282" Type="Folder" Created="2013-10-24 14:20:14 -0400" Modified="2013-10-24 14:20:26 -0400">
+                <BinderItem ID="282" UUID="97A05C56-1203-4688-B689-9A43C7F2EFB8" Type="Folder" Created="2013-10-24 14:20:14 -0400" Modified="2013-10-24 14:20:26 -0400">
                     <Title>Tutorials</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -1669,7 +1669,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="405" Type="Folder" Created="2014-02-04 15:06:06 -0500" Modified="2015-01-26 14:52:10 -0500">
+                <BinderItem ID="405" UUID="EDA5043C-911F-48AD-A728-73D5C07F71E8" Type="Folder" Created="2014-02-04 15:06:06 -0500" Modified="2015-01-26 14:52:10 -0500">
                     <Title>Images</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -1679,7 +1679,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                     <Children>
-                        <BinderItem ID="422" Type="Image" Created="2014-02-05 14:22:45 -0500" Modified="2014-02-05 14:22:45 -0500">
+                        <BinderItem ID="422" UUID="09DD4A59-5A20-4DEF-8BBE-7CB7AA7C28A6" Type="Image" Created="2014-02-05 14:22:45 -0500" Modified="2014-02-05 14:22:45 -0500">
                             <Title>VisualScriptingForUnity_black</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1696,7 +1696,7 @@
                                 <Reference BinderID="401" Destination="[Internal Link]">Latex - Image Refs</Reference>
                             </References>
                         </BinderItem>
-                        <BinderItem ID="403" Type="Image" Created="2014-02-03 16:10:40 -0500" Modified="2014-02-03 16:10:40 -0500">
+                        <BinderItem ID="403" UUID="0EF2350B-182A-487B-A867-909AD0DE2CEB" Type="Image" Created="2014-02-03 16:10:40 -0500" Modified="2014-02-03 16:10:40 -0500">
                             <Title>UnityLogo_32x32</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1713,7 +1713,7 @@
                                 <Reference BinderID="401" Destination="[Internal Link]">image ref</Reference>
                             </References>
                         </BinderItem>
-                        <BinderItem ID="406" Type="Image" Created="2014-02-04 15:28:50 -0500" Modified="2014-02-04 15:28:50 -0500">
+                        <BinderItem ID="406" UUID="BBE78318-CAF8-4590-B9A3-8351F4FB600F" Type="Image" Created="2014-02-04 15:28:50 -0500" Modified="2014-02-04 15:28:50 -0500">
                             <Title>PostitNote_32x32</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1730,7 +1730,7 @@
                                 <Reference BinderID="401" Destination="[Internal Link]">Postit</Reference>
                             </References>
                         </BinderItem>
-                        <BinderItem ID="407" Type="Image" Created="2014-02-04 15:40:34 -0500" Modified="2014-02-04 15:40:34 -0500">
+                        <BinderItem ID="407" UUID="10E0ED0B-9C44-407C-BFFF-214B2155D107" Type="Image" Created="2014-02-04 15:40:34 -0500" Modified="2014-02-04 15:40:34 -0500">
                             <Title>icanscript-ui-tips_32x32x32</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1747,7 +1747,7 @@
                                 <Reference BinderID="22" Destination="[Internal Link]">Installation</Reference>
                             </References>
                         </BinderItem>
-                        <BinderItem ID="408" Type="Image" Created="2014-02-04 15:40:34 -0500" Modified="2014-02-04 15:40:34 -0500">
+                        <BinderItem ID="408" UUID="AF730B97-9196-4900-8C25-CCD3E2A12BD7" Type="Image" Created="2014-02-04 15:40:34 -0500" Modified="2014-02-04 15:40:34 -0500">
                             <Title>iCanScriptLogo_32x32x32</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1761,7 +1761,7 @@
                                 <ImageScalesProportionally>No</ImageScalesProportionally>
                             </MediaSettings>
                         </BinderItem>
-                        <BinderItem ID="409" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
+                        <BinderItem ID="409" UUID="6F0C3C6A-80AF-4233-8C04-BFC60A7148EA" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
                             <Title>stamp-1-purple</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1773,7 +1773,7 @@
                                 <Reference BinderID="401" Destination="[Internal Link]">Latex - Image Refs</Reference>
                             </References>
                         </BinderItem>
-                        <BinderItem ID="411" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
+                        <BinderItem ID="411" UUID="E85C7EA4-23E6-4E38-9003-FF5DD3AAFF2B" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
                             <Title>stamp-2-purple</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1785,7 +1785,7 @@
                                 <Reference BinderID="401" Destination="[Internal Link]">Latex - Image Refs</Reference>
                             </References>
                         </BinderItem>
-                        <BinderItem ID="415" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
+                        <BinderItem ID="415" UUID="2491A435-1A37-4F8D-9DCC-3CD32BF8C6A4" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
                             <Title>stamp-3-purple</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1802,7 +1802,7 @@
                                 <Reference BinderID="401" Destination="[Internal Link]">Latex - Image Refs</Reference>
                             </References>
                         </BinderItem>
-                        <BinderItem ID="412" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
+                        <BinderItem ID="412" UUID="CECB0279-F52E-42C3-BAAF-CADAE50C4481" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
                             <Title>stamp-4-purple</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1819,7 +1819,7 @@
                                 <Reference BinderID="401" Destination="[Internal Link]">Latex - Image Refs</Reference>
                             </References>
                         </BinderItem>
-                        <BinderItem ID="410" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
+                        <BinderItem ID="410" UUID="82C7D303-A1C9-46B5-97C2-9A23B5030A0B" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
                             <Title>stamp-2-orange</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1833,7 +1833,7 @@
                                 <ImageScalesProportionally>No</ImageScalesProportionally>
                             </MediaSettings>
                         </BinderItem>
-                        <BinderItem ID="416" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
+                        <BinderItem ID="416" UUID="545CEE80-0683-4188-AC6A-2E354B780D21" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
                             <Title>stamp-4-orange</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1842,7 +1842,7 @@
                                 <ShowSynopsisImage>Yes</ShowSynopsisImage>
                             </MetaData>
                         </BinderItem>
-                        <BinderItem ID="413" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
+                        <BinderItem ID="413" UUID="2E60D3DF-B43A-42A3-A41F-8B40C0BFCC81" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
                             <Title>stamp-5-orange</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1856,7 +1856,7 @@
                                 <ImageScalesProportionally>No</ImageScalesProportionally>
                             </MediaSettings>
                         </BinderItem>
-                        <BinderItem ID="414" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
+                        <BinderItem ID="414" UUID="877BC3AC-D312-47F0-A52E-359116FBBEB6" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
                             <Title>stamp-6-orange</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1870,7 +1870,7 @@
                                 <ImageScalesProportionally>No</ImageScalesProportionally>
                             </MediaSettings>
                         </BinderItem>
-                        <BinderItem ID="417" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
+                        <BinderItem ID="417" UUID="4F8E6EE1-B4A5-4F2F-B792-B5D02716ABD5" Type="Image" Created="2014-02-04 15:40:35 -0500" Modified="2014-02-04 15:40:35 -0500">
                             <Title>stamp-7-orange</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1884,7 +1884,7 @@
                                 <ImageScalesProportionally>No</ImageScalesProportionally>
                             </MediaSettings>
                         </BinderItem>
-                        <BinderItem ID="420" Type="Image" Created="2014-02-05 14:22:30 -0500" Modified="2014-02-05 14:22:30 -0500">
+                        <BinderItem ID="420" UUID="FB5CF9BC-14DB-4412-B6F9-185DE38FCC21" Type="Image" Created="2014-02-05 14:22:30 -0500" Modified="2014-02-05 14:22:30 -0500">
                             <Title>iCanScript_Title</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1896,7 +1896,7 @@
                                 <Reference BinderID="401" Destination="[Internal Link]">Latex - Image Refs</Reference>
                             </References>
                         </BinderItem>
-                        <BinderItem ID="421" Type="Image" Created="2014-02-05 14:22:36 -0500" Modified="2014-02-05 14:22:36 -0500">
+                        <BinderItem ID="421" UUID="8155E649-30C4-4422-8F7E-4E1FD85157BD" Type="Image" Created="2014-02-05 14:22:36 -0500" Modified="2014-02-05 14:22:36 -0500">
                             <Title>iCanScriptLogo_256x256x32</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1912,13 +1912,13 @@
                 </BinderItem>
             </Children>
         </BinderItem>
-        <BinderItem ID="2" Type="TrashFolder" Created="2013-09-17 10:34:16 -0400" Modified="2013-09-17 10:34:16 -0400">
+        <BinderItem ID="2" UUID="8BAFD5E8-1E48-4C68-B8D5-CA607AD17559" Type="TrashFolder" Created="2013-09-17 10:34:16 -0400" Modified="2013-09-17 10:34:16 -0400">
             <Title>Trash</Title>
             <MetaData>
                 <IncludeInCompile>Yes</IncludeInCompile>
             </MetaData>
             <Children>
-                <BinderItem ID="580" Type="Folder" Created="2015-01-26 11:48:07 -0500" Modified="2015-01-26 11:48:07 -0500">
+                <BinderItem ID="580" UUID="7B75DDA3-3A15-4CB4-8FA8-59F2B64A7130" Type="Folder" Created="2015-01-26 11:48:07 -0500" Modified="2015-01-26 11:48:07 -0500">
                     <Title>Faqs (Unsorted)</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -1929,7 +1929,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="585" Type="Text" Created="2015-03-11 10:54:58 -0400" Modified="2015-03-11 11:23:00 -0400">
+                <BinderItem ID="585" UUID="FAC65B90-7468-4996-BFF8-12B59191AC04" Type="Text" Created="2015-03-11 10:54:58 -0400" Modified="2015-03-11 11:23:00 -0400">
                     <Title>Cornell Notes</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -1941,7 +1941,7 @@
                 </BinderItem>
             </Children>
         </BinderItem>
-        <BinderItem ID="64" Type="Folder" Created="2013-09-17 10:45:35 -0400" Modified="2013-09-17 10:45:54 -0400">
+        <BinderItem ID="64" UUID="04AD7C21-8F3E-4BA5-A89A-88D83344F05B" Type="Folder" Created="2013-09-17 10:45:35 -0400" Modified="2013-09-17 10:45:54 -0400">
             <Title>Front Matter</Title>
             <MetaData>
                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -1952,7 +1952,7 @@
                 <TextSelection>0,0</TextSelection>
             </TextSettings>
             <Children>
-                <BinderItem ID="562" Type="Folder" Created="2014-04-24 08:45:08 -0400" Modified="2014-04-24 08:45:28 -0400">
+                <BinderItem ID="562" UUID="3AB0EAAD-67B9-4DEA-BD25-E8E484147730" Type="Folder" Created="2014-04-24 08:45:08 -0400" Modified="2014-04-24 08:45:28 -0400">
                     <Title>User Guide</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -1963,7 +1963,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                     <Children>
-                        <BinderItem ID="401" Type="Text" Created="2014-02-04 14:26:32 -0500" Modified="2014-04-24 08:41:46 -0400">
+                        <BinderItem ID="401" UUID="B6738284-8ACF-4276-ADF0-CB22D40AD39A" Type="Text" Created="2014-02-04 14:26:32 -0500" Modified="2014-04-24 08:41:46 -0400">
                             <Title>Latex - Image Refs</Title>
                             <MetaData>
                                 <LabelID>11</LabelID>
@@ -1979,7 +1979,7 @@
                                 <Reference BinderID="369" Destination="[Internal Link]">Removing iCanScript</Reference>
                             </References>
                         </BinderItem>
-                        <BinderItem ID="382" Type="Text" Created="2013-12-06 11:03:29 -0500" Modified="2014-05-08 14:58:38 -0400">
+                        <BinderItem ID="382" UUID="3CD9C5D6-CD5A-433D-AC8B-85A0B47CA09F" Type="Text" Created="2013-12-06 11:03:29 -0500" Modified="2014-05-08 14:58:38 -0400">
                             <Title>HTML - Custom CSS</Title>
                             <MetaData>
                                 <LabelID>16</LabelID>
@@ -1994,7 +1994,7 @@
                         </BinderItem>
                     </Children>
                 </BinderItem>
-                <BinderItem ID="278" Type="Folder" Created="2013-10-24 14:02:33 -0400" Modified="2013-10-24 14:02:40 -0400">
+                <BinderItem ID="278" UUID="1D076643-188E-4580-84F9-290EBB21F00E" Type="Folder" Created="2013-10-24 14:02:33 -0400" Modified="2013-10-24 14:02:40 -0400">
                     <Title>Release Notes</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -2005,7 +2005,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="280" Type="Folder" Created="2013-10-24 14:03:26 -0400" Modified="2013-10-24 14:03:31 -0400">
+                <BinderItem ID="280" UUID="EF68FDCA-018C-4BAD-B791-FE419F2A1A8D" Type="Folder" Created="2013-10-24 14:03:26 -0400" Modified="2013-10-24 14:03:31 -0400">
                     <Title>Tutorials</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -2018,7 +2018,7 @@
                 </BinderItem>
             </Children>
         </BinderItem>
-        <BinderItem ID="267" Type="Folder" Created="2013-10-24 13:24:33 -0400" Modified="2013-10-24 13:24:33 -0400">
+        <BinderItem ID="267" UUID="D9B0C7F2-150A-4221-96CB-FC425AA735B7" Type="Folder" Created="2013-10-24 13:24:33 -0400" Modified="2013-10-24 13:24:33 -0400">
             <Title>_Recovered Files</Title>
             <MetaData>
                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -2028,7 +2028,7 @@
                 <TextSelection>0,0</TextSelection>
             </TextSettings>
         </BinderItem>
-        <BinderItem ID="391" Type="Text" Created="2014-02-04 10:31:39 -0500" Modified="2014-02-04 22:25:42 -0500">
+        <BinderItem ID="391" UUID="4C800154-BF09-4964-B8DF-1CFB2BE41A30" Type="Text" Created="2014-02-04 10:31:39 -0500" Modified="2014-02-04 22:25:42 -0500">
             <Title>Front Matter - User Guide - Latex</Title>
             <MetaData>
                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -2039,7 +2039,7 @@
                 <TextSelection>0,0</TextSelection>
             </TextSettings>
             <Children>
-                <BinderItem ID="398" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
+                <BinderItem ID="398" UUID="6F88E4A8-E65F-444A-B034-C8A3E48C1268" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
                     <Title>mmd-memoir-packages</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -2049,7 +2049,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="395" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
+                <BinderItem ID="395" UUID="4A46866C-5DDB-4549-91AE-66C7DFCA0D79" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
                     <Title>mmd-memoir-footer</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -2059,7 +2059,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="394" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
+                <BinderItem ID="394" UUID="92CE5BC6-12FA-4391-84E5-5F17A6D1847D" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
                     <Title>mmd-memoir-copyright</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -2069,7 +2069,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="392" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
+                <BinderItem ID="392" UUID="C62A7A35-79BA-49BF-83D9-396DAAB0A018" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
                     <Title>mmd-default-metadata</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -2079,7 +2079,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="393" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2014-02-04 22:51:43 -0500">
+                <BinderItem ID="393" UUID="AC161CA0-4F1C-407B-8CBC-85708E4A3621" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2014-02-04 22:51:43 -0500">
                     <Title>mmd-memoir-begin-doc</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -2089,7 +2089,7 @@
                         <TextSelection>101,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="396" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
+                <BinderItem ID="396" UUID="AC64E089-ABD8-4B75-A6DC-21CB8B2F1AC4" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
                     <Title>mmd-memoir-header</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -2099,7 +2099,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="397" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
+                <BinderItem ID="397" UUID="C69CFE06-8426-4D08-A503-D9EAC7AC0370" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
                     <Title>mmd-memoir-layout-8.5x11</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -2109,7 +2109,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="399" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
+                <BinderItem ID="399" UUID="42BEAED3-BDC6-485D-B81F-6823AD4251F9" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
                     <Title>mmd-memoir-setup</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -2119,7 +2119,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="400" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
+                <BinderItem ID="400" UUID="9B06B74D-36A9-4B83-869A-C5FCC95D8A05" Type="Text" Created="2013-10-17 15:12:13 -0400" Modified="2013-10-24 00:54:54 -0400">
                     <Title>mmd-title</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -2133,7 +2133,7 @@
         </BinderItem>
     </Binder>
     <Collections>
-        <Collection Type="Binder" ID="AB7677A9-A4E7-4FD0-AC9F-E8C263342688" Color="0.784753 0.815752 0.848702">
+        <Collection Type="Binder" ID="AB7677A9-A4E7-4FD0-AC9F-E8C263342688" Color="0.962266 0.962266 0.962266">
             <Title>Binder</Title>
         </Collection>
         <Collection Type="RecentSearch" ID="B3DC7EB4-2A83-47ED-829B-78494713A750" Color="0.922 0.91 0.98">
@@ -2185,7 +2185,7 @@
     <ProjectTargets Notify="Yes">
         <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="No" Deadline="2013-09-17 10:34:15 -0400" IgnoreDeadline="Yes">20000</DraftTarget>
         <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="Yes" ResetType="Midnight" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">1000</SessionTarget>
-        <PreviousSession Words="0" Characters="1" Date="2015-06-08 21:41:10 -0400"></PreviousSession>
+        <PreviousSession Words="0" Characters="0" Date="2016-06-16 07:47:29 -0400"></PreviousSession>
     </ProjectTargets>
     <PrintSettings PaperSize="612.0,792.0" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="na-letter" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>
 </ScrivenerProject>

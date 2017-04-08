@@ -280,7 +280,7 @@
 	<false/>
 	<key>binderSelection</key>
 	<array>
-		<integer>10</integer>
+		<integer>26</integer>
 	</array>
 	<key>binderSplitFrames</key>
 	<array>
@@ -293,6 +293,8 @@
 		<integer>276</integer>
 		<integer>475</integer>
 		<integer>476</integer>
+		<integer>64</integer>
+		<integer>562</integer>
 	</array>
 	<key>binderWidth</key>
 	<real>324</real>
@@ -374,14 +376,14 @@
 	<integer>3</integer>
 	<key>inspectorSplitFrames</key>
 	<array>
-		<string>{{0, 0}, {830, 1310}}</string>
-		<string>{{831, 0}, {227, 1310}}</string>
+		<string>{{0, 0}, {941, 1308}}</string>
+		<string>{{942, 0}, {227, 1308}}</string>
 	</array>
 	<key>inspectorWidth</key>
 	<real>274</real>
 	<key>mainDocumentEditor.binderDocuments</key>
 	<array>
-		<integer>12</integer>
+		<integer>401</integer>
 	</array>
 	<key>mainDocumentEditor.currentEditorViewMode</key>
 	<integer>0</integer>
@@ -412,34 +414,6 @@
 		<integer>99</integer>
 		<key>NavigationHistoryArray</key>
 		<array>
-			<dict>
-				<key>AggregateSelection</key>
-				<string>{0, 0}</string>
-				<key>BinderDocIDs</key>
-				<array>
-					<integer>277</integer>
-				</array>
-				<key>ViewMode</key>
-				<integer>1</integer>
-			</dict>
-			<dict>
-				<key>AggregateSelection</key>
-				<string>{0, 0}</string>
-				<key>BinderDocIDs</key>
-				<array>
-					<integer>423</integer>
-				</array>
-				<key>ViewMode</key>
-				<integer>1</integer>
-			</dict>
-			<dict>
-				<key>BinderDocIDs</key>
-				<array>
-					<integer>422</integer>
-				</array>
-				<key>ViewMode</key>
-				<integer>0</integer>
-			</dict>
 			<dict>
 				<key>BinderDocIDs</key>
 				<array>
@@ -1330,6 +1304,30 @@
 				<key>ViewMode</key>
 				<integer>0</integer>
 			</dict>
+			<dict>
+				<key>BinderDocIDs</key>
+				<array>
+					<integer>401</integer>
+				</array>
+				<key>ViewMode</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>BinderDocIDs</key>
+				<array>
+					<integer>382</integer>
+				</array>
+				<key>ViewMode</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>BinderDocIDs</key>
+				<array>
+					<integer>401</integer>
+				</array>
+				<key>ViewMode</key>
+				<integer>0</integer>
+			</dict>
 		</array>
 	</dict>
 	<key>mainDocumentEditor.outlinerColumnsState</key>
@@ -1403,9 +1401,9 @@
 		<integer>478</integer>
 	</array>
 	<key>mainDocumentEditor.scrollRect</key>
-	<string>{{0, 0}, {627.33331, 822}}</string>
+	<string>{{0, 0}, {627.33331, 817.33331}}</string>
 	<key>mainDocumentEditor.selectedRanges</key>
-	<string>{1285, 0}</string>
+	<string>{479, 0}</string>
 	<key>mainDocumentEditor.textEditorState</key>
 	<dict>
 		<key>hasMultiplePages</key>
@@ -1462,7 +1460,7 @@
 		</dict>
 	</dict>
 	<key>selectedCollectionTabIndex</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>showEditScriveningsTitles</key>
 	<true/>
 	<key>showInvisibles</key>
