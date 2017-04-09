@@ -1,7 +1,7 @@
 //
 // File: iCS_UserCommands_DisplayOptions
 //
-//#define _DEBUG
+//#define ICS_DEBUG
 using UnityEngine;
 using System.Collections;
 using iCanScript.Internal.Engine;
@@ -14,7 +14,7 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
         // OK
         public static void Unfold(iCS_EditorObject node) {
-#if _DEBUG
+#if ICS_DEBUG
             Debug.Log("iCanScript: Unfold => "+node.DisplayName);
 #endif
             if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
@@ -47,7 +47,7 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
         // OK
         public static void Fold(iCS_EditorObject node) {
-#if _DEBUG
+#if ICS_DEBUG
             Debug.Log("iCanScript: Fold => "+node.DisplayName);
 #endif
             if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Folded) {
@@ -80,7 +80,7 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
         // OK
         public static void Iconize(iCS_EditorObject node) {
-#if DEBUG
+#if ICS_DEBUG
             Debug.Log("iCanScript: Iconize => "+node.DisplayName);
 #endif
             if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Iconized) {
