@@ -5,9 +5,10 @@ using System.Text;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 namespace iCanScript.Internal.JSON {
-    
+
 // =============================================================================
 // JSON value
 // -----------------------------------------------------------------------------
@@ -82,7 +83,7 @@ public abstract class JValue : JSON {
                     if(transform != null) {
                         transform= transform.parent;
                         if(transform != null) {
-                            parent= transform.gameObject;                                                    
+                            parent= transform.gameObject;
                         }
                         else {
                             parent= null;
@@ -94,7 +95,7 @@ public abstract class JValue : JSON {
                 }
                 parentList.Reverse();
                 desc.Add(new JNameValuePair("Parents", parentList));
-                var scenePath= EditorApplication.currentScene;
+                var scenePath= SceneManager.GetActiveScene().path;
                 desc.Add(new JNameValuePair("SceneGUID", AssetDatabase.AssetPathToGUID(scenePath)));
             }
             // Handle Unity Assets
@@ -118,10 +119,10 @@ public abstract class JValue : JSON {
                 shouldEncode= false;
                 foreach(var attribute in field.GetCustomAttributes(true)) {
                     if(attribute is SerializeField) shouldEncode= true;
-                }                
+                }
             }
             if(shouldEncode) {
-    			attributes.Add(new JNameValuePair(field.Name, Build(field.GetValue(value))));                                
+    			attributes.Add(new JNameValuePair(field.Name, Build(field.GetValue(value))));
             }
 		}
         return new JObject(attributes);
@@ -253,7 +254,7 @@ public class JNameValuePair : JSON {
         MustBeChar(s, ref i, ':');
         // Parse value
         var value= ParseValue(s, ref i);
-        return new JNameValuePair(name, value);        
+        return new JNameValuePair(name, value);
     }
 }
 

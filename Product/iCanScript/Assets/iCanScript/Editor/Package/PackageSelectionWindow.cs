@@ -33,7 +33,7 @@ namespace iCanScript.Internal.Editor {
 		static Color	   ourSelectedColor  		 = new Color(0.25f, 0.5f, 1f);
         static Vector3[]   ourHeaderShape  = null;
         static Vector3[]   ourListAreaShape= null;
-        static Rect        ourHeaderRect   = new Rect(0, 0, kWidth, kHeaderHeight);
+//        static Rect        ourHeaderRect   = new Rect(0, 0, kWidth, kHeaderHeight);
         static Rect        ourListAreaRect = new Rect(0, kHeaderHeight, kWidth, kListAreaHeight);
         static Texture2D   ourLogo         = null;
 		static Rect		   ourLogoPosition;
@@ -356,11 +356,12 @@ namespace iCanScript.Internal.Editor {
 		}
 
 		void OnEnable() {
-			var visualScripts= FileUtils.GetPathsOfAllVisualScripts();
-			foreach(var vs in visualScripts) {
-				Debug.Log(vs);
-			}
+//			var visualScripts= FileUtils.GetPathsOfAllVisualScripts();
+//			foreach(var vs in visualScripts) {
+//				Debug.Log(vs);
+//			}
 		}
+
 
     }
 

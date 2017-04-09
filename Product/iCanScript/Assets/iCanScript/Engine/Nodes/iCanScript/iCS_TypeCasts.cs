@@ -13,7 +13,7 @@ namespace iCanScript.Conversions {
 	    [iCS_TypeCast] public static bool   ToBool(Vector2 v)   { return Math3D.IsNotZero(v); }
 	    [iCS_TypeCast] public static bool   ToBool(Vector3 v)   { return Math3D.IsNotZero(v); }
 	    [iCS_TypeCast] public static bool   ToBool(Vector4 v)   { return Math3D.IsNotZero(v); }
-    
+
 	    // To Int.
 	    [iCS_TypeCast] public static int    ToInt(bool v)   { return v ? 1 : 0; }
 	    [iCS_TypeCast] public static int    ToInt(float v)  { return (int)v; }
@@ -21,7 +21,7 @@ namespace iCanScript.Conversions {
 	    // To Float.
 	    [iCS_TypeCast] public static float  ToFloat(bool v) { return v ? 1f : 0f; }
 	    [iCS_TypeCast] public static float  ToFloat(int v)  { return (float)v; }
-    
+
 	    // To String.
 		[iCS_TypeCast] public static string ToString(object v)      { return v.ToString(); }
 	    [iCS_TypeCast] public static string ToString(bool v)        { return v ? "true" : "false"; }
@@ -55,18 +55,18 @@ namespace iCanScript.Conversions {
 	    [iCS_TypeCast] public static HingeJoint          ToHingeJoint(GameObject go)          { return go.GetComponent<HingeJoint>(); }
 	    [iCS_TypeCast] public static Light               ToLight(GameObject go)               { return go.GetComponent<Light>(); }
 	    [iCS_TypeCast] public static NetworkView         ToNetworkView(GameObject go)         { return go.GetComponent<NetworkView>(); }
-	    [iCS_TypeCast] public static ParticleEmitter     ToParticleEmitter(GameObject go)     { return go.GetComponent<ParticleEmitter>(); }
+//	    [iCS_TypeCast] public static ParticleEmitter     ToParticleEmitter(GameObject go)     { return go.GetComponent<ParticleEmitter>(); }
 	    [iCS_TypeCast] public static Renderer            ToRenderer(GameObject go)            { return go.GetComponent<Renderer>(); }
 	    [iCS_TypeCast] public static Rigidbody           ToRigidBody(GameObject go)           { return go.GetComponent<Rigidbody>(); }
 	    [iCS_TypeCast] public static Rigidbody2D         ToRigidBody2D(GameObject go)         { return go.GetComponent<Rigidbody2D>(); }
 	    [iCS_TypeCast] public static Transform           ToTransform(GameObject go)           { return go.GetComponent<Transform>(); }
 	    [iCS_TypeCast] public static CharacterController ToCharacterController(GameObject go) { return go.GetComponent<CharacterController>(); }
 	    [iCS_TypeCast] public static MonoBehaviour       ToMonoBehaviour(GameObject go)       { return go.GetComponent<MonoBehaviour>(); }
-    
+
 	    // To GameObject from components
 	    [iCS_TypeCast] public static GameObject          ToGameObject(Component c)            { return c.gameObject; }
 	    [iCS_TypeCast] public static GameObject          ToGameObject(Transform c)            { return c.gameObject; }
 	}
-	
+
 }
 

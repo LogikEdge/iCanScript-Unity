@@ -2,11 +2,12 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 namespace iCanScript.Internal.Editor {
     using ActionVisualScript= System.Action<iCS_IStorage>;
     using ActionEditorObject= System.Action<iCS_EditorObject>;
-    
+
     public static class SystemEvents {
         // ======================================================================
         // Callbacks
@@ -31,7 +32,7 @@ namespace iCanScript.Internal.Editor {
         public static ActionEditorObject OnVisualScriptElementNameChanged  = null;  ///< Event: Visual script element name change
         // Events related to scene changes.
         public static Action    OnSceneVisualScriptListChange= null;    ///< Event: Additon or removal of a visual script in scene
-        
+
         // ======================================================================
         // State fields
         // ----------------------------------------------------------------------
@@ -41,15 +42,15 @@ namespace iCanScript.Internal.Editor {
         static bool         myIsPlaying       = false;
         static bool         myIsPaused        = false;
     	static EditorWindow myWindowUnderMouse= null;
-        
+
         // ======================================================================
         // Persistant States
         // ----------------------------------------------------------------------
         public static bool PersistantIsCompiling {
             get { return EditorPrefs.GetBool("iCS_IsCompilingState", false); }
-            set { EditorPrefs.SetBool("iCS_IsCompilingState", value); }        
+            set { EditorPrefs.SetBool("iCS_IsCompilingState", value); }
         }
-    
+
         // ======================================================================
         // Trap Unity events
         // ----------------------------------------------------------------------
@@ -61,7 +62,7 @@ namespace iCanScript.Internal.Editor {
             EditorApplication.searchChanged+= SearchChanged;
             EditorApplication.update+= Update;
             // Initial state values.
-            myCurrentScene= EditorApplication.currentScene;
+            myCurrentScene= SceneManager.GetActiveScene().path;
             myIsCompiling = PersistantIsCompiling;
             CheckCompileState();
         }
@@ -69,7 +70,7 @@ namespace iCanScript.Internal.Editor {
         // Used to start & shutdown the system events services.
         public static void Start() {}
         public static void Shutdown() {}
-        
+
         // ======================================================================
         // Event Announcements
         // ----------------------------------------------------------------------
@@ -94,7 +95,7 @@ namespace iCanScript.Internal.Editor {
         public static void AnnounceSceneVisualScriptListChange() {
             Invoke(OnSceneVisualScriptListChange);
         }
-        
+
         // ======================================================================
         // Process Unity events
         // ----------------------------------------------------------------------
@@ -118,9 +119,9 @@ namespace iCanScript.Internal.Editor {
         // ----------------------------------------------------------------------
         // This method attempts to determine what has changed in the search.
         static void SearchChanged() {
-    //        Debug.Log("iCanScript: search has changed");        
+    //        Debug.Log("iCanScript: search has changed");
         }
-    	
+
         // ----------------------------------------------------------------------
         // This method attempts to determine what has changed.
         static void Update() {
@@ -140,7 +141,7 @@ namespace iCanScript.Internal.Editor {
     		// Detect for window under mouse changed.
     		CheckWindowUnderMouse();
         }
-    	
+
         // ----------------------------------------------------------------------
         static void CheckWindowUnderMouse() {
     		// If current moused over window changes, Update help string and display
@@ -148,9 +149,9 @@ namespace iCanScript.Internal.Editor {
     		if(windowUnderMouse !=  myWindowUnderMouse) {
     			myWindowUnderMouse= windowUnderMouse;
                 Invoke(OnWindowUnderMouseChange);
-    		}	
+    		}
         }
-    	
+
         // ----------------------------------------------------------------------
         static void CheckCompileState() {
             var compiling= EditorApplication.isCompiling;
@@ -164,16 +165,16 @@ namespace iCanScript.Internal.Editor {
                 }
                 myIsCompiling= compiling;
                 PersistantIsCompiling= myIsCompiling;
-            }        
+            }
         }
         // ----------------------------------------------------------------------
         static void CheckCurrentSceneChange() {
-            var currentScene= EditorApplication.currentScene;
+            var currentScene= SceneManager.GetActiveScene().path;
             if(currentScene != myCurrentScene) {
     //            Debug.Log("iCanScript: scene has changed. New path is: "+currentScene+"; New GUID is: "+AssetDatabase.AssetPathToGUID(currentScene));
                 Invoke(OnSceneChanged);
                 myCurrentScene= currentScene;
-            }        
+            }
         }
         // ----------------------------------------------------------------------
         static void CheckEnginePlayingState() {
@@ -187,7 +188,7 @@ namespace iCanScript.Internal.Editor {
                     Invoke(OnEngineStopped);
                 }
                 myIsPlaying= isPlaying;
-            }        
+            }
         }
         // ----------------------------------------------------------------------
         static void CheckEnginePausedState() {
@@ -201,9 +202,9 @@ namespace iCanScript.Internal.Editor {
                     Invoke(OnEngineStarted);
                 }
                 myIsPaused= isPaused;
-            }        
+            }
         }
-    
+
         // ======================================================================
         // Utilities
         // ----------------------------------------------------------------------
@@ -214,8 +215,8 @@ namespace iCanScript.Internal.Editor {
                         handler();
                     }
                     catch(Exception) {}
-                }                       
-            }                        
+                }
+            }
         }
         // ----------------------------------------------------------------------
         static void Invoke<T>(Action<T> action, T p) {
@@ -225,8 +226,8 @@ namespace iCanScript.Internal.Editor {
                         handler(p);
                     }
                     catch(Exception) {}
-                }                       
-            }                        
+                }
+            }
         }
         // ----------------------------------------------------------------------
         static void Invoke<T1,T2>(Action<T1,T2> action, T1 p1, T2 p2) {
@@ -236,8 +237,8 @@ namespace iCanScript.Internal.Editor {
                         handler(p1, p2);
                     }
                     catch(Exception) {}
-                }                       
-            }                        
+                }
+            }
         }
     }
 

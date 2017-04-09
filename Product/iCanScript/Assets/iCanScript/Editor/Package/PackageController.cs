@@ -7,7 +7,7 @@ using iCanScript.Internal.JSON;
 
 namespace iCanScript.Internal.Editor {
     using Prefs= PreferencesController;
-	
+
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     /// This class creates an active project singleton.
     ///
@@ -21,7 +21,7 @@ namespace iCanScript.Internal.Editor {
         // ---------------------------------------------------------------------------------
         static PackageInfo      myDefaultProject= null;
         static PackageInfo[]	myProjects      = null;
-        
+
         // =================================================================================
         // Properties
         // ---------------------------------------------------------------------------------
@@ -35,19 +35,19 @@ namespace iCanScript.Internal.Editor {
             get {
                 if(myDefaultProject == null) {
                     myDefaultProject= new PackageInfo();
-                    myDefaultProject.Save();            
+                    myDefaultProject.Save();
                 }
-                return myDefaultProject;                
+                return myDefaultProject;
             }
         }
-		
+
         // =================================================================================
         // INIT / SHUTDOWN
         // ---------------------------------------------------------------------------------
         static PackageController()    { UpdatePackageDatabase(); }
         public static void Start()    {}
         public static void Shutdown() {}
-        
+
         // =================================================================================
         /// Creates a project file.
     	[MenuItem("iCanScript/Packages...", false, 80)]
@@ -78,7 +78,7 @@ namespace iCanScript.Internal.Editor {
 			if(!rootProjectFound) {
 				var rootProject= new PackageInfo();
 				rootProject.Save();
-				Array.Resize(ref myProjects, myProjects.Length+1); 
+				Array.Resize(ref myProjects, myProjects.Length+1);
 				myProjects[myProjects.Length-1]= rootProject;
 			}
             // -- Rebuild package hierarchy. --
@@ -92,7 +92,7 @@ namespace iCanScript.Internal.Editor {
                             break;
                         }
                     }
-                    myProjects[i].SetPackageFolder(pi);                    
+                    myProjects[i].SetPackageFolder(pi);
                 }
             }
 			// -- Assure that the longest path is first to simplify search. --
@@ -134,7 +134,7 @@ namespace iCanScript.Internal.Editor {
             }
             return false;
         }
-        
+
         // =================================================================================
 		/// Returns the project associated with a Unity Object.
 		///
@@ -150,7 +150,7 @@ namespace iCanScript.Internal.Editor {
 			string path= null;
 			// -- Search for scene path if GO is in the a scene. --
 			if(UnityUtility.IsSceneGameObject(go)) {
-				path= EditorApplication.currentScene;
+				path= UnityEngine.SceneManagement.SceneManager.GetActiveScene().path;
 			}
 			// -- Search for asset path if GO is a prefab. --
 			else {
