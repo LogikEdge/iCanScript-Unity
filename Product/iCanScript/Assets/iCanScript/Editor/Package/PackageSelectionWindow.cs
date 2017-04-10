@@ -5,13 +5,13 @@ using System.Collections;
 using P= iCanScript.Internal.Prelude;
 
 namespace iCanScript.Internal.Editor {
-    
+
     public class PackageSelectionWindow : EditorWindow {
         // =================================================================================
         // Types
         // ---------------------------------------------------------------------------------
 		enum RowSelection { None, Project, Settings, Remove };
-		
+
         // =================================================================================
         // Fields
         // ---------------------------------------------------------------------------------
@@ -51,27 +51,27 @@ namespace iCanScript.Internal.Editor {
         static GUIStyle    ourPopupStyle        = null;
         static Vector2     ourScrollPosition    = Vector2.zero;
         static float       ourTitleHeight       = kTitleFontSize;
-        
+
         // Variables used by different window pages.
         int         myMenuSelection    = 0;     //< Determines which page is selected.
 		int         mySelectedPackageId= 0;     //< The package that is selected
 
         // Create package variables.
         PackageInfo myNewPackage       = null;  //< The new package info.
-        int         myParentSelection  = 0;     //< The parent package selection 
-		
+        int         myParentSelection  = 0;     //< The parent package selection
+
         // =================================================================================
         /// Creates a package selection window.
         public static PackageSelectionWindow Init() {
             // -- Create window. --
             var editor= EditorWindow.CreateInstance<PackageSelectionWindow>();
 			editor.wantsMouseMove= true;
-			
+
             // -- Set window title --
             Texture2D iCanScriptLogo= null;
             TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo);
             editor.titleContent= new GUIContent("iCanScript Package Selection", iCanScriptLogo);
-    
+
             // -- Fix window size. --
             editor.minSize= new Vector2(kWidth, kHeaderHeight+kListAreaHeight);
             editor.maxSize= new Vector2(kWidth, kHeaderHeight+kListAreaHeight);
@@ -87,15 +87,15 @@ namespace iCanScript.Internal.Editor {
             // -- Initialize only once. --
             if(isInitialized) return;
             isInitialized= true;
-            
+
             // -- Build the window area shapes. --
 			ourHeaderShape  = Shapes.Rectangle2D(0, 0, kWidth, kHeaderHeight);
 			ourListAreaShape= Shapes.Rectangle2D(0, kHeaderHeight, kWidth, kListAreaHeight);
-                            
+
 			// -- Load adornments. --
             TextureCache.GetTexture(iCS_EditorStrings.LogoIcon, out ourLogo);
 			ourLogoPosition= new Rect(kWidth-80f, 16f, 64f, 64f);
-			
+
 			// -- Setup GUI styles. --
 			ourHeaderTextStyle= new GUIStyle(EditorStyles.largeLabel);
 			ourHeaderTextStyle.fontSize= kHeaderFontSize;
@@ -112,28 +112,28 @@ namespace iCanScript.Internal.Editor {
 			ourProjectFolderStyle= new GUIStyle(EditorStyles.largeLabel);
 			ourProjectFolderStyle.fontSize= kFolderFontSize;
             ourTitleHeight= ourProjectTitleStyle.CalcSize(new GUIContent("A")).y;
-            
+
 			ourNewProjectText= new GUIContent("+ New Package");
 			var newProjectTextSize= ourProjectTitleStyle.CalcSize(ourNewProjectText);
 			ourNewProjectTextRect= new Rect(ourLogoPosition.x-kSpacer-newProjectTextSize.x, kHeaderHeight-1.5f*kSpacer-newProjectTextSize.y, newProjectTextSize.x, newProjectTextSize.y);
-			
+
             ourTextFieldStyle= new GUIStyle(EditorStyles.textField);
             ourTextFieldStyle.fontSize= kTitleFontSize;
-            
+
             ourPopupStyle= new GUIStyle(EditorStyles.popup);
             ourPopupStyle.fontSize= kTitleFontSize;
-            
+
 			// -- Refresh existing project information. --
-			PackageController.UpdatePackageDatabase();			
+			PackageController.UpdatePackageDatabase();
 		}
-		
+
         // =================================================================================
         /// GUI Event
         public void Update() { Repaint(); }
         public void OnGUI() {
 			// -- Assure the GUI is properly initialized. --
 			Initialize();
-			
+
 			// -- Set background colors. --
 			Handles.DrawSolidRectangleWithOutline(ourHeaderShape, ourHeaderBackgroundColor, ourHeaderBackgroundColor);
 			Handles.DrawSolidRectangleWithOutline(ourListAreaShape, ourListAreaBackgroundColor, ourListAreaBackgroundColor);
@@ -146,7 +146,19 @@ namespace iCanScript.Internal.Editor {
                 case 0: PackageList(); break;
                 case 1: CreatePackage(); break;
             }
-			Event.current.Use();
+
+            // -- Consum the event. --
+    		var ev= Event.current;
+            switch(ev.type) {
+                case EventType.Repaint:
+                case EventType.Layout: {
+                    break;
+                }
+                default: {
+        			Event.current.Use();
+                    break;
+                }
+            }
         }
 
         // =================================================================================
@@ -157,15 +169,15 @@ namespace iCanScript.Internal.Editor {
 			GUI.Label(ourProjectsTextRect, ourProjectsText, ourHeaderTextStyle);
 			if(ourButtonStyle == null) {
 				ourButtonStyle= new GUIStyle(GUI.skin.button);
-				ourButtonStyle.fontSize= ourProjectTitleStyle.fontSize;				
-			}			
+				ourButtonStyle.fontSize= ourProjectTitleStyle.fontSize;
+			}
 			if(GUI.Button(ourNewProjectTextRect, ourNewProjectText)) {
                 myNewPackage= new PackageInfo();
                 myParentSelection= 0;
 	            myMenuSelection= 1;
                 return;
 			}
-			
+
 			// -- Project list. --
 			var projects= PackageController.Projects;
             var viewRect= new Rect(0,0, ourListAreaRect.width-16f, kRowHeight*projects.Length);
@@ -192,7 +204,7 @@ namespace iCanScript.Internal.Editor {
 			}
             GUI.EndScrollView();
         }
-		
+
 		RowSelection DisplayRow(int rowId, PackageInfo package, bool isSelected) {
             // -- Extract the package information. --
             var title= package.PackageName;
@@ -210,14 +222,14 @@ namespace iCanScript.Internal.Editor {
 					isMouseOver= true;
 				}
 			}
-			
+
 			// -- Assume project is selected if mouse button is pressed. --
 			var rowSelection= RowSelection.None;
 			var e= Event.current;
 			if(isMouseOver && e.type == EventType.MouseDown && e.button == 0) {
 				rowSelection= RowSelection.Project;
 			}
-			
+
 			// -- Add separator line between project rows. --
 			if(rowId != 0) {
 				Handles.color= Color.grey;
@@ -253,24 +265,24 @@ namespace iCanScript.Internal.Editor {
 				var removeRect= new Rect(kWidth-kSpacer-200f, y, 100f-0.5f*kSpacer, 34f);
 				if(GUI.Button(removeRect, "Remove")) {
 					rowSelection= RowSelection.Remove;
-				}				
+				}
                 EditorGUI.EndDisabledGroup();
 			}
 
 			// -- Show project folder. --
 			titleRect.y+= ourProjectTitleStyle.fontSize+0.25f*kSpacer;
-			GUI.Label(titleRect, folder, ourProjectFolderStyle);			
+			GUI.Label(titleRect, folder, ourProjectFolderStyle);
 
 			return rowSelection;
 		}
-        
+
         // =================================================================================
         /// Ask the user to provide the needed information to create a project.
 		void CreatePackage() {
 			// -- Header. --
             ourHeaderTextStyle.normal.textColor= ourSelectedColor;
 			GUI.Label(ourCreatePackageTextRect, ourCreatePackageText, ourHeaderTextStyle);
-			
+
             // -- Project fields. --
             myNewPackage.PackageName= EditorGUI.TextField(GetFieldPosition(0), "Package Name", myNewPackage.PackageName, ourTextFieldStyle);
 			var allPackages= BuildPackageSelection();
@@ -297,9 +309,9 @@ namespace iCanScript.Internal.Editor {
                 var y= buttonY - 60f;
                 var w= 2f*width-kSpacer;
                 var h= 40f;
-                EditorGUI.HelpBox(new Rect(x,y,w,h), "PROJECT ALREADY EXISTS:\n--> "+myNewPackage.GetRelativeFileNamePath(), MessageType.Error);                
+                EditorGUI.HelpBox(new Rect(x,y,w,h), "PROJECT ALREADY EXISTS:\n--> "+myNewPackage.GetRelativeFileNamePath(), MessageType.Error);
             }
-                        
+
             // -- Process "Save" button. --
             EditorGUI.BeginDisabledGroup(packageAlreadyExists);
             if(GUI.Button(new Rect(buttonXMax-width, buttonY, buttonWidth, 20.0f),"Save")) {
@@ -309,13 +321,13 @@ namespace iCanScript.Internal.Editor {
                     myMenuSelection= 0;
                 }
             }
-            EditorGUI.EndDisabledGroup();            
+            EditorGUI.EndDisabledGroup();
             // -- Process "Cancel" button. --
             if(GUI.Button(new Rect(buttonXMax-2f*width, buttonY, buttonWidth, 20.0f),"Cancel")) {
                 myMenuSelection= 0;
             }
 		}
-        
+
         // =================================================================================
         /// Return the field position for the given id.
         ///
@@ -330,7 +342,7 @@ namespace iCanScript.Internal.Editor {
             var y= ourListAreaRect.y+kSpacer + id*(height+2f*margin);
             return new Rect(x, y+margin, width, height);
         }
-        
+
         // =================================================================================
         /// Build namespace menu.
 		static PackageInfo[] BuildPackageSelection() {
