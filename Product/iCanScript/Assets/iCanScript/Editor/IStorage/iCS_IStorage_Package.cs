@@ -3,7 +3,7 @@ using System.Collections;
 using P=iCanScript.Internal.Prelude;
 
 namespace iCanScript.Internal.Editor {
-    
+
     public partial class iCS_IStorage {
     	// -------------------------------------------------------------------------
     	// Wraps the given object in a package
@@ -12,7 +12,7 @@ namespace iCanScript.Internal.Editor {
     		var parent= obj.ParentNode;
             var package= CreatePackage(parent.InstanceId, obj.DisplayName);
     		ChangeParent(obj, package);
-    		// Attempt to reposition the package ports to match the object ports.		
+    		// Attempt to reposition the package ports to match the object ports.
     		obj.ForEachChildPort(
     			p => {
     				var sourcePort= p.ProducerPort;
@@ -34,7 +34,10 @@ namespace iCanScript.Internal.Editor {
     				}
     			}
     		);
+            // -- Force the relayout of the visual graph. --
             ForcedRelayoutOfTree();
+            // -- Relayout ports on internal node. --
+            AutoLayoutPortOnNode(obj);
     		return package;
     	}
     	// -------------------------------------------------------------------------
@@ -53,7 +56,7 @@ namespace iCanScript.Internal.Editor {
             var package= CreatePackage(parent.InstanceId, "");
             foreach(var obj in objects) {
         		ChangeParent(obj, package);
-        		// Attempt to reposition the package ports to match the object ports.		
+        		// Attempt to reposition the package ports to match the object ports.
         		obj.ForEachChildPort(
         			p => {
         				var sourcePort= p.ProducerPort;
@@ -74,7 +77,13 @@ namespace iCanScript.Internal.Editor {
         					);
         				}
         			}
-        		);            
+        		);
+            }
+            // -- Force the relayout of the visual graph. --
+            ForcedRelayoutOfTree();
+            // -- Relayout ports on internal node. --
+            foreach(var obj in objects) {
+                AutoLayoutPortOnNode(obj);
             }
             return package;
         }

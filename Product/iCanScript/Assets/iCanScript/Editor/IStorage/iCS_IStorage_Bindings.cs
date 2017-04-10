@@ -1,9 +1,12 @@
+//#define iCS_DEBUG
+
 using UnityEngine;
 using System.Collections;
 using iCanScript.Internal.Engine;
 
+
 namespace iCanScript.Internal.Editor {
-    
+
     public partial class iCS_IStorage {
         // ======================================================================
         // Port Connectivity
@@ -11,7 +14,7 @@ namespace iCanScript.Internal.Editor {
         public void SetSource(iCS_EditorObject obj, iCS_EditorObject producerPort) {
             int id= producerPort == null ? -1 : producerPort.InstanceId;
             if(id != obj.ProducerPortId) {
-                obj.ProducerPortId= id; 
+                obj.ProducerPortId= id;
                 if(id != -1) {
                     GraphEditor.RefreshPortSpec(producerPort);
                 }
@@ -45,7 +48,7 @@ namespace iCanScript.Internal.Editor {
         // ----------------------------------------------------------------------
         public void DisconnectPort(iCS_EditorObject port) {
             SetSource(port, null);
-            Prelude.forEach(p=> SetSource(p, null), port.ConsumerPorts);        
+            Prelude.forEach(p=> SetSource(p, null), port.ConsumerPorts);
         }
         // ----------------------------------------------------------------------
         public iCS_EditorObject FindAConnectedPort(iCS_EditorObject port) {
@@ -69,8 +72,8 @@ namespace iCanScript.Internal.Editor {
             iCS_EngineObject engineObject= Storage.GetSegmentProducerPort(port.EngineObject);
             return engineObject != null ? EditorObjects[engineObject.InstanceId] : null;
         }
-    
-    
+
+
         // ======================================================================
         // Binding Queries
     	// ----------------------------------------------------------------------
@@ -82,7 +85,7 @@ namespace iCanScript.Internal.Editor {
                 consumerPort= providerPort;
                 providerPort= providerPort.ProducerPort;
             }
-            return consumerPort; 
+            return consumerPort;
         }
     	// ----------------------------------------------------------------------
         public iCS_EditorObject GetPointToPointConsumerPortForProducerPort(iCS_EditorObject providerPort) {
@@ -91,7 +94,7 @@ namespace iCanScript.Internal.Editor {
                 var consumerPorts= providerPort.ConsumerPorts;
                 if(consumerPorts == null || consumerPorts.Length == 0) return providerPort;
                 if(consumerPorts.Length > 1) return providerPort;
-                providerPort= consumerPorts[0];            
+                providerPort= consumerPorts[0];
             }
             return providerPort;
         }
@@ -106,7 +109,7 @@ namespace iCanScript.Internal.Editor {
             }
             return consumerPorts;
         }
-    
+
         // ======================================================================
         // Binding Automatic Layout
     	// ----------------------------------------------------------------------
@@ -147,7 +150,7 @@ namespace iCanScript.Internal.Editor {
     	}
     	// ----------------------------------------------------------------------
     	public void AutoLayoutPort(iCS_EditorObject port) {
-            var portPos= port.GlobalPosition;		
+            var portPos= port.GlobalPosition;
             // First layout from port to provider
             var providerPort= GetPointToPointProducerPortForConsumerPort(port);
             if(providerPort != null && providerPort != port) {
@@ -163,7 +166,7 @@ namespace iCanScript.Internal.Editor {
                     AutoLayoutPort(consumerPort, portPos, consumerLayoutEndPoint);
                     AutoLayoutOfPointToPointBindingExclusive(port, consumerPort);
                 }
-            }		
+            }
     	}
     	// ----------------------------------------------------------------------
         public bool AutoLayoutPort(iCS_EditorObject port, Vector2 p1, Vector2 p2) {
@@ -227,7 +230,7 @@ namespace iCanScript.Internal.Editor {
         public void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, LibraryFunction conversion= null) {
     		iCS_EditorObject inParentNode  = inPort.ParentNode;
             iCS_EditorObject outParentNode = outPort.ParentNode;
-            iCS_EditorObject inGrandParent = inParentNode.ParentNode;        
+            iCS_EditorObject inGrandParent = inParentNode.ParentNode;
             iCS_EditorObject outGrandParent= outParentNode.ParentNode;
 
             // No need to create module ports if both connected nodes are under the same parent.
@@ -258,7 +261,7 @@ namespace iCanScript.Internal.Editor {
     			}
                 SetNewDataConnection(newPort, outPort);
                 OptimizeDataConnection(inPort, outPort);
-                return;                       
+                return;
             }
             // Create outPort if outParent is not part of the inParent hierarchy.
             bool outParentSeen= false;
@@ -289,7 +292,7 @@ namespace iCanScript.Internal.Editor {
     			}
                 SetNewDataConnection(inPort, newPort);
                 OptimizeDataConnection(inPort, outPort);
-                return;                       
+                return;
             }
             // Should never happen ... just connect the ports.
             SetSource(inPort, outPort, conversion);
@@ -297,9 +300,9 @@ namespace iCanScript.Internal.Editor {
         }
     	// ----------------------------------------------------------------------
     	public void RebuildDataConnection(iCS_EditorObject outputPort, iCS_EditorObject inputPort) {
-    #if DEBUG
+#if iCS_DEBUG
     		Debug.Log("iCanScript: RebuildDataConnection: output= "+outputPort.DisplayName+" input= "+inputPort.DisplayName);
-    #endif
+#endif
     		// Have we completed rebuilding ... if so return.
     		if(inputPort == outputPort) return;
     		var inputNode= inputPort.ParentNode;
@@ -320,7 +323,7 @@ namespace iCanScript.Internal.Editor {
     					inputPort.ProducerPort= existingPort;
     					if(prevSource.IsDynamicDataPort && !inputPort.IsPartOfConnection(prevSource)) {
     						CleanupHangingConnection(prevSource);
-    					}					
+    					}
     				}
     				RebuildDataConnection(outputPort, existingPort);
     			} else {
@@ -328,8 +331,8 @@ namespace iCanScript.Internal.Editor {
     				SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
     				newPort.ProducerPort= inputPort.ProducerPort;
     				inputPort.ProducerPort= newPort;
-    				RebuildDataConnection(outputPort, newPort);				
-    			}			
+    				RebuildDataConnection(outputPort, newPort);
+    			}
     			return;
     		}
     		var inputNodeParent= inputNode.ParentNode;
@@ -346,7 +349,7 @@ namespace iCanScript.Internal.Editor {
     					inputPort.ProducerPort= existingPort;
     					if(prevSource.IsDynamicDataPort && !inputPort.IsPartOfConnection(prevSource)) {
     						CleanupHangingConnection(prevSource);
-    					}					
+    					}
     				}
     				RebuildDataConnection(outputPort, existingPort);
     			} else {
@@ -354,7 +357,7 @@ namespace iCanScript.Internal.Editor {
     				SetBestPositionForAutocreatedPort(newPort, outputPort.GlobalPosition, inputPort.GlobalPosition);
     				newPort.ProducerPort= inputPort.ProducerPort;
     				inputPort.ProducerPort= newPort;
-    				RebuildDataConnection(outputPort, newPort);				
+    				RebuildDataConnection(outputPort, newPort);
     			}
     			return;
     		} else {
@@ -366,7 +369,7 @@ namespace iCanScript.Internal.Editor {
     					inputPort.ProducerPort= existingPort;
     					if(prevSource.IsDynamicDataPort && !inputPort.IsPartOfConnection(prevSource)) {
     						CleanupHangingConnection(prevSource);
-    					}					
+    					}
     				}
     				RebuildDataConnection(outputPort, existingPort);
     			} else {
@@ -375,19 +378,26 @@ namespace iCanScript.Internal.Editor {
     				newPort.ProducerPort= inputPort.ProducerPort;
     				inputPort.ProducerPort= newPort;
     				RebuildDataConnection(outputPort, newPort);
-    			}			
+    			}
     		}
     	}
     	// ----------------------------------------------------------------------
     	public void RebuildConnectionsFor(iCS_EditorObject node) {
     		// Rebuild connection from end-to-end.
+            int nbOfChildPorts= 0;
     		node.ForEachChildPort(
     			p=> {
+                    ++nbOfChildPorts;
     			    if(p.IsDataOrControlPort) {
         				var outputPort= p.SegmentProducerPort;
-        				foreach(var inputPort in p.SegmentEndConsumerPorts) {
-        					RebuildDataConnection(outputPort, inputPort);
-        				}			        
+                        if(p.IsInputPort) {
+        					RebuildDataConnection(outputPort, p);
+                        }
+                        else {
+            				foreach(var inputPort in p.SegmentEndConsumerPorts) {
+            					RebuildDataConnection(outputPort, inputPort);
+            				}
+                        }
     			    }
     			    if(p.IsStatePort) {
     			        var fromState= GetFromStatePort(p);
@@ -397,7 +407,7 @@ namespace iCanScript.Internal.Editor {
     			}
     		);
     	}
-	
+
     	// ----------------------------------------------------------------------
     	public void RebuildStateConnection(iCS_EditorObject fromStatePort, iCS_EditorObject toStatePort) {
             if(fromStatePort == null || toStatePort == null) return;
@@ -412,7 +422,7 @@ namespace iCanScript.Internal.Editor {
     		ChangeParent(transitionPackage, commonParent);
     		LayoutTransitionPackage(transitionPackage);
     	}
-	
+
     	// ----------------------------------------------------------------------
     	// This attempt to properly locate an autocreated data port.
     	public void SetBestPositionForAutocreatedPort(iCS_EditorObject port, Vector2 inPortPosition, Vector2 outPortPosition) {
@@ -432,7 +442,7 @@ namespace iCanScript.Internal.Editor {
     		if(Math3D.IsSmaller(inPortPosition.x, x) && Math3D.IsGreater(outPortPosition.x, x)) {
     			float ratio= (x-inPortPosition.x)/(outPortPosition.x-inPortPosition.x);
     			y= Math3D.Lerp(inPortPosition.y, outPortPosition.y, ratio);
-    			if(y < top) { 
+    			if(y < top) {
     				y= top;
     			}
     			if(y > bottom) {
@@ -457,10 +467,10 @@ namespace iCanScript.Internal.Editor {
     		} else {
     			float y2= outPortPosition.y-bottom;
     			float y1= bottom-inPortPosition.y;
-    			y= bottom-(y1*y1/(y1+y2));			
+    			y= bottom-(y1*y1/(y1+y2));
     		}
     		port.LocalAnchorFromGlobalPosition= new Vector2(x,y);
-    		return;			
+    		return;
     	}
         // ----------------------------------------------------------------------
     	public iCS_EditorObject FindPortWithSourceEndPoint(iCS_EditorObject node, iCS_EditorObject srcEP) {
@@ -484,7 +494,7 @@ namespace iCanScript.Internal.Editor {
     			}
     		}
     	}
-	
+
     	// ----------------------------------------------------------------------
     	public void CleanupEntryState(iCS_EditorObject state, iCS_EditorObject prevParent) {
     		state.IsEntryState= false;
@@ -505,7 +515,7 @@ namespace iCanScript.Internal.Editor {
     				}
     			);
     		}
-    	}	
+    	}
     }
 
 }
