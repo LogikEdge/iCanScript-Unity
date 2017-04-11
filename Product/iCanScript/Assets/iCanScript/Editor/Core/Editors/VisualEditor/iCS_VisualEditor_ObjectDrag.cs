@@ -523,13 +523,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 case DragTypeEnum.TransitionCreation:
                     iCS_EditorObject destState= GetNodeAtMousePosition();
                     if(destState != null && destState.IsState) {
-                        iCS_EditorObject outStatePort= IStorage[DragObject.ProducerPortId];
-                        outStatePort.IsFloating= false;
-                        outStatePort.IsSticky= false;
+                        DragFixPort.IsFloating= false;
+                        DragFixPort.IsSticky= false;
                         var toPosition= DragObject.GlobalPosition;
                         DragObject.ProducerPortId= -1;
                         IStorage.DestroyInstance(DragObject);
-                        iCS_UserCommands.CreateTransition(outStatePort, destState, toPosition);
+						iCS_UserCommands.CreateTransition(DragFixPort, destState, toPosition);
                     } else {
                         IStorage.DestroyInstance(DragObject.ProducerPortId);
                         DragObject.ProducerPortId= -1;

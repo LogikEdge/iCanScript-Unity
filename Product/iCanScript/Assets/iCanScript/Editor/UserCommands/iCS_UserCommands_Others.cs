@@ -1,7 +1,7 @@
 //
 // iCS_UserCommands_Others
 //
-//#define DEBUG
+//#define iCS_DEBUG
 using UnityEngine;
 using System.Collections;
 using iCanScript.Internal.Engine;
@@ -15,9 +15,9 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
         // OK
         public static iCS_EditorObject SetAsStateEntry(iCS_EditorObject state) {
-    #if DEBUG
+#if iCS_DEBUG
             Debug.Log("iCanScript: Set As Entry State => "+state.DisplayName);
-    #endif
+#endif
             if(state == null) return null;
             var iStorage= state.IStorage;
             OpenTransaction(iStorage);

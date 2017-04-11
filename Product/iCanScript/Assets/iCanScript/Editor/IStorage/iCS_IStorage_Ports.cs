@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using iCanScript.Internal.Engine;
 
 namespace iCanScript.Internal.Editor {
-    
-    public partial class iCS_IStorage {    
+
+    public partial class iCS_IStorage {
         // =========================================================================
         // Trigger Port
         // -------------------------------------------------------------------------
@@ -57,8 +57,8 @@ namespace iCanScript.Internal.Editor {
             }
             return enables;
         }
-	
-	
+
+
         // =========================================================================
         // Target Port
         // -------------------------------------------------------------------------
@@ -89,7 +89,7 @@ namespace iCanScript.Internal.Editor {
             var runtimeType= parentNode.RuntimeType;
             if(runtimeType == null || runtimeType == typeof(void)) {
                 Debug.LogWarning("iCanScript: Trying to create a target port with an invalid runtime type.");
-                return null;            
+                return null;
             }
             var portName= "Target";
     		var port= CreatePort(portName, parentId, runtimeType,
@@ -148,7 +148,7 @@ namespace iCanScript.Internal.Editor {
             var runtimeType= parentNode.RuntimeType;
             if(runtimeType == null || runtimeType == typeof(void)) {
                 Debug.LogWarning("iCanScript: Trying to create a self port with an invalid runtime type.");
-                return null;            
+                return null;
             }
             iCS_EditorObject port= CreatePort("Self", parentId, runtimeType,
                                               VSObjectType.OutProposedDataPort, (int)iCS_PortIndex.Self);
@@ -172,8 +172,8 @@ namespace iCanScript.Internal.Editor {
         public bool HasSelfPort(iCS_EditorObject node)  {
             return GetSelfPort(node) != null;
         }
-    
-	
+
+
         // ======================================================================
         // Dynamic Ports
         // ----------------------------------------------------------------------
@@ -186,7 +186,7 @@ namespace iCanScript.Internal.Editor {
     	public iCS_EditorObject CreateOutDynamicDataPort(string name, int parentId, Type valueType) {
     		var parent= EditorObjects[parentId];
     		int index= GetNextDynamicOrProposedPortIndex(parent);
-    		return CreatePort(name, parentId, valueType, VSObjectType.OutDynamicDataPort, index);		
+    		return CreatePort(name, parentId, valueType, VSObjectType.OutDynamicDataPort, index);
     	}
 
 
@@ -202,7 +202,7 @@ namespace iCanScript.Internal.Editor {
     	public iCS_EditorObject CreateOutProposedDataPort(string name, int parentId, Type valueType) {
     		var parent= EditorObjects[parentId];
     		int index= GetNextDynamicOrProposedPortIndex(parent);
-    		return CreatePort(name, parentId, valueType, VSObjectType.OutProposedDataPort, index);		
+    		return CreatePort(name, parentId, valueType, VSObjectType.OutProposedDataPort, index);
     	}
 
 
@@ -219,7 +219,7 @@ namespace iCanScript.Internal.Editor {
                     index= GetNextAvailableEnablePortIndex(parent);
                 }
                 else {
-            		index= GetNextDynamicOrProposedPortIndex(parent);                
+            		index= GetNextDynamicOrProposedPortIndex(parent);
                 }
             }
             iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
@@ -229,7 +229,7 @@ namespace iCanScript.Internal.Editor {
                 port.CollisionOffset= parent.CollisionOffset;
             } else {
                 var globalPos= parent.GlobalPosition;
-    //    		port.GlobalPosition= globalPos;            
+    //    		port.GlobalPosition= globalPos;
                 port.CollisionOffsetFromGlobalPosition= globalPos;
             }
     		// Set initial port edge.
@@ -242,10 +242,10 @@ namespace iCanScript.Internal.Editor {
     		} else if(port.IsDataPort) {
     			port.Edge= iCS_EdgeEnum.Right;
     		} else {
-    			port.UpdatePortEdge();			
+    			port.UpdatePortEdge();
     		}
     		port.CleanupPortEdgePosition();
-            return EditorObjects[id];        
+            return EditorObjects[id];
         }
 
 
@@ -255,7 +255,7 @@ namespace iCanScript.Internal.Editor {
         public void MoveDynamicPortToLastIndex(iCS_EditorObject port) {
             // -- Display error for invalid use. --
             if(port.IsFixDataPort) {
-                Debug.LogWarning("iCanScript: Internal error: Tryng to move port index of a fix port");
+                Debug.LogWarning("iCanScript: Internal error: Tryng to move port index of a fix port: "+port.DisplayName);
                 return;
             }
             // -- Get next available parameter index. --
@@ -278,7 +278,7 @@ namespace iCanScript.Internal.Editor {
                     var idx= p.PortIndex;
                     if(idx < (int)iCS_PortIndex.ParametersEnd) {
                         if(lastIdx <= idx) {
-                            lastIdx= idx+1;                            
+                            lastIdx= idx+1;
                         }
                     }
                 }
@@ -293,7 +293,7 @@ namespace iCanScript.Internal.Editor {
     			if(p.IsDynamicDataPort || p.IsProposedDataPort) {
     	            if(p.PortIndex > lastIndex) {
     	                lastIndex= p.PortIndex;
-    	            }				
+    	            }
     			}
             }
             // Assign all unassigned port indexes (we assume that it is a dynamic port).

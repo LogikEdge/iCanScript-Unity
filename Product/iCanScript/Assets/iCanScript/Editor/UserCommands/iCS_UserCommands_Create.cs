@@ -1,7 +1,7 @@
 //
 // File: iCS_UserCommands_Create
 //
-//#define SHOW_DEBUG
+//#define iCS_DEBUG
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -17,7 +17,7 @@ namespace iCanScript.Internal.Editor {
         // Object creation
     	// ----------------------------------------------------------------------
         public static iCS_EditorObject CreatePackage(iCS_EditorObject parent, Vector2 globalPos, string name, VSObjectType objectType= VSObjectType.Package, Type runtimeType= null) {
-#if SHOW_DEBUG
+#if iCS_DEBUG
             Debug.Log("iCanScript: CreatePackage => "+name);
 #endif
             var iStorage= parent.IStorage;
@@ -68,7 +68,7 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
         // OK
         public static iCS_EditorObject CreateStateChart(iCS_EditorObject parent, Vector2 globalPos, string name) {
-#if SHOW_DEBUG
+#if iCS_DEBUG
             Debug.Log("iCanScript: Create State Chart => "+name);
 #endif
             if(parent == null) return null;
@@ -106,7 +106,7 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
         // OK
         public static iCS_EditorObject CreateState(iCS_EditorObject parent, Vector2 globalPos, string name) {
-#if SHOW_DEBUG
+#if iCS_DEBUG
             Debug.Log("iCanScript: Create State => "+name);
 #endif
             if(parent == null) return null;
@@ -146,7 +146,7 @@ namespace iCanScript.Internal.Editor {
         /// @return The create Unity event handler node. _null_ on error.
         ///
         public static iCS_EditorObject CreateEventHandler(iCS_EditorObject parent, Vector2 globalPos, LibraryEventHandler libraryEventHandler) {
-#if SHOW_DEBUG
+#if iCS_DEBUG
             Debug.Log("iCanScript: Create Unity EVent Handler => "+libraryEventHandler.displayString);
 #endif
             if(parent == null) return null;
@@ -258,7 +258,7 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
         // OK
         public static iCS_EditorObject CreateFunctionCallNode(iCS_EditorObject parent, Vector2 globalPos, LibraryObject libraryObject) {
-#if SHOW_DEBUG
+#if iCS_DEBUG
             Debug.Log("iCanScript: Create Function => "+libraryObject.displayString);
 #endif
             if(parent == null || libraryObject == null) return null;
@@ -292,7 +292,7 @@ namespace iCanScript.Internal.Editor {
 
     	// ----------------------------------------------------------------------
         public static iCS_EditorObject CreateTransition(iCS_EditorObject fromStatePort, iCS_EditorObject toState, Vector2 toStatePortPos) {
-#if SHOW_DEBUG
+#if iCS_DEBUG
             Debug.Log("iCanScript: Create Transition Package");
 #endif
             if(fromStatePort == null || toState == null) return null;
@@ -432,7 +432,7 @@ namespace iCanScript.Internal.Editor {
             if(instanceType == null) return null;
             if(!IsCreationAllowed()) return null;
             instanceType= iCS_Types.RemoveRefOrPointer(instanceType);
-#if SHOW_DEBUG
+#if iCS_DEBUG
             Debug.Log("iCanScript: Create Object Instance => "+instanceType.Name);
 #endif
             if(parent == null) return null;
@@ -543,7 +543,7 @@ namespace iCanScript.Internal.Editor {
     	// ----------------------------------------------------------------------
         // OK
         public static iCS_EditorObject CreateGameObject(GameObject go, iCS_EditorObject parent, Vector2 globalPos) {
-#if SHOW_DEBUG
+#if iCS_DEBUG
             Debug.Log("iCanScript: Create Game Object => "+go.name);
 #endif
             if(parent == null) return null;
@@ -584,7 +584,7 @@ namespace iCanScript.Internal.Editor {
         // Utilities
     	// ----------------------------------------------------------------------
         private static iCS_EditorObject _CreatePackage(iCS_EditorObject parent, Vector2 globalPos, string name, VSObjectType objectType= VSObjectType.Package, Type runtimeType= null) {
-#if SHOW_DEBUG
+#if iCS_DEBUG
             Debug.Log("iCanScript: CreatePackage => "+name);
 #endif
             if(parent == null) return null;
