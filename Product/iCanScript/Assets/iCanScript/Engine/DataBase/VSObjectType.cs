@@ -2,19 +2,19 @@ using UnityEngine;
 using System.Collections;
 
 namespace iCanScript.Internal.Engine {
-    
+
     [System.Serializable]
     public enum VSObjectType {
         // --------------------------------------------------------------
         // Start of Node object types
         NodeStart= 0,
-    
+
         // Structural nodes
         Behaviour= 0, Package, StateChart, State, Mux, InlineCode,
 
         // Function nodes
         Constructor=100,
-        NonStaticFunction, StaticFunction, 
+        NonStaticFunction, StaticFunction,
         NonStaticField, StaticField,
         TypeCast,
         InstanceMessage,  StaticMessage,
@@ -29,10 +29,10 @@ namespace iCanScript.Internal.Engine {
 
         // Programatic
         Type= 250,
-    
+
         // End of Node object types
         NodeEnd= 299,
-    
+
         // --------------------------------------------------------------
         // Start of Port object type
         PortStart= 300,
@@ -53,10 +53,10 @@ namespace iCanScript.Internal.Engine {
     	// Mux ports.
     	OutChildMuxPort= 500,   OutParentMuxPort,
     	InChildMuxPort,         InParentMuxPort,
-	
+
         // End of Port object type
         PortEnd= 999,
-    
+
         // --------------------------------------------------------------
         // Undefined
         Unknown=10000
@@ -83,7 +83,7 @@ namespace iCanScript.Internal.Engine {
 
         // Function nodes.
         public static bool IsKindOfFunction       (iCS_EngineObject obj) { return IsConstructor(obj) || IsFunction(obj) ||
-    																			  IsField(obj) || IsTypeCast(obj); } 
+    																			  IsField(obj) || IsTypeCast(obj); }
         public static bool IsFunction             (iCS_EngineObject obj) { return IsStaticFunction(obj) || IsNonStaticFunction(obj); }
         public static bool IsField                (iCS_EngineObject obj) { return IsStaticField(obj) || IsNonStaticField(obj); }
         public static bool IsEventHandler         (iCS_EngineObject obj) { return IsInstanceMessage(obj) || IsStaticMessage(obj); }
@@ -105,7 +105,7 @@ namespace iCanScript.Internal.Engine {
         public static bool IsOnStateEntryPackage  (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.OnStateEntry; }
         public static bool IsOnStateUpdatePackage (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.OnStateUpdate; }
         public static bool IsOnStateExitPackage   (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.OnStateExit; }
-	
+
         // General Ports
         public static bool IsPort                 (iCS_EngineObject obj) { return obj.ObjectType >= VSObjectType.PortStart &&
                                                                                   obj.ObjectType <= VSObjectType.PortEnd; }
@@ -113,7 +113,7 @@ namespace iCanScript.Internal.Engine {
     	 																		  IsOutTransitionPort(obj); }
         public static bool IsInputPort			  (iCS_EngineObject obj) { return IsInDataOrControlPort(obj) || IsInStatePort(obj)||
     																			  IsInTransitionPort(obj); }
-    
+
         // State Ports.
     	public static bool IsStatePort            (iCS_EngineObject obj) { return IsInStatePort(obj) || IsOutStatePort(obj); }
         public static bool IsInStatePort          (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.InStatePort; }
@@ -123,13 +123,14 @@ namespace iCanScript.Internal.Engine {
         public static bool IsTransitionPort       (iCS_EngineObject obj) { return IsInTransitionPort(obj) || IsOutTransitionPort(obj); }
         public static bool IsInTransitionPort     (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.InTransitionPort; }
         public static bool IsOutTransitionPort    (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.OutTransitionPort; }
+        public static bool IsTransitionEnablePort (iCS_EngineObject obj) { return IsOutFixDataPort(obj); }
 
         // Fix Data Flow Ports
         public static bool IsFixDataPort		  (iCS_EngineObject obj) { return IsInFixDataPort(obj) || IsOutFixDataPort(obj); }
         public static bool IsInFixDataPort        (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.InFixDataPort; }
         public static bool IsOutFixDataPort       (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.OutFixDataPort; }
-    
-        // Dynamic Data Flow Ports 
+
+        // Dynamic Data Flow Ports
     	public static bool IsDynamicDataPort	  (iCS_EngineObject obj) { return IsInDynamicDataPort(obj) || IsOutDynamicDataPort(obj); }
         public static bool IsInDynamicDataPort    (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.InDynamicDataPort; }
         public static bool IsOutDynamicDataPort   (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.OutDynamicDataPort; }
@@ -139,7 +140,7 @@ namespace iCanScript.Internal.Engine {
         public static bool IsInProposedDataPort   (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.InProposedDataPort; }
         public static bool IsOutProposedDataPort  (iCS_EngineObject obj) { return obj.ObjectType == VSObjectType.OutProposedDataPort; }
 
-        // Data Flow Ports                                                                          
+        // Data Flow Ports
         public static bool IsDataPort             (iCS_EngineObject obj) { return IsInDataPort(obj) || IsOutDataPort(obj); }
         public static bool IsInDataPort			  (iCS_EngineObject obj) { return IsInFixDataPort(obj) || IsInDynamicDataPort(obj) ||
     																			  IsInProposedDataPort(obj) || IsInMuxPort(obj) ||
@@ -165,7 +166,7 @@ namespace iCanScript.Internal.Engine {
         public static bool IsDataOrControlPort    (iCS_EngineObject obj) { return IsDataPort(obj) || IsControlPort(obj); }
         public static bool IsInDataOrControlPort  (iCS_EngineObject obj) { return IsInDataPort(obj) || IsEnablePort(obj); }
         public static bool IsOutDataOrControlPort (iCS_EngineObject obj) { return IsOutDataPort(obj) || IsTriggerPort(obj); }
-    
+
         // Mux Ports
     	public static bool IsMuxPort			  (iCS_EngineObject obj) { return IsChildMuxPort(obj) || IsParentMuxPort(obj); }
     	public static bool IsParentMuxPort	      (iCS_EngineObject obj) { return IsInParentMuxPort(obj) || IsOutParentMuxPort(obj); }

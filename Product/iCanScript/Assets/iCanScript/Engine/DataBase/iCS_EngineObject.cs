@@ -24,7 +24,7 @@ namespace iCanScript.Internal.Engine {
         Class= 200, Struct, Enum, Interface,
         Constructor= 300, StaticConstructor,
         PublicFunction= 400, PublicStaticFunction,
-        PublicVirtualFunction, PublicOverrideFunction,  
+        PublicVirtualFunction, PublicOverrideFunction,
         PublicNewFunction, PublicNewStaticFunction,
         PrivateFunction= 420, PrivateStaticFunction,
         ProtectedFunction= 440,
@@ -74,7 +74,7 @@ namespace iCanScript.Internal.Engine {
         public bool   IsParentValid   { get { return ParentId != -1; }}
         public bool   IsSourceValid   { get { return SourceId != -1; }}
         public bool   IsNameEmpty     { get { return string.IsNullOrEmpty(RawName); }}
-        public string TypeName        { get { return iCS_Types.TypeName(RuntimeType);}} 
+        public string TypeName        { get { return iCS_Types.TypeName(RuntimeType);}}
         public Type   RuntimeType     {
             get {
                 bool conversionPerformed= false;
@@ -94,7 +94,7 @@ namespace iCanScript.Internal.Engine {
             get { return InitialValueArchive; }
             set { InitialValueArchive= value; }
         }
-    
+
         // Port Specific accesors ------------------------------------------------
         public int PortGroup {
             get { return NbOfParams; }
@@ -224,7 +224,7 @@ namespace iCanScript.Internal.Engine {
     		// State
     		IsEntryState= false;
         }
-    
+
         // ----------------------------------------------------------------------
         // Object Type Acessor
         public bool IsNode                     { get { return iCS_ObjectType.IsNode(this); }}
@@ -264,6 +264,7 @@ namespace iCanScript.Internal.Engine {
         public bool IsTransitionPort        { get { return iCS_ObjectType.IsTransitionPort(this); }}
         public bool IsInTransitionPort      { get { return iCS_ObjectType.IsInTransitionPort(this); }}
         public bool IsOutTransitionPort     { get { return iCS_ObjectType.IsOutTransitionPort(this); }}
+        public bool IsTransitionEnablePort  { get { return iCS_ObjectType.IsTransitionEnablePort(this); }}
         // Parameter Data Ports
         public bool IsParameterPort     	{ get { return iCS_ObjectType.IsParameterPort(this); }}
         public bool IsInParameterPort   	{ get { return iCS_ObjectType.IsInParameterPort(this); }}
@@ -306,20 +307,20 @@ namespace iCanScript.Internal.Engine {
     	public bool IsTargetOrSelfPort		{ get { return IsTargetPort || IsSelfPort; }}
     	public bool IsTargetPort		    { get { return iCS_ObjectType.IsTargetPort(this); }}
     	public bool IsSelfPort		        { get { return iCS_ObjectType.IsSelfPort(this); }}
-	
+
         // ======================================================================
         // Feature support
         // ----------------------------------------------------------------------
         public bool SupportsAdditionOfPorts { get { return IsKindOfPackage; }}
         public bool SupportsNestedNodes     { get { return IsKindOfPackage; }}
-    
+
         // ----------------------------------------------------------------------
     	public FieldInfo GetFieldInfo() {
             FieldInfo field= GetFieldInfoNoWarning();
             if(field == null) {
-                Debug.LogWarning("iCanScript: Unable to extract FieldInfo from RuntimeDesc: "+MethodName);                
+                Debug.LogWarning("iCanScript: Unable to extract FieldInfo from RuntimeDesc: "+MethodName);
             }
-            return field;		            
+            return field;
     	}
         public FieldInfo GetFieldInfoNoWarning() {
             if(MethodName == null) return null;
@@ -332,7 +333,7 @@ namespace iCanScript.Internal.Engine {
             if(fieldInfo != null) return fieldInfo;
             return GetFieldInfoRecursive(classType.BaseType, fieldName);
         }
-    
+
         // ----------------------------------------------------------------------
     	public MethodBase GetMethodBase(List<iCS_EngineObject> parameters) {
             // Extract MethodBase for constructor.
@@ -356,7 +357,7 @@ namespace iCanScript.Internal.Engine {
             // Extract MethodBase for class methods.
             if(MethodName == null) return null;
     		Type[] paramTypes= GetParamTypes(parameters);
-            method= classType.GetMethod(MethodName, paramTypes);            
+            method= classType.GetMethod(MethodName, paramTypes);
             if(method == null) {
                 string signature="(";
                 bool first= true;
@@ -367,7 +368,7 @@ namespace iCanScript.Internal.Engine {
                 signature+=")";
                 Debug.LogWarning("iCanScript: Unable to extract MethodInfo from RuntimeDesc: "+MethodName+signature);
             }
-            return method;		            
+            return method;
     	}
     	public Type[] GetParamTypes(List<iCS_EngineObject> engineObjects) {
     		iCS_EngineObject[] ports= GetChildPortsExcludingControlPorts(engineObjects);
@@ -375,7 +376,7 @@ namespace iCanScript.Internal.Engine {
     		for(int i= 0; i < P.length(result); ++i) {
     			result[i]= ports[i].RuntimeType;
     		}
-    		return result;	        
+    		return result;
     	}
     	iCS_EngineObject[] GetChildPortsExcludingControlPorts(List<iCS_EngineObject> engineObjects) {
     		List<iCS_EngineObject> ports= new List<iCS_EngineObject>();
@@ -389,7 +390,7 @@ namespace iCanScript.Internal.Engine {
     			ports.Add(port);
     		}
     		// Sort child ports according to index.
-    		return SortPortsOnIndex(ports.ToArray());            
+    		return SortPortsOnIndex(ports.ToArray());
     	}
 
         // =======================================================================

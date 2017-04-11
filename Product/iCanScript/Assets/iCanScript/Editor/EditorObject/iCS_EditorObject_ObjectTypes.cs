@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 namespace iCanScript.Internal.Editor {
-    
+
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     //  OBJECT TYPE
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -36,7 +36,7 @@ namespace iCanScript.Internal.Editor {
         public bool IsFunctionDefinition        { get { return IsPackage && IsParentValid && Parent.IsBehaviour; }}
         public bool IsVariableDefinition        { get { return IsConstructor && IsParentValid && Parent.IsBehaviour; }}
         public bool IsTypeDefinitionNode        { get { return IsRootObject; }}
-        
+
         // General Ports
         public bool IsPort                      { get { return EngineObject.IsPort; }}
         public bool IsInputPort                 { get { return EngineObject.IsInputPort; }}
@@ -55,6 +55,7 @@ namespace iCanScript.Internal.Editor {
         public bool IsTransitionPort            { get { return EngineObject.IsTransitionPort; }}
         public bool IsInTransitionPort          { get { return EngineObject.IsInTransitionPort; }}
         public bool IsOutTransitionPort         { get { return EngineObject.IsOutTransitionPort; }}
+        public bool IsTransitionEnablePort      { get { return EngineObject.IsTransitionEnablePort && Parent.IsTransitionPackage; }}
         // Parameter Data Flow Ports
         public bool IsParameterPort         	{ get { return EngineObject.IsParameterPort; }}
         public bool IsInParameterPort       	{ get { return EngineObject.IsInParameterPort; }}
@@ -114,27 +115,27 @@ namespace iCanScript.Internal.Editor {
         public bool IsFieldGet {
             get {
                 if(!IsField) return false;
-                return GetReturnPort() != null && GetPortWithIndex(0) == null;                
+                return GetReturnPort() != null && GetPortWithIndex(0) == null;
             }
         }
         public bool IsFieldSet {
             get {
                 if(!IsField) return false;
-                return GetReturnPort() == null && GetPortWithIndex(0) != null;                
+                return GetReturnPort() == null && GetPortWithIndex(0) != null;
             }
         }
         public bool IsPropertyGet {
             get {
                 if(!IsNonStaticFunction && !IsStaticFunction) return false;
                 if(!CodeName.StartsWith("get_")) return false;
-                return GetReturnPort() != null && GetPortWithIndex(0) == null;                
+                return GetReturnPort() != null && GetPortWithIndex(0) == null;
             }
         }
         public bool IsPropertySet {
             get {
                 if(!IsNonStaticFunction && !IsStaticFunction) return false;
                 if(!CodeName.StartsWith("set_")) return false;
-                return GetReturnPort() == null && GetPortWithIndex(0) != null && GetPortWithIndex(1) == null;                
+                return GetReturnPort() == null && GetPortWithIndex(0) != null && GetPortWithIndex(1) == null;
             }
         }
     }

@@ -81,7 +81,7 @@ namespace iCanScript.Internal.Editor {
             ExecuteIf(toDestroy, obj=> obj.IsPort, _=> DisconnectPort(toDestroy));
             // Update modules runtime data when removing a module port.
             iCS_EditorObject parent= toDestroy.Parent;
-    		if(toDestroy.IsKindOfPackagePort) {
+			if(toDestroy.IsKindOfPackagePort && !toDestroy.IsTriggerPort) {
     			MoveDynamicPortToLastIndex(toDestroy);
     		}
             // Remember entry state.
