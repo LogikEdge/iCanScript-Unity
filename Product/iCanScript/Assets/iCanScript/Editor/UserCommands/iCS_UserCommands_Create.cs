@@ -11,7 +11,7 @@ using iCanScript.Internal.Engine;
 using P=iCanScript.Internal.Prelude;
 
 namespace iCanScript.Internal.Editor {
-    
+
     public static partial class iCS_UserCommands {
         // ======================================================================
         // Object creation
@@ -24,7 +24,7 @@ namespace iCanScript.Internal.Editor {
             OpenTransaction(iStorage);
             iCS_EditorObject package= null;
             try {
-                package= _CreatePackage(parent, globalPos, name, objectType, runtimeType);            
+                package= _CreatePackage(parent, globalPos, name, objectType, runtimeType);
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -51,7 +51,7 @@ namespace iCanScript.Internal.Editor {
             OpenTransaction(iStorage);
             iCS_EditorObject package= null;
             try {
-                package= _CreatePackage(parent, globalPos, name, VSObjectType.InlineCode, typeof(InlineCode));            
+                package= _CreatePackage(parent, globalPos, name, VSObjectType.InlineCode, typeof(InlineCode));
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -89,7 +89,7 @@ namespace iCanScript.Internal.Editor {
                         iStorage.ForcedRelayoutOfTree();
                         iStorage.ReduceCollisionOffset();
                     }
-                );            
+                );
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -101,7 +101,7 @@ namespace iCanScript.Internal.Editor {
             }
             CloseTransaction(iStorage, "Create StateChart");
     		SystemEvents.AnnounceVisualScriptElementAdded(stateChart);
-            return stateChart;        
+            return stateChart;
         }
     	// ----------------------------------------------------------------------
         // OK
@@ -122,7 +122,7 @@ namespace iCanScript.Internal.Editor {
                         iStorage.ForcedRelayoutOfTree();
                         iStorage.ReduceCollisionOffset();
                     }
-                );            
+                );
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -130,11 +130,11 @@ namespace iCanScript.Internal.Editor {
             }
             if(state == null) {
                 CancelTransaction(iStorage);
-                return null;            
+                return null;
             }
             CloseTransaction(iStorage, "Create State");
     		SystemEvents.AnnounceVisualScriptElementAdded(state);
-            return state;        
+            return state;
         }
 
     	// ----------------------------------------------------------------------
@@ -167,7 +167,7 @@ namespace iCanScript.Internal.Editor {
                         iStorage.ForcedRelayoutOfTree();
                         iStorage.ReduceCollisionOffset();
                     }
-                );            
+                );
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -184,7 +184,7 @@ namespace iCanScript.Internal.Editor {
 
         // ----------------------------------------------------------------------
         public static iCS_EditorObject CreateFunctionDefinition(iCS_EditorObject parent, Vector2 globalPos) {
-            return CreatePackage(parent, globalPos, "My Function");    
+            return CreatePackage(parent, globalPos, "My Function");
         }
     	// ----------------------------------------------------------------------
     	// OK
@@ -194,7 +194,8 @@ namespace iCanScript.Internal.Editor {
             OpenTransaction(iStorage);
             iCS_EditorObject package= null;
             try {
-                package= _CreatePackage(parent, globalPos, iCS_Strings.OnEntry, VSObjectType.OnStateEntry);            
+                package= _CreatePackage(parent, globalPos, iCS_Strings.OnEntry, VSObjectType.OnStateEntry);
+                package.Iconize();
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -218,10 +219,11 @@ namespace iCanScript.Internal.Editor {
             iCS_EditorObject package= null;
             try {
                 package= _CreatePackage(parent, globalPos, iCS_Strings.OnUpdate, VSObjectType.OnStateUpdate);
+                package.Iconize();
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
-                return null;                
+                return null;
             }
             if(package == null) {
                 CancelTransaction(iStorage);
@@ -240,11 +242,12 @@ namespace iCanScript.Internal.Editor {
             OpenTransaction(iStorage);
             iCS_EditorObject package= null;
             try {
-                package= _CreatePackage(parent, globalPos, iCS_Strings.OnExit, VSObjectType.OnStateExit);            
+                package= _CreatePackage(parent, globalPos, iCS_Strings.OnExit, VSObjectType.OnStateExit);
+                package.Iconize();
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
-                return null;            
+                return null;
             }
             if(package == null) {
                 CancelTransaction(iStorage);
@@ -274,7 +277,7 @@ namespace iCanScript.Internal.Editor {
                         iStorage.ForcedRelayoutOfTree();
                         iStorage.ReduceCollisionOffset();
                     }
-                );            
+                );
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -282,12 +285,12 @@ namespace iCanScript.Internal.Editor {
             }
             if(function == null) {
                 CancelTransaction(iStorage);
-                return null;            
+                return null;
             }
     		var name= libraryObject.nodeName;
             CloseTransaction(iStorage, "Create "+name);
     		SystemEvents.AnnounceVisualScriptElementAdded(function);
-            return function;        
+            return function;
         }
 
     	// ----------------------------------------------------------------------
@@ -305,7 +308,7 @@ namespace iCanScript.Internal.Editor {
                 iCS_EditorObject toStatePort= iStorage.CreatePort("", toState.InstanceId, typeof(void), VSObjectType.InStatePort);
                 // Update port positions
                 toStatePort.SetInitialPosition(toStatePortPos);
-                toStatePort.UpdatePortEdge();        
+                toStatePort.UpdatePortEdge();
                 fromStatePort.UpdatePortEdge();
                 // Temporally connect state ports together.
                 iStorage.SetSource(toStatePort, fromStatePort);
@@ -338,21 +341,21 @@ namespace iCanScript.Internal.Editor {
                     if(Vector2.Dot(diff, Vector2.up) > 0) {
                         inTransitionPort.Edge= iCS_EdgeEnum.Top;
                         toStatePort.Edge= iCS_EdgeEnum.Top;
-                        outTransitionPort.Edge= iCS_EdgeEnum.Bottom; 
+                        outTransitionPort.Edge= iCS_EdgeEnum.Bottom;
                         fromStatePort.Edge= iCS_EdgeEnum.Bottom;
                     }
                     else {
                         inTransitionPort.Edge= iCS_EdgeEnum.Bottom;
                         toStatePort.Edge= iCS_EdgeEnum.Bottom;
-                        outTransitionPort.Edge= iCS_EdgeEnum.Top; 
+                        outTransitionPort.Edge= iCS_EdgeEnum.Top;
                         fromStatePort.Edge= iCS_EdgeEnum.Top;
-                    }            
+                    }
                 }
                 inTransitionPort.PortPositionRatio= 0.5f;
                 outTransitionPort.PortPositionRatio= 0.5f;
                 // Layout the graph
                 iStorage.ForcedRelayoutOfTree();
-                iStorage.ReduceCollisionOffset();            
+                iStorage.ReduceCollisionOffset();
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -362,7 +365,7 @@ namespace iCanScript.Internal.Editor {
                 CancelTransaction(iStorage);
                 return null;
             }
-            CloseTransaction(iStorage, "Create Transition");            
+            CloseTransaction(iStorage, "Create Transition");
     		SystemEvents.AnnounceVisualScriptElementAdded(transitionPackage);
             return transitionPackage;
         }
@@ -378,10 +381,10 @@ namespace iCanScript.Internal.Editor {
                     _=> {
                 		port= iStorage.CreateEnablePort(parent.InstanceId);
                         var pRect= parent.GlobalRect;
-                        port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.y));        
+                        port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.y));
                         iStorage.ForcedRelayoutOfTree();
                     }
-                );            
+                );
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -405,12 +408,12 @@ namespace iCanScript.Internal.Editor {
             try {
                 iStorage.AnimateGraph(null,
                     _=> {
-                		port= iStorage.CreateTriggerPort(parent.InstanceId);        
+                		port= iStorage.CreateTriggerPort(parent.InstanceId);
                         var pRect= parent.GlobalRect;
-                        port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.yMax));        
+                        port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.yMax));
                         iStorage.ForcedRelayoutOfTree();
                     }
-                );            
+                );
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -418,7 +421,7 @@ namespace iCanScript.Internal.Editor {
             }
             if(port == null) {
                 CancelTransaction(iStorage);
-                return null;            
+                return null;
             }
             CloseTransaction(iStorage, "Create Trigger Port");
     		SystemEvents.AnnounceVisualScriptElementAdded(port);
@@ -446,9 +449,9 @@ namespace iCanScript.Internal.Editor {
                         instance= iStorage.CreateObjectInstance(parent.InstanceId, name, instanceType);
                         instance.SetInitialPosition(globalPos);
                         iStorage.ForcedRelayoutOfTree();
-                        iStorage.ReduceCollisionOffset();                    
+                        iStorage.ReduceCollisionOffset();
                     }
-                );            
+                );
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -458,7 +461,7 @@ namespace iCanScript.Internal.Editor {
                 CancelTransaction(iStorage);
                 return null;
             }
-            CloseTransaction(iStorage, "Create "+name);            
+            CloseTransaction(iStorage, "Create "+name);
     		SystemEvents.AnnounceVisualScriptElementAdded(instance);
             return instance;
         }
@@ -478,7 +481,7 @@ namespace iCanScript.Internal.Editor {
                         package= iStorage.WrapInPackage(obj);
                         iStorage.ForcedRelayoutOfTree();
                     }
-                );            
+                );
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -517,13 +520,13 @@ namespace iCanScript.Internal.Editor {
                                 selectedObjects[i].LocalSize= iCS_EditorObject.SizeFrom(childrenRects[i]);
                             }
                             iStorage.ForcedRelayoutOfTree();
-                            iStorage.ReduceCollisionOffset();                        
+                            iStorage.ReduceCollisionOffset();
                         }
                         else {
                             Debug.LogWarning("iCanScript: Unable to create a suitable package.");
                         }
                     }
-                );            
+                );
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -564,7 +567,7 @@ namespace iCanScript.Internal.Editor {
                         instance.SetInitialPosition(globalPos);
                         iStorage.ForcedRelayoutOfTree();
                     }
-                );            
+                );
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -578,8 +581,8 @@ namespace iCanScript.Internal.Editor {
     		SystemEvents.AnnounceVisualScriptElementAdded(instance);
             return instance;
         }
-    
-    
+
+
         // ======================================================================
         // Utilities
     	// ----------------------------------------------------------------------
@@ -602,7 +605,7 @@ namespace iCanScript.Internal.Editor {
                         iStorage.ReduceCollisionOffset();
                         iStorage.SelectedObject= package;
                     }
-                );            
+                );
             }
             catch(System.Exception e) {
                 Debug.Log(e.Message);
