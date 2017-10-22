@@ -1,7 +1,7 @@
 //
 // File: iCS_UserCommands_UndoRedo
 //
-//#define DEBUG
+//#define iCS_DEBUG
 using UnityEngine;
 using UnityEditor;
 using System.Collections;
@@ -14,7 +14,7 @@ public static partial class iCS_UserCommands {
 	// ----------------------------------------------------------------------
     // OK
     public static void UndoRedo(iCS_IStorage iStorage) {
-#if DEBUG
+#if iCS_DEBUG
         Debug.Log("iCanScript: Undo/Redo. Undo Group => "+Undo.GetCurrentGroup());
 #endif
         var animationStarts= new Rect[iStorage.EditorObjects.Count];
