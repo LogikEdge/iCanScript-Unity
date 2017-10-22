@@ -10,7 +10,7 @@ public class iCS_EditorBase : EditorWindow {
     // Fields
     // ---------------------------------------------------------------------------------
 	iCS_IStorage		myIStorage= null;
-    
+
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
@@ -19,12 +19,16 @@ public class iCS_EditorBase : EditorWindow {
 	    get { return myIStorage != null ? IStorage.SelectedObject : null; }
 	    set { if(IStorage != null) IStorage.SelectedObject= value; }
 	}
-        	
+
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
     public void OnEnable() {
         iCS_EditorController.Add(this);
+        Texture2D iCanScriptLogo= null;
+        if(iCS_TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo)) {
+            titleContent = new GUIContent(title, iCanScriptLogo);
+        }
     }
     public void OnDisable() {
         iCS_EditorController.Remove(this);
@@ -50,24 +54,9 @@ public class iCS_EditorBase : EditorWindow {
             ShowNotification(new GUIContent(message));
             return;
         }
-        
-        // Install iCanScript icon in tab title area.
-        // (must hack since Unity does not provide a direct way of adding editor title images).
-        var propertyInfo= GetType().GetProperty("cachedTitleContent", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        if(propertyInfo != null) {
-            var methodInfo= propertyInfo.GetGetMethod(true);
-            if(methodInfo != null) {
-                var r= methodInfo.Invoke(this, null) as GUIContent;
-                if(r.image == null) {
-                    Texture2D iCanScriptLogo= null;
-                    if(iCS_TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo)) {
-                        r.image= iCanScriptLogo;
-                    }
-                }
-            }
-        }
+
     }
-    
+
     // =================================================================================
     // Common processing.
     // ---------------------------------------------------------------------------------
