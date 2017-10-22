@@ -1,7 +1,7 @@
 //
 // File: iCS_UserCommands_Delete
 //
-//#define DEBUG
+//#define iCS_DEBUG
 using UnityEngine;
 using System.Collections;
 using P=Prelude;
@@ -12,7 +12,7 @@ public static partial class iCS_UserCommands {
     // Object destruction.
 	// ----------------------------------------------------------------------
     public static void DeleteObject(iCS_EditorObject obj) {
-#if DEBUG
+#if iCS_DEBUG
 		Debug.Log("iCanScript: Deleting => "+obj.Name);
 #endif
         if(obj == null || obj == obj.IStorage.DisplayRoot) return;
@@ -33,7 +33,7 @@ public static partial class iCS_UserCommands {
                         iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj);
                         iStorage.ForcedRelayoutOfTree();
                     }
-        		);                
+        		);
             }
             catch(System.Exception) {
                 CancelTransaction(iStorage);
@@ -54,7 +54,7 @@ public static partial class iCS_UserCommands {
                     iStorage.DestroyInstance(obj.InstanceId);
                     iStorage.ForcedRelayoutOfTree();
                 }
-    		);            
+    		);
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -64,7 +64,7 @@ public static partial class iCS_UserCommands {
 	}
 	// ----------------------------------------------------------------------
     public static bool DeleteMultiSelectedObjects(iCS_IStorage iStorage) {
-#if DEBUG
+#if iCS_DEBUG
 		Debug.Log("iCanScript: Multi-Select Delete");
 #endif
         if(iStorage == null) return false;
@@ -91,15 +91,15 @@ public static partial class iCS_UserCommands {
 						SystemEvents.AnnounceVisualScriptElementWillBeRemoved(obj);
 
                         if(obj.IsInstanceNodePort) {
-                    		iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj);                        
+                    		iStorage.InstanceWizardDestroyAllObjectsAssociatedWithPort(obj);
                         }
                         else {
-                    		iStorage.DestroyInstance(obj.InstanceId);                        
+                    		iStorage.DestroyInstance(obj.InstanceId);
                         }
                         iStorage.ForcedRelayoutOfTree();
-                    }                
+                    }
                 }
-            );            
+            );
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -122,14 +122,14 @@ public static partial class iCS_UserCommands {
                     // Move the selection to the parent node
                     var parent= obj.ParentNode;
                     iStorage.SelectedObject= parent;
-                
+
                     P.forEach(n => { iStorage.ChangeParent(n, newParent);}, childNodes);
 					SystemEvents.AnnounceVisualScriptElementWillBeRemoved(obj);
                     iStorage.DestroyInstance(obj.InstanceId);
                     P.zipWith((n,p) => { n.LocalAnchorFromGlobalPosition= p; }, childNodes, childPos);
                     iStorage.ForcedRelayoutOfTree();
                 }
-            );            
+            );
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);

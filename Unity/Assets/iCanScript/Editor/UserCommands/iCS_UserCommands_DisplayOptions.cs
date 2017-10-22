@@ -11,7 +11,7 @@ public static partial class iCS_UserCommands {
 	// ----------------------------------------------------------------------
     // OK
     public static void Unfold(iCS_EditorObject node) {
-#if DEBUG
+#if iCS_DEBUG
         Debug.Log("iCanScript: Unfold => "+node.Name);
 #endif
         if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
@@ -77,7 +77,7 @@ public static partial class iCS_UserCommands {
 	// ----------------------------------------------------------------------
     // OK
     public static void Iconize(iCS_EditorObject node) {
-#if DEBUG
+#if iCS_DEBUG
         Debug.Log("iCanScript: Iconize => "+node.Name);
 #endif
         if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Iconized) {
