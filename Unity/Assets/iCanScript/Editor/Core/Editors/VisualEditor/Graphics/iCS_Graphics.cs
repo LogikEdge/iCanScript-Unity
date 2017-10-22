@@ -414,7 +414,6 @@ public partial class iCS_Graphics {
                                     spacer,
                                     backdropSize.x,
                                     backdropSize.y);
-//        GUI.color= new Color(1f, 1f, 1f, 0.3f);
         GUI.Label(backdropRect, backdrop, backdropStyle);
 
         // Draw guides for asset store big image
