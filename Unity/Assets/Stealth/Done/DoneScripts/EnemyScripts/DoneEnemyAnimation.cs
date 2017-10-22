@@ -8,7 +8,7 @@ public class DoneEnemyAnimation : MonoBehaviour
 	
 	private Transform player;					// Reference to the player's transform.
 	private DoneEnemySight enemySight;			// Reference to the EnemySight script.
-	private NavMeshAgent nav;					// Reference to the nav mesh agent.
+	private UnityEngine.AI.NavMeshAgent nav;					// Reference to the nav mesh agent.
 	private Animator anim;						// Reference to the Animator.
 	private DoneHashIDs hash;					// Reference to the HashIDs script.
 	private DoneAnimatorSetup animSetup;		// An instance of the AnimatorSetup helper class.
@@ -19,7 +19,7 @@ public class DoneEnemyAnimation : MonoBehaviour
 		// Setting up the references.
 		player = GameObject.FindGameObjectWithTag(DoneTags.player).transform;
 		enemySight = GetComponent<DoneEnemySight>();
-		nav = GetComponent<NavMeshAgent>();
+		nav = GetComponent<UnityEngine.AI.NavMeshAgent>();
 		anim = GetComponent<Animator>();
 		hash = GameObject.FindGameObjectWithTag(DoneTags.gameController).GetComponent<DoneHashIDs>();
 		

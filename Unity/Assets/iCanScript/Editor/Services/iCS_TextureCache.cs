@@ -25,7 +25,7 @@ public static class iCS_TextureCache {
             if(texture != null) return texture;
             OurCachedTextures.Remove(fileName);
         }
-        texture= Resources.LoadAssetAtPath(fileName, typeof(Texture2D)) as Texture2D;
+        texture= AssetDatabase.LoadAssetAtPath(fileName, typeof(Texture2D)) as Texture2D;
         if(texture != null) {
             OurCachedTextures.Add(fileName, texture);
             texture.hideFlags= HideFlags.DontSave;

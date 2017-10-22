@@ -1,4 +1,4 @@
-//#define DEBUG
+//#define iCS_DEBUG
 
 using UnityEditor;
 using UnityEngine;
@@ -10,21 +10,21 @@ using P=Prelude;
 using Prefs=iCS_PreferencesController;
 
 namespace iCanScript.Editor {
-    
+
     public static class SoftwareUpdateController {
     	// =================================================================================
         // Server URL Information
         // ---------------------------------------------------------------------------------
     	const string URL_VersionFile=  iCS_WebConfig.LatestVersionInfoFile;
     	const string URL_DownloadPage= "http://"+iCS_WebConfig.DownloadsPage;
-    	
-    		
+
+
         static SoftwareUpdateController() {
             PeriodicUpdateVerification();
         }
         public static void Start() {}
         public static void Shutdown() {}
-        
+
     	// =================================================================================
         // Manual & Periodic Software Update Verification functions.
         // ---------------------------------------------------------------------------------
@@ -34,7 +34,7 @@ namespace iCanScript.Editor {
     	public static void PeriodicUpdateVerification() {
     		// Return if software update watch is disabled.
     		if(!Prefs.SoftwareUpdateWatchEnabled) {
-    #if DEBUG
+    #if iCS_DEBUG
     			Debug.Log("iCanScript: Software Update disabled.");
     #endif
     			return;
@@ -44,7 +44,7 @@ namespace iCanScript.Editor {
     		DateTime now= DateTime.Now;
     		DateTime nextWatchDate= Prefs.SoftwareUpdateLastWatchDate;
     		if(now.CompareTo(nextWatchDate) <= 0 && nextWatchDate.CompareTo(DateTime.Now) <= 0) {
-    #if DEBUG
+    #if iCS_DEBUG
     			Debug.Log("iCanScript: Software update last watch date not initialized. Initializing...");
     #endif
     			Prefs.SoftwareUpdateLastWatchDate= now;
@@ -52,7 +52,7 @@ namespace iCanScript.Editor {
     		// Return if we already verified within the prescribed interval;
     		nextWatchDate= AddInterval(nextWatchDate);
     		if(nextWatchDate.CompareTo(now) >= 0) {
-    #if DEBUG
+    #if iCS_DEBUG
     			Debug.Log("iCanScript: Software Update does not need to be verified before: "+nextWatchDate);
     #else
     //			return;
@@ -69,7 +69,7 @@ namespace iCanScript.Editor {
     		Prefs.SoftwareUpdateLastWatchDate= AddInterval(now);
     		// Return if the user wants to skip this version.
     		if(Prefs.SoftwareUpdateSkippedVersion == serverVersion.ToString()) {
-    #if DEBUG
+    #if iCS_DEBUG
     			Debug.Log("iCanScript: User requested to skipped software update for: "+serverVersion);
     #endif
     			return;
@@ -77,19 +77,19 @@ namespace iCanScript.Editor {
     		// Determine if we are up-to-date.
     		Maybe<bool> isUpToDate= IsUpToDate(serverVersion);
     		if(isUpToDate.isNothing) {
-    #if DEBUG
+    #if iCS_DEBUG
     			Debug.Log("iCanScript: Unable to contact version server.");
     #endif
     			return;
     		}
-    #if DEBUG
+    #if iCS_DEBUG
     		Debug.Log("iCanScript: Latest version is: "+serverVersion+" up to date: "+isUpToDate.Value);
     #endif
     		if(!isUpToDate.Value) {
     			ManualUpdateVerification();
     		}
     	}
-    
+
         // ---------------------------------------------------------------------------------
     	//
     	// Manual Verification
@@ -114,7 +114,7 @@ namespace iCanScript.Editor {
     		switch(selection) {
     			case 0:	// Download
     				Application.OpenURL(downloadUrl);
-    //				Application.OpenURL(URL_DownloadPage);            
+    //				Application.OpenURL(URL_DownloadPage);
     				break;
     			case 1:	// Skip this version
     				iCS_PreferencesController.SoftwareUpdateSkippedVersion= latestVersion.ToString();
@@ -123,8 +123,8 @@ namespace iCanScript.Editor {
     				break;
     		}
     	}
-    	
-    	
+
+
     	// =================================================================================
     	// Software Update Verification Support Functions.
         // ---------------------------------------------------------------------------------
@@ -136,7 +136,7 @@ namespace iCanScript.Editor {
             if(!String.IsNullOrEmpty(download.error)) {
                 return null;
             }
-    #if DEBUG
+    #if iCS_DEBUG
             Debug.Log(download.text);
     #endif
             JNumber jMajor = null;
@@ -153,25 +153,25 @@ namespace iCanScript.Editor {
     				if(jDownloadUrl != null) {
     					downloadUrl= jDownloadUrl.value;
     				}
-    #if DEBUG
+    #if iCS_DEBUG
     				else {
     					Debug.Log("iCanScript: Unable to determine the download URL");
     					Debug.Log("iCanScript: JSON root object is: "+rootObject.Encode());
     				}
-    #endif					
+    #endif
     			}
             }
-    #if DEBUG
+    #if iCS_DEBUG
             catch(System.Exception e) {
     			Debug.LogWarning("iCanScript: JSON exception: "+e.Message);
             }
     #else
             catch(System.Exception) {}
-    #endif        	
+    #endif
     		if(jMajor == null || jMinor == null || jBugFix == null) return null;
     		return new iCS_Version((int)jMajor.value, (int)jMinor.value, (int)jBugFix.value);
         }
-    
+
         // ----------------------------------------------------------------------
         // Returns true if the current version is equal or younger then the
     	// version returned by the server.
@@ -199,5 +199,5 @@ namespace iCanScript.Editor {
     		return date.AddDays(1);
     	}
     }
-    
+
 }

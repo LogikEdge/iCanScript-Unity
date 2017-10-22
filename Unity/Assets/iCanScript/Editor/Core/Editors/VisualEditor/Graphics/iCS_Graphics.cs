@@ -17,18 +17,18 @@ public partial class iCS_Graphics {
     const float kNodeTitleHeight = iCS_EditorConfig.kNodeTitleHeight;
     const int   kLabelFontSize   = iCS_EditorConfig.kLabelFontSize;
     const int   kTitleFontSize   = iCS_EditorConfig.kTitleFontSize;
-    
+
     // ======================================================================
     // FIELDS
     // ----------------------------------------------------------------------
-    static public bool  IsInitialized= false;    
+    static public bool  IsInitialized= false;
     static Texture2D    lineTexture       = null;
     static Texture2D    maximizeIcon      = null;
     static Texture2D    upArrowHeadIcon   = null;
     static Texture2D    downArrowHeadIcon = null;
     static Texture2D    leftArrowHeadIcon = null;
     static Texture2D    rightArrowHeadIcon= null;
-	
+
     // ----------------------------------------------------------------------
     public GUIStyle    LabelStyle              = null;
     public GUIStyle    TitleStyle              = null;
@@ -48,7 +48,7 @@ public partial class iCS_Graphics {
     Vector2          Translation= Vector2.zero;
     Rect             ClipingArea= new Rect(0,0,0,0);
     Vector2          MousePosition= Vector2.zero;
-    
+
     // ======================================================================
 	// CONSTANTS
     // ----------------------------------------------------------------------
@@ -59,7 +59,7 @@ public partial class iCS_Graphics {
     public static readonly Vector3 FacingNormal    = new Vector3(0,0,-1);
 	       static readonly Color   BlackShadowColor= new Color(0,0,0,0.25f);
 	       static readonly Color   WhiteShadowColor= new Color(1f,1f,1f,0.125f);
-           
+
     // ======================================================================
     // Drawing staging
 	// ----------------------------------------------------------------------
@@ -80,7 +80,7 @@ public partial class iCS_Graphics {
         BuildMessageTitleStyle();
         BuildValueStyle();
         BuildStereotypeStyle();
-        
+
         // Set font size according to scale.
         LabelStyle.fontSize= (int)(kLabelFontSize*Scale);
         TitleStyle.fontSize= (int)(kTitleFontSize*Scale);
@@ -93,11 +93,11 @@ public partial class iCS_Graphics {
             ValueStyle.fontSize= (int)(ValueStyle.fontSize*1.2f);
             LabelStyle.fontStyle= FontStyle.Bold;
             ValueStyle.fontStyle= FontStyle.Bold;
-        }                
+        }
     }
     public void End(iCS_IStorage iStorage) {
     }
-    
+
     // ======================================================================
     // GUI Warppers
 	// ----------------------------------------------------------------------
@@ -107,7 +107,7 @@ public partial class iCS_Graphics {
 	// ----------------------------------------------------------------------
     bool IsVisibleInViewport(Rect r) {
         Rect intersection= Clip(r);
-        return Math3D.IsNotZero(intersection.width) && Math3D.IsNotZero(intersection.height);        
+        return Math3D.IsNotZero(intersection.width) && Math3D.IsNotZero(intersection.height);
     }
 	// ----------------------------------------------------------------------
     bool IsFullyVisibleInViewport(Rect r) {
@@ -142,7 +142,7 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     void GUI_DrawTexture(Rect pos, Texture texture) {
-        GUI.DrawTexture(TranslateAndScale(pos), texture, ScaleMode.ScaleToFit);                  
+        GUI.DrawTexture(TranslateAndScale(pos), texture, ScaleMode.ScaleToFit);
     }
     // ----------------------------------------------------------------------
     void EditorGUIUtility_AddCursorRect(Rect rect, MouseCursor cursor) {
@@ -151,23 +151,23 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     void GUI_Label(Rect pos, GUIContent content, GUIStyle labelStyle) {
         if(ShouldShowLabel()) {
-            GUI.Label(TranslateAndScale(pos), content, labelStyle);            
+            GUI.Label(TranslateAndScale(pos), content, labelStyle);
         }
     }
     // ----------------------------------------------------------------------
     void GUI_Label(Rect pos, String content, GUIStyle labelStyle) {
         if(ShouldShowLabel()) {
-            GUI.Label(TranslateAndScale(pos), content, labelStyle);            
+            GUI.Label(TranslateAndScale(pos), content, labelStyle);
         }
     }
-    
+
     // ----------------------------------------------------------------------
     public static void DrawBox(Rect rect, Color fillColor, Color outlineColor, Color multiplyColor) {
         Vector3[] vectors= new Vector3[4];
         vectors[0]= new Vector3(rect.x, rect.y, 0);
         vectors[1]= new Vector3(rect.xMax, rect.y, 0);
         vectors[2]= new Vector3(rect.xMax, rect.yMax, 0);
-        vectors[3]= new Vector3(rect.x, rect.yMax, 0);        
+        vectors[3]= new Vector3(rect.x, rect.yMax, 0);
         Handles.color= multiplyColor;
         Handles.DrawSolidRectangleWithOutline(vectors, fillColor, outlineColor);
     }
@@ -187,7 +187,7 @@ public partial class iCS_Graphics {
         float size= arrowSize*Scale;
         Vector3 head= size*dir;
         Vector3 bottom= size*tangent;
-        
+
         Vector3[] vectors= new Vector3[4];
         vectors[0]= center+head;
         vectors[1]= center-head+bottom;
@@ -212,7 +212,7 @@ public partial class iCS_Graphics {
             }
             else {
                 lineTexture.hideFlags= HideFlags.DontSave;
-            }            
+            }
         }
         // Load maximize/minimize icon.
         maximizeIcon= iCS_BuiltinTextures.MaximizeIcon(1f);
@@ -220,19 +220,19 @@ public partial class iCS_Graphics {
         if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.UpArrowHeadIcon, out upArrowHeadIcon)) {
             IsInitialized= false;
             return IsInitialized;
-        }        
+        }
         if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.DownArrowHeadIcon, out downArrowHeadIcon)) {
             IsInitialized= false;
             return IsInitialized;
-        }        
+        }
         if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.LeftArrowHeadIcon, out leftArrowHeadIcon)) {
             IsInitialized= false;
             return IsInitialized;
-        }        
+        }
         if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.RightArrowHeadIcon, out rightArrowHeadIcon)) {
             IsInitialized= false;
             return IsInitialized;
-        }        
+        }
         // Graphic resources properly initialized.
         IsInitialized= true;
         return IsInitialized;
@@ -320,67 +320,103 @@ public partial class iCS_Graphics {
         Handles.color= new Color(1f, 1f, 1f, alpha);
         Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, outlineColor);
     }
-    
+
     // ======================================================================
     //  GRID
     // ----------------------------------------------------------------------
-    public void DrawGrid(Rect screenArea, Vector2 offset, Color backgroundColor, Color gridColor, float gridSpacing) {
+    public void DrawGrid(Rect screenArea, Vector2 offset) {
+        var backgroundColor = Prefs.CanvasBackgroundColor;
+        var minorGridColor  = Prefs.MinorGridColor;
+        var majorGridColor  = Prefs.MajorGridColor;
+        var minorGridSpacing= Prefs.GridSpacing;
+        var screenWidth     = screenArea.width;
+        var screenHeight    = screenArea.height;
         if(iCS_DevToolsConfig.UseBackgroundImage) {
             Texture2D background= iCS_TextureCache.GetTexture("Assets/DevTools/Editor/resources/background.png");
             var backgroundRect= new Rect(0,0,background.width, background.height);
-            GUI.DrawTexture(backgroundRect, background);            
+            GUI.DrawTexture(backgroundRect, background);
         }
         else {
             // Draw background.
             Vector3[] vect= { new Vector3(0,0,0),
-                              new Vector3(screenArea.width, 0, 0),
-                              new Vector3(screenArea.width,screenArea.height,0),
-                              new Vector3(0,screenArea.height,0)};
+                              new Vector3(screenWidth, 0, 0),
+                              new Vector3(screenWidth,screenHeight,0),
+                              new Vector3(0,screenHeight,0)};
             Handles.color= Color.white;
             Handles.DrawSolidRectangleWithOutline(vect, backgroundColor, backgroundColor);
 
             // Draw grid lines.
-            if(gridSpacing*Scale < 2) return;
-        
-            float xOffset= -Translation.x-offset.x;
-            float yOffset= -Translation.y-offset.y;
-            float gridSpacing5= 5f*gridSpacing;
-            float x= (xOffset)-gridSpacing*Mathf.Floor((xOffset)/gridSpacing);
-            float y= (yOffset)-gridSpacing*Mathf.Floor((yOffset)/gridSpacing);
-            float x5= (xOffset)-gridSpacing5*Mathf.Floor((xOffset)/gridSpacing5);
-            float y5= (yOffset)-gridSpacing5*Mathf.Floor((yOffset)/gridSpacing5);
-        
-            // Scale grid
-            x*= Scale;
-            y*= Scale;
-            x5*= Scale;
-            y5*=Scale;
-            gridSpacing*= Scale;
-            gridSpacing5*= Scale;
-        
-            if(Scale < 1f) {
-                gridColor.a *= Scale;
-            }
-            Color gridColor2= new Color(gridColor.r, gridColor.g, gridColor.b, 0.5f*gridColor.a);
-            for(; x < screenArea.width; x+= gridSpacing) {
-                if(Mathf.Abs(x-x5) < 1f) {
-                    Handles.color= gridColor;
-                    x5+= gridSpacing5;
-                } else {
-                    Handles.color= gridColor2;                
+            if(minorGridSpacing*Scale >= 2) {
+                float xOffset= -Translation.x-offset.x;
+                float yOffset= -Translation.y-offset.y;
+                float majorGridSpacing= 10f*minorGridSpacing;
+                float x= (xOffset)-minorGridSpacing*Mathf.Floor((xOffset)/minorGridSpacing);
+                float y= (yOffset)-minorGridSpacing*Mathf.Floor((yOffset)/minorGridSpacing);
+                float x10= (xOffset)-majorGridSpacing*Mathf.Floor((xOffset)/majorGridSpacing);
+                float y10= (yOffset)-majorGridSpacing*Mathf.Floor((yOffset)/majorGridSpacing);
+
+                // Scale grid
+                x*= Scale;
+                y*= Scale;
+                x10*= Scale;
+                y10*= Scale;
+                minorGridSpacing*= Scale;
+                majorGridSpacing*= Scale;
+
+                if(Scale < 1f) {
+                    minorGridColor.a *= Scale;
+                    majorGridColor.a *= Scale;
                 }
-                Handles.DrawLine(new Vector3(x,0,0), new Vector3(x,screenArea.height,0));            
-            }
-            for(; y < screenArea.height; y+= gridSpacing) {
-                if(Mathf.Abs(y-y5) < 1f) {
-                    Handles.color= gridColor;
-                    y5+= gridSpacing5;
-                } else {
-                    Handles.color= gridColor2;                
+                minorGridColor= new Color(minorGridColor.r, minorGridColor.g, minorGridColor.b, 0.5f*minorGridColor.a);
+                var startPoint= new Vector3(0,0,0);
+                var endPoint  = new Vector3(0,screenHeight,0);
+                Handles.color= minorGridColor;
+                for(; x < screenWidth; x+= minorGridSpacing) {
+                    startPoint.x= x;
+                    endPoint.x  = x;
+                    if(Mathf.Abs(x-x10) < 1f) {
+                        x10+= majorGridSpacing;
+                        Handles.color= majorGridColor;
+                        Handles.DrawLine(startPoint, endPoint);
+                        Handles.color= minorGridColor;
+                    } else {
+                        Handles.DrawLine(startPoint, endPoint);
+                    }
                 }
-                Handles.DrawLine(new Vector3(0,y,0), new Vector3(screenArea.width,y,0));            
-            }            
+                startPoint.x= 0;
+                endPoint.x  = screenWidth;
+                Handles.color= minorGridColor;
+                for(; y < screenHeight; y+= minorGridSpacing) {
+                    startPoint.y= y;
+                    endPoint.y  = y;
+                    if(Mathf.Abs(y-y10) < 1f) {
+                        y10+= majorGridSpacing;
+                        Handles.color= majorGridColor;
+                        Handles.DrawLine(startPoint, endPoint);
+                        Handles.color= minorGridColor;
+                    } else {
+                        Handles.DrawLine(startPoint, endPoint);
+                    }
+                }
+            }
         }
+        // Show iCanScript backdrop.
+        var backdropStyle= new GUIStyle();
+        backdropStyle.fontSize= (int)(screenWidth/20);
+        backdropStyle.fontStyle= FontStyle.Bold;
+        var backdropColor= Color.grey;
+        backdropColor.a= 0.3f;
+        backdropStyle.normal.textColor= backdropColor;
+        var backdrop= new GUIContent("iCanScript");
+        var backdropSize= backdropStyle.CalcSize(backdrop);
+        var spacer= 20f;
+        var backdropRect= new Rect(screenWidth-(backdropSize.x+spacer),
+                                    spacer,
+                                    backdropSize.x,
+                                    backdropSize.y);
+//        GUI.color= new Color(1f, 1f, 1f, 0.3f);
+        GUI.Label(backdropRect, backdrop, backdropStyle);
+
         // Draw guides for asset store big image
         if(iCS_DevToolsConfig.ShowAssetStoreBigImageFrame) {
             Rect liveRect;
@@ -395,7 +431,7 @@ public partial class iCS_Graphics {
                 Handles.DrawLine(new Vector3(liveRect.x, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.y, 0));
                 Handles.DrawLine(new Vector3(liveRect.x, liveRect.yMax, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));
                 Handles.DrawLine(new Vector3(liveRect.x, liveRect.y, 0), new Vector3(liveRect.x, liveRect.yMax, 0));
-                Handles.DrawLine(new Vector3(liveRect.xMax, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));                            
+                Handles.DrawLine(new Vector3(liveRect.xMax, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));
             }
                 // Show iCanScript Title
                 Texture2D title= iCS_TextureCache.GetTexture("Assets/DevTools/Editor/resources/iCanScript.png");
@@ -405,9 +441,9 @@ public partial class iCS_Graphics {
                     var titleWidth= Mathf.Min(title.width, reservedTitleWidth);
                     var titleHeight= title.height*(titleWidth/title.width);
                     var yMin= 0.5f*(liveRect.y + r.y);
-                    var titleRect= new Rect(liveRect.xMax-titleWidth, yMin, titleWidth, titleHeight);    
+                    var titleRect= new Rect(liveRect.xMax-titleWidth, yMin, titleWidth, titleHeight);
                     GUI.DrawTexture(titleRect, title);
-                }                
+                }
         }
         // Draw guides for asset store big image
         if(iCS_DevToolsConfig.ShowAssetStoreSmallImageFrame && !iCS_DevToolsConfig.IsSnapshotActive) {
@@ -422,25 +458,25 @@ public partial class iCS_Graphics {
             Handles.DrawLine(new Vector3(liveRect.x, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.y, 0));
             Handles.DrawLine(new Vector3(liveRect.x, liveRect.yMax, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));
             Handles.DrawLine(new Vector3(liveRect.x, liveRect.y, 0), new Vector3(liveRect.x, liveRect.yMax, 0));
-            Handles.DrawLine(new Vector3(liveRect.xMax, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));            
+            Handles.DrawLine(new Vector3(liveRect.xMax, liveRect.y, 0), new Vector3(liveRect.xMax, liveRect.yMax, 0));
             // Show iCanScript Title
             Texture2D title= iCS_TextureCache.GetTexture("Assets/DevTools/Editor/resources/iCanScript.png");
             if(title != null) {
                 var titleWidth= Mathf.Min(title.width, liveRect.width);
                 var titleHeight= title.height*(titleWidth/title.width);
-                var titleRect= new Rect(liveRect.x+0.5f*(liveRect.width-titleWidth), liveRect.y, titleWidth, titleHeight);    
+                var titleRect= new Rect(liveRect.x+0.5f*(liveRect.width-titleWidth), liveRect.y, titleWidth, titleHeight);
                 GUI.DrawTexture(titleRect, title);
-            }                                
+            }
         }
     }
-    
+
     // ======================================================================
     //  NODE
     // ----------------------------------------------------------------------
-    public void DrawNormalNode(iCS_EditorObject node, iCS_IStorage iStorage) {        
+    public void DrawNormalNode(iCS_EditorObject node, iCS_IStorage iStorage) {
         // Don't draw minimized node.
         if(!node.IsVisibleOnDisplay || node.IsIconizedOnDisplay) return;
-        
+
         // Don't display if we are outside the clipping area.
         Rect position= node.AnimatedRect;
         if(!IsVisibleInViewport(position)) return;
@@ -455,22 +491,22 @@ public partial class iCS_Graphics {
         // Change background color if node is selected.
         Color backgroundColor= GetBackgroundColor(node);
         bool isMouseOver= position.Contains(MousePosition);
-		
+
         // Determine title style
         var shadowColor= isMouseOver || iStorage.IsSelectedOrMultiSelected(node) ? WhiteShadowColor : BlackShadowColor;
         GUI_Box(position, new GUIContent(title), GetNodeColor(node), backgroundColor, shadowColor);
         if(isMouseOver) {
-            EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);            
+            EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);
         }
         // Fold/Unfold icon
         if(ShouldDisplayFoldIcon(node)) {
             var icon= node.IsFoldedInLayout ? iCS_BuiltinTextures.FoldIcon(Scale) : iCS_BuiltinTextures.UnfoldIcon(Scale);
-            GUI_DrawTexture(new Rect(position.x+6f, position.y-0.5f, 16, 16), icon);                           
+            GUI_DrawTexture(new Rect(position.x+6f, position.y-0.5f, 16, 16), icon);
         }
         // Minimize Icon
         if(ShouldDisplayMinimizeIcon(node)) {
             var minimizeIcon= iCS_BuiltinTextures.MinimizeIcon(Scale);
-            GUI_DrawTexture(new Rect(position.xMax-2-/*minimizeIcon.width*/16, position.y-0.5f, /*minimizeIcon.width*/16, /*minimizeIcon.height*/16), minimizeIcon);            
+            GUI_DrawTexture(new Rect(position.xMax-2-/*minimizeIcon.width*/16, position.y-0.5f, /*minimizeIcon.width*/16, /*minimizeIcon.height*/16), minimizeIcon);
         }
         GUI.color= Color.white;
     }
@@ -479,12 +515,12 @@ public partial class iCS_Graphics {
         if(node.IStorage.IsSelectedOrMultiSelected(node)) {
             return Prefs.SelectedBackgroundColor;
         }
-        return Prefs.BackgroundColor;        
+        return Prefs.BackgroundColor;
     }
     // ----------------------------------------------------------------------
-    public void DrawMinimizedNode(iCS_EditorObject node, iCS_IStorage iStorage) {        
+    public void DrawMinimizedNode(iCS_EditorObject node, iCS_IStorage iStorage) {
         if(!node.IsIconizedOnDisplay) return;
-        
+
         // Draw minimized node (if visible).
         Rect displayRect= node.AnimatedRect;
         Rect displayArea= new Rect(displayRect.x-100f, displayRect.y-16f, displayRect.width+200f, displayRect.height+16f);
@@ -507,11 +543,11 @@ public partial class iCS_Graphics {
             iconWidth = (int)((iconWidth *factor)+0.1f);
             iconHeight= (int)((iconHeight*factor)+0.1f);
         }
-        Rect textureRect= new Rect(position.x-0.5f*iconWidth, position.y-0.5f*iconHeight, iconWidth, iconHeight);                
+        Rect textureRect= new Rect(position.x-0.5f*iconWidth, position.y-0.5f*iconHeight, iconWidth, iconHeight);
         if(node.IsTransitionPackage) {
             DrawMinimizedTransitionModule(iStorage.GetTransitionPackageVector(node), position, alphaWhite);
         } else {
-            GUI_DrawTexture(textureRect, icon);                                       
+            GUI_DrawTexture(textureRect, icon);
         }
         if(textureRect.Contains(MousePosition)) {
             EditorGUIUtility_AddCursorRect (textureRect, MouseCursor.Link);
@@ -537,9 +573,9 @@ public partial class iCS_Graphics {
             backgroundColor= GetBackgroundColor(node);
         }
         DrawLabelBackground(labelRect, boxAlpha, backgroundColor, outlineColor);
-        GUI.Label(labelRect, new GUIContent(title), LabelStyle);		
+        GUI.Label(labelRect, new GUIContent(title), LabelStyle);
 	}
-	
+
     // ======================================================================
     // Node style functionality
     // ----------------------------------------------------------------------
@@ -607,40 +643,40 @@ public partial class iCS_Graphics {
             icon.Apply();
             icon.hideFlags= HideFlags.DontSave;
         }
-        return icon;        
+        return icon;
     }
-    
+
     // ======================================================================
     //  PORT
     // ----------------------------------------------------------------------
     public void DrawPort(iCS_EditorObject port, iCS_IStorage iStorage) {
         // Don't show port if too small
         if(!ShouldShowPort()) return;
-        
+
         // Only draw visible data ports.
         if(port == null || iStorage == null) return;
         if(!port.IsVisibleOnDisplay) return;
-        
+
         // Don't show port if its parent node is iconized.
         var parent= port.ParentNode;
         if(parent.IsIconizedOnDisplay) return;
-        
+
         // Don't display if outside clipping area.
 		Vector2 portCenter= GetPortCenter(port);
 		if(port.IsOnRightEdge) portCenter.x-= 1f/Scale;   // Small adjustement realign right ports on visual edge.
 		float portRadius= iCS_EditorConfig.PortRadius;
         Rect displayArea= new Rect(portCenter.x-200f, portCenter.y-2f*portRadius, 400f, 4f*portRadius);
         if(!IsVisibleInViewport(displayArea)) return;
-        
+
         // Determine if port is selected.
         bool isSelectedPort= iStorage.IsSelectedOrMultiSelected(port) ||
                              (selectedObject != null && selectedObject.IsDataOrControlPort && port == selectedObject.Parent);
-        
+
         // Special case for asset store images
 		// Compute port radius (radius is increased if port is selected).
         bool useLargePort= false;
 		if(isSelectedPort || iCS_DevToolsConfig.ShowBoldImage) {
-			portRadius= iCS_EditorConfig.PortRadius*iCS_EditorConfig.SelectedPortFactor;			
+			portRadius= iCS_EditorConfig.PortRadius*iCS_EditorConfig.SelectedPortFactor;
             useLargePort= true;
 		}
 
@@ -658,7 +694,7 @@ public partial class iCS_Graphics {
 			alpha*= 0.5f;
 		}
         GUI.color= new Color(1f,1f,1f,alpha);
-        
+
 		// Determine port colors
         Color portColor= Prefs.GetTypeColor(portValueType);
         Color nodeColor= GetNodeColor(port.Parent);
@@ -670,12 +706,12 @@ public partial class iCS_Graphics {
         Rect portPos= new Rect(portCenter.x-portRadius, portCenter.y-portRadius, 2f*portRadius, 2f*portRadius);
         if(portPos.Contains(MousePosition)) {
             if(!port.IsTransitionPort) {
-                EditorGUIUtility_AddCursorRect (portPos, MouseCursor.Link);            
-            }        
-        }            
-		
+                EditorGUIUtility_AddCursorRect (portPos, MouseCursor.Link);
+            }
+        }
+
         // State transition name is handle by DrawConnection.
-        if(port.IsStatePort || port.IsTransitionPort) return;         
+        if(port.IsStatePort || port.IsTransitionPort) return;
 
         // Display port name.
         if(ShouldDisplayPortName(port)) {
@@ -688,20 +724,20 @@ public partial class iCS_Graphics {
             }
             DrawLabelBackground(portNamePos, boxAlpha, Color.black, outlineColor);
 	        string name= GetPortName(port);
-	        GUI.Label(portNamePos, name, LabelStyle);                                            	
+	        GUI.Label(portNamePos, name, LabelStyle);
         }
 
         // Display port value (if applicable).
-        if(ShouldDisplayPortValue(port)) {    
+        if(ShouldDisplayPortValue(port)) {
             if(!port.IsFloating && !port.IsEnablePort) {
     			EditorGUIUtility.LookLikeControls();
                 Rect portValuePos= GetPortValueGUIPosition(port);
         		if(Math3D.IsNotZero(portValuePos.width)) {
                     DrawLabelBackground(portValuePos, 0.35f, Color.black, Color.black);
             		string valueAsStr= GetPortValueAsString(port);
-        			GUI.Label(portValuePos, valueAsStr, ValueStyle);			
-        		}            				
-    
+        			GUI.Label(portValuePos, valueAsStr, ValueStyle);
+        		}
+
 //                /*
 //                    CHANGED: ==> Experimental <==
 //                */
@@ -715,7 +751,7 @@ public partial class iCS_Graphics {
 //    					GUI.backgroundColor= portColor;
 //    					GUI.changed= false;
 //                        bool currentValue= (bool)portValue;
-//    					bool newValue= GUI.Toggle(new Rect(togglePos.x-7, togglePos.y-9, 16, 16), currentValue, "");					
+//    					bool newValue= GUI.Toggle(new Rect(togglePos.x-7, togglePos.y-9, 16, 16), currentValue, "");
 //                        GUI.backgroundColor= savedBackgroundColor;
 //    					if(GUI.changed) {
 //    						port.PortValue= newValue;
@@ -741,9 +777,9 @@ public partial class iCS_Graphics {
 			} else if(port.IsInParentMuxPort) {
                 DrawInMuxPort(portCenter, portColor, isSelected, port.Edge);
 			} else if(port.IsControlPort) {
-	    	    DrawControlPort(port, portCenter, portColor, isSelected);							        			    
+	    	    DrawControlPort(port, portCenter, portColor, isSelected);
 			} else {
-	    	    DrawDataPort(port, portCenter, portColor, isSelected);							        
+	    	    DrawDataPort(port, portCenter, portColor, isSelected);
 			}
         } else if(port.IsStatePort) {
             // State ports.
@@ -759,13 +795,13 @@ public partial class iCS_Graphics {
 				var color= GUI.color;
 				color.a*= 0.8f;
                 Handles.color= color;
-                Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, 0.65f*portRadius*Scale);                            
+                Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, 0.65f*portRadius*Scale);
             }
         }
         else {
             // All other types of ports (should not exists).
             DrawDataPort(port, portCenter, portColor, isSelected);
-        }        
+        }
     }
 	// ----------------------------------------------------------------------
     void DrawDataPort(iCS_EditorObject port, Vector3 _center, Color _fillColor, bool isSelected) {
@@ -792,7 +828,7 @@ public partial class iCS_Graphics {
 			                       iCS_PortIcons.GetInTriggerPortIcon(_fillColor);
 		} else {
 			portIcon= isSelected ? iCS_PortIcons.GetSelectedOutTriggerPortIcon(_fillColor) :
-			                       iCS_PortIcons.GetOutTriggerPortIcon(_fillColor);			
+			                       iCS_PortIcons.GetOutTriggerPortIcon(_fillColor);
 		}
 		Rect pos= new Rect(center.x-0.5f*portIcon.width,
 						   center.y-0.5f*portIcon.height,
@@ -848,7 +884,7 @@ public partial class iCS_Graphics {
 	// ----------------------------------------------------------------------
     void DrawInMuxPort(Vector3 _center, Color _fillColor, bool isSelected, iCS_EdgeEnum edge) {
 		Vector3 center= TranslateAndScale(_center);
-		Texture2D portIcon= null; 
+		Texture2D portIcon= null;
         switch(edge) {
             case iCS_EdgeEnum.Top:
     		    portIcon= isSelected ? iCS_PortIcons.GetSelectedInMuxPortTopIcon(_fillColor) :
@@ -873,11 +909,11 @@ public partial class iCS_Graphics {
 						   portIcon.width,
 						   portIcon.height);
 		GUI.DrawTexture(pos, portIcon);
-    }   
+    }
 	// ----------------------------------------------------------------------
     void DrawOutMuxPort(Vector3 _center, Color _fillColor, bool isSelected, iCS_EdgeEnum edge) {
 		Vector3 center= TranslateAndScale(_center);
-		Texture2D portIcon= null; 
+		Texture2D portIcon= null;
         switch(edge) {
             case iCS_EdgeEnum.Top:
     		    portIcon= isSelected ? iCS_PortIcons.GetSelectedOutMuxPortTopIcon(_fillColor) :
@@ -902,8 +938,8 @@ public partial class iCS_Graphics {
 						   portIcon.width,
 						   portIcon.height);
 		GUI.DrawTexture(pos, portIcon);
-    }   
-    
+    }
+
 	// ----------------------------------------------------------------------
     static float[] portTopBottomRatio      = new float[]{ 1f/2f, 1f/4f, 3f/4f, 1f/6f, 5f/6f, 1f/8f, 3f/8f, 5f/8f, 7f/8f };
     static float[] portLabelTopBottomOffset= new float[]{ 0f   , 0f   , 0.8f , 0.8f , 0.8f , 0f   , 0.8f , 0f   , 0.8f };
@@ -920,7 +956,7 @@ public partial class iCS_Graphics {
         }
         return offset;
     }
-    
+
     // ======================================================================
     //  CONNECTION
     // ----------------------------------------------------------------------
@@ -940,7 +976,7 @@ public partial class iCS_Graphics {
                 isShowInvisiblePort= true;
             }
             else {
-                if(isPortVisible == false) return;                
+                if(isPortVisible == false) return;
             }
         } else {
             if(isPortVisible == false) return;
@@ -953,7 +989,7 @@ public partial class iCS_Graphics {
         bool isSourceVisible= source.IsVisibleOnDisplay;
         if(isSourceVisible == false && isShowInvisiblePort == false) return;
         if(port.IsOutStatePort) return;
-        
+
         // No connection to draw if outside clipping area.
         var portPos = port.AnimatedPosition;
         var sourcePos= source.AnimatedPosition;
@@ -981,12 +1017,12 @@ public partial class iCS_Graphics {
         else {
             alpha= port.DisplayAlpha*source.DisplayAlpha;
         }
-        
+
 		// Reduce alpha if consumer port is disable
 		if(IsDisable(port)) {
 			alpha*= 0.5f;
 		}
-		
+
         // Determine line color.
         Color sourceColor= Color.white;
         Color portColor  = Color.white;
@@ -997,8 +1033,8 @@ public partial class iCS_Graphics {
             }
         }
         else {
-            sourceColor= Prefs.GetTypeColor(source.RuntimeType);            
-            portColor  = Prefs.GetTypeColor(port.RuntimeType);            
+            sourceColor= Prefs.GetTypeColor(source.RuntimeType);
+            portColor  = Prefs.GetTypeColor(port.RuntimeType);
         }
         sourceColor.a*= alpha;
         portColor.a  *= alpha;
@@ -1046,7 +1082,7 @@ public partial class iCS_Graphics {
                 } else {
                     dir= DirectionEnum.Down;
                 }
-            }                 
+            }
             ShowArrowCenterOn(cp.End, arrowColor, dir);
         }
         else {
@@ -1089,7 +1125,7 @@ public partial class iCS_Graphics {
             if(highlightWidth != 0) {
                 highlightWidth*= Scale; if(highlightWidth < 1f) highlightWidth= 1f;
                 Handles.DrawBezier(startPos, center, startTangent, centerEndTangent, highlightColor, lineTexture, lineWidth+highlightWidth);
-                Handles.DrawBezier(center, endPos, centerStartTangent, endTangent, highlightColor, lineTexture, lineWidth+highlightWidth);                
+                Handles.DrawBezier(center, endPos, centerStartTangent, endTangent, highlightColor, lineTexture, lineWidth+highlightWidth);
             }
             Handles.DrawBezier(startPos, center, startTangent, centerEndTangent, startColor, lineTexture, lineWidth);
             Handles.DrawBezier(center, endPos, centerStartTangent, endTangent, endColor, lineTexture, lineWidth);
@@ -1102,10 +1138,10 @@ public partial class iCS_Graphics {
             case iCS_EdgeEnum.Top:
             case iCS_EdgeEnum.Bottom: {
                 if(tangent.y < 0) {
-                    dir= DirectionEnum.Down;                                        
+                    dir= DirectionEnum.Down;
                 }
                 else {
-                    dir= DirectionEnum.Up;                    
+                    dir= DirectionEnum.Up;
                 }
                 break;
             }
@@ -1197,7 +1233,7 @@ public partial class iCS_Graphics {
                 var portValue= ep.PortValue;
 				if(portValue != null && (bool)(ep.PortValue) == false) {
 					return false;
-				}				
+				}
 			}
 		}
 		return true;
@@ -1211,7 +1247,7 @@ public partial class iCS_Graphics {
         var rtState     = runtimeNodes[state.InstanceId] as iCS_State;
         return rtStateChart.IsActiveState(rtState);
     }
-    
+
     // ----------------------------------------------------------------------
     /// Returns the closest point on the given edge
     Vector2 ClosestPointOnRectOnEdge(Rect r, Vector2 p, iCS_EdgeEnum edge) {
@@ -1223,7 +1259,7 @@ public partial class iCS_Graphics {
             }
             case iCS_EdgeEnum.Right: {
                 result= Math3D.ClosestPointOnLineSegmentToPoint(Math3D.TopRightCorner(r), Math3D.BottomRightCorner(r), p);
-                break;                    
+                break;
             }
             case iCS_EdgeEnum.Top: {
                 result= Math3D.ClosestPointOnLineSegmentToPoint(Math3D.TopLeftCorner(r), Math3D.TopRightCorner(r), p);

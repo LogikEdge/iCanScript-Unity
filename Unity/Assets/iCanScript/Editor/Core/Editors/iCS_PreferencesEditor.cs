@@ -19,7 +19,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const float kColumn1X    = 0;
     const float kColumn2X    = kColumn1X+kColumn1Width;
     const float kColumn3X    = kColumn2X+kColumn2Width;
-	
+
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 	    "Code Engineering"
 #endif
 	};
-	
+
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
@@ -55,7 +55,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             if(current == value) return;
             var path= "Assets/";
             if(String.IsNullOrEmpty(AssetDatabase.RenameAsset(path+current, value))) {
-                EditorPrefs.SetString(kCodeGenerationFolderKey, value);                                
+                EditorPrefs.SetString(kCodeGenerationFolderKey, value);
             }
         }
     }
@@ -67,7 +67,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             if(current == value) return;
             var path= "Assets/"+CodeGenerationFolder+"/";
             if(String.IsNullOrEmpty(AssetDatabase.RenameAsset(path+current, value))) {
-                EditorPrefs.SetString(kBehaviourGenerationSubFolderKey, value);                
+                EditorPrefs.SetString(kBehaviourGenerationSubFolderKey, value);
             }
         }
     }
@@ -82,7 +82,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         }
     }
 #endif
-    
+
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
@@ -103,7 +103,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         }
 		// Build title style
         if(titleStyle == null || rebuildStyleNeeded) {
-            titleStyle= new GUIStyle(EditorStyles.largeLabel);                    
+            titleStyle= new GUIStyle(EditorStyles.largeLabel);
 	        titleStyle.fontSize= 18;
 	        titleStyle.fontStyle= FontStyle.Bold;
 		}
@@ -120,7 +120,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 			var bkgColor= GUI.skin.settings.selectionColor;
 			bkgColor.a= 1f;
 			if(selectionBackground == null) {
-				selectionBackground= new Texture2D(1,1);				
+				selectionBackground= new Texture2D(1,1);
 			}
 			selectionBackground.SetPixel(0,0,bkgColor);
 			selectionBackground.Apply();
@@ -135,12 +135,12 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     public new void OnGUI() {
         // Draw common stuff for all editors
         base.OnGUI();
-        
+
 		// Reset GUI alpha.
 		GUI.color= Color.white;
 		// Build GUI styles (in case they were changed by user).
         RebuildStyles();
-        
+
         // Outline column 1 area
         Rect column1Rect= new Rect(0,-1,kColumn1Width,position.height+1);
         GUI.Box(column1Rect,"");
@@ -152,7 +152,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 
         // Show title
         if(selGridId >= 0 && selGridId < selGridStrings.Length) {
-            string title= selGridStrings[selGridId];            
+            string title= selGridStrings[selGridId];
             GUI.Label(new Rect(kColumn2X+1.5f*kMargin,kMargin, kColumn2Width+kColumn3Width, kTitleHeight), title, titleStyle);
         }
 
@@ -182,7 +182,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         pos.y+= versionSize.y;
         string buildDate= iCS_BuildInfo.kBuildDateStr;
         GUIContent buildDateContent= new GUIContent(buildDate);
-        Vector2 buildDateSize= GUI.skin.label.CalcSize(buildDateContent);        
+        Vector2 buildDateSize= GUI.skin.label.CalcSize(buildDateContent);
         pos.x= column1Rect.x+0.5f*(column1Rect.width-buildDateSize.x);
 		pos.width= buildDateSize.x;
 		pos.height= buildDateSize.y;
@@ -195,7 +195,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         if(iCS_TextureCache.GetTexture(iCS_EditorStrings.LogoIcon, out iCanScriptLogo)) {
             Rect r= new Rect(0.5f*(kColumn1Width-logoWidth), position.height-logoHeight-10f-2f*versionSize.y, logoWidth, logoHeight);
             GUI.DrawTexture(r, iCanScriptLogo);
-        }        		
+        }
 	}
     // ---------------------------------------------------------------------------------
     void DisplayOptions() {
@@ -213,7 +213,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         pos[8].y+= pos[8].height;
         for(int i= 7; i < pos.Length; ++i) {
             pos[i]= pos[i-1];
-            pos[i].y= pos[i-1].yMax;            
+            pos[i].y= pos[i-1].yMax;
         }
         GUI.Label(pos[0], "Animation Enabled");
         GUI.Label(pos[1], "Animation Time");
@@ -224,7 +224,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         GUI.Label(pos[6], "Show Runtime Values");
         GUI.Label(pos[7], "Refresh Period (seconds)");
 		GUI.Label(pos[8], "Show Frame Id");
-        
+
         // Draw Column 3
         for(int i= 0; i < pos.Length; ++i) {
             pos[i].x+= kColumn2Width;
@@ -252,7 +252,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             Prefs.ResetZoomSpeed();
             Prefs.ResetShowRuntimePortValue();
             Prefs.ResetPortValueRefreshPeriod();
-			Prefs.ResetShowRuntimeFrameId();   
+			Prefs.ResetShowRuntimeFrameId();
         }
 		// Ask to repaint visual editor if an option has changed.
 		if(GUI.changed) {
@@ -277,16 +277,16 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             pos[i].width= kColumn3Width;
         }
         Prefs.GridSpacing= EditorGUI.FloatField(pos[0], Prefs.GridSpacing);
-        Prefs.GridColor= EditorGUI.ColorField(pos[1], Prefs.GridColor);
+        Prefs.MinorGridColor= EditorGUI.ColorField(pos[1], Prefs.MinorGridColor);
         Prefs.CanvasBackgroundColor= EditorGUI.ColorField(pos[2], Prefs.CanvasBackgroundColor);
-		
+
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
             Prefs.ResetGridSpacing();
             Prefs.ResetGridColor();
             Prefs.ResetCanvasBackgroundColor();
         }
-		
+
 		// Ask to repaint visual editor if an option has changed.
 		if(GUI.changed) {
 			iCS_EditorController.RepaintVisualEditor();
@@ -333,7 +333,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         Prefs.UserFunctionNodeColor= EditorGUI.ColorField(pos[10], Prefs.UserFunctionNodeColor);
         Prefs.BackgroundColor= EditorGUI.ColorField(pos[11], Prefs.BackgroundColor);
         Prefs.SelectedBackgroundColor= EditorGUI.ColorField(pos[12], Prefs.SelectedBackgroundColor);
-        
+
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
             Prefs.ResetNodeTitleColor();
@@ -349,8 +349,8 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             Prefs.ResetUserFunctionNodeColor();
             Prefs.ResetBackgroundColor();
             Prefs.ResetSelectedBackgroundColor();
-        }        
-		
+        }
+
 		// Ask to repaint visual editor if an option has changed.
 		if(GUI.changed) {
 			iCS_EditorController.RepaintVisualEditor();
@@ -389,7 +389,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         Prefs.Vector4TypeColor   = EditorGUI.ColorField(pos[6], Prefs.Vector4TypeColor);
         Prefs.GameObjectTypeColor= EditorGUI.ColorField(pos[7], Prefs.GameObjectTypeColor);
         Prefs.DefaultTypeColor   = EditorGUI.ColorField(pos[8], Prefs.DefaultTypeColor);
-        
+
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
             Prefs.ResetBoolTypeColor();
@@ -402,7 +402,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 			Prefs.ResetGameObjectTypeColor();
             Prefs.ResetDefaultTypeColor();
 		}
-		
+
 		// Ask to repaint visual editor if an option has changed.
 		if(GUI.changed) {
 			iCS_EditorController.RepaintVisualEditor();
@@ -417,7 +417,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         GUI.Label(p2, "In", EditorStyles.boldLabel);
         p2.x+= 40f;
         GUI.Label(p2, "Out", EditorStyles.boldLabel);
-        
+
         // Column 2
         Rect[] pos= new Rect[5];
         pos[0]= new Rect(p.x, p.yMax, p.width, p.height);
@@ -430,7 +430,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         GUI.Label(pos[2], "Class Fields");
         GUI.Label(pos[3], "Instance Properties");
         GUI.Label(pos[4], "Class Properties");
-        
+
         // Draw Column 3
         for(int i= 0; i < pos.Length; ++i) {
             pos[i].x+= kColumn2Width;
@@ -448,7 +448,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         Prefs.InstanceAutocreateOutClassFields    = EditorGUI.Toggle(pos[2], Prefs.InstanceAutocreateOutClassFields);
         Prefs.InstanceAutocreateOutProperties     = EditorGUI.Toggle(pos[3], Prefs.InstanceAutocreateOutProperties);
         Prefs.InstanceAutocreateOutClassProperties= EditorGUI.Toggle(pos[4], Prefs.InstanceAutocreateOutClassProperties);
-        
+
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
             Prefs.ResetInstanceAutocreateInThis();
@@ -460,7 +460,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             Prefs.ResetInstanceAutocreateOutClassFields();
             Prefs.ResetInstanceAutocreateOutProperties();
             Prefs.ResetInstanceAutocreateOutClassProperties();
-        }        
+        }
     }
     // ---------------------------------------------------------------------------------
 	void SoftwareUpdate() {
@@ -474,7 +474,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         GUI.Label(pos[0], "Watch for Updates");
         GUI.Label(pos[1], "Verification Internal");
         GUI.Label(pos[2], "Skipped Version");
-        
+
         // Draw Column 3
         for(int i= 0; i < pos.Length; ++i) {
             pos[i].x+= kColumn2Width;
@@ -486,15 +486,15 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 		Prefs.SoftwareUpdateSkippedVersion= EditorGUI.TextField(pos[2], Prefs.SoftwareUpdateSkippedVersion);
 		pos[2].x+= pos[2].width;
 		if(GUI.Button(pos[2], "Clear")) {
-			Prefs.ResetSoftwareUpdateSkippedVersion();			
+			Prefs.ResetSoftwareUpdateSkippedVersion();
 		}
-		
+
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
 			Prefs.ResetSoftwareUpdateWatchEnabled();
 			Prefs.ResetSoftwareUpdateInterval();
 			Prefs.ResetSoftwareUpdateSkippedVersion();
-        }        
+        }
 	}
 //    // ---------------------------------------------------------------------------------
 //	void DebugConfig() {
@@ -506,18 +506,18 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 //            pos[i].y= pos[i-1].yMax;
 //        }
 //        GUI.Label(pos[0], "Enable Trace");
-//        
+//
 //        // Draw Column 3
 //        for(int i= 0; i < pos.Length; ++i) {
 //            pos[i].x+= kColumn2Width;
 //            pos[i].width= kColumn3Width;
 //        }
 //		Prefs.DebugTrace  = EditorGUI.Toggle(pos[0], Prefs.DebugTrace);
-//		
+//
 //        // Reset Button
 //        if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
 //			Prefs.ResetDebugTrace();
-//        }        
+//        }
 //	}
 #if CODE_GENERATION_CONFIG
     // ---------------------------------------------------------------------------------
@@ -541,16 +541,16 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         CodeGenerationFilePrefix    = EditorGUI.TextField(pos[0], CodeGenerationFilePrefix);
         CodeGenerationFolder        = EditorGUI.TextField(pos[1], CodeGenerationFolder);
         BehaviourGenerationSubfolder= EditorGUI.TextField(pos[2], BehaviourGenerationSubfolder);
-        
+
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
             CodeGenerationFilePrefix    = kCodeGenerationFilePrefix;
             CodeGenerationFolder        = kCodeGenerationFolder;
             BehaviourGenerationSubfolder= kBehaviourGenerationSubFolder;
-        }        	    
+        }
 	}
 #endif
-	
+
 	// =================================================================================
     // Helpers.
     // ---------------------------------------------------------------------------------

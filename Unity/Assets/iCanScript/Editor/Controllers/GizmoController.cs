@@ -45,7 +45,7 @@ namespace iCanScript { namespace Editor {
         }
     
         // ---------------------------------------------------------------------------------
-        [DrawGizmo(GizmoType.NotSelected | GizmoType.Selected)]
+        [DrawGizmo(GizmoType.NotInSelectionHierarchy | GizmoType.Selected)]
         public static void DrawGizmos(iCS_VisualScriptImp visualScript, GizmoType gizmoType) {
             var go= visualScript.gameObject;
             var p= go.transform.position;

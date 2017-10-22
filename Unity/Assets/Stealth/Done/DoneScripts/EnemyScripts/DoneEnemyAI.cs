@@ -11,7 +11,7 @@ public class DoneEnemyAI : MonoBehaviour
 	
 	
 	private DoneEnemySight enemySight;						// Reference to the EnemySight script.
-	private NavMeshAgent nav;								// Reference to the nav mesh agent.
+	private UnityEngine.AI.NavMeshAgent nav;								// Reference to the nav mesh agent.
 	private Transform player;								// Reference to the player's transform.
 	private DonePlayerHealth playerHealth;					// Reference to the PlayerHealth script.
 	private DoneLastPlayerSighting lastPlayerSighting;		// Reference to the last global sighting of the player.
@@ -24,7 +24,7 @@ public class DoneEnemyAI : MonoBehaviour
 	{
 		// Setting up the references.
 		enemySight = GetComponent<DoneEnemySight>();
-		nav = GetComponent<NavMeshAgent>();
+		nav = GetComponent<UnityEngine.AI.NavMeshAgent>();
 		player = GameObject.FindGameObjectWithTag(DoneTags.player).transform;
 		playerHealth = player.GetComponent<DonePlayerHealth>();
 		lastPlayerSighting = GameObject.FindGameObjectWithTag(DoneTags.gameController).GetComponent<DoneLastPlayerSighting>();

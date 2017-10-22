@@ -34,8 +34,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             if(IStorage != null) IStorage.GuiScale= value;
         }
     }
-    
-    
+
+
     // ======================================================================
     // Node graph display.
 	// ----------------------------------------------------------------------
@@ -46,12 +46,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         myGraphics.Begin(UpdateScrollPosition(), UpdateScale(), VisibleGraphRect, SelectedObject, GraphMousePosition);
 
         // Draw editor grid.
-	    DrawGrid();			
-        
+	    DrawGrid();
+
         // -- Show workflow assistant --
         ShowWorkflowAssistant();
         HotZoneGUI();
-        
+
         // Draw nodes and their connections.
         DisplayGraphNodes();
 
@@ -62,31 +62,28 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 		// Show toolbar
 		Toolbar();
-        
+
         // Show errors/warnings
         DisplayErrorsAndWarnings();
 	}
-	
+
 	// ----------------------------------------------------------------------
     void DrawGrid() {
 		// No grid if editor snapshot without background requested.
 		if(iCS_DevToolsConfig.IsFrameWithoutBackground) return;
 		// Draw Grid
-        myGraphics.DrawGrid(position, GridOffset,
-                            Pref.CanvasBackgroundColor,
-                            Pref.GridColor,
-                            Pref.GridSpacing);
-    }                       
-    
+        myGraphics.DrawGrid(position, GridOffset);
+    }
+
 	// ----------------------------------------------------------------------
     void DisplayGraphNodes() {
         var floatingNodes= DisplayNonFloatingNormalNode(DisplayRoot);
         DisplayConnections(DisplayRoot);
         DisplayPortsAndMinimizedNodes(DisplayRoot);
         // Display floating nodes.
-        DisplayFloatingNormalNodes(floatingNodes);            
+        DisplayFloatingNormalNodes(floatingNodes);
     }
-    
+
     // ======================================================================
     // Normal nodes
 	// ----------------------------------------------------------------------
@@ -102,8 +99,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         if(node.IsFloating) {
                             floatingNodes.Add(node);
                         } else {
-	                        myGraphics.DrawNormalNode(node, IStorage);							
-                        }                        
+	                        myGraphics.DrawNormalNode(node, IStorage);
+                        }
                     }
                 }
             }
@@ -118,7 +115,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     if(child.IsNode) {
                         if(child.IsHidden) return;
     					if( child.IsIconizedInLayout ) {
-    						myGraphics.DrawMinimizedNode(child, IStorage);						
+    						myGraphics.DrawMinimizedNode(child, IStorage);
     					}
     					else {
     						myGraphics.DrawNormalNode(child, IStorage);
@@ -129,10 +126,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     					myGraphics.DrawBinding(child, IStorage);
     				}
                 }
-            );            
+            );
         }
     }
-	
+
     // ======================================================================
     // Connections
 	// ----------------------------------------------------------------------
@@ -149,17 +146,17 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         }
                         if(source != null) {
                             if(srcParent == rootNode) {
-                                return;                        
+                                return;
                             }
                         }
                     }
                     else {
                         if(srcParent != rootNode && !rootNode.IsParentOf(srcParent)) {
-                            return; 
+                            return;
                         }
                     }
 					if( !parent.IsParentFloating ) {
-						myGraphics.DrawBinding(child, IStorage);						
+						myGraphics.DrawBinding(child, IStorage);
 					}
 				}
 			}
@@ -188,7 +185,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         );
         if(floatingRootNode != null) {
             myGraphics.DrawMinimizedNode(floatingRootNode, IStorage);
-        }        
+        }
     }
 
 	// ======================================================================

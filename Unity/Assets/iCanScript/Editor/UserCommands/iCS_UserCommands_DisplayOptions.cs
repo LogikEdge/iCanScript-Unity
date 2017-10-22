@@ -1,7 +1,7 @@
 //
 // File: iCS_UserCommands_DisplayOptions
 //
-//#define DEBUG
+//#define iCS_DEBUG
 using UnityEngine;
 using System.Collections;
 
@@ -33,7 +33,7 @@ public static partial class iCS_UserCommands {
                     }
                 }
             );
-            SendEndRelayoutOfTree(iStorage);            
+            SendEndRelayoutOfTree(iStorage);
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -44,9 +44,9 @@ public static partial class iCS_UserCommands {
 	// ----------------------------------------------------------------------
     // OK
     public static void Fold(iCS_EditorObject node) {
-#if DEBUG
+#if iCS_DEBUG
         Debug.Log("iCanScript: Fold => "+node.Name);
-#endif        
+#endif
         if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Folded) {
             return;
         }
@@ -66,7 +66,7 @@ public static partial class iCS_UserCommands {
                     }
                 }
             );
-            SendEndRelayoutOfTree(iStorage);            
+            SendEndRelayoutOfTree(iStorage);
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -79,7 +79,7 @@ public static partial class iCS_UserCommands {
     public static void Iconize(iCS_EditorObject node) {
 #if DEBUG
         Debug.Log("iCanScript: Iconize => "+node.Name);
-#endif        
+#endif
         if(!node.IsNode || node.DisplayOption == iCS_DisplayOptionEnum.Iconized) {
             return;
         }
@@ -101,7 +101,7 @@ public static partial class iCS_UserCommands {
                     }
                 }
             );
-            SendEndRelayoutOfTree(iStorage);                   
+            SendEndRelayoutOfTree(iStorage);
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);

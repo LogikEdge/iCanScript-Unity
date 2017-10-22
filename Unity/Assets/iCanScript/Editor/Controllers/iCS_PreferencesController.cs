@@ -27,22 +27,22 @@ public static class iCS_PreferencesController {
 //	// Database access keys
 //	//
 //    const string kDebugTraceKey= "iCS_DebugTrace";
-//    
+//
 //	//
 //	// Reset to default value functions
 //	//
 //    public static void ResetDebugTrace() {
 //        DebugTrace= kDebugTrace;
 //    }
-//    
+//
 //	//
 //	// Accessors
 //	//
 //    public static bool DebugTrace {
 //        get { return EditorPrefs.GetBool(kDebugTraceKey, kDebugTrace); }
-//        set { EditorPrefs.SetBool(kDebugTraceKey, value); }        
+//        set { EditorPrefs.SetBool(kDebugTraceKey, value); }
 //    }
-    
+
 	// =================================================================================
     // Canvas Preferences
     // ---------------------------------------------------------------------------------
@@ -50,16 +50,18 @@ public static class iCS_PreferencesController {
 	// Default Values
 	//
     static  Color   kCanvasBackgroundColor;
-    static  Color   kGridColor;
+    static  Color   kMinorGridColor;
+    static  Color   kMajorGridColor;
     const   float   kGridSpacing = 40.0f;
 
 	//
 	// Database access keys
 	//
     const   string  kCanvasBackgroundColorKey= "iCS_CanvasBackgroundColor";
-    const   string  kGridColorKey            = "iCS_GridColor";
+    const   string  kMinorGridColorKey       = "iCS_MinorGridColor";
+    const   string  kMajorGridColorKey       = "iCS_MajorGridColor";
     const   string  kGridSpacingKey          = "iCS_GridSpacing";
-	
+
 	//
 	// Reset to default value functions
 	//
@@ -67,12 +69,13 @@ public static class iCS_PreferencesController {
 		CanvasBackgroundColor= kCanvasBackgroundColor;
 	}
 	public static void ResetGridColor() {
-		GridColor= kGridColor;
+		MinorGridColor= kMinorGridColor;
+        MajorGridColor= kMajorGridColor;
 	}
 	public static void ResetGridSpacing() {
 		GridSpacing= kGridSpacing;
 	}
-	
+
 	//
 	// Accessors
 	//
@@ -80,9 +83,13 @@ public static class iCS_PreferencesController {
         get { return LoadColor(kCanvasBackgroundColorKey, kCanvasBackgroundColor); }
         set { SaveColor(kCanvasBackgroundColorKey, value); }
     }
-    public static Color GridColor {
-        get { return LoadColor(kGridColorKey, kGridColor); }
-        set { SaveColor(kGridColorKey, value); }
+    public static Color MinorGridColor {
+        get { return LoadColor(kMinorGridColorKey, kMinorGridColor); }
+        set { SaveColor(kMinorGridColorKey, value); }
+    }
+    public static Color MajorGridColor {
+        get { return LoadColor(kMajorGridColorKey, kMajorGridColor); }
+        set { SaveColor(kMajorGridColorKey, value); }
     }
     public static float GridSpacing {
         get { return EditorPrefs.GetFloat(kGridSpacingKey, kGridSpacing); }
@@ -151,7 +158,7 @@ public static class iCS_PreferencesController {
 	    PortValueRefreshPeriod= kPortValueRefreshPeriod;
     }
 	public static void ResetShowRuntimeFrameId() {
-		ShowRuntimeFrameId= kShowRuntimeFrameId;    	
+		ShowRuntimeFrameId= kShowRuntimeFrameId;
 	}
     public static void ResetShowNodeStereotype() {
         ShowNodeStereotype= kShowNodeStereotype;
@@ -266,7 +273,7 @@ public static class iCS_PreferencesController {
     static Color   kMessageNodeColor;
     static Color   kUserFunctionNodeColor;
     static Color   kBackgroundColor;
-    static Color   kSelectedBackgroundColor;            
+    static Color   kSelectedBackgroundColor;
 
 	//
 	// Database access keys
@@ -282,8 +289,8 @@ public static class iCS_PreferencesController {
     const string   kEntryStateNodeColorKey        = "iCS_EntryStateNodeColor";
     const string   kMessageNodeColorKey           = "iCS_MessageNodeColor";
     const string   kUserFunctionNodeColorKey      = "iCS_UserFunctionNodeColor";
-    const string   kBackgroundColorKey            = "iCS_BackgroundColor";         
-    const string   kSelectedBackgroundColorKey    = "iCS_SelectedBackgroundColor";         
+    const string   kBackgroundColorKey            = "iCS_BackgroundColor";
+    const string   kSelectedBackgroundColorKey    = "iCS_SelectedBackgroundColor";
 
 	//
 	// Reset to default value functions
@@ -327,7 +334,7 @@ public static class iCS_PreferencesController {
     public static void ResetSelectedBackgroundColor() {
 		SelectedBackgroundColor= kSelectedBackgroundColor;
     }
-	
+
 	//
 	// Accessors
 	//
@@ -361,11 +368,11 @@ public static class iCS_PreferencesController {
     }
     public static Color MessageNodeColor {
         get { return LoadColor(kMessageNodeColorKey, kMessageNodeColor); }
-        set { SaveColor(kMessageNodeColorKey, value); }        
+        set { SaveColor(kMessageNodeColorKey, value); }
     }
     public static Color UserFunctionNodeColor {
         get { return LoadColor(kUserFunctionNodeColorKey, kUserFunctionNodeColor); }
-        set { SaveColor(kUserFunctionNodeColorKey, value); }        
+        set { SaveColor(kUserFunctionNodeColorKey, value); }
     }
     public static Color StateNodeColor {
         get { return LoadColor(kStateNodeColorKey, kStateNodeColor); }
@@ -442,7 +449,7 @@ public static class iCS_PreferencesController {
 	    GameObjectTypeColor= kGameObjectTypeColor;
     }
     public static void ResetDefaultTypeColor() {
-	    DefaultTypeColor= kDefaultTypeColor;    	
+	    DefaultTypeColor= kDefaultTypeColor;
     }
 
 	//
@@ -461,7 +468,7 @@ public static class iCS_PreferencesController {
         set { SaveColor(kFloatTypeColorKey, value); }
     }
     public static Color StringTypeColor {
-        get { return LoadColor(kStringTypeColorKey, kStringTypeColor);} 
+        get { return LoadColor(kStringTypeColorKey, kStringTypeColor);}
         set { SaveColor(kStringTypeColorKey, value); }
     }
     public static Color Vector2TypeColor {
@@ -522,12 +529,12 @@ public static class iCS_PreferencesController {
 	// Database access keys
 	//
     const string kInstanceAutocreateInThisKey            = "iCS_InstanceAutocreateInThis";
-    const string kInstanceAutocreateInFieldsKey          = "iCS_InstanceAutocreateInFields"; 
-    const string kInstanceAutocreateOutFieldsKey         = "iCS_InstanceAutocreateOutFields"; 
+    const string kInstanceAutocreateInFieldsKey          = "iCS_InstanceAutocreateInFields";
+    const string kInstanceAutocreateOutFieldsKey         = "iCS_InstanceAutocreateOutFields";
     const string kInstanceAutocreateInClassFieldsKey     = "iCS_InstanceAutocreateInClassFields";
     const string kInstanceAutocreateOutClassFieldsKey    = "iCS_InstanceAutocreateOutClassFields";
     const string kInstanceAutocreateInPropertiesKey      = "iCS_InstanceAutocreateInProperties";
-    const string kInstanceAutocreateOutPropertiesKey     = "iCS_InstanceAutocreateOutProperties"; 
+    const string kInstanceAutocreateOutPropertiesKey     = "iCS_InstanceAutocreateOutProperties";
     const string kInstanceAutocreateInClassPropertiesKey = "iCS_InstanceAutocreateInClassProperties";
     const string kInstanceAutocreateOutClassPropertiesKey= "iCS_InstanceAutocreateOutClassProperties";
 
@@ -559,7 +566,7 @@ public static class iCS_PreferencesController {
 	    InstanceAutocreateInClassProperties= kInstanceAutocreateInClassProperties;
     }
     public static void ResetInstanceAutocreateOutClassProperties() {
-	    InstanceAutocreateOutClassProperties= kInstanceAutocreateOutClassProperties;    	
+	    InstanceAutocreateOutClassProperties= kInstanceAutocreateOutClassProperties;
     }
 
 	//
@@ -567,39 +574,39 @@ public static class iCS_PreferencesController {
 	//
     public static bool InstanceAutocreateInThis {
         get { return EditorPrefs.GetBool(kInstanceAutocreateInThisKey, kInstanceAutocreateInThis); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateInThisKey, value); }        
+        set { EditorPrefs.SetBool(kInstanceAutocreateInThisKey, value); }
     }
     public static bool InstanceAutocreateInFields {
         get { return EditorPrefs.GetBool(kInstanceAutocreateInFieldsKey, kInstanceAutocreateInFields); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateInFieldsKey, value); }        
+        set { EditorPrefs.SetBool(kInstanceAutocreateInFieldsKey, value); }
     }
     public static bool InstanceAutocreateOutFields {
         get { return EditorPrefs.GetBool(kInstanceAutocreateOutFieldsKey, kInstanceAutocreateOutFields); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateOutFieldsKey, value); }        
+        set { EditorPrefs.SetBool(kInstanceAutocreateOutFieldsKey, value); }
     }
     public static bool InstanceAutocreateInClassFields {
         get { return EditorPrefs.GetBool(kInstanceAutocreateInClassFieldsKey, kInstanceAutocreateInClassFields); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateInClassFieldsKey, value); }        
+        set { EditorPrefs.SetBool(kInstanceAutocreateInClassFieldsKey, value); }
     }
     public static bool InstanceAutocreateOutClassFields {
         get { return EditorPrefs.GetBool(kInstanceAutocreateOutClassFieldsKey, kInstanceAutocreateOutClassFields); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateOutClassFieldsKey, value); }        
+        set { EditorPrefs.SetBool(kInstanceAutocreateOutClassFieldsKey, value); }
     }
     public static bool InstanceAutocreateInProperties {
         get { return EditorPrefs.GetBool(kInstanceAutocreateInPropertiesKey, kInstanceAutocreateInProperties); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateInPropertiesKey, value); }        
+        set { EditorPrefs.SetBool(kInstanceAutocreateInPropertiesKey, value); }
     }
     public static bool InstanceAutocreateOutProperties {
         get { return EditorPrefs.GetBool(kInstanceAutocreateOutPropertiesKey, kInstanceAutocreateOutProperties); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateOutPropertiesKey, value); }        
+        set { EditorPrefs.SetBool(kInstanceAutocreateOutPropertiesKey, value); }
     }
     public static bool InstanceAutocreateInClassProperties {
         get { return EditorPrefs.GetBool(kInstanceAutocreateInClassPropertiesKey, kInstanceAutocreateInClassProperties); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateInClassPropertiesKey, value); }        
+        set { EditorPrefs.SetBool(kInstanceAutocreateInClassPropertiesKey, value); }
     }
     public static bool InstanceAutocreateOutClassProperties {
         get { return EditorPrefs.GetBool(kInstanceAutocreateOutClassPropertiesKey, kInstanceAutocreateOutClassProperties); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateOutClassPropertiesKey, value); }        
+        set { EditorPrefs.SetBool(kInstanceAutocreateOutClassPropertiesKey, value); }
     }
 
 
@@ -642,21 +649,21 @@ public static class iCS_PreferencesController {
 	//
     public static bool SoftwareUpdateWatchEnabled {
         get { return EditorPrefs.GetBool(kSoftwareUpdateWatchEnabledKey, kSoftwareUpdateWatchEnabled); }
-        set { EditorPrefs.SetBool(kSoftwareUpdateWatchEnabledKey, value); }        
+        set { EditorPrefs.SetBool(kSoftwareUpdateWatchEnabledKey, value); }
     }
     public static iCS_UpdateInterval SoftwareUpdateInterval {
         get { return (iCS_UpdateInterval)EditorPrefs.GetInt(kSoftwareUpdateIntervalKey, kSoftwareUpdateInterval); }
-        set { EditorPrefs.SetInt(kSoftwareUpdateIntervalKey, (int)value); }        
+        set { EditorPrefs.SetInt(kSoftwareUpdateIntervalKey, (int)value); }
     }
     public static string SoftwareUpdateSkippedVersion {
         get { return EditorPrefs.GetString(kSoftwareUpdateSkippedVersionKey, kSoftwareUpdateSkippedVersion); }
-        set { EditorPrefs.SetString(kSoftwareUpdateSkippedVersionKey, value); }        
+        set { EditorPrefs.SetString(kSoftwareUpdateSkippedVersionKey, value); }
     }
 	public static DateTime SoftwareUpdateLastWatchDate {
 		get { return GetDateTime(kSoftwareUpdateLastWatchDateKey, DateTime.Now); }
 		set { SetDateTime(kSoftwareUpdateLastWatchDateKey, value); }
 	}
-	
+
 
 #if CODE_GENERATION_CONFIG
 	// =================================================================================
@@ -679,10 +686,11 @@ public static class iCS_PreferencesController {
         var c= new Func<int,float>(i=> ((float)i)/255f);
 
         // Canvas colors
-        kCanvasBackgroundColor= new Color(c(9), c(69), c(167));
-        kGridColor            = new Color(c(160), c(160), c(160));
-		
-        // Node colors
+        kCanvasBackgroundColor= new Color(c(40), c(44), c(51));
+        kMinorGridColor            = new Color(c(75), c(75), c(75));
+        kMajorGridColor            = Color.black;
+
+        // Node colorss
         kNodeTitleColor             = Color.black;
         kNodeLabelColor             = Color.white;
         kNodeValueColor             = new Color(1f, 0.8f, 0.4f);
@@ -696,7 +704,7 @@ public static class iCS_PreferencesController {
         kUserFunctionNodeColor      = new Color(c(0x80), c(0xff), c(0x80));
         kBackgroundColor            = new Color(c(41), c(41), c(41));
         kSelectedBackgroundColor    = new Color(c(116), c(116), c(116));
-        
+
         // Type colors
         kBoolTypeColor      = Color.white;
 //        kBoolTypeColor      = Color.red;
@@ -708,9 +716,9 @@ public static class iCS_PreferencesController {
         kStringTypeColor    = new Color(c(255), c(128), 0);
 //        kStringTypeColor    = Color.red;
         kGameObjectTypeColor= new Color(0, c(128), c(255));
-        kDefaultTypeColor   = new Color(c(219), c(249), c(194));		
+        kDefaultTypeColor   = new Color(c(219), c(249), c(194));
 	}
-	
+
 	// =================================================================================
     // License Information
 	// ---------------------------------------------------------------------------------
@@ -718,14 +726,14 @@ public static class iCS_PreferencesController {
 	// Database access keys
 	//
     const string kUserLicenseKey= "iCS_UserLicenseKey";
-    
+
 	//
 	// Reset to default value functions
 	//
     public static void ResetUserLicense() {
         EditorPrefs.SetString(kUserLicenseKey, "");
     }
-    
+
 	//
 	// Accessors
 	//
@@ -744,14 +752,14 @@ public static class iCS_PreferencesController {
         EditorPrefs.SetFloat(name+"_R", color.r);
         EditorPrefs.SetFloat(name+"_G", color.g);
         EditorPrefs.SetFloat(name+"_B", color.b);
-        EditorPrefs.SetFloat(name+"_A", color.a);        
+        EditorPrefs.SetFloat(name+"_A", color.a);
     }
     static Color LoadColor(string name, Color defaultColor) {
         float r= EditorPrefs.GetFloat(name+"_R", defaultColor.r);
         float g= EditorPrefs.GetFloat(name+"_G", defaultColor.g);
         float b= EditorPrefs.GetFloat(name+"_B", defaultColor.b);
         float a= EditorPrefs.GetFloat(name+"_A", defaultColor.a);
-        return new Color(r,g,b,a);        
+        return new Color(r,g,b,a);
     }
 
 	//
@@ -774,5 +782,5 @@ public static class iCS_PreferencesController {
 		binaryTime <<= 32;
 		binaryTime |= ((long)(low)) & 0xffffffff;
 		return DateTime.FromBinary(binaryTime);
-	}    
+	}
 }
