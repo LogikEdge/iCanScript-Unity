@@ -19,7 +19,7 @@ public class iCS_Reflection {
     // ----------------------------------------------------------------------
     public static List<Type>    AllTypesWithDefaultConstructor= new List<Type>();
     public static bool          NeedToRunInstaller= false;
-    
+
     // ----------------------------------------------------------------------
     /*
         TODO: Should remove all types if not used.
@@ -38,7 +38,7 @@ public class iCS_Reflection {
         }
         return result.ToArray();
     }
-    
+
     // ----------------------------------------------------------------------
     // Scan the application for uCode attributes.
     public static void ParseAppDomain() {
@@ -52,9 +52,9 @@ public class iCS_Reflection {
             if(assembly.FullName.StartsWith("UnityEngine")) {
                 foreach(var classType in assembly.GetTypes()) {
                     if(classType.IsPublic && !classType.IsGenericType) {
-                        DecodeUnityClassInfo(classType);                        
+                        DecodeUnityClassInfo(classType);
                     }
-                }                
+                }
                 continue;
             }
             foreach(var classType in assembly.GetTypes()) {
@@ -87,12 +87,11 @@ public class iCS_Reflection {
                 if(extractClass) {
                     // Extract class information.
                     string  company        = classAttribute.Company;
-                    string  library        = classAttribute.Library;
                     string  description    = classAttribute.Tooltip;
                     string  icon           = classAttribute.Icon;
                     bool    baseVisibility = classAttribute.BaseVisibility;
 					bool	hideFromLibrary= classAttribute.HideClassFromLibrary;
-                    DecodeClassInfo(classType, company, library, description, icon, false, baseVisibility, hideFromLibrary);
+                    DecodeClassInfo(classType, company, description, icon, false, baseVisibility, hideFromLibrary);
                 }
             }
         }
@@ -115,17 +114,16 @@ public class iCS_Reflection {
     //
     // This function can be called by the iCanScript user to add to the
     // existing Unity library.
-    // 
-    public static void DecodeUnityClassInfo(Type classType, string package= "UnityEngine", string iconPath= null, string description= null) {
+    //
+    public static void DecodeUnityClassInfo(Type classType, string iconPath= null, string description= null) {
         string                  company               = "Unity";
         bool                    decodeAllPublicMembers= true;
-        if(package == null)     package               = kUnityEnginePackage;
         if(description == null) description           = null;
         if(iconPath == null)    iconPath              = kUnityIcon;
-        iCS_Reflection.DecodeClassInfo(classType, company, package, description, iconPath, decodeAllPublicMembers,true);
+        iCS_Reflection.DecodeClassInfo(classType, company, description, iconPath, decodeAllPublicMembers,true);
     }
     // ----------------------------------------------------------------------
-    public static void DecodeClassInfo(Type classType, string company, string library, string description, string classIconPath,
+    public static void DecodeClassInfo(Type classType, string company, string description, string classIconPath,
                                        bool acceptAllPublic= false,
                                        bool baseVisibility = true,
 									   bool hideFromLibrary= false) {
@@ -134,6 +132,7 @@ public class iCS_Reflection {
             return;
         }
         // Build TypeInfo.
+        var library          = classType.Namespace;
         var baseType         = classType.BaseType;
         var declaringType    = classType.DeclaringType;
         var declaringTypeInfo= iCS_LibraryDatabase.GetTypeInfo(declaringType);
@@ -154,18 +153,18 @@ public class iCS_Reflection {
             string description= "";
             string iconPath= _classTypeInfo.IconPath;
             foreach(var constructorAttribute in constructor.GetCustomAttributes(true)) {
-                if(constructorAttribute is iCS_FunctionAttribute) {                                    
+                if(constructorAttribute is iCS_FunctionAttribute) {
                     if(constructor.IsPublic) {
                         registerMethod= true;
                         // Register execution functions/methods.
                         iCS_FunctionAttribute funcAttr= constructorAttribute as iCS_FunctionAttribute;
-                        if(funcAttr.Name    != null) displayName= funcAttr.Name; 
+                        if(funcAttr.Name    != null) displayName= funcAttr.Name;
                         if(funcAttr.Tooltip != null) description= funcAttr.Tooltip;
                         if(funcAttr.Icon    != null) iconPath   = funcAttr.Icon;
                     } else {
-                        Debug.LogWarning("iCanScript: Constrcutor of class "+_classTypeInfo.DisplayName+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring constructor !!!");                        
+                        Debug.LogWarning("iCanScript: Constrcutor of class "+_classTypeInfo.DisplayName+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring constructor !!!");
                     }
-                    break;                                        
+                    break;
                 }
             }
             if(acceptAllPublic && constructor.IsPublic) {
@@ -178,14 +177,14 @@ public class iCS_Reflection {
                 }
                 DecodeConstructor(_classTypeInfo, displayName, description, iconPath, constructor);
             }
-        }                               
+        }
     }
     // ----------------------------------------------------------------------
     static void DecodeConstructor(iCS_TypeInfo _classTypeInfo, string displayName, string description, string iconPath, ConstructorInfo constructor) {
         // Parse parameters.
         if(!AreAllParamTypesSupported(constructor)) return;
         var parameters= ParseParameters(constructor);
-        
+
         iCS_LibraryDatabase.AddConstructor(_classTypeInfo, displayName, description, iconPath,
                                     	   parameters, constructor);
     }
@@ -235,9 +234,9 @@ public class iCS_Reflection {
                         // Add base fields if class is not using iCS attributes.
                         if(isTagged == false) {
                             registerField= true;
-                            direction= iCS_ParamDirection.InOut;                            
+                            direction= iCS_ParamDirection.InOut;
                         }
-                    }                
+                    }
                 }
             }
             if(registerField) {
@@ -245,9 +244,9 @@ public class iCS_Reflection {
                     DecodeStaticField(_classTypeInfo, field, direction);
                 } else {
                     DecodeInstanceField(_classTypeInfo, field, direction);
-                }                
+                }
             }
-        }        
+        }
     }
     // ----------------------------------------------------------------------
     static void DecodeStaticField(iCS_TypeInfo _classTypeInfo, FieldInfo field, iCS_ParamDirection dir) {
@@ -262,13 +261,13 @@ public class iCS_Reflection {
             parameters[0].initialValue= iCS_Types.DefaultValue(field.FieldType);
             iCS_LibraryDatabase.AddField(_classTypeInfo, "set_"+field.Name, description, iconPath,
                                          parameters, null,
-                                         iCS_StorageClass.Class, iCS_AccessorType.Set, field);                    
+                                         iCS_StorageClass.Class, iCS_AccessorType.Set, field);
         }
         if(dir == iCS_ParamDirection.Out || dir == iCS_ParamDirection.InOut) {
             var returnType= new iCS_FunctionReturn(field.Name, field.FieldType);
             iCS_LibraryDatabase.AddField(_classTypeInfo, "get_"+field.Name, description, iconPath,
                                          new iCS_Parameter[0], returnType,
-                                         iCS_StorageClass.Class, iCS_AccessorType.Get, field);                    
+                                         iCS_StorageClass.Class, iCS_AccessorType.Get, field);
         }
     }
     // ----------------------------------------------------------------------
@@ -284,13 +283,13 @@ public class iCS_Reflection {
             parameters[0].initialValue= iCS_Types.DefaultValue(field.FieldType);
             iCS_LibraryDatabase.AddField(_classTypeInfo, "set_"+field.Name, description, iconPath,
                                          parameters, null,
-                                         iCS_StorageClass.Instance, iCS_AccessorType.Set, field);                    
+                                         iCS_StorageClass.Instance, iCS_AccessorType.Set, field);
         }
         if(dir == iCS_ParamDirection.Out || dir == iCS_ParamDirection.InOut) {
             var returnType= new iCS_FunctionReturn(field.Name, field.FieldType);
             iCS_LibraryDatabase.AddField(_classTypeInfo, "get_"+field.Name, description, iconPath,
                                          new iCS_Parameter[0], returnType,
-                                         iCS_StorageClass.Instance, iCS_AccessorType.Get, field);                    
+                                         iCS_StorageClass.Instance, iCS_AccessorType.Get, field);
         }
     }
     // ----------------------------------------------------------------------
@@ -311,24 +310,24 @@ public class iCS_Reflection {
                         iCS_TypeCastAttribute typeCastAttr= methodAttribute as iCS_TypeCastAttribute;
                         if(typeCastAttr.Icon != null) iconPath= typeCastAttr.Icon;
                         DecodeTypeCast(_classTypeInfo, iconPath, method);
-                    } else {                        
+                    } else {
                         Debug.LogWarning("iCanScript: Type Cast "+method.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring function !!!");
                     }
                     break;
                 }
-                else if(methodAttribute is iCS_FunctionAttribute) {                                    
+                else if(methodAttribute is iCS_FunctionAttribute) {
                     if(method.IsPublic) {
                         registerMethod= true;
                         // Register execution functions/methods.
                         iCS_FunctionAttribute funcAttr= methodAttribute as iCS_FunctionAttribute;
-                        if(funcAttr.Name    != null) displayName= funcAttr.Name; 
+                        if(funcAttr.Name    != null) displayName= funcAttr.Name;
                         if(funcAttr.Return  != null) returnName = funcAttr.Return;
                         if(funcAttr.Tooltip != null) description= funcAttr.Tooltip;
                         if(funcAttr.Icon    != null) iconPath   = funcAttr.Icon;
                     } else {
-                        Debug.LogWarning("iCanScript: Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring function !!!");                        
+                        Debug.LogWarning("iCanScript: Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring function !!!");
                     }
-                    break;                                        
+                    break;
                 }
             }
             if(registerMethod == false && method.IsPublic) {
@@ -352,7 +351,7 @@ public class iCS_Reflection {
                                 registerMethod= true;
                             }
                         }
-                    }                    
+                    }
                 }
             }
             if(registerMethod) {
@@ -366,7 +365,7 @@ public class iCS_Reflection {
                     DecodeInstanceFunction(_classTypeInfo, displayName, description, iconPath, returnName, method);
                 }
             }
-        }                               
+        }
     }
     // ----------------------------------------------------------------------
     static void DecodeTypeCast(iCS_TypeInfo _classTypeInfo, string iconPath, MethodInfo method) {
@@ -381,23 +380,23 @@ public class iCS_Reflection {
         if(method.IsPublic == false) {
             Debug.LogWarning("iCanScript: Conversion from "+fromType+" to "+toType+" in class "+classType.Name+
                              " is not public and tagged for "+iCS_Config.ProductName+". Ignoring conversion !!!");
-            return;                                        
+            return;
         }
         if(method.IsStatic == false) {
             Debug.LogWarning("iCanScript: Conversion from "+fromType+" to "+toType+" in class "+classType.Name+
                              " is not static and tagged for "+iCS_Config.ProductName+". Ignoring conversion !!!");
-            return;                                        
+            return;
         }
-        iCS_LibraryDatabase.AddTypeCast(_classTypeInfo, iconPath, fromType, method);                                        
+        iCS_LibraryDatabase.AddTypeCast(_classTypeInfo, iconPath, fromType, method);
     }
     // ----------------------------------------------------------------------
     static void DecodeInstanceFunction(iCS_TypeInfo _classTypeInfo,
                                        string displayName, string description, string iconPath,
                                        string retName, MethodInfo method) {
         // Parse parameters.
-        if(!AreAllParamTypesSupported(method)) return; 
+        if(!AreAllParamTypesSupported(method)) return;
         var parameters= ParseParameters(method);
-        var returnType= new iCS_FunctionReturn(retName, method.ReturnType);       
+        var returnType= new iCS_FunctionReturn(retName, method.ReturnType);
 
         // Register a property if the method has only one input or one output.
         bool isProperty= false;
@@ -423,7 +422,7 @@ public class iCS_Reflection {
 //            }
             iCS_LibraryDatabase.AddMethod(_classTypeInfo, displayName, description, iconPath,
                                           parameters, returnType,
-                                          iCS_StorageClass.Instance, method);            
+                                          iCS_StorageClass.Instance, method);
         }
     }
     // ----------------------------------------------------------------------
@@ -432,8 +431,8 @@ public class iCS_Reflection {
                                    string retName, MethodInfo method) {
         // Parse parameters.
         if(!AreAllParamTypesSupported(method)) return;
-        var parameters= ParseParameters(method);       
-        var returnType= new iCS_FunctionReturn(retName, method.ReturnType);       
+        var parameters= ParseParameters(method);
+        var returnType= new iCS_FunctionReturn(retName, method.ReturnType);
 
         // Register a property if the method has only one input or one output.
         bool isProperty= false;
@@ -451,7 +450,7 @@ public class iCS_Reflection {
                                             displayName, description, iconPath,
                                             parameters, returnType,
                                             iCS_StorageClass.Class, accessor,
-                                            method);            
+                                            method);
         } else {
             // Register standard method.
 //            if(displayName.StartsWith("get_") || displayName.StartsWith("set_")) {
@@ -464,7 +463,7 @@ public class iCS_Reflection {
         }
     }
 
-   
+
     // ======================================================================
     // ----------------------------------------------------------------------
     static iCS_Parameter[] ParseParameters(MethodBase method) {
@@ -478,10 +477,10 @@ public class iCS_Reflection {
             parameters[i].type= p.ParameterType;
             // IMPROVE: Mono seems broken for ParameterInfo.IsIn. So we use !IsOut as IsIn. That prevents InOut parameters...
             parameters[i].direction= p.IsOut ? (p.IsIn ? iCS_ParamDirection.InOut : iCS_ParamDirection.Out) : iCS_ParamDirection.In;
-            object defaultValue= p.DefaultValue; 
+            object defaultValue= p.DefaultValue;
             parameters[i].initialValue= (defaultValue == null || defaultValue.GetType() != p.ParameterType) ? null : defaultValue;
         }
-        return parameters;   
+        return parameters;
     }
     // ----------------------------------------------------------------------
     static bool AreAllParamTypesSupported(MethodBase method) {

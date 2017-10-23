@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Collections;
 
 namespace iCanScript { namespace Editor {
-    
+
     public class LibraryDatabaseController {
         // ======================================================================
         // Common Controller activation/deactivation
@@ -15,12 +15,12 @@ namespace iCanScript { namespace Editor {
     //        AddClass("iCS_EngineObject");
     //        AddClass("iCS_EngineObject");
     	}
-        
+
         /// Start the application controller.
     	public static void Start() {}
         /// Shutdowns the application controller.
         public static void Shutdown() {}
-    
+
         // ======================================================================
         // Library Database Management
         // ----------------------------------------------------------------------
@@ -50,21 +50,21 @@ namespace iCanScript { namespace Editor {
                 } else {
                     isGoodAssembly= name.Name == "Assembly-UnityScript" || name.Name == "Assembly-CSharp";
                 }
-                // -- Serach for the given class --
+                // -- Search for the given class --
                 if(isGoodAssembly) {
                     foreach(var classType in assembly.GetTypes()) {
                         if(classType.Name == className) {
                             Debug.Log("Adding=> "+classType.Name);
     //                        DecodeClassInfo(classType);
-                            iCS_Reflection.DecodeClassInfo(classType, "(*) Imported Library", name.Name, null, null, true, true);
+                            iCS_Reflection.DecodeClassInfo(classType, name.Name, null, null, true, true);
                         }
                     }
-                    
-                    
+
+
                 }
             }
         }
-        
+
         // ======================================================================
         // The following are helper functions to register Unity3D classes
         // ----------------------------------------------------------------------
@@ -82,7 +82,7 @@ namespace iCanScript { namespace Editor {
     //        if(iconPath == null) iconPath = kUnityIcon;
     //        iCS_Reflection.DecodeClassInfo(classType, company, package, description, iconPath, decodeAllPublicMembers,true);
     //    }
-        
+
     }
-    
+
 }}
