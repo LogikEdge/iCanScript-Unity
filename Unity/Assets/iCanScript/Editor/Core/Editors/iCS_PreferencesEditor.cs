@@ -88,7 +88,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     // ---------------------------------------------------------------------------------
     public new void OnEnable() {
         base.OnEnable();
-        title = "iCanScript Preferences";
+        titleContent = new GUIContent("iCanScript Preferences");
         minSize= new Vector2(500f, 400f);
         maxSize= new Vector2(500f, 400f);
     }

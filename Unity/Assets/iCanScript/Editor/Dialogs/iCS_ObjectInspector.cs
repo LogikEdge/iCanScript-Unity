@@ -9,23 +9,23 @@ public class iCS_ObjectInspector : EditorWindow {
     // Constants.
 	// ----------------------------------------------------------------------
     const string EmptyStr= "(empty)";
-    
+
     // ======================================================================
     // Fields
 	// ----------------------------------------------------------------------
     private iCS_EditorObject          myObject   = null;
 	private Dictionary<string,object> myFoldoutDB= new Dictionary<string,object>();
-	
+
 	// ----------------------------------------------------------------------
     // Display state properties.
     private bool    myShowInputs = false;
     private bool    myShowOutputs= false;
-        
+
     // ======================================================================
     // Properties
 	// ----------------------------------------------------------------------
     public iCS_EditorObject InspectedObject { get { return myObject; }}
-    
+
     // ======================================================================
     // Initialization/Teardown
     // ----------------------------------------------------------------------
@@ -36,12 +36,15 @@ public class iCS_ObjectInspector : EditorWindow {
     }
     public void Init(iCS_EditorObject theObject, Vector2 pos) {
         myObject= theObject;
-        title= theObject.Name;
+        titleContent= new GUIContent(theObject.Name, iCS_Icons.GetiCanScriptIcon());
         position= new Rect(pos.x, pos.y, 300, 200);
         ShowAuxWindow();
     }
-    
-    public void OnEnable() {}
+
+    public void OnEnable() {
+        // Update the title
+        titleContent=  new GUIContent("Inspector :: "+myObject.Name, iCS_Icons.GetiCanScriptIcon());
+    }
     public void OnDisable() {}
 
     // ======================================================================
@@ -50,9 +53,6 @@ public class iCS_ObjectInspector : EditorWindow {
     public void OnGUI() {
         if(myObject == null) return;
 
-        // Update the title
-        title= "Inspector :: "+myObject.Name;
-        
         // Use inspector skin.
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector) as GUISkin;
         EditorGUI.indentLevel= 0;
@@ -65,7 +65,7 @@ public class iCS_ObjectInspector : EditorWindow {
             return;
         }
         var iStorage= myObject.IStorage;
-        
+
         // Display object id.
         EditorGUILayout.LabelField("id", myObject.InstanceId.ToString());
         // Display object type.
@@ -86,7 +86,7 @@ public class iCS_ObjectInspector : EditorWindow {
                 iCS_UserCommands.ChangeName(myObject, newName);
             }
         } else {
-            EditorGUILayout.LabelField("Name", name);                    
+            EditorGUILayout.LabelField("Name", name);
         }
 //        // Show object tooltip.
 //        string toolTip= myObject.Tooltip;
@@ -109,7 +109,7 @@ public class iCS_ObjectInspector : EditorWindow {
         else if(myObject.IsPort) InspectPort(myObject);
 //
 //        // Allow repaint for modifications done by the user.
-//        myPreviousModificationId= myIStorage.ModificationId;		
+//        myPreviousModificationId= myIStorage.ModificationId;
 
     }
 	// ----------------------------------------------------------------------
@@ -158,7 +158,7 @@ public class iCS_ObjectInspector : EditorWindow {
             int indentLevel= 1;
             if(runtimeObject != null) {
                 EditorGUI.indentLevel= indentLevel;
-                myShowInputs= EditorGUILayout.Foldout(myShowInputs, "Inputs");                
+                myShowInputs= EditorGUILayout.Foldout(myShowInputs, "Inputs");
                 ++indentLevel;
             } else {
                 myShowInputs= true;
@@ -166,7 +166,7 @@ public class iCS_ObjectInspector : EditorWindow {
             if(myShowInputs) {
                 EditorGUIUtility.LookLikeControls();
                 Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorDataPortGUI(port, iStorage, indentLevel, myFoldoutDB), inPorts);
-            }        
+            }
         }
 
         // Show outputs
@@ -175,7 +175,7 @@ public class iCS_ObjectInspector : EditorWindow {
             myShowOutputs= EditorGUILayout.Foldout(myShowOutputs, "Outputs");
             if(myShowOutputs) {
                 Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorDataPortGUI(port, iStorage, 2, myFoldoutDB), outPorts);
-            }            
+            }
         }
     }
 
@@ -191,7 +191,7 @@ public class iCS_ObjectInspector : EditorWindow {
             if(child.IsInStatePort)  inPorts.Add(child);
             if(child.IsOutStatePort) outPorts.Add(child);
         }
-        
+
         // Show outbound transitions.
         if(outPorts.Count > 0) {
             EditorGUI.indentLevel= 1;
@@ -200,8 +200,8 @@ public class iCS_ObjectInspector : EditorWindow {
                 EditorGUI.indentLevel= 2;
                 foreach(var port in outPorts) {
                     iCS_EditorObject inPort= iStorage.FindAConnectedPort(port);
-                    EditorGUILayout.LabelField("Name", inPort.Name);                        
-                    EditorGUILayout.LabelField("State", inPort.Parent.Name);                    
+                    EditorGUILayout.LabelField("Name", inPort.Name);
+                    EditorGUILayout.LabelField("State", inPort.Parent.Name);
                 }
             }
         }
@@ -212,9 +212,9 @@ public class iCS_ObjectInspector : EditorWindow {
             if(myShowInputs) {
                 EditorGUI.indentLevel= 2;
                 foreach(var port in inPorts) {
-                    EditorGUILayout.LabelField("Name", port.Name);                        
+                    EditorGUILayout.LabelField("Name", port.Name);
                     iCS_EditorObject outPort= port.ProducerPort;
-                    EditorGUILayout.LabelField("State", outPort.Parent.Name);                    
+                    EditorGUILayout.LabelField("State", outPort.Parent.Name);
                 }
             }
         }
@@ -226,7 +226,7 @@ public class iCS_ObjectInspector : EditorWindow {
         iCS_EditorObject parent= port.Parent;
         EditorGUILayout.LabelField("Parent", parent.Name);
         EditorGUILayout.LabelField("Port Index", port.PortIndex.ToString());
-        iCS_GuiUtilities.OnInspectorDataPortGUI(port, port.IStorage, 1, myFoldoutDB);        
+        iCS_GuiUtilities.OnInspectorDataPortGUI(port, port.IStorage, 1, myFoldoutDB);
     }
 
 }

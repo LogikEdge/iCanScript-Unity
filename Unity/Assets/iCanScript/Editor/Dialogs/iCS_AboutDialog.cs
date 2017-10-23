@@ -9,12 +9,12 @@ public class iCS_AboutDialog : EditorWindow {
     // ----------------------------------------------------------------------
 	const float kSpacer= 5f;
 	GUIStyle    h1     = null;
-	
+
     // ======================================================================
     // Initialization/Teardown
     // ----------------------------------------------------------------------
     public void OnEnable() {
-        title= "About iCanScript";
+        titleContent= new GUIContent("About iCanScript");
     }
     public void OnDisable() {
     }
@@ -27,7 +27,7 @@ public class iCS_AboutDialog : EditorWindow {
 		if(h1 == null) {
 			BuildStyles();
 		}
-		
+
         // Show product icon
         var logoWidth= 64f;
         var logoHeight= 64f;
@@ -42,7 +42,7 @@ public class iCS_AboutDialog : EditorWindow {
 		var titleSize= h1.CalcSize(title);
 		Rect rTitle= new Rect(2f*kSpacer+logoWidth, kSpacer, titleSize.x, titleSize.y);
 		GUI.Label(rTitle, title, h1);
-		
+
 		// Show version
         GUIContent versionContent= new GUIContent(iCS_EditorConfig.VersionStr);
         Vector2 versionSize= GUI.skin.label.CalcSize(versionContent);
@@ -60,10 +60,10 @@ public class iCS_AboutDialog : EditorWindow {
 		float column1Width= Math3D.Max(buildDateTitleSize.x,
 									   userLicenseTitleSize.x);
 		var labelHeight= buildDateTitleSize.y;
-		
+
 		float column2X= column1X+column1Width+kSpacer;
 		float column2Width= position.width-column2X-kSpacer;
-		
+
 		// Edition
 		var rEdition= new Rect(column1X, kSpacer+logoHeight+labelHeight, column2Width, labelHeight);
 		GUI.Label(rEdition, editionTitle);
@@ -87,13 +87,13 @@ public class iCS_AboutDialog : EditorWindow {
 		GUIContent buildDate= new GUIContent(iCS_BuildInfo.kBuildDateStr);
 		rBuildDate.x= column2X; rBuildDate.width= column2Width;
 		GUI.Label(rBuildDate, buildDate);
-		
+
 		// Disclamer
 		GUIContent copyright= new GUIContent("(c) copyright Disruptive Software 2014.  All rights reserved.");
 		var copyrightSize= GUI.skin.label.CalcSize(copyright);
 		var rCopyright= new Rect(column1X, rBuildDate.yMax+copyrightSize.y, copyrightSize.x, copyrightSize.y);
 		GUI.Label(rCopyright, copyright);
-	
+
 		var p= position;
 		p.width= Math3D.Max(copyrightSize.x+2f*kSpacer, column2X+userLicenseSize.x+kSpacer);
 		p.height= rCopyright.yMax+kSpacer;
@@ -106,6 +106,6 @@ public class iCS_AboutDialog : EditorWindow {
 	void BuildStyles() {
 		// Build H1 style
 		h1= new GUIStyle(EditorStyles.boldLabel);
-		h1.fontSize= 24;		
+		h1.fontSize= 24;
 	}
 }

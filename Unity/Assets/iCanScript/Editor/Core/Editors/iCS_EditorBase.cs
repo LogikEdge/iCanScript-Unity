@@ -25,10 +25,7 @@ public class iCS_EditorBase : EditorWindow {
     // ---------------------------------------------------------------------------------
     public void OnEnable() {
         iCS_EditorController.Add(this);
-        Texture2D iCanScriptLogo= null;
-        if(iCS_TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo)) {
-            titleContent = new GUIContent(title, iCanScriptLogo);
-        }
+        titleContent = new GUIContent(titleContent.text, iCS_Icons.GetiCanScriptIcon());
     }
     public void OnDisable() {
         iCS_EditorController.Remove(this);
