@@ -495,7 +495,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		}
 	}
 	public void BeginDisplay() { EditorGUIUtility.LookLikeControls(); }
-	public void EndDisplay() {}
+	public void EndDisplay()   {}
 	public bool	MoveToNext() {
 		if(ActiveTree == null || myIterStackNode.Count == 0) return false;
 		if(MoveToFirstChild()) return true;

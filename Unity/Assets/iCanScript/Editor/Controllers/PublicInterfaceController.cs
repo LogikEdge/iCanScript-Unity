@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using P=Prelude;
 
 namespace iCanScript { namespace Editor {
-    
+
     public static class PublicInterfaceController {
         // ======================================================================
         // Initialization
@@ -27,7 +27,7 @@ namespace iCanScript { namespace Editor {
             SystemEvents.OnVisualScriptElementAdded        += OnVisualScriptElementAdded;
             SystemEvents.OnVisualScriptElementWillBeRemoved+= OnVisualScriptElementWillBeRemoved;
             SystemEvents.OnVisualScriptElementNameChanged  += OnVisualScriptElementNameChanged;
-    
+
             // -- Force an initial refresh of the scene info --
             OnSceneLoad();
         }
@@ -44,7 +44,7 @@ namespace iCanScript { namespace Editor {
             SystemEvents.OnVisualScriptElementWillBeRemoved-= OnVisualScriptElementWillBeRemoved;
             SystemEvents.OnVisualScriptElementNameChanged  -= OnVisualScriptElementNameChanged;
         }
-        
+
         // ======================================================================
         // PROCESS EVENTS
         // ----------------------------------------------------------------------
@@ -87,7 +87,7 @@ namespace iCanScript { namespace Editor {
     			default: {
     				RebuildAndValidatePublicInterfaceInfo();
     				break;
-    			}			
+    			}
     		}
     		// -- Default to rebuild & validate the entire scene --
     		SetNextOperation(OperationEnum.RebuildInfo);
@@ -159,13 +159,13 @@ namespace iCanScript { namespace Editor {
     			SetNextOperation(OperationEnum.OfNoInterrest);
     		}
         }
-    
+
         // ======================================================================
         // Types
         // ----------------------------------------------------------------------
     	public class VSPublicGroups {
     		Dictionary<string, LinkedGroup>	myGroups= null;
-    		
+
     		public VSPublicGroups() {
     			myGroups= new Dictionary<string, LinkedGroup>();
     		}
@@ -200,7 +200,7 @@ namespace iCanScript { namespace Editor {
                     Add(new ReferenceToDefinition(vs, element.Name));
                 }
                 else {
-                    Add(new ReferenceToEngineObject(vs, element.InstanceId));                
+                    Add(new ReferenceToEngineObject(vs, element.InstanceId));
                 }
             }
     		public void Remove(ReferenceToDefinition definition) {
@@ -243,12 +243,12 @@ namespace iCanScript { namespace Editor {
     			return group;
     		}
     	}
-        // ----------------------------------------------------------------------	
+        // ----------------------------------------------------------------------
     	public class LinkedGroup {
             bool                          myIsDefinitionsErrorFree= true;
     		List<ReferenceToDefinition>   myDefinitions= new List<ReferenceToDefinition>();
     		List<ReferenceToEngineObject> myReferences = new List<ReferenceToEngineObject>();
-    		
+
     		public LinkedGroup() {}
     		public List<ReferenceToDefinition>	    Definitions 	{ get { return myDefinitions; }}
     		public List<ReferenceToEngineObject>	References		{ get { return myReferences; }}
@@ -260,7 +260,7 @@ namespace iCanScript { namespace Editor {
                 set { myIsDefinitionsErrorFree= value; }
             }
     		public void Add(ReferenceToDefinition definition) {
-    		    myDefinitions.Add(definition);	
+    		    myDefinitions.Add(definition);
     		}
     		public void Add(ReferenceToEngineObject reference) {
     			myReferences.Add(reference);
@@ -288,12 +288,12 @@ namespace iCanScript { namespace Editor {
                 }
             }
     	};
-        // ----------------------------------------------------------------------	
+        // ----------------------------------------------------------------------
         public class ReferenceToDefinition {
             iCS_VisualScriptImp     myVisualScript = null;
             string                  myDefintionName= null;
     		int						myObjectId     = -1;
-    
+
             public ReferenceToDefinition(iCS_VisualScriptImp visualScript, string name) {
                 myVisualScript = visualScript;
                 myDefintionName= name;
@@ -307,11 +307,11 @@ namespace iCanScript { namespace Editor {
             public string              FullName             { get { return iCS_VisualScriptData.GetFullName(myVisualScript, myVisualScript, EngineObject); }}
     		public int				   InstanceId			{ get { return myObjectId; }}
         };
-        // ----------------------------------------------------------------------	
+        // ----------------------------------------------------------------------
         public class ReferenceToEngineObject {
             iCS_VisualScriptImp     myVisualScript= null;
             int                     myObjectId= -1;
-    
+
             public ReferenceToEngineObject(iCS_VisualScriptImp visualScript, int objectId) {
                 myVisualScript= visualScript;
                 myObjectId= objectId;
@@ -351,14 +351,14 @@ namespace iCanScript { namespace Editor {
                 }
             }
         };
-    
+
         // ======================================================================
         // Enums
         // ----------------------------------------------------------------------
     	enum OperationEnum { RebuildInfo, NodeNameChange, PortNameChange, PortAdded, PortRemoved, OfNoInterrest };
-    
+
         // ======================================================================
-        // Fields 
+        // Fields
         // ----------------------------------------------------------------------
     	static string						kServiceId			   = "Public Interface";
         static ReferenceToDefinition[]	    ourPublicVariables     = null;
@@ -369,7 +369,7 @@ namespace iCanScript { namespace Editor {
     	static VSPublicGroups		        ourPublicFunctionGroups= null;
     	static OperationEnum				ourNextOperation	   = OperationEnum.RebuildInfo;
     	static iCS_EditorObject				ourOperationObject     = null;
-    	
+
         // ======================================================================
         // Properties
         // ----------------------------------------------------------------------
@@ -377,7 +377,7 @@ namespace iCanScript { namespace Editor {
     		ourNextOperation= op;
     		ourOperationObject= obj;
     	}
-    	
+
         // ======================================================================
         // Scene properties
         // ----------------------------------------------------------------------
@@ -401,21 +401,21 @@ namespace iCanScript { namespace Editor {
     		get { return ourPublicFunctionGroups; }
     		set { ourPublicFunctionGroups= value; }
     	}
-    
-    
+
+
         // ======================================================================
         // Update scene content changed
         // ----------------------------------------------------------------------
         static void RebuildAndValidatePublicInterfaceInfo() {
     		// -- Rebuild public interface information --
     		RebuildPublicInterfaceInfo();
-            
+
     		// -- Remove all previous errors/warnings --
     		ErrorController.Clear(kServiceId);
-    		
+
             // Validate variable & function groups
             ValidatePublicGroups();
-    		
+
     		// -- Reset next operation to rebuild & validate all visual script in the scene --
     		ourNextOperation  = OperationEnum.RebuildInfo;
     		ourOperationObject= null;
@@ -427,7 +427,7 @@ namespace iCanScript { namespace Editor {
             ourPublicFunctions   = ScanForPublicFunctions();
             ourVariableReferences= ScanForVariableReferences();
             ourFunctionCalls     = ScanForFunctionCalls();
-    		
+
     		// Build groups out of linked objects
     		PublicVariableGroups= new VSPublicGroups();
     		PublicFunctionGroups= new VSPublicGroups();
@@ -436,7 +436,7 @@ namespace iCanScript { namespace Editor {
     		foreach(var pf in ourPublicFunctions)		{ PublicFunctionGroups.Add(pf); }
     		foreach(var fc in ourFunctionCalls)			{ PublicFunctionGroups.Add(fc); }
         }
-    
+
         // ----------------------------------------------------------------------
     	static bool IsPublicObject(iCS_EditorObject element) {
     		return IsPublicDefinition(element) || IsReferenceToPublicObject(element);
@@ -449,7 +449,7 @@ namespace iCanScript { namespace Editor {
     	static bool IsReferenceToPublicObject(iCS_EditorObject element) {
     		return element.IsVariableReference || element.IsFunctionCall;
     	}
-    
+
         // ======================================================================
         // PUBLIC INTERFACES
         // ----------------------------------------------------------------------
@@ -518,7 +518,7 @@ namespace iCanScript { namespace Editor {
     	static iCS_VisualScriptImp FindVisualScriptFromReferenceNode(ReferenceToEngineObject objRef) {
     		return objRef.VisualScript.GetVisualScriptFromReferenceNode(objRef.EngineObject);
     	}
-    	
+
     	// =========================================
     	// = Public Interface Validation Utilities =
     	// =========================================
@@ -527,12 +527,12 @@ namespace iCanScript { namespace Editor {
             // -- Validate Interface Compliancy for Definitions --
     		ValidateVariableDefinitions();
     		ValidateFunctionDefinitions();
-    		
+
             // -- Validate Interface Compliancy for References --
             ValidateVariableReferences();
     		ValidateFunctionCalls();
     	}
-    	
+
         // ----------------------------------------------------------------------
     	public static void ValidateVariableDefinitions() {
             PublicVariableGroups.ForEach(
@@ -563,11 +563,11 @@ namespace iCanScript { namespace Editor {
                 (name, group)=> {
                     // -- Don't validate references if the definitions are not error free --
                     if(!group.IsDefinitionsErrorFree) return;
-                    
+
                     // -- Nothing to validate if no reference exists --
                     var references = group.References;
                     if(references.Count == 0) return;
-                    
+
                     // -- Verify that all references comply to the definition interface.
     				var definitions= group.Definitions;
                     if(definitions.Count != 0) {
@@ -587,7 +587,7 @@ namespace iCanScript { namespace Editor {
                             }
                         );
                     }
-                    
+
                     // -- Verify that the specific defintion exists --
                     references.ForEach(
                         o=> {
@@ -636,11 +636,11 @@ namespace iCanScript { namespace Editor {
                 (name, group)=> {
                     // -- Don't validate references if the definitions are not error free --
                     if(!group.IsDefinitionsErrorFree) return;
-                    
+
                     // -- Nothing to validate if no reference exists --
                     var references = group.References;
                     if(references.Count == 0) return;
-                    
+
                     // -- Verify that all references comply to the definition interface.
     				var definitions= group.Definitions;
                     if(definitions.Count != 0) {
@@ -656,7 +656,7 @@ namespace iCanScript { namespace Editor {
                             }
                         );
                     }
-                    
+
                     // -- Verify that the specific defintion exists --
                     references.ForEach(
                         o=> {
@@ -697,7 +697,7 @@ namespace iCanScript { namespace Editor {
     		}
     		return true;
     	}
-    
+
     	// ======================================================================
     	// UPDATE FUNCTION CALL FROM FUNCTION DEFINITION
         // ----------------------------------------------------------------------
@@ -706,14 +706,14 @@ namespace iCanScript { namespace Editor {
             // -- Replicate interface ports --
             var fncCallPorts= GetFunctionInterface(vs, functionCall);
     		ReplicatePortsOnFunctionCall(fncDefPorts, fncCallPorts, vs, functionCall);
-    
+
             // -- Advise Unity that the visual script has changed --
             UpdateUnityAndEditors(vs);
         }
         // ----------------------------------------------------------------------
     	static void ReplicatePortsOnFunctionCall(iCS_EngineObject[] portsToReplicate, iCS_EngineObject[] existingPorts,
     						                     iCS_VisualScriptImp vs, iCS_EngineObject node) {
-    
+
             // -- Update is completed if all ports are identical --
     		var nonIdenticalPorts= KeepNonIdenticalPorts(portsToReplicate, existingPorts);
     		var srcPorts= nonIdenticalPorts.Item1;
@@ -721,15 +721,15 @@ namespace iCanScript { namespace Editor {
     		var srcLen= P.length(srcPorts);
     		var dstLen= P.length(dstPorts);
             if(srcLen == 0 && dstLen == 0) return;
-    		
+
             // -- Simple port addition --
     		if(srcLen != 0 && dstLen == 0) {
     	        foreach(var toClone in srcPorts) {
     				AddPortOnFunctionCall(toClone, vs, node);
-    	        }	
+    	        }
     			return;
     		}
-    
+
     	    // -- Simple port removal --
     		if(srcLen == 0 && dstLen != 0) {
     	        foreach(var toRemove in dstPorts) {
@@ -737,7 +737,7 @@ namespace iCanScript { namespace Editor {
     	        }
     			return;
     		}
-    		
+
     		// -- Add port if no matching type --
     		var srcPort= P.head(srcPorts);
     		var dstPort= P.head(dstPorts);
@@ -746,14 +746,14 @@ namespace iCanScript { namespace Editor {
     			ReplicatePortsOnFunctionCall(P.tail(srcPorts), dstPorts, vs, node);
     			return;
     		}
-    
+
     		// -- Remove port if no matching type --
     		if(!P.or(p=> ArePortsTypeIdentical(p, dstPort), srcPorts)) {
     			DestroyPortOnFunctionCall(dstPort, vs, node);
     			ReplicatePortsOnFunctionCall(srcPorts, P.tail(dstPorts), vs, node);
     			return;
     		}
-    
+
     		// -- Relink the port index --
     		var result= P.filter(p=> ArePortsIdenticalExceptIndex(p, srcPort), dstPorts);
     		if(P.length(result) != 0) {
@@ -762,14 +762,14 @@ namespace iCanScript { namespace Editor {
     			ReplicatePortsOnFunctionCall(P.tail(srcPorts), dstPorts, vs, node);
     			return;
     		}
-    
+
     		// -- Simple port rename --
     		if(ArePortsIdenticalExceptName(srcPort, dstPort)) {
     			dstPort.Name= srcPort.Name;
     			ReplicatePortsOnFunctionCall(P.tail(srcPorts), P.tail(dstPorts), vs, node);
     			return;
-    		}			
-    		
+    		}
+
     		// -- Could not find a valid match for source port; so just add it --
     		AddPortOnFunctionCall(srcPort, vs, node);
     		ReplicatePortsOnFunctionCall(P.tail(srcPorts), dstPorts, vs, node);
@@ -832,25 +832,25 @@ namespace iCanScript { namespace Editor {
     	static void DestroyPortOnFunctionCall(iCS_EngineObject portToDestroy, iCS_VisualScriptImp vs, iCS_EngineObject functionCallNode) {
             iCS_VisualScriptData.DestroyEngineObject(vs, portToDestroy);
     	}
-    
+
     	// ======================================================================
     	// UPDATE FUNCTION DEFINIION FROM ANOTHER FUNCTION DEFINITION
         // ----------------------------------------------------------------------
     	static void UpdateFunctionInterfaceFrom(iCS_VisualScriptImp toVs  , iCS_EngineObject toFnc,
     									 		iCS_VisualScriptImp fromVs, iCS_EngineObject fromFnc) {
-    
+
     		// -- Replcate interface ports --
     		var fromPorts= GetFunctionInterface(fromVs, fromFnc);
     		var toPorts  = GetFunctionInterface(toVs  , toFnc);
     		ReplicatePortsOnFunction(fromPorts, toPorts, toVs, toFnc);
-    		
+
             // -- Advise Unity that the visual script has changed --
             UpdateUnityAndEditors(toVs);
     	}
         // ----------------------------------------------------------------------
     	static void ReplicatePortsOnFunction(iCS_EngineObject[] portsToReplicate, iCS_EngineObject[] existingPorts,
     						                     iCS_VisualScriptImp vs, iCS_EngineObject node) {
-    
+
             // -- Update is completed if all ports are identical --
     		var nonIdenticalPorts= KeepNonIdenticalPorts(portsToReplicate, existingPorts);
     		var srcPorts= nonIdenticalPorts.Item1;
@@ -858,15 +858,15 @@ namespace iCanScript { namespace Editor {
     		var srcLen= P.length(srcPorts);
     		var dstLen= P.length(dstPorts);
             if(srcLen == 0 && dstLen == 0) return;
-    		
+
             // -- Simple port addition --
     		if(srcLen != 0 && dstLen == 0) {
     	        foreach(var toClone in srcPorts) {
     				AddPortOnFunction(toClone, vs, node);
-    	        }	
+    	        }
     			return;
     		}
-    
+
     	    // -- Simple port removal --
     		if(srcLen == 0 && dstLen != 0) {
     	        foreach(var toRemove in dstPorts) {
@@ -874,7 +874,7 @@ namespace iCanScript { namespace Editor {
     	        }
     			return;
     		}
-    		
+
     		// -- Add port if no matching type --
     		var srcPort= P.head(srcPorts);
     		var dstPort= P.head(dstPorts);
@@ -883,14 +883,14 @@ namespace iCanScript { namespace Editor {
     			ReplicatePortsOnFunction(P.tail(srcPorts), dstPorts, vs, node);
     			return;
     		}
-    
+
     		// -- Remove port if no matching type --
     		if(!P.or(p=> ArePortsTypeIdentical(p, dstPort), srcPorts)) {
     			DestroyPortOnFunction(dstPort, vs, node);
     			ReplicatePortsOnFunction(srcPorts, P.tail(dstPorts), vs, node);
     			return;
     		}
-    
+
     		// -- Relink the port index --
     		var result= P.filter(p=> ArePortsIdenticalExceptIndex(p, srcPort), dstPorts);
     		if(P.length(result) != 0) {
@@ -899,14 +899,14 @@ namespace iCanScript { namespace Editor {
     			ReplicatePortsOnFunction(P.tail(srcPorts), dstPorts, vs, node);
     			return;
     		}
-    
+
     		// -- Simple port rename --
     		if(ArePortsIdenticalExceptName(srcPort, dstPort)) {
     			dstPort.Name= srcPort.Name;
     			ReplicatePortsOnFunction(P.tail(srcPorts), P.tail(dstPorts), vs, node);
     			return;
-    		}			
-    		
+    		}
+
     		// -- Could not find a valid match for source port; so just add it --
     		AddPortOnFunction(srcPort, vs, node);
     		ReplicatePortsOnFunction(P.tail(srcPorts), dstPorts, vs, node);
@@ -957,7 +957,7 @@ namespace iCanScript { namespace Editor {
     		groups.ForEach(
     			(_, group)=> {
     				foreach(var def in group.Definitions) {
-    					if(def.VisualScript == objVs && obj.InstanceId == def.InstanceId) {
+    					if(System.Object.ReferenceEquals(def.VisualScript, objVs) && obj.InstanceId == def.InstanceId) {
     						myGroup= group;
     						return;
     					}
@@ -997,8 +997,8 @@ namespace iCanScript { namespace Editor {
     	        if(visualEditor != null) {
     	            visualEditor.SendEvent(EditorGUIUtility.CommandEvent("ReloadStorage"));
     	        }
-            }        
+            }
         }
     }
-    
+
 }}
