@@ -39,7 +39,7 @@ namespace iCanScript.Editor {
     	private static void buildUnityHelpIndex() {
     		StreamReader fileStream;
     		try {
-    			fileStream = new StreamReader (unityHelpPath + "/index.js");
+    			fileStream = new StreamReader (unityHelpPath + "/index.json");
     		}
     		catch {
     			Debug.LogWarning("iCanScript: unable to open Unity help.");

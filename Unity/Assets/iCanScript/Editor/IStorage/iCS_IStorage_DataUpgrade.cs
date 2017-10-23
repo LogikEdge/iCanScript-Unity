@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using System.Collections;
 using iCanScript.Engine;
 
@@ -7,7 +8,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	void PerformEngineDataUpgrade() {
         bool isUpgraded= false;
-        
+
         // PRE-PROCESSING ====================================================
         // Use this are to perform pre-processing data conversion.
 		iCS_Version softwareVersion= iCS_Version.Current;
@@ -15,7 +16,7 @@ public partial class iCS_IStorage {
 		// Extract the version of the storage.
 		iCS_Version storageVersion= new iCS_Version(EngineStorage.MajorVersion, EngineStorage.MinorVersion, EngineStorage.BugFixVersion);
 		if(softwareVersion.IsEqual(storageVersion)) { return; }
-		
+
         // POST-PROCESING ====================================================
         // v1.2.0 Needs to convert "this" port name to "type instance"
 		if(storageVersion.IsOlderThen(1,2,0)) {
@@ -23,7 +24,7 @@ public partial class iCS_IStorage {
                 if(obj.IsDataPort && obj.RawName == "this" && obj.RuntimeType != null) {
                     obj.RawName= GetInstancePortName(obj.RuntimeType);
                     isUpgraded= true;
-                }         
+                }
             }
         }
         if(storageVersion.IsOlderOrEqualTo(1,2,3)) {
@@ -44,7 +45,7 @@ public partial class iCS_IStorage {
 	}
     // ----------------------------------------------------------------------
 	void SaveCurrentScene() {
-		EditorApplication.SaveCurrentSceneIfUserWantsTo();				
+		EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
 	}
-	
+
 }
