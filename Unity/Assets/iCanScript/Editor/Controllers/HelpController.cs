@@ -404,19 +404,19 @@ namespace iCanScript.Editor {
     			string methodName="";
 
     			if (memberInfo.IsMessage) {
-    				className = memberInfo.ParentTypeInfo.ClassName;
+    				className = memberInfo.ParentTypeInfo.CompilerType.FullName;
     				demarcator= ".";
     				methodName= memberInfo.DisplayName;
     			}
     			else if (memberInfo.IsTypeInfo) {
     				// First level libray entries (classes and packages), just return className
-    				className = memberInfo.ToTypeInfo.ClassName;
+    				className = memberInfo.ToTypeInfo.CompilerType.FullName;
     			}
     			else if (memberInfo.IsMethod) {
     				if(memberInfo.ToMethodInfo.DeclaringType.Name == null)
-    					className= memberInfo.ParentTypeInfo.ClassName;
+    					className= memberInfo.ParentTypeInfo.CompilerType.FullName;
     				else
-    					className= memberInfo.ToMethodInfo.DeclaringType.Name;
+    					className= memberInfo.ToMethodInfo.DeclaringType.FullName;
 
     				methodName= memberInfo.ToMethodInfo.MethodName;
     				if (memberInfo.IsProperty) {
@@ -450,7 +450,7 @@ namespace iCanScript.Editor {
     			}
     			else if (memberInfo.IsField) {
     				// Field Nodes
-    				className= memberInfo.ParentTypeInfo.ClassName;
+    				className= memberInfo.ParentTypeInfo.CompilerType.FullName;
     				methodName= memberInfo.ToFieldInfo.MethodName;
     				if(memberInfo.ToFieldInfo.IsClassMember)
     					demarcator= ".";
@@ -459,8 +459,12 @@ namespace iCanScript.Editor {
     				else
     					demarcator= ".";
     			}
-
-    			return className + demarcator + methodName;
+                // -- Build search string and remove preceding UnityEngine namespace. --
+                var urlString = className + demarcator + methodName;
+                if(urlString.StartsWith("UnityEngine.")) {
+                    urlString = urlString.Remove(0, 12);
+                }
+    			return urlString;
     	}
 
 
