@@ -1,4 +1,4 @@
-//{"ContentHash" : "60594757F6122646C57117A12FEB4CDD"}
+//{"ContentHash" : "4446E94E85955CC1220FCC2038600ACE"}
 /////////////////////////////////////////////////////////////////
 //  iCS_Behaviour.cs
 //
@@ -241,16 +241,6 @@ public sealed class iCS_Behaviour : iCS_BehaviourImp {
 		if(allVisualScripts != null) {
 			foreach(var vs in allVisualScripts) {
 				vs.RunMessage("OnJointBreak", breakForce);
-			}
-		}
-	}
-
-
-	void OnLevelWasLoaded(int level)
-	{
-		if(allVisualScripts != null) {
-			foreach(var vs in allVisualScripts) {
-				vs.RunMessage("OnLevelWasLoaded", level);
 			}
 		}
 	}
