@@ -1,7 +1,7 @@
 //
 // File: iCS_UserCommands_Create
 //
-//#define DEBUG
+//#define iCS_DEBUG
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -115,14 +115,14 @@ public static partial class iCS_UserCommands {
     }
 	// ----------------------------------------------------------------------
     public static iCS_EditorObject CreatePackage(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Package, Type runtimeType= null) {
-#if DEBUG
+#if iCS_DEBUG
         Debug.Log("iCanScript: CreatePackage => "+name);
 #endif
         var iStorage= parent.IStorage;
         OpenTransaction(iStorage);
         iCS_EditorObject package= null;
         try {
-            package= _CreatePackage(parent, globalPos, name, objectType, runtimeType);            
+            package= _CreatePackage(parent, globalPos, name, objectType, runtimeType);
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -143,7 +143,7 @@ public static partial class iCS_UserCommands {
 	// ----------------------------------------------------------------------
     // OK
     public static iCS_EditorObject CreateStateChart(iCS_EditorObject parent, Vector2 globalPos, string name) {
-#if DEBUG
+#if iCS_DEBUG
         Debug.Log("iCanScript: Create State Chart => "+name);
 #endif
         if(parent == null) return null;
@@ -164,7 +164,7 @@ public static partial class iCS_UserCommands {
                     iStorage.ForcedRelayoutOfTree();
                     iStorage.ReduceCollisionOffset();
                 }
-            );            
+            );
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -176,12 +176,12 @@ public static partial class iCS_UserCommands {
         }
         CloseTransaction(iStorage, "Create StateChart");
 		SystemEvents.AnnounceVisualScriptElementAdded(stateChart);
-        return stateChart;        
+        return stateChart;
     }
 	// ----------------------------------------------------------------------
     // OK
     public static iCS_EditorObject CreateState(iCS_EditorObject parent, Vector2 globalPos, string name) {
-#if DEBUG
+#if iCS_DEBUG
         Debug.Log("iCanScript: Create State => "+name);
 #endif
         if(parent == null) return null;
@@ -197,7 +197,7 @@ public static partial class iCS_UserCommands {
                     iStorage.ForcedRelayoutOfTree();
                     iStorage.ReduceCollisionOffset();
                 }
-            );            
+            );
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -205,16 +205,16 @@ public static partial class iCS_UserCommands {
         }
         if(state == null) {
             CancelTransaction(iStorage);
-            return null;            
+            return null;
         }
         CloseTransaction(iStorage, "Create State");
 		SystemEvents.AnnounceVisualScriptElementAdded(state);
-        return state;        
+        return state;
     }
 	// ----------------------------------------------------------------------
 	// OK
     public static iCS_EditorObject CreateMessageHandler(iCS_EditorObject parent, Vector2 globalPos, iCS_MessageInfo desc) {
-#if DEBUG
+#if iCS_DEBUG
         Debug.Log("iCanScript: Create Message Handler => "+desc.DisplayName);
 #endif
         if(parent == null) return null;
@@ -235,7 +235,7 @@ public static partial class iCS_UserCommands {
                     iStorage.ForcedRelayoutOfTree();
                     iStorage.ReduceCollisionOffset();
                 }
-            );            
+            );
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -251,7 +251,7 @@ public static partial class iCS_UserCommands {
     }
     // ----------------------------------------------------------------------
     public static iCS_EditorObject CreatePublicFunction(iCS_EditorObject parent, Vector2 globalPos) {
-        return CreatePackage(parent, globalPos, "PublicFunction");    
+        return CreatePackage(parent, globalPos, "PublicFunction");
     }
 	// ----------------------------------------------------------------------
 	// OK
@@ -261,7 +261,7 @@ public static partial class iCS_UserCommands {
         OpenTransaction(iStorage);
         iCS_EditorObject package= null;
         try {
-            package= _CreatePackage(parent, globalPos, iCS_Strings.OnEntry, iCS_ObjectTypeEnum.OnStateEntry);            
+            package= _CreatePackage(parent, globalPos, iCS_Strings.OnEntry, iCS_ObjectTypeEnum.OnStateEntry);
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -289,7 +289,7 @@ public static partial class iCS_UserCommands {
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
-            return null;                
+            return null;
         }
         if(package == null) {
             CancelTransaction(iStorage);
@@ -309,17 +309,17 @@ public static partial class iCS_UserCommands {
         OpenTransaction(iStorage);
         iCS_EditorObject package= null;
         try {
-            package= _CreatePackage(parent, globalPos, iCS_Strings.OnExit, iCS_ObjectTypeEnum.OnStateExit);            
+            package= _CreatePackage(parent, globalPos, iCS_Strings.OnExit, iCS_ObjectTypeEnum.OnStateExit);
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
-            return null;            
+            return null;
         }
         if(package == null) {
             CancelTransaction(iStorage);
             return null;
         }
-        package.IsNameEditable= false;            
+        package.IsNameEditable= false;
         package.Tooltip= iCS_ObjectTooltips.OnExit;
         CloseTransaction(iStorage, "Create "+package.Name);
 		SystemEvents.AnnounceVisualScriptElementAdded(package);
@@ -328,7 +328,7 @@ public static partial class iCS_UserCommands {
 	// ----------------------------------------------------------------------
     // OK
     public static iCS_EditorObject CreateFunction(iCS_EditorObject parent, Vector2 globalPos, iCS_FunctionPrototype desc) {
-#if DEBUG
+#if iCS_DEBUG
         Debug.Log("iCanScript: Create Function => "+desc.DisplayName);
 #endif
         if(parent == null || desc == null) return null;
@@ -345,7 +345,7 @@ public static partial class iCS_UserCommands {
                     iStorage.ForcedRelayoutOfTree();
                     iStorage.ReduceCollisionOffset();
                 }
-            );            
+            );
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -353,16 +353,16 @@ public static partial class iCS_UserCommands {
         }
         if(function == null) {
             CancelTransaction(iStorage);
-            return null;            
+            return null;
         }
         CloseTransaction(iStorage, "Create "+name);
 		SystemEvents.AnnounceVisualScriptElementAdded(function);
-        return function;        
+        return function;
     }
 
 	// ----------------------------------------------------------------------
     public static iCS_EditorObject CreateTransition(iCS_EditorObject fromStatePort, iCS_EditorObject toState, Vector2 toStatePortPos) {
-#if DEBUG
+#if iCS_DEBUG
         Debug.Log("iCanScript: Create Transition Package");
 #endif
         if(fromStatePort == null || toState == null) return null;
@@ -375,7 +375,7 @@ public static partial class iCS_UserCommands {
             iCS_EditorObject toStatePort= iStorage.CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
             // Update port positions
             toStatePort.SetInitialPosition(toStatePortPos);
-            toStatePort.UpdatePortEdge();        
+            toStatePort.UpdatePortEdge();
             fromStatePort.UpdatePortEdge();
             // Temporally connect state ports together.
             iStorage.SetSource(toStatePort, fromStatePort);
@@ -408,21 +408,21 @@ public static partial class iCS_UserCommands {
                 if(Vector2.Dot(diff, Vector2.up) > 0) {
                     inTransitionPort.Edge= iCS_EdgeEnum.Top;
                     toStatePort.Edge= iCS_EdgeEnum.Top;
-                    outTransitionPort.Edge= iCS_EdgeEnum.Bottom; 
+                    outTransitionPort.Edge= iCS_EdgeEnum.Bottom;
                     fromStatePort.Edge= iCS_EdgeEnum.Bottom;
                 }
                 else {
                     inTransitionPort.Edge= iCS_EdgeEnum.Bottom;
                     toStatePort.Edge= iCS_EdgeEnum.Bottom;
-                    outTransitionPort.Edge= iCS_EdgeEnum.Top; 
+                    outTransitionPort.Edge= iCS_EdgeEnum.Top;
                     fromStatePort.Edge= iCS_EdgeEnum.Top;
-                }            
+                }
             }
             inTransitionPort.PortPositionRatio= 0.5f;
             outTransitionPort.PortPositionRatio= 0.5f;
             // Layout the graph
             iStorage.ForcedRelayoutOfTree();
-            iStorage.ReduceCollisionOffset();            
+            iStorage.ReduceCollisionOffset();
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -432,7 +432,7 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return null;
         }
-        CloseTransaction(iStorage, "Create Transition");            
+        CloseTransaction(iStorage, "Create Transition");
 		SystemEvents.AnnounceVisualScriptElementAdded(transitionPackage);
         return transitionPackage;
     }
@@ -448,10 +448,10 @@ public static partial class iCS_UserCommands {
                 _=> {
             		port= iStorage.CreateEnablePort(parent.InstanceId);
                     var pRect= parent.GlobalRect;
-                    port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.y));        
+                    port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.y));
                     iStorage.ForcedRelayoutOfTree();
                 }
-            );            
+            );
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -475,12 +475,12 @@ public static partial class iCS_UserCommands {
         try {
             iStorage.AnimateGraph(null,
                 _=> {
-            		port= iStorage.CreateTriggerPort(parent.InstanceId);        
+            		port= iStorage.CreateTriggerPort(parent.InstanceId);
                     var pRect= parent.GlobalRect;
-                    port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.yMax));        
+                    port.SetInitialPosition(new Vector2(0.5f*(pRect.x+pRect.xMax), pRect.yMax));
                     iStorage.ForcedRelayoutOfTree();
                 }
-            );            
+            );
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -488,7 +488,7 @@ public static partial class iCS_UserCommands {
         }
         if(port == null) {
             CancelTransaction(iStorage);
-            return null;            
+            return null;
         }
         CloseTransaction(iStorage, "Create Trigger Port");
 		SystemEvents.AnnounceVisualScriptElementAdded(port);
@@ -505,10 +505,10 @@ public static partial class iCS_UserCommands {
         try {
             iStorage.AnimateGraph(null,
                 _=> {
-            		port= iStorage.CreateOutInstancePort(parent.InstanceId, parent.RuntimeType);        
+            		port= iStorage.CreateOutInstancePort(parent.InstanceId, parent.RuntimeType);
                     iStorage.ForcedRelayoutOfTree();
                 }
-            );            
+            );
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -522,7 +522,7 @@ public static partial class iCS_UserCommands {
 		SystemEvents.AnnounceVisualScriptElementAdded(port);
         return port;
     }
-    
+
 
     // ======================================================================
     // Instance Object creation.
@@ -531,7 +531,7 @@ public static partial class iCS_UserCommands {
         if(instanceType == null) return null;
         if(!IsCreationAllowed()) return null;
         instanceType= iCS_Types.RemoveRefOrPointer(instanceType);
-#if DEBUG
+#if iCS_DEBUG
         Debug.Log("iCanScript: Create Object Instance => "+instanceType.Name);
 #endif
         if(parent == null) return null;
@@ -545,9 +545,9 @@ public static partial class iCS_UserCommands {
                     instance= iStorage.CreateObjectInstance(parent.InstanceId, name, instanceType);
                     instance.SetInitialPosition(globalPos);
                     iStorage.ForcedRelayoutOfTree();
-                    iStorage.ReduceCollisionOffset();                    
+                    iStorage.ReduceCollisionOffset();
                 }
-            );            
+            );
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -557,7 +557,7 @@ public static partial class iCS_UserCommands {
             CancelTransaction(iStorage);
             return null;
         }
-        CloseTransaction(iStorage, "Create "+name);            
+        CloseTransaction(iStorage, "Create "+name);
 		SystemEvents.AnnounceVisualScriptElementAdded(instance);
         return instance;
     }
@@ -577,7 +577,7 @@ public static partial class iCS_UserCommands {
                     package= iStorage.WrapInPackage(obj);
                     iStorage.ForcedRelayoutOfTree();
                 }
-            );            
+            );
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -616,13 +616,13 @@ public static partial class iCS_UserCommands {
                             selectedObjects[i].LocalSize= iCS_EditorObject.SizeFrom(childrenRects[i]);
                         }
                         iStorage.ForcedRelayoutOfTree();
-                        iStorage.ReduceCollisionOffset();                        
+                        iStorage.ReduceCollisionOffset();
                     }
                     else {
                         Debug.LogWarning("iCanScript: Unable to create a suitable package.");
                     }
                 }
-            );            
+            );
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -642,7 +642,7 @@ public static partial class iCS_UserCommands {
 	// ----------------------------------------------------------------------
     // OK
     public static iCS_EditorObject CreateGameObject(GameObject go, iCS_EditorObject parent, Vector2 globalPos) {
-#if DEBUG
+#if iCS_DEBUG
         Debug.Log("iCanScript: Create Game Object => "+go.name);
 #endif
         if(parent == null) return null;
@@ -663,7 +663,7 @@ public static partial class iCS_UserCommands {
                     instance.SetInitialPosition(globalPos);
                     iStorage.ForcedRelayoutOfTree();
                 }
-            );            
+            );
         }
         catch(System.Exception) {
             CancelTransaction(iStorage);
@@ -677,13 +677,13 @@ public static partial class iCS_UserCommands {
 		SystemEvents.AnnounceVisualScriptElementAdded(instance);
         return instance;
     }
-    
-    
+
+
     // ======================================================================
     // Utilities
 	// ----------------------------------------------------------------------
     private static iCS_EditorObject _CreatePackage(iCS_EditorObject parent, Vector2 globalPos, string name, iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Package, Type runtimeType= null) {
-#if DEBUG
+#if iCS_DEBUG
         Debug.Log("iCanScript: CreatePackage => "+name);
 #endif
         if(parent == null) return null;
@@ -700,7 +700,7 @@ public static partial class iCS_UserCommands {
                     iStorage.ForcedRelayoutOfTree();
                     iStorage.ReduceCollisionOffset();
                 }
-            );            
+            );
         }
         catch(System.Exception e) {
             Debug.Log(e.Message);
