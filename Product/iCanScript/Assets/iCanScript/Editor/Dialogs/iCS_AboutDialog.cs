@@ -93,7 +93,7 @@ namespace iCanScript.Internal.Editor {
     		GUI.Label(rBuildDate, buildDate);
 
     		// Disclamer
-    		GUIContent copyright= new GUIContent("(c) copyright LogikEdge 2015.  All rights reserved.");
+    		GUIContent copyright= new GUIContent("(c) copyright LogikEdge 2021.  All rights reserved.");
     		var copyrightSize= GUI.skin.label.CalcSize(copyright);
     		var rCopyright= new Rect(column1X, rBuildDate.yMax+copyrightSize.y, copyrightSize.x, copyrightSize.y);
     		GUI.Label(rCopyright, copyright);

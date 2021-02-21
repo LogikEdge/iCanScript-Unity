@@ -103,32 +103,6 @@ namespace iCanScript.Internal.Editor {
             var focusParameterNames= new string[1]{"focus"};
             InstallMonoBehaviourMessage("OnApplicationFocus", focusParameterTypes, focusParameterNames);         
 
-            var playerParameterTypes= new Type[1]  {typeof(NetworkPlayer)};
-            var playerParameterNames= new string[1]{"player"};
-            InstallMonoBehaviourMessage("OnPlayerConnected"   , playerParameterTypes, playerParameterNames);         
-            InstallMonoBehaviourMessage("OnPlayerDisconnected", playerParameterTypes, playerParameterNames);         
-
-            var disconnectParameterTypes= new Type[1]  {typeof(NetworkDisconnection)};
-            var disconnectParameterNames= new string[1]{"mode"};
-            InstallMonoBehaviourMessage("OnDisconnectedFromServer", disconnectParameterTypes, disconnectParameterNames);             
-
-            var networkErrorParameterTypes= new Type[1]  {typeof(NetworkConnectionError)};
-            var networkErrorParameterNames= new string[1]{"error"};
-            InstallMonoBehaviourMessage("OnFailedToConnect"              , networkErrorParameterTypes, networkErrorParameterNames);
-            InstallMonoBehaviourMessage("OnFailedToConnectToMasterServer", networkErrorParameterTypes, networkErrorParameterNames);
-
-            var msEventParameterTypes= new Type[1]  {typeof(MasterServerEvent)};
-            var msEventParameterNames= new string[1]{"msEvent"};
-            InstallMonoBehaviourMessage("OnMasterServerEvent", msEventParameterTypes, msEventParameterNames);
-
-            var networkInfoParameterTypes= new Type[1]  {typeof(NetworkMessageInfo)};
-            var networkInfoParameterNames= new string[1]{"info"};
-            InstallMonoBehaviourMessage("OnNetworkInstantiate", networkInfoParameterTypes, networkInfoParameterNames);         
-
-            var serializeViewParameterTypes= new Type[2]  { typeof(BitStream), typeof(NetworkMessageInfo) };
-            var serializeViewParameterNames= new string[2]{ "stream",          "info" };
-            InstallMonoBehaviourMessage("OnSerializeNetworkView", serializeViewParameterTypes, serializeViewParameterNames);         
-
             var animatorIKParameterTypes= new Type[1]  {typeof(int)};
             var animatorIKParameterNames= new string[1]{"layerIndex"};
             InstallMonoBehaviourMessage("OnAnimatorIK", animatorIKParameterTypes, animatorIKParameterNames);         
